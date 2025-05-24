@@ -1,5 +1,10 @@
 # AurioGold
 
+## Todo
+
+- Add themeability
+- Make profiler (WinForm / NPM / ConsoleApp)
+
 ## Tools Used:
 
 - [React](https://react.dev): UI library
