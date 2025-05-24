@@ -2,9 +2,13 @@
   "name": "auriogold",
   "private": true,
   "scripts": {
+    "unit-test": "cd ./packages/unit-tests/ && pnpm test",
+    "e2e": "cd ./packages/e2e && pnpm test",
+    "e2e:ui": "cd ./packages/e2e && pnpm test:ui",
+    "e2e:headed": "cd ./packages/e2e && pnpm test:headed",
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "check": "biome check --write ./apps/**/src ./packages/**/src",
+    "check": "biome check --write ./apps/**/src ./packages/ui/src ./packages/unit-tests/tests",
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
