@@ -2,9 +2,9 @@
 
 ## Todo
 
-- Add themeability
 - Make profiler (WinForm / NPM / ConsoleApp)
 - Add TanStackQuery / ApiClient (refactored & as a seperate package!)
+- ~~Add themeability~~
 
 ## Tools Used:
 
