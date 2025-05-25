@@ -19,6 +19,6 @@
     "jsx": "react-jsx",
     "outDir": "dist"
   },
-  "include": ["src"],
+  "include": ["src", "../radix-ui-palette"],
   "exclude": ["node_modules", "dist"]
 }

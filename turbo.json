@@ -13,6 +13,10 @@
     "//#check": {
       "cache": false
     },
+    "scan": {
+      "cache": false,
+      "persistent": true
+    },
     "dev": {
       "cache": false,
       "persistent": true

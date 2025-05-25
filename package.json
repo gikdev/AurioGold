@@ -9,6 +9,7 @@
     "e2e:headed": "cd ./packages/e2e && pnpm test:headed",
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "scan": "turbo run scan",
     "check:all": "biome check --write ./apps ./packages",
     "check": "biome check --write ./apps/client/src ./apps/admin/src ./packages/shared/src ./packages/unit-tests/tests",
     "check-types": "turbo run check-types",

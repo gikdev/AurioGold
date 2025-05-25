@@ -1,0 +1,24 @@
+Vitest
+Playwright
+Tailwind v4
+React Router (w/ Typed Routes)
+   Link vs NavLink
+   useProtectedRoute(Role.Admin)
+TypeDoc
+README.md
+GUIDELINES.md
+Typescript
+Turborepo & monorepo
+React Design Patterns
+Scaffdog!
+Jotai
+Lazy loading + Suspense + error boundary
+phosphor-icons
+master/styled.react
+AgGrid
+Radix color 
+Type-safe SignalR stuff
+knip.dev
+radashi.js.org
+
+https://en.git.ir/linkedin-tanstack-query-efficient-data-fetching-and-state-management/

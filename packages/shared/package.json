@@ -6,7 +6,13 @@
     "src"
   ],
   "exports": {
-    "./*": "./src/*.tsx"
+    "./components": "./src/components/index.tsx",
+    "./helpers": "./src/helpers/index.tsx",
+    "./hooks": "./src/hooks/index.tsx",
+    "./layouts": "./src/layouts/index.tsx",
+    "./lib": "./src/lib/index.ts",
+    "./lib/*": "./src/lib/*.ts",
+    "./utils": "./src/utils/index.ts"
   },
   "scripts": {
     "check-types": "tsc --noEmit"
@@ -21,7 +27,9 @@
     "@master/styled.react": "^2.0.4",
     "@phosphor-icons/react": "^2.1.10",
     "ag-grid-react": "^33.3.0",
+    "ahooks": "^3.8.5",
     "jotai": "^2.12.4",
+    "nuqs": "^2.4.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   }

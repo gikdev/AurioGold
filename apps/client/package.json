@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "scan": "react-scan localhost:4444",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
@@ -11,20 +12,22 @@
   "dependencies": {
     "@master/styled.react": "^2.0.4",
     "@phosphor-icons/react": "^2.1.10",
+    "@repo/shared": "workspace:*",
     "@tailwindcss/vite": "^4.1.7",
     "ag-grid-react": "^33.3.0",
     "jotai": "^2.12.4",
+    "nuqs": "^2.4.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router": "^7.6.0",
     "tailwindcss": "^4.1.7"
   },
   "devDependencies": {
-    "@repo/tailwind-config": "workspace:*",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",
     "globals": "^16.0.0",
+    "react-scan": "^0.3.4",
     "typescript": "~5.8.3",
     "vite": "^6.3.5"
   }

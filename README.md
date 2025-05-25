@@ -26,12 +26,12 @@
 - [Radix Colors](https://www.radix-ui.com/colors): *A gorgeous, accessible color system for user interfaces*
 - [Hey API](https://heyapi.dev/): *High-quality tools for interacting with APIs*
 - [React Scan](https://react-scan.com/): *automatically detects performance issues in your React app*
-- [driver.js](https://driverjs.com): Visual tours
 - [nuqs](https://nuqs.47ng.com/): *Type-safe search params state management for React*
 - [ahooks](https://ahooks.js.org/): *High-quality & reliable React Hooks library*
 - [concurrently](https://www.npmjs.com/package/concurrently): *Run multiple commands concurrently*
 - [husky](https://typicode.github.io/husky/) *Ultra-fast modern native git hooks*
 - To be continued...
+<!-- - [driver.js](https://driverjs.com): Visual tours -->
 <!-- - [Motion](https://motion.dev/): Animation library -->
 <!-- - [TypeDoc](https://typedoc.org/): Docs based on code comments -->
 <!-- - [typedoc-material-theme](https://github.com/dmnsgn/typedoc-material-theme): Beautiful theme for TypeDoc -->
