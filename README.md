@@ -28,6 +28,7 @@
 - [driver.js](https://driverjs.com): Visual tours
 - [nuqs](https://nuqs.47ng.com/): *Type-safe search params state management for React*
 - [ahooks](https://ahooks.js.org/): *High-quality & reliable React Hooks library*
+- [concurrently](https://www.npmjs.com/package/concurrently): *Run multiple commands concurrently*
 - To be continued...
 <!-- - [Motion](https://motion.dev/): Animation library -->
 <!-- - [TypeDoc](https://typedoc.org/): Docs based on code comments -->
