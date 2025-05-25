@@ -4,6 +4,7 @@
 
 - Add themeability
 - Make profiler (WinForm / NPM / ConsoleApp)
+- Add TanStackQuery / ApiClient (refactored & as a seperate package!)
 
 ## Tools Used:
 
@@ -29,6 +30,7 @@
 - [nuqs](https://nuqs.47ng.com/): *Type-safe search params state management for React*
 - [ahooks](https://ahooks.js.org/): *High-quality & reliable React Hooks library*
 - [concurrently](https://www.npmjs.com/package/concurrently): *Run multiple commands concurrently*
+- [husky](https://typicode.github.io/husky/) *Ultra-fast modern native git hooks*
 - To be continued...
 <!-- - [Motion](https://motion.dev/): Animation library -->
 <!-- - [TypeDoc](https://typedoc.org/): Docs based on code comments -->

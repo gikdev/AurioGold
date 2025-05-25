@@ -1,5 +1,5 @@
-@import 'tailwindcss';
- 
+@import "tailwindcss";
+
 @theme {
   --color-stupid-1: #2a8af6;
   --color-stupid-2: #a853ba;

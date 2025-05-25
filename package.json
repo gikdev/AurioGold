@@ -2,19 +2,24 @@
   "name": "auriogold",
   "private": true,
   "scripts": {
+    "g": "scaffdog generate && pnpm run check",
     "unit-test": "cd ./packages/unit-tests/ && pnpm test",
     "e2e": "cd ./packages/e2e && pnpm test",
     "e2e:ui": "cd ./packages/e2e && pnpm test:ui",
     "e2e:headed": "cd ./packages/e2e && pnpm test:headed",
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "check": "biome check --write ./apps/client/src ./apps/admin/src ./packages/ui/src ./packages/unit-tests/tests",
-    "check-types": "turbo run check-types"
+    "check:all": "biome check --write ./apps ./packages",
+    "check": "biome check --write ./apps/client/src ./apps/admin/src ./packages/shared/src ./packages/unit-tests/tests",
+    "check-types": "turbo run check-types",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "concurrently": "^9.1.2",
+    "husky": "^9.1.7",
     "prettier": "^3.5.3",
+    "scaffdog": "^4.1.0",
     "turbo": "^2.5.3",
     "typescript": "5.8.2"
   },
