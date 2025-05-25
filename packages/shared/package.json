@@ -2,7 +2,9 @@
   "name": "@repo/shared",
   "version": "0.0.0",
   "private": true,
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "exports": {
     "./*": "./src/*.tsx"
   },
@@ -16,6 +18,10 @@
     "typescript": "5.8.2"
   },
   "dependencies": {
+    "@master/styled.react": "^2.0.4",
+    "@phosphor-icons/react": "^2.1.10",
+    "ag-grid-react": "^33.3.0",
+    "jotai": "^2.12.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   }

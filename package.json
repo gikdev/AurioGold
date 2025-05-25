@@ -12,12 +12,15 @@
     "check:all": "biome check --write ./apps ./packages",
     "check": "biome check --write ./apps/client/src ./apps/admin/src ./packages/shared/src ./packages/unit-tests/tests",
     "check-types": "turbo run check-types",
-    "prepare": "husky"
+    "prepare": "husky",
+    "knip": "knip"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@types/node": "^22.15.3",
     "concurrently": "^9.1.2",
     "husky": "^9.1.7",
+    "knip": "^5.58.0",
     "prettier": "^3.5.3",
     "scaffdog": "^4.1.0",
     "turbo": "^2.5.3",
