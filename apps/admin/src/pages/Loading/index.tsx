@@ -3,5 +3,9 @@
 export default function Loading(
   // {}:LoadingProps
 ) {
-  return <div>{/* TODO */}</div>
+  return (
+    <div>
+      <p>Loading...</p>
+    </div>
+  )
 }

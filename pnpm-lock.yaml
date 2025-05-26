@@ -193,16 +193,9 @@ importers:
       '@hey-api/client-fetch':
         specifier: ^0.10.1
         version: 0.10.1(@hey-api/openapi-ts@0.67.6(typescript@5.8.3))
-    devDependencies:
-      '@hey-api/openapi-ts':
-        specifier: ^0.67.6
-        version: 0.67.6(typescript@5.8.3)
-
-  packages/api-clients:
-    dependencies:
-      '@hey-api/client-fetch':
-        specifier: ^0.10.1
-        version: 0.10.1(@hey-api/openapi-ts@0.67.6(typescript@5.8.3))
+      '@repo/profile-manager':
+        specifier: workspace:*
+        version: link:../profile-manager
     devDependencies:
       '@hey-api/openapi-ts':
         specifier: ^0.67.6
