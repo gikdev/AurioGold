@@ -15,9 +15,9 @@
     "./utils": "./src/utils/index.ts"
   },
   "scripts": {
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noemit"
   },
-  "devDependencies": {
+  "devdependencies": {
     "@types/node": "^22.15.3",
     "@types/react": "19.1.0",
     "@types/react-dom": "19.1.1",
