@@ -10,17 +10,23 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.0.1",
     "@master/styled.react": "^2.0.4",
     "@phosphor-icons/react": "^2.1.10",
     "@repo/shared": "workspace:*",
     "@tailwindcss/vite": "^4.1.7",
     "ag-grid-react": "^33.3.0",
+    "immer": "^10.1.1",
     "jotai": "^2.12.4",
     "nuqs": "^2.4.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-error-boundary": "^6.0.0",
+    "react-hook-form": "^7.56.4",
     "react-router": "^7.6.0",
-    "tailwindcss": "^4.1.7"
+    "react-toastify": "^11.0.5",
+    "tailwindcss": "^4.1.7",
+    "zod": "^3.25.28"
   },
   "devDependencies": {
     "@types/react": "^19.1.2",

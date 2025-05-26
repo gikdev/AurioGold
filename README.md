@@ -30,6 +30,11 @@
 - [ahooks](https://ahooks.js.org/): *High-quality & reliable React Hooks library*
 - [concurrently](https://www.npmjs.com/package/concurrently): *Run multiple commands concurrently*
 - [husky](https://typicode.github.io/husky/) *Ultra-fast modern native git hooks*
+- [Zod](https://zod.dev/): *TypeScript-first schema validation with static type inference*
+- [React Hook Form](https://react-hook-form.com/): *Performant, flexible and extensible forms with easy-to-use validation.*
+- [Immer](): *work with immutable state in a more convenient way*
+- [React Toastify](): *Good* toasting library
+- [React Error Boundary](): Error boundary component for React
 - To be continued...
 <!-- - [driver.js](https://driverjs.com): Visual tours -->
 <!-- - [Motion](https://motion.dev/): Animation library -->
