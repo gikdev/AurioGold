@@ -6,10 +6,11 @@
     "src"
   ],
   "exports": {
-    "./components": "./src/components/index.tsx",
+    "./components": "./src/components/index.ts",
     "./helpers": "./src/helpers/index.tsx",
     "./hooks": "./src/hooks/index.tsx",
     "./layouts": "./src/layouts/index.tsx",
+    "./atoms": "./src/atoms/index.ts",
     "./lib": "./src/lib/index.ts",
     "./lib/*": "./src/lib/*.ts",
     "./utils": "./src/utils/index.ts"
@@ -17,7 +18,7 @@
   "scripts": {
     "check-types": "tsc --noemit"
   },
-  "devdependencies": {
+  "devDependencies": {
     "@types/node": "^22.15.3",
     "@types/react": "19.1.0",
     "@types/react-dom": "19.1.1",
@@ -29,6 +30,7 @@
     "@phosphor-icons/react": "^2.1.10",
     "ag-grid-react": "^33.3.0",
     "ahooks": "^3.8.5",
+    "clsx": "^2.1.1",
     "immer": "^10.1.1",
     "jotai": "^2.12.4",
     "nuqs": "^2.4.3",
@@ -36,7 +38,10 @@
     "react-dom": "^19.1.0",
     "react-error-boundary": "^6.0.0",
     "react-hook-form": "^7.56.4",
+    "react-router": "^7.6.0",
     "react-toastify": "^11.0.5",
+    "tailwind-merge": "^3.3.0",
+    "tailwind-styled-components": "^2.2.0",
     "zod": "^3.25.28"
   }
 }
