@@ -1,5 +1,10 @@
 import clsx, { type ClassValue } from "clsx"
-import { type ComponentPropsWithoutRef, type ComponentRef, type ElementType, forwardRef } from "react"
+import {
+  type ComponentPropsWithoutRef,
+  type ComponentRef,
+  type ElementType,
+  forwardRef,
+} from "react"
 import { twMerge } from "tailwind-merge"
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs))
