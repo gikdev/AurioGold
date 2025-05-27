@@ -1,6 +1,6 @@
+import { notifManager, storageManager } from "@repo/shared/adapters"
 import { atom, useAtomValue, useSetAtom } from "jotai"
 import { connectionRefAtom, connectionStateAtom } from "./signalr"
-import { notifManager, storageManager } from "@repo/shared/adapters"
 
 const getIsAdminOnlin = (statusCode: number | 1 | 2 | 3) => statusCode === 2
 

@@ -1,4 +1,4 @@
-import { toast, type ToastOptions } from "react-toastify"
+import { type ToastOptions, toast } from "react-toastify"
 
 type NotifStatus = "success" | "error" | "warning" | "default" | "info"
 

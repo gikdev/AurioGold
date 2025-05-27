@@ -1,12 +1,17 @@
-import { Btn, Switch, ConnectionIndicator } from "@repo/shared/components"
-import { isSidebarOpenAtom } from "@repo/shared/atoms"
 import { ArrowsClockwiseIcon, ListIcon } from "@phosphor-icons/react"
-import { Link, useNavigate } from "react-router"
 import { currentProfile } from "@repo/profile-manager"
+import { storageManager } from "@repo/shared/adapters"
+import { isSidebarOpenAtom } from "@repo/shared/atoms"
+import { Btn, ConnectionIndicator, Switch } from "@repo/shared/components"
 import { styled } from "@repo/shared/helpers"
 import { useAtomValue, useSetAtom } from "jotai"
-import { storageManager } from "@repo/shared/adapters"
-import { connectionStateAtom, isAdminOnlineAtom, onlineUsersCountAtom, useToggleAdminConnectivity } from "#/atoms"
+import { Link, useNavigate } from "react-router"
+import {
+  connectionStateAtom,
+  isAdminOnlineAtom,
+  onlineUsersCountAtom,
+  useToggleAdminConnectivity,
+} from "#/atoms"
 
 const StyledNav = styled("nav", "flex items-center justify-between border-b border-slate-6 p-4")
 const StyledAdminChip = styled(Link, "flex flex-row-reverse gap-2 items-center justify-center")

@@ -1,16 +1,16 @@
-import { Nav } from "./Nav"
+import { apiRequest } from "@gikdev/react-datapi/src"
+import { CodeIcon, HouseLineIcon } from "@phosphor-icons/react"
+import { ErrorCardBoundary } from "@repo/shared/components"
+import { Base, type SidebarItem } from "@repo/shared/layouts"
+import { useAtomValue, useSetAtom } from "jotai"
+import { useEffect } from "react"
+import { Outlet } from "react-router"
 import { onlineUsersCountAtom } from "#/atoms"
 import { connectionRefAtom, connectionStateAtom } from "#/atoms/signalr"
-import { Base, type SidebarItem } from "@repo/shared/layouts"
-import OnlineUsersStatusBar from "#/layouts/OnlineUsersStatusBar"
-import { CodeIcon, HouseLineIcon } from "@phosphor-icons/react"
-import { useEffect } from "react"
-import { apiRequest } from "@gikdev/react-datapi/src"
-import { ErrorCardBoundary } from "@repo/shared/components"
 import { SignalRManager } from "#/atoms/signalr"
-import { useAtomValue, useSetAtom } from "jotai"
+import OnlineUsersStatusBar from "#/layouts/OnlineUsersStatusBar"
 import pages from "#/pages/pages"
-import { Outlet } from "react-router"
+import { Nav } from "./Nav"
 
 const getTime = () =>
   apiRequest({
@@ -54,7 +54,7 @@ export function BaseWrapper() {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    if (connectionState !== "connected" || !connection) return 
+    if (connectionState !== "connected" || !connection) return
     connection.on("OnlineCount", c => setOnlineUsersCount(c))
     return () => connection.off("OnlineCount")
   }, [connectionState])

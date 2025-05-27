@@ -43,10 +43,7 @@ export const Switch = forwardRef(function Switch(
     className,
   )
 
-  const StyledThumb = styled(
-    RadixSwitch.Thumb,
-    "size-5 bg-white inline-block rounded shadow-lg",
-  )
+  const StyledThumb = styled(RadixSwitch.Thumb, "size-5 bg-white inline-block rounded shadow-lg")
 
   return (
     <StyledSwithRoot ref={ref} checked={checked} {...rest}>

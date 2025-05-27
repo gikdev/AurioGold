@@ -1,7 +1,7 @@
-import { atom, useAtom, useSetAtom } from "jotai"
 import * as signalR from "@microsoft/signalr"
-import Cookies from "js-cookie"
 import { notifManager } from "@repo/shared/adapters"
+import { atom, useAtom, useSetAtom } from "jotai"
+import Cookies from "js-cookie"
 import { useEffect } from "react"
 
 // Usage example is at the end of the file

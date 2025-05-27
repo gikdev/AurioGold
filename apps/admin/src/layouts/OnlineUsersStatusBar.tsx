@@ -1,7 +1,7 @@
-import { connectionRefAtom, connectionStateAtom, showOnlineUsersInStatusbarAtom } from "#/atoms"
 import { notifManager } from "@repo/shared/adapters"
 import { useAtomValue } from "jotai"
 import { useEffect, useState } from "react"
+import { connectionRefAtom, connectionStateAtom, showOnlineUsersInStatusbarAtom } from "#/atoms"
 
 export default function OnlineUsersStatusBar() {
   const showOnlineUsersInStatusbar = useAtomValue(showOnlineUsersInStatusbarAtom)
