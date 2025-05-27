@@ -1,5 +1,5 @@
 import { type ReactNode, useState } from "react"
-import { styled } from "#/helpers"
+import { styled } from "#shared/helpers"
 
 interface VersionTagProps {
   children: ReactNode
@@ -12,7 +12,7 @@ export function VersionTag({ children }: VersionTagProps) {
     "button",
     `
       fixed bottom-5 font-[monospace] opacity-50 cursor-pointer
-      bg-bluedark-3 text-bluedark-11 px-2 py-1
+      bg-blue-3 text-blue-11 px-2 py-1
       hover:opacity-100 active:scale-90 hover:text-lg transition-all 
       ${isOn ? "end-5" : "start-5"}
     `,

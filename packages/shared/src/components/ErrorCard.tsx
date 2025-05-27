@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 import { ErrorBoundary } from "react-error-boundary"
-import { Heading, Hr } from "#/components"
+import { Heading, Hr } from "#shared/components"
 import { styled } from "../helpers"
 
 const StyledContainer = styled(

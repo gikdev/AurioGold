@@ -1,6 +1,6 @@
 import type { ElementType, HTMLAttributes, ReactNode } from "react"
-import { styled } from "#/helpers"
-import { Heading } from "../components"
+import { Heading } from "#shared/components"
+import { styled } from "#shared/helpers"
 
 interface TitledCardProps extends HTMLAttributes<HTMLElement> {
   title?: string

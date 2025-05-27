@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactNode } from "react"
-import { cn } from "#/helpers"
+import { cn } from "#shared/helpers"
 
 // text-lg text-xl text-2xl text-3xl text-4xl text-5xl text-6xl text-7xl text-8xl text-9xl
 // md:text-lg md:text-xl md:text-2xl md:text-3xl md:text-4xl md:text-5xl md:text-6xl md:text-7xl md:text-8xl md:text-9xl

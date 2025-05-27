@@ -1,5 +1,5 @@
-import { ErrorCardBoundary, Heading, Hr } from "#/components"
-import { cn } from "../helpers"
+import { ErrorCardBoundary, Heading, Hr } from "#shared/components"
+import { styled } from "#shared/helpers"
 
 interface HeadingLineProps {
   title: string
@@ -8,7 +8,7 @@ interface HeadingLineProps {
 }
 
 export function HeadingLine({ title, className = "", children = null }: HeadingLineProps) {
-  const sectionClasses = cn("px-4 py-8 md:p-8", className)
+  const StyledSection = styled("section", "px-4 py-8 md:p-8", className)
 
   return (
     <>
@@ -16,9 +16,9 @@ export function HeadingLine({ title, className = "", children = null }: HeadingL
         {title}
       </Heading>
       <Hr />
-      <section className={sectionClasses}>
+      <StyledSection>
         <ErrorCardBoundary>{children}</ErrorCardBoundary>
-      </section>
+      </StyledSection>
     </>
   )
 }

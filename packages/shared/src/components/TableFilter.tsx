@@ -1,6 +1,6 @@
 import { type ComponentProps, useEffect, useRef } from "react"
 import DatePicker from "react-multi-date-picker"
-import { styled } from "#/helpers"
+import { styled } from "#shared/helpers"
 
 const StyledDatePicker = styled(
   DatePicker,

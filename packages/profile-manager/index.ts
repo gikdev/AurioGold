@@ -7,5 +7,8 @@ interface Profile {
   logoName: string
 }
 
-export const currentProfile: Profile = config.profiles[config.currentProfileKey]
+type ProfileKey = keyof typeof config.profiles
+
+export const currentProfile: Profile = config.profiles[config.currentProfileKey as ProfileKey]
+
 export { config }

@@ -8,7 +8,10 @@ import "./styles/index.css"
 
 const Home = lazy(() => import("./pages/Home"))
 
-createRoot(document.getElementById("root")!).render(
+const container = document.querySelector("#root")
+if (!container) throw new Error("No `#root` found!")
+const root = createRoot(container)
+root.render(
   <StrictMode>
     <NuqsAdapter>
       <BrowserRouter>

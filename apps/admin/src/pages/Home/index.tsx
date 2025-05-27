@@ -1,20 +1,12 @@
-import { styled } from "@repo/shared/helpers"
+import { currentThemeAtom } from "@repo/shared/atoms"
+import { Btn } from "@repo/shared/components"
+import { useAtomValue } from "jotai"
 
-// export interface HomeProps {}
+export default function Home() {
+  const currentTheme = useAtomValue(currentThemeAtom)
 
-const Btn = styled(
-  "button",
-  `
-  bg-blue-9 hover:bg-blue-4 cursor-pointer
-  hover:bg-blue-10 py-2 px-5 rounded-lg
-`,
-)
-
-export default function Home(
-  // {}:HomeProps
-) {
   return (
-    <div>
+    <div data-theme={currentTheme} className="min-h-dvh bg-slate-1">
       <Btn type="button">سلام به همگی!</Btn>
     </div>
   )

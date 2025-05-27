@@ -1,6 +1,6 @@
 import type { IconProps } from "@phosphor-icons/react"
 import { SpinnerGapIcon } from "@phosphor-icons/react/SpinnerGap"
-import { styled } from "#/helpers"
+import { styled } from "#shared/helpers"
 
 interface LoadingSpinnerProps extends IconProps {
   className?: string

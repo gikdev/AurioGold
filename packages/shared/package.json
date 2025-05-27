@@ -10,6 +10,7 @@
     "./helpers": "./src/helpers/index.tsx",
     "./hooks": "./src/hooks/index.tsx",
     "./layouts": "./src/layouts/index.tsx",
+    "./adapters": "./src/adapters/index.ts",
     "./atoms": "./src/atoms/index.ts",
     "./constants": "./src/constants/index.ts",
     "./lib": "./src/lib/index.ts",
@@ -20,6 +21,7 @@
     "check-types": "tsc --noemit"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^22.15.3",
     "@types/react": "19.1.0",
     "@types/react-dom": "19.1.1",
@@ -28,6 +30,7 @@
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
     "@master/styled.react": "^2.0.4",
+    "@microsoft/signalr": "^8.0.7",
     "@phosphor-icons/react": "^2.1.10",
     "ag-grid-community": "^33.3.0",
     "ag-grid-react": "^33.3.0",
@@ -35,6 +38,8 @@
     "clsx": "^2.1.1",
     "immer": "^10.1.1",
     "jotai": "^2.12.4",
+    "js-cookie": "^3.0.5",
+    "motion": "^12.15.0",
     "nuqs": "^2.4.3",
     "radix-ui": "^1.4.2",
     "react": "^19.1.0",

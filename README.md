@@ -35,8 +35,8 @@
 - [Immer](): *work with immutable state in a more convenient way*
 - [React Toastify](): *Good* toasting library
 - [React Error Boundary](): Error boundary component for React
+- [Motion](https://motion.dev/): Animation library
 - To be continued...
 <!-- - [driver.js](https://driverjs.com): Visual tours -->
-<!-- - [Motion](https://motion.dev/): Animation library -->
 <!-- - [TypeDoc](https://typedoc.org/): Docs based on code comments -->
 <!-- - [typedoc-material-theme](https://github.com/dmnsgn/typedoc-material-theme): Beautiful theme for TypeDoc -->

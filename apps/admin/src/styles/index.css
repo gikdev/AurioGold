@@ -1,3 +1,9 @@
 @import "tailwindcss";
-@import "./theme/both.css";
 @import "./theme/dark.css";
+@import "./theme/both.css";
+@import "./fonts/Vazirmatn/font-face.css";
+@source "../../../../packages/shared";
+
+@theme {
+  --font-main: "Vazirmatn", sans-serif;
+}

@@ -1,4 +1,5 @@
 const pages = {
+  base: "/",
   home: "/",
 } as const
 

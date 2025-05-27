@@ -37,7 +37,7 @@ export const Switch = forwardRef(function Switch(
 
   const StyledSwithRoot = styled(
     RadixSwitch.Root,
-    "w-12 h-7 p-1 flex items-center rounded transition-all",
+    "w-12 h-7 p-1 flex items-center rounded transition-all cursor-pointer",
     checked ? checkedClassName : unCheckedClassName,
     checked ? "justify-end" : "justify-start",
     className,
@@ -45,7 +45,7 @@ export const Switch = forwardRef(function Switch(
 
   const StyledThumb = styled(
     RadixSwitch.Thumb,
-    "size-5 bg-slatedark-12 inline-block rounded shadow-lg",
+    "size-5 bg-white inline-block rounded shadow-lg",
   )
 
   return (

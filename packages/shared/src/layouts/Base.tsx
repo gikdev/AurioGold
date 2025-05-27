@@ -5,10 +5,10 @@ import { useAtom } from "jotai"
 import { type ReactNode, useEffect } from "react"
 import type { JSX } from "react"
 import { Link, useLocation } from "react-router"
-import { isSidebarOpenAtom } from "#/atoms"
-import { ErrorCardBoundary } from "#/components"
-import { Btn } from "#/components"
-import { styled } from "#/helpers"
+import { isSidebarOpenAtom } from "#shared/atoms"
+import { ErrorCardBoundary } from "#shared/components"
+import { Btn } from "#shared/components"
+import { styled } from "#shared/helpers"
 
 interface BaseProps {
   children: ReactNode

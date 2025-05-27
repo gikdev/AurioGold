@@ -1,4 +1,4 @@
-import { styled } from "#/helpers"
+import { styled } from "#shared/helpers"
 
 export const TextArea = styled(
   "textarea",

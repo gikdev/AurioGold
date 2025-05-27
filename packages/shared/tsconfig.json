@@ -16,7 +16,7 @@
     "target": "ES2022",
     "baseUrl": "./",
     "paths": {
-      "#/*": ["src/*"]
+      "#shared/*": ["src/*"]
     },
     "jsx": "react-jsx"
   },

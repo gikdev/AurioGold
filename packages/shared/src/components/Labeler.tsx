@@ -23,7 +23,7 @@ export function Labeler({
         <span className="text-xs">{labelSecondary}</span>
       </span>
       {children}
-      {errorMsg && <span className="text-xs text-reddark-10">{errorMsg}</span>}
+      {errorMsg && <span className="text-xs text-red-10">{errorMsg}</span>}
     </label>
   )
 }

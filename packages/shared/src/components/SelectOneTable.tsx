@@ -1,5 +1,5 @@
 import { useRef } from "react"
-import { TableFa, type TableFaProps } from "#/components"
+import { TableFa, type TableFaProps } from "#shared/components"
 
 interface SelectOneTableProps<
   // ---

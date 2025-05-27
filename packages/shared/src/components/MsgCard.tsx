@@ -1,5 +1,5 @@
-import { Heading, Hr } from "#/components"
-import { styled } from "#/helpers"
+import { Heading, Hr } from "#shared/components"
+import { styled } from "#shared/helpers"
 
 interface MsgCardProps {
   title: string

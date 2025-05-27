@@ -1,0 +1,4 @@
+{
+  "files": [],
+  "references": [{ "path": "apps/client" }, { "path": "apps/admin" }, { "path": "packages/shared" }]
+}

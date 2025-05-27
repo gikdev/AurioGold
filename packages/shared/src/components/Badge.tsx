@@ -1,5 +1,5 @@
 import type { ElementType, ReactNode } from "react"
-import { styled } from "../helpers"
+import { styled } from "#shared/helpers"
 
 const styles = {
   base: "inline-block rounded px-2 py-1 text-xs",
