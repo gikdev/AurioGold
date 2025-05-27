@@ -3,12 +3,12 @@ import { styled } from "../helpers"
 
 const styles = {
   base: "inline-block rounded px-2 py-1 text-xs",
-  success: "bg-jadedark-3 text-jadedark-11",
-  error: "bg-reddark-3 text-reddark-11",
-  warning: "bg-yellowdark-3 text-yellowdark-11",
-  info: "bg-bluedark-3 text-bluedark-11",
-  primary: "bg-amberdark-3 text-amberdark-11",
-  neutral: "bg-slatedark-3 text-slatedark-11",
+  success: "bg-jade-3 text-jade-11",
+  error: "bg-red-3 text-red-11",
+  warning: "bg-yellow-3 text-yellow-11",
+  info: "bg-blue-3 text-blue-11",
+  primary: "bg-amber-3 text-amber-11",
+  neutral: "bg-slate-3 text-slate-11",
 }
 
 interface BadgeProps {

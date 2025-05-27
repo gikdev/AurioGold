@@ -9,20 +9,20 @@ const styles = {
     disabled:active:scale-100 disabled:cursor-not-allowed
   `,
   filled: {
-    success: "bg-jadedark-10 text-jadedark-1",
-    error: "bg-reddark-10 text-reddark-1",
-    warning: "bg-yellowdark-10 text-yellowdark-1",
-    info: "bg-bluedark-10 text-bluedark-1",
-    primary: "bg-amberdark-9 text-amberdark-1",
-    neutral: "bg-slatedark-12 text-slatedark-1",
+    success: "bg-jade-10 text-jade-1",
+    error: "bg-red-10 text-red-1",
+    warning: "bg-yellow-10 text-yellow-1",
+    info: "bg-blue-10 text-blue-1",
+    primary: "bg-amber-9 text-amber-1",
+    neutral: "bg-slate-12 text-slate-1",
   },
   outline: {
-    success: "bg-jadedark-3 text-jadedark-11",
-    error: "bg-reddark-3 text-reddark-11",
-    warning: "bg-yellowdark-3 text-yellowdark-11",
-    info: "bg-bluedark-3 text-bluedark-11",
-    primary: "bg-amberdark-3 text-amberdark-11",
-    neutral: "bg-slatedark-3 text-slatedark-11",
+    success: "bg-jade-3 text-jade-11",
+    error: "bg-red-3 text-red-11",
+    warning: "bg-yellow-3 text-yellow-11",
+    info: "bg-blue-3 text-blue-11",
+    primary: "bg-amber-3 text-amber-11",
+    neutral: "bg-slate-3 text-slate-11",
   },
 }
 

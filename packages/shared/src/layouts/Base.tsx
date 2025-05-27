@@ -54,7 +54,7 @@ function Sidebar({ items }: SidebarProps): JSX.Element {
 
   const StyledAside = styled(
     "aside",
-    "overflow-y-auto border-l border-slatedark-6 bg-slatedark-1 z-10",
+    "overflow-y-auto border-l border-slate-6 bg-slate-1 z-10",
     "flex flex-col px-4 py-8 gap-2",
     "inset-0 w-full max-w-full",
     "md:relative md:max-w-max md:flex",
@@ -99,9 +99,9 @@ function SidebarItem({ text = "---", icon: Icon = HouseIcon, url }: SidebarItemP
 
   const StyledSidebarItem = styled(
     Link,
-    "text-slatedark-10 min-w-52 flex gap-2 py-3 px-4 rounded-lg items-center",
-    "hover:bg-slatedark-3 hover:text-slatedark-12 active:scale-95 transition-all",
-    { "bg-amberdark-9 text-slatedark-1 hover:text-slatedark-12 hover:bg-amber-8": isActive },
+    "text-slate-10 min-w-52 flex gap-2 py-3 px-4 rounded-lg items-center",
+    "hover:bg-slate-3 hover:text-slate-12 active:scale-95 transition-all",
+    { "bg-amber-9 text-slate-1 hover:text-slate-12 hover:bg-amber-8": isActive },
   )
 
   return (

@@ -39,3 +39,4 @@ yarn-error.log*
 
 # Editors
 .idea/
+.vscode/settings.json
