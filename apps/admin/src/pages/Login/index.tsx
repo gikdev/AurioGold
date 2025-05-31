@@ -10,6 +10,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
 import routes from "../routes"
+import datApiConfig from "#/shared/datapi-config"
 
 const StyledForm = styled(
   "form",
@@ -27,8 +28,14 @@ export default function Login() {
 
   const onSubmit = async (data: LoginModel) => {
     setLoading(true)
+
     const res = await loginAdmin(data)
-    if (res.success) return navigate(routes.login)
+
+    if (res.success) {
+      navigate(routes.home)
+      return
+    }
+
     setLoading(false)
   }
 
@@ -51,11 +58,20 @@ export default function Login() {
         <Hr />
 
         <Labeler labelPrimary="نام کاربری:" errorMsg={errors.un?.message}>
-          <Input type="text" {...register("un", { required: "نام کاربری الزامی هست" })} />
+          <Input
+            dir="ltr"
+            type="text"
+            autoFocus
+            {...register("un", { required: "نام کاربری الزامی هست" })}
+          />
         </Labeler>
 
         <Labeler labelPrimary="رمز:" errorMsg={errors.pw?.message}>
-          <Input type="password" {...register("pw", { required: "رمز ورود الزامی هست" })} />
+          <Input
+            dir="ltr"
+            type="password"
+            {...register("pw", { required: "رمز ورود الزامی هست" })}
+          />
         </Labeler>
 
         {isLoading ? (
@@ -82,10 +98,12 @@ function loginAdmin(data: LoginModel) {
 
   return apiRequest<MasterLoginModel>({
     options: {
+      baseUrl: datApiConfig.baseUrl,
       url: "/Master/loginMaster",
       method: "POST",
       body: dataToSend,
-      onError: msg => notifManager.notify(msg || DEFAULT_ERROR_MESSAGES.GENERAL, "toast"),
+      onError: msg =>
+        notifManager.notify(msg || DEFAULT_ERROR_MESSAGES.GENERAL, "toast", { status: "error" }),
       onSuccess(data) {
         notifManager.notify("با موفقیت وارد شدید!", "toast", { status: "success" })
         for (const key in data) {

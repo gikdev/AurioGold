@@ -3,10 +3,12 @@ import { StrictMode, Suspense, lazy } from "react"
 import { createRoot } from "react-dom/client"
 import { BrowserRouter, Route, Routes } from "react-router"
 import { BaseWrapper } from "./layouts/BaseWrapper"
+import { Bounce, ToastContainer } from "react-toastify"
+import Protected from "./layouts/Protected"
+import RootLayout from "./layouts/RootLayout"
 import Loading from "./pages/Loading"
 import routes from "./pages/routes"
 import "./styles/index.css"
-import RootLayout from "./layouts/RootLayout"
 
 const Home = lazy(() => import("./pages/Home"))
 const Login = lazy(() => import("./pages/Login"))
@@ -16,14 +18,30 @@ if (!container) throw new Error("No `#root` found!")
 const root = createRoot(container)
 root.render(
   <StrictMode>
+    <ToastContainer
+      autoClose={5000}
+      closeOnClick={false}
+      draggable
+      hideProgressBar={false}
+      newestOnTop
+      pauseOnFocusLoss
+      pauseOnHover
+      position="bottom-right"
+      rtl
+      theme="dark"
+      toastStyle={{ fontFamily: "Vazirmatn" }}
+      transition={Bounce}
+    />
     <BrowserRouter>
       <NuqsAdapter>
         <Suspense fallback={<Loading />}>
           <Routes>
             <Route path={routes.base} element={<RootLayout />}>
               <Route path={routes.login} element={<Login />} />
-              <Route element={<BaseWrapper />}>
-                <Route index element={<Home />} />
+              <Route element={<Protected />}>
+                <Route element={<BaseWrapper />}>
+                  <Route index element={<Home />} />
+                </Route>
               </Route>
             </Route>
             <Route path="*"> ۴۰۴ پیدا نشد </Route>

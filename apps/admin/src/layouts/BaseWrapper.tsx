@@ -1,4 +1,4 @@
-import { apiRequest } from "@gikdev/react-datapi/src"
+import { apiRequest, DatapiConfigProvider } from "@gikdev/react-datapi/src"
 import { CodeIcon, HouseLineIcon } from "@phosphor-icons/react"
 import { ErrorCardBoundary } from "@repo/shared/components"
 import { Base, type SidebarItem } from "@repo/shared/layouts"
@@ -11,6 +11,7 @@ import { SignalRManager } from "#/atoms/signalr"
 import OnlineUsersStatusBar from "#/layouts/OnlineUsersStatusBar"
 import routes from "#/pages/routes"
 import { Nav } from "./Nav"
+import datApiConfig from "#/shared/datapi-config"
 
 const getTime = () =>
   apiRequest({
@@ -61,13 +62,15 @@ export function BaseWrapper() {
 
   return (
     <ErrorCardBoundary>
-      <SignalRManager />
-      <Base nav={<Nav />} sidebarItems={SIDEBAR_ITEMS}>
-        <div className="grow shrink">
-          <Outlet />
-        </div>
-        <OnlineUsersStatusBar />
-      </Base>
+      <DatapiConfigProvider config={datApiConfig}>
+        <SignalRManager />
+        <Base nav={<Nav />} sidebarItems={SIDEBAR_ITEMS}>
+          <div className="grow shrink">
+            <Outlet />
+          </div>
+          <OnlineUsersStatusBar />
+        </Base>
+      </DatapiConfigProvider>
     </ErrorCardBoundary>
   )
 }
