@@ -9,8 +9,8 @@ import { sha512 } from "js-sha512"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
-import routes from "../routes"
 import datApiConfig from "#/shared/datapi-config"
+import routes from "../routes"
 
 const StyledForm = styled(
   "form",

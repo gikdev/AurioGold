@@ -1,4 +1,4 @@
-import { apiRequest, DatapiConfigProvider } from "@gikdev/react-datapi/src"
+import { DatapiConfigProvider, apiRequest } from "@gikdev/react-datapi/src"
 import { CodeIcon, HouseLineIcon } from "@phosphor-icons/react"
 import { ErrorCardBoundary } from "@repo/shared/components"
 import { Base, type SidebarItem } from "@repo/shared/layouts"
@@ -10,8 +10,8 @@ import { connectionRefAtom, connectionStateAtom } from "#/atoms/signalr"
 import { SignalRManager } from "#/atoms/signalr"
 import OnlineUsersStatusBar from "#/layouts/OnlineUsersStatusBar"
 import routes from "#/pages/routes"
-import { Nav } from "./Nav"
 import datApiConfig from "#/shared/datapi-config"
+import { Nav } from "./Nav"
 
 const getTime = () =>
   apiRequest({

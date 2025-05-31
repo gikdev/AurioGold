@@ -1,5 +1,5 @@
-import { currentProfile } from "@repo/profile-manager"
 import type { GlobalConfigOptions } from "@gikdev/react-datapi/src"
+import { currentProfile } from "@repo/profile-manager"
 import { storageManager } from "@repo/shared/adapters"
 
 const datApiConfig: GlobalConfigOptions = {
