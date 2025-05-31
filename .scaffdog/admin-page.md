@@ -10,11 +10,8 @@ questions:
 # `{{ inputs.name | pascal }}/index.tsx`
 
 ```typescript
-// export interface {{ inputs.name | pascal }}Props {}
 
-export default function {{ inputs.name | pascal }}(
-  // {}:{{ inputs.name | pascal }}Props
- ) {
+export default function {{ inputs.name | pascal }}() {
   return <div>{/* TODO */}</div>
 }
 ```

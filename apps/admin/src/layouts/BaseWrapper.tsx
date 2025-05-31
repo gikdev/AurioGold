@@ -9,7 +9,7 @@ import { onlineUsersCountAtom } from "#/atoms"
 import { connectionRefAtom, connectionStateAtom } from "#/atoms/signalr"
 import { SignalRManager } from "#/atoms/signalr"
 import OnlineUsersStatusBar from "#/layouts/OnlineUsersStatusBar"
-import pages from "#/pages/pages"
+import routes from "#/pages/routes"
 import { Nav } from "./Nav"
 
 const getTime = () =>
@@ -21,7 +21,7 @@ const getTime = () =>
   })
 
 const SIDEBAR_ITEMS: SidebarItem[] = [
-  { id: 0, text: "خانه", icon: HouseLineIcon, url: pages.home },
+  { id: 0, text: "خانه", icon: HouseLineIcon, url: routes.home },
   // { id: 1, text: "ERROR!", icon: UserCircleIcon, url: "/profile" },
   // { id: 2, text: "ارسال پیامک", icon: ChatTextIcon, url: "/send-sms" },
   // { id: 3, text: "مدیریت کاربران", icon: UserCircleGearIcon, url: "/customers" },
