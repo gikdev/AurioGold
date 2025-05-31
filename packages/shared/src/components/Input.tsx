@@ -1,5 +1,5 @@
+import { type InputHTMLAttributes, forwardRef } from "react"
 import { styled } from "#shared/helpers"
-import { forwardRef, type InputHTMLAttributes } from "react"
 
 const StyledInput = styled(
   "input",
