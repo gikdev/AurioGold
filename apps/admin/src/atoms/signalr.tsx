@@ -1,20 +1,23 @@
 import * as signalR from "@microsoft/signalr"
-import { notifManager } from "@repo/shared/adapters"
+import { currentProfile } from "@repo/profile-manager"
+import { notifManager, storageManager } from "@repo/shared/adapters"
 import { atom, useAtom, useSetAtom } from "jotai"
 import Cookies from "js-cookie"
 import { useEffect } from "react"
 
 // Usage example is at the end of the file
 
-const getBaseUrl = () => {
-  throw new Error("getBaseUrl not implemented")
+function getBaseUrl() {
+  return currentProfile.apiBaseUrl
 }
-// Wasn't sure about the name & the implementation
-const isLoggedInOrHasToken = () => {
-  throw new Error("isLoggedIn not implemented")
+
+function isLoggedInOrHasToken() {
+  return !!storageManager.get("ttkk", "sessionStorage")
 }
-const logOut = () => {
-  throw new Error("logOut not implemented")
+
+function logOut() {
+  storageManager.remove("ttkk", "sessionStorage")
+  location.href = "/login"
 }
 
 export type ConnectionState = "unknown" | "disconnected" | "connected" | "loading"

@@ -6,4 +6,16 @@
 
 @theme {
   --font-main: "Vazirmatn", sans-serif;
+
+  --animate-marquee-slow: marquee 10s linear infinite;
+  --animate-marquee-fast: marquee 5s linear infinite;
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(20%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
 }

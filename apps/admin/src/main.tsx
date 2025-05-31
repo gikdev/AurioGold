@@ -12,6 +12,7 @@ import "./styles/index.css"
 
 const Home = lazy(() => import("./pages/Home"))
 const Login = lazy(() => import("./pages/Login"))
+const NotFound = lazy(() => import("./pages/NotFound"))
 
 const container = document.querySelector("#root")
 if (!container) throw new Error("No `#root` found!")
@@ -36,15 +37,15 @@ root.render(
       <NuqsAdapter>
         <Suspense fallback={<Loading />}>
           <Routes>
-            <Route path={routes.base} element={<RootLayout />}>
+            <Route element={<RootLayout />}>
               <Route path={routes.login} element={<Login />} />
               <Route element={<Protected />}>
                 <Route element={<BaseWrapper />}>
                   <Route index element={<Home />} />
                 </Route>
               </Route>
+              <Route path="*" element={<NotFound />} />
             </Route>
-            <Route path="*"> ۴۰۴ پیدا نشد </Route>
           </Routes>
         </Suspense>
       </NuqsAdapter>

@@ -19,6 +19,7 @@ const getTime = () =>
       url: "/TyStocks/GetTime",
       onError: msg => console.log(msg),
     },
+    config: datApiConfig,
   })
 
 const SIDEBAR_ITEMS: SidebarItem[] = [
@@ -56,7 +57,9 @@ export function BaseWrapper() {
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (connectionState !== "connected" || !connection) return
+
     connection.on("OnlineCount", c => setOnlineUsersCount(c))
+
     return () => connection.off("OnlineCount")
   }, [connectionState])
 

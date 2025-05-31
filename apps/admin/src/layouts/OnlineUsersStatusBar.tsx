@@ -1,12 +1,18 @@
 import { notifManager } from "@repo/shared/adapters"
-import { useAtomValue } from "jotai"
+import { useAtomValue, useSetAtom } from "jotai"
 import { useEffect, useState } from "react"
-import { connectionRefAtom, connectionStateAtom, showOnlineUsersInStatusbarAtom } from "#/atoms"
+import {
+  connectionRefAtom,
+  connectionStateAtom,
+  onlineUsersCountAtom,
+  showOnlineUsersInStatusbarAtom,
+} from "#/atoms"
 
 export default function OnlineUsersStatusBar() {
   const showOnlineUsersInStatusbar = useAtomValue(showOnlineUsersInStatusbarAtom)
   const connection = useAtomValue(connectionRefAtom)
   const connectionState = useAtomValue(connectionStateAtom)
+  const setOnlineUsersCount = useSetAtom(onlineUsersCountAtom)
   const [onlineUsers, setOnlineUsers] = useState<Array<{ id: number; displayName: string }>>([])
 
   const getOnlineUsers = () => {
@@ -23,8 +29,9 @@ export default function OnlineUsersStatusBar() {
     if (connectionState === "connected" && connection) {
       getOnlineUsers()
 
-      const onOnlineCount = (_count: number) => {
+      const onOnlineCount = (count: number) => {
         getOnlineUsers()
+        setOnlineUsersCount(count || "؟")
       }
 
       connection.on("OnlineCount", onOnlineCount)
@@ -32,14 +39,14 @@ export default function OnlineUsersStatusBar() {
       return () => connection.off("OnlineCount")
     }
 
-    return undefined
+    return
   }, [connectionState])
 
   if (!showOnlineUsersInStatusbar) return null
 
   return (
     <div className="w-full bg-slate-2 py-2 flex border-t border-slate-6">
-      <p className="border-e border-slate-6 px-2 flex items-center gap-2">
+      <div className="border-e border-slate-6 px-2 flex items-center gap-2">
         <div className="flex items-center">
           <i
             className="
@@ -49,13 +56,13 @@ export default function OnlineUsersStatusBar() {
           />
         </div>
         <span className="font-bold">افراد آنلاین</span>
-      </p>
+      </div>
       <div className="overflow-hidden whitespace-nowrap grow shrink text-slate-11">
         <p className="w-full animate-marquee-fast md:animate-marquee-slow flex items-center gap-3">
           {onlineUsers.map((u, i) => (
             <span key={u.id} className="inline-block">
               {u.displayName}
-              {onlineUsers.length === i + 1 ? "" : ","}
+              {onlineUsers.length === i + 1 ? "" : "،"}
             </span>
           ))}
         </p>
