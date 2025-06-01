@@ -16,12 +16,13 @@ function getIsLoggedIn() {
 }
 
 interface BaseProps {
-  children: ReactNode
   nav: ReactNode
+  children: ReactNode
   sidebarItems: SidebarItem[]
+  footer: ReactNode
 }
 
-export function Base({ children, nav, sidebarItems }: BaseProps) {
+export function Base({ children, nav, footer, sidebarItems }: BaseProps) {
   useEffect(() => {
     if (!getIsLoggedIn()) location.href = "/login"
   }, [])
@@ -33,13 +34,14 @@ export function Base({ children, nav, sidebarItems }: BaseProps) {
 
   return (
     <>
-      <header>{nav}</header>
+      {nav}
       <main className="flex flex-1 gap-2 rounded-md overflow-hidden">
         <Sidebar items={sidebarItems} />
         <section className="flex-1 flex bg-slate-1 flex-col rounded-md overflow-y-auto">
           <ErrorCardBoundary>{children}</ErrorCardBoundary>
         </section>
       </main>
+      {footer}
     </>
   )
 }
@@ -58,7 +60,7 @@ function Sidebar({ items }: SidebarProps): JSX.Element {
   const StyledAside = styled(
     "aside",
     "overflow-y-auto bg-slate-1 rounded-md",
-    "flex flex-col p-2 gap-2 w-64",
+    "flex flex-col p-2 ps-0 gap-2 w-64",
     "[scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.2)_transparent]",
     "inset-0 w-full max-w-full",
     "md:relative md:max-w-max md:flex",
@@ -111,11 +113,11 @@ function SidebarItem({ text = "---", icon: Icon = HouseIcon, url }: SidebarItemP
     "hover:bg-slate-3 hover:text-slate-12 active:scale-95",
     isActive
       ? `
-      font-bold text-brand-10 border-s-2
-      rounded-tr-sm rounded-br-sm border-brand-10
-      hover:bg-brand-3 hover:text-brand-11
-    `
-      : "",
+        font-bold text-brand-10 border-s-2 ps-4
+        rounded-tr-none rounded-br-none border-brand-10
+        hover:bg-brand-3 hover:text-brand-11
+      `
+      : "ms-2",
   )
 
   return (

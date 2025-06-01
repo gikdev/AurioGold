@@ -12,6 +12,8 @@
     "noUncheckedIndexedAccess": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
+    "allowJs": false,
+    "checkJs": true,
     "strict": true,
     "target": "ES2022",
     "baseUrl": "./",

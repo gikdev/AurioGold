@@ -4,7 +4,7 @@ import { Heading, Hr } from "#shared/components"
 import { styled } from "../helpers"
 
 const StyledContainer = styled(
-  "div",
+  "span",
   "bg-red-2 border-2 border-red-6 p-4 flex flex-col gap-4 text-red-11 rounded-lg max-w-72 text-center",
 )
 
