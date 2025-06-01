@@ -6,10 +6,7 @@ import { Btn } from "@repo/shared/components"
 import { styled } from "@repo/shared/helpers"
 import { useAtomValue, useSetAtom } from "jotai"
 import { Link } from "react-router"
-import {
-  connectionStateAtom,
-  isAdminOnlineAtom,
-} from "#/atoms"
+import { connectionStateAtom, isAdminOnlineAtom } from "#/atoms"
 import routes from "#/pages/routes"
 
 const StyledAdminChip = styled(Link, "flex flex-row-reverse gap-2 items-center justify-center")

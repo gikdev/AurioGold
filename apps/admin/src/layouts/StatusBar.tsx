@@ -1,14 +1,3 @@
-import { notifManager } from "@repo/shared/adapters"
-import { useAtomValue, useSetAtom } from "jotai"
-import { useEffect, useState } from "react"
-import {
-  connectionRefAtom,
-  connectionStateAtom,
-  isAdminOnlineAtom,
-  onlineUsersCountAtom,
-  showOnlineUsersInStatusbarAtom,
-  useToggleAdminConnectivity,
-} from "#/atoms"
 import {
   ArrowClockwiseIcon,
   CircleNotchIcon,
@@ -18,8 +7,19 @@ import {
   StorefrontIcon,
   UsersFourIcon,
 } from "@phosphor-icons/react"
+import { notifManager } from "@repo/shared/adapters"
 import { styled } from "@repo/shared/helpers"
+import { useAtomValue, useSetAtom } from "jotai"
+import { useEffect, useState } from "react"
 import { Link } from "react-router"
+import {
+  connectionRefAtom,
+  connectionStateAtom,
+  isAdminOnlineAtom,
+  onlineUsersCountAtom,
+  showOnlineUsersInStatusbarAtom,
+  useToggleAdminConnectivity,
+} from "#/atoms"
 import routes from "#/pages/routes"
 
 export default function StatusBar() {
@@ -119,7 +119,10 @@ function OnlinePeopleCount() {
 }
 
 function ReloadStatusBtn() {
-  const StyledBtn = styled("button", "px-2 h-full hover:bg-slate-3 hover:text-slate-12 cursor-pointer")
+  const StyledBtn = styled(
+    "button",
+    "px-2 h-full hover:bg-slate-3 hover:text-slate-12 cursor-pointer",
+  )
 
   const handleClick = () => {
     location.reload()
