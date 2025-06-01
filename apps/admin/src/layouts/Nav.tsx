@@ -12,8 +12,8 @@ import {
   onlineUsersCountAtom,
   useToggleAdminConnectivity,
 } from "#/atoms"
+import routes from "#/pages/routes"
 
-const StyledNav = styled("nav", "flex items-center justify-between border-b border-slate-6 p-4")
 const StyledAdminChip = styled(Link, "flex flex-row-reverse gap-2 items-center justify-center")
 
 export function Nav() {
@@ -32,7 +32,7 @@ export function Nav() {
   })
 
   return (
-    <StyledNav>
+    <nav className="h-16 flex items-center justify-between p-2 rounded-md bg-slate-1">
       <Link className="hidden md:inline-block" to="/">
         <img src={currentProfile.logoName} alt="" className="max-h-16" />
       </Link>
@@ -41,7 +41,7 @@ export function Nav() {
       </Btn>
       <div className="flex flex-row-reverse gap-2 items-center justify-center">
         <abbr title="عکس و نام فروشگاه" className="no-underline">
-          <StyledAdminChip to="/profile">
+          <StyledAdminChip to={routes.profile}>
             <ProfileWrapper>
               <img
                 src={currentProfile.logoName}
@@ -85,6 +85,6 @@ export function Nav() {
           <ArrowsClockwiseIcon size={20} />
         </a>
       </div>
-    </StyledNav>
+    </nav>
   )
 }

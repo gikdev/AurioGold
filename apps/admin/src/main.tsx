@@ -13,6 +13,7 @@ import "./styles/index.css"
 const Home = lazy(() => import("./pages/Home"))
 const Login = lazy(() => import("./pages/Login"))
 const NotFound = lazy(() => import("./pages/NotFound"))
+const Profile = lazy(() => import("./pages/Profile"))
 
 const container = document.querySelector("#root")
 if (!container) throw new Error("No `#root` found!")
@@ -42,6 +43,7 @@ root.render(
               <Route element={<Protected />}>
                 <Route element={<BaseWrapper />}>
                   <Route index element={<Home />} />
+                  <Route path={routes.profile} element={<Profile />} />
                   <Route path="*" element={<NotFound />} />
                 </Route>
               </Route>

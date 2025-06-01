@@ -45,7 +45,7 @@ export default function OnlineUsersStatusBar() {
   if (!showOnlineUsersInStatusbar) return null
 
   return (
-    <div className="w-full bg-slate-2 py-2 flex border-t border-slate-6">
+    <div className="w-full bg-slate-1 py-2 flex rounded-md h-12">
       <div className="border-e border-slate-6 px-2 flex items-center gap-2">
         <div className="flex items-center">
           <i

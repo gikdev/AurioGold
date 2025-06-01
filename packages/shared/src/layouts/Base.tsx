@@ -5,10 +5,15 @@ import { useAtom } from "jotai"
 import { type ReactNode, useEffect } from "react"
 import type { JSX } from "react"
 import { Link, useLocation } from "react-router"
+import { storageManager } from "#shared/adapters"
 import { isSidebarOpenAtom } from "#shared/atoms"
 import { ErrorCardBoundary } from "#shared/components"
 import { Btn } from "#shared/components"
 import { styled } from "#shared/helpers"
+
+function getIsLoggedIn() {
+  return !!storageManager.get("ttkk", "sessionStorage")
+}
 
 interface BaseProps {
   children: ReactNode
@@ -18,9 +23,7 @@ interface BaseProps {
 
 export function Base({ children, nav, sidebarItems }: BaseProps) {
   useEffect(() => {
-    // TODO
-    const isLoggedIn = true
-    if (!isLoggedIn) location.href = "/login"
+    if (!getIsLoggedIn()) location.href = "/login"
   }, [])
 
   useEffect(() => {
@@ -31,9 +34,9 @@ export function Base({ children, nav, sidebarItems }: BaseProps) {
   return (
     <>
       <header>{nav}</header>
-      <main className="flex grow shrink">
+      <main className="flex flex-1 gap-2 rounded-md overflow-hidden">
         <Sidebar items={sidebarItems} />
-        <section className="grow shrink flex flex-col">
+        <section className="flex-1 flex bg-slate-1 flex-col rounded-md overflow-y-auto">
           <ErrorCardBoundary>{children}</ErrorCardBoundary>
         </section>
       </main>
@@ -41,9 +44,9 @@ export function Base({ children, nav, sidebarItems }: BaseProps) {
   )
 }
 
-// ─────────────────────────────────────────────────────────────
-// Sidebar and SidebarItem
-// ─────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────── //
+// Sidebar                                     //
+// ─────────────────────────────────────────── //
 
 interface SidebarProps {
   items: SidebarItem[]
@@ -54,8 +57,9 @@ function Sidebar({ items }: SidebarProps): JSX.Element {
 
   const StyledAside = styled(
     "aside",
-    "overflow-y-auto border-l border-slate-6 bg-slate-1 z-10",
-    "flex flex-col px-4 py-8 gap-2",
+    "overflow-y-auto bg-slate-1 rounded-md",
+    "flex flex-col p-2 gap-2 w-64",
+    "[scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.2)_transparent]",
     "inset-0 w-full max-w-full",
     "md:relative md:max-w-max md:flex",
     {
@@ -84,6 +88,10 @@ function Sidebar({ items }: SidebarProps): JSX.Element {
   )
 }
 
+// ─────────────────────────────────────────── //
+// SidebarItem                                 //
+// ─────────────────────────────────────────── //
+
 export interface SidebarItem {
   id: string | number
   text: string
@@ -99,9 +107,15 @@ function SidebarItem({ text = "---", icon: Icon = HouseIcon, url }: SidebarItemP
 
   const StyledSidebarItem = styled(
     Link,
-    "text-slate-10 min-w-52 flex gap-2 py-3 px-4 rounded-lg items-center",
-    "hover:bg-slate-3 hover:text-slate-12 active:scale-95 transition-all",
-    { "bg-amber-9 text-slate-1 hover:text-slate-12 hover:bg-amber-8": isActive },
+    "text-slate-10 min-w-52 flex gap-2 p-2 rounded-sm items-center relative",
+    "hover:bg-slate-3 hover:text-slate-12 active:scale-95",
+    isActive
+      ? `
+      font-bold text-brand-10 border-s-2
+      rounded-tr-sm rounded-br-sm border-brand-10
+      hover:bg-brand-3 hover:text-brand-11
+    `
+      : "",
   )
 
   return (

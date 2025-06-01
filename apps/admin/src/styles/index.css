@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "./theme/dark.css";
 @import "./theme/both.css";
+@import "./theme/brand-gold.css";
 @import "./fonts/Vazirmatn/font-face.css";
 @source "../../../../packages/shared";
 

@@ -40,7 +40,7 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-dvh flex justify-center items-center px-4 py-8">
+    <div className="min-h-dvh flex justify-center items-center px-4 py-8 bg-slate-1 -m-2">
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <div className="flex items-center justify-between">
           <Heading as="h2" size={2}>
