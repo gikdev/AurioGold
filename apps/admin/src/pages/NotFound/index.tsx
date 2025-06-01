@@ -1,7 +1,7 @@
 import { ArrowLeftIcon, CoinVerticalIcon, HouseIcon, NumberFourIcon } from "@phosphor-icons/react"
 import { Btn } from "@repo/shared/components"
-import routes from "../routes"
 import { Link } from "react-router"
+import routes from "../routes"
 
 export default function NotFound() {
   return (
