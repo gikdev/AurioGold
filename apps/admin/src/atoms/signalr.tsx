@@ -1,8 +1,7 @@
 import * as signalR from "@microsoft/signalr"
 import { currentProfile } from "@repo/profile-manager"
 import { notifManager, storageManager } from "@repo/shared/adapters"
-import { atom, useAtom, useSetAtom } from "jotai"
-import Cookies from "js-cookie"
+import { atom, useAtomValue, useSetAtom } from "jotai"
 import { useEffect } from "react"
 
 // Usage example is at the end of the file
@@ -45,7 +44,7 @@ export const startSignalRAtom = atom(null, async (_, set) => {
     set(connectionStateAtom, "loading")
     await connection.start()
     set(connectionStateAtom, "connected")
-    const token = Cookies.get("ttkk")
+    const token = storageManager.get("ttkk", "sessionStorage")
     if (token) await connection.invoke("InitializeConnection", token)
   } catch (err) {
     set(connectionStateAtom, "disconnected")
@@ -64,7 +63,7 @@ export const stopSignalRAtom = atom(null, async get => {
 })
 
 export function SignalRManager() {
-  const connectionState = useAtom(connectionStateAtom)[0]
+  const connectionState = useAtomValue(connectionStateAtom)
   const startConnection = useSetAtom(startSignalRAtom)
   const stopConnection = useSetAtom(stopSignalRAtom)
 
@@ -77,6 +76,7 @@ export function SignalRManager() {
     const interval = setInterval(() => {
       if (connectionState === "disconnected") startConnection()
     }, 5000)
+
     return () => clearInterval(interval)
   }, [connectionState, startConnection])
 

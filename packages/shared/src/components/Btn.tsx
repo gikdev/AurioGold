@@ -31,6 +31,8 @@ interface BtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   as?: ElementType
   themeType?: Exclude<keyof typeof styles, "base">
   theme?: keyof (typeof styles)["filled"]
+  href?: string
+  to?: string
 }
 
 export function Btn({

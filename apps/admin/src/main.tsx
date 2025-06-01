@@ -42,9 +42,9 @@ root.render(
               <Route element={<Protected />}>
                 <Route element={<BaseWrapper />}>
                   <Route index element={<Home />} />
+                  <Route path="*" element={<NotFound />} />
                 </Route>
               </Route>
-              <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
         </Suspense>

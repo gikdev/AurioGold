@@ -68,7 +68,7 @@ export function BaseWrapper() {
       <DatapiConfigProvider config={datApiConfig}>
         <SignalRManager />
         <Base nav={<Nav />} sidebarItems={SIDEBAR_ITEMS}>
-          <div className="grow shrink">
+          <div className="grow shrink flex flex-col">
             <Outlet />
           </div>
           <OnlineUsersStatusBar />
