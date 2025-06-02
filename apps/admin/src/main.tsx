@@ -13,6 +13,7 @@ import "./styles/index.css"
 const Home = lazy(() => import("./pages/Home"))
 const Login = lazy(() => import("./pages/Login"))
 const NotFound = lazy(() => import("./pages/NotFound"))
+const Test = lazy(() => import("./pages/Test"))
 const Profile = lazy(() => import("./pages/Profile"))
 
 const container = document.querySelector("#root")
@@ -44,6 +45,7 @@ root.render(
                 <Route element={<BaseWrapper />}>
                   <Route index element={<Home />} />
                   <Route path={routes.profile} element={<Profile />} />
+                  <Route path={routes.test} element={<Test />} />
                   <Route path="*" element={<NotFound />} />
                 </Route>
               </Route>

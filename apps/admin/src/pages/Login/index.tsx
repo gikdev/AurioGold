@@ -57,7 +57,7 @@ export default function Login() {
 
         <Hr />
 
-        <Labeler labelPrimary="نام کاربری:" errorMsg={errors.un?.message}>
+        <Labeler labelText="نام کاربری:" errorMsg={errors.un?.message}>
           <Input
             dir="ltr"
             type="text"
@@ -66,7 +66,7 @@ export default function Login() {
           />
         </Labeler>
 
-        <Labeler labelPrimary="رمز:" errorMsg={errors.pw?.message}>
+        <Labeler labelText="رمز:" errorMsg={errors.pw?.message}>
           <Input
             dir="ltr"
             type="password"

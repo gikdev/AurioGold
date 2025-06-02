@@ -1,6 +1,6 @@
 import { DEFAULT_ERROR_MESSAGES } from "./errors"
 import type { ApiOptions, ApiResponse, GlobalConfigOptions } from "./types"
-import { buildUrl, safeExecute } from "./utils"
+import { buildUrl, extractMessage, safeExecute } from "./utils"
 
 interface ApiRequestProps<TOutput, TRaw> {
   options: ApiOptions<TOutput, TRaw>
@@ -59,7 +59,8 @@ export async function apiRequest<TOutput = unknown, TRaw = unknown>({
     const raw = isJson ? await res.json() : await res.text()
 
     if (!res.ok) {
-      const msg = typeof raw === "string" ? raw : raw?.message?.[0]
+      const msg =
+        extractMessage(raw) || DEFAULT_ERROR_MESSAGES[res.status] || DEFAULT_ERROR_MESSAGES.GENERAL
       const errorMessage =
         msg || DEFAULT_ERROR_MESSAGES[res.status] || DEFAULT_ERROR_MESSAGES.GENERAL
       handleErrorMsg?.(errorMessage)

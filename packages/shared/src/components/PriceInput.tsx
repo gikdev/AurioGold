@@ -25,7 +25,9 @@ interface PriceInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
  * @param {string} str - Input string possibly containing Persian digits.
  * @returns {string} - String with Persian digits replaced by Latin digits.
  */
-function normalizePersianDigits(str: string): string {
+function normalizePersianDigits(str: unknown): string {
+  if (typeof str !== "string") return ""
+
   const persianDigits = "۰۱۲۳۴۵۶۷۸۹"
   return str.replace(/[۰-۹]/g, d => persianDigits.indexOf(d).toString())
 }

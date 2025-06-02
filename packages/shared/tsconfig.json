@@ -1,26 +1,30 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "moduleDetection": "force",
+    "lib": ["es2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+
+    "strict": true,
     "noEmit": true,
-    "esModuleInterop": true,
+    "checkJs": false,
+    "allowJs": false,
     "incremental": false,
     "isolatedModules": true,
-    "lib": ["es2022", "DOM", "DOM.Iterable"],
-    "module": "NodeNext",
-    "moduleDetection": "force",
-    "moduleResolution": "NodeNext",
-    "noUncheckedIndexedAccess": true,
-    "resolveJsonModule": true,
     "skipLibCheck": true,
-    "allowJs": false,
-    "checkJs": true,
-    "strict": true,
-    "target": "ES2022",
+    "resolveJsonModule": true,
+    "noUncheckedIndexedAccess": true,
+
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true, 
+
     "baseUrl": "./",
     "paths": {
       "#shared/*": ["src/*"]
-    },
-    "jsx": "react-jsx"
+    }
   },
   "include": ["src", "../radix-ui-palette"],
   "exclude": ["node_modules", "dist"]
