@@ -1,5 +1,5 @@
-import type { LabelHTMLAttributes, ReactNode } from "react"
 import { WarningIcon } from "@phosphor-icons/react/Warning"
+import type { LabelHTMLAttributes, ReactNode } from "react"
 
 interface LabelerProps extends LabelHTMLAttributes<HTMLLabelElement> {
   labelText: ReactNode

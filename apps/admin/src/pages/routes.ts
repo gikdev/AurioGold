@@ -7,7 +7,7 @@ const routes = {
   onlineCount: "/online-count",
 
   /** ⚠️ FOR DEV TEST ONLY! */
-  test: "/test"
+  test: "/test",
 } as const
 
 export default routes

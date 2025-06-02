@@ -87,6 +87,7 @@
 //           />
 //         </Labeler>
 
+import { apiRequest } from "@gikdev/react-datapi/src"
 //         <Btn type="submit">submit</Btn>
 //       </form>
 //     </HeadingLine>
@@ -94,15 +95,14 @@
 // }
 import { zodResolver } from "@hookform/resolvers/zod"
 import { FloppyDiskBackIcon, UserCircleIcon } from "@phosphor-icons/react"
+import { storageManager } from "@repo/shared/adapters"
+import { Btn, Input, Labeler } from "@repo/shared/components"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { Link } from "react-router"
 import { toast } from "react-toastify"
 import { z } from "zod"
-import { Btn, Input, Labeler } from "@repo/shared/components"
-import { Link } from "react-router"
-import { apiRequest } from "@gikdev/react-datapi/src"
 import routes from "../routes"
-import { storageManager } from "@repo/shared/adapters"
 
 const profileSchema = z.object({
   displayName: z.string().min(1, "نام نباید خالی باشد"),
