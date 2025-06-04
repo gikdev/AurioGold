@@ -1,3 +1,4 @@
+import styled from "@master/styled.react"
 import type { Icon } from "@phosphor-icons/react"
 import { HouseIcon } from "@phosphor-icons/react/House"
 import { XCircleIcon } from "@phosphor-icons/react/XCircle"
@@ -9,7 +10,7 @@ import { storageManager } from "#shared/adapters"
 import { isSidebarOpenAtom } from "#shared/atoms"
 import { ErrorCardBoundary } from "#shared/components"
 import { Btn } from "#shared/components"
-import { styled } from "#shared/helpers"
+import { cn } from "#shared/helpers"
 
 function getIsLoggedIn() {
   return !!storageManager.get("ttkk", "sessionStorage")
@@ -37,7 +38,7 @@ export function Base({ children, nav, footer, sidebarItems }: BaseProps) {
       {nav}
       <main className="flex flex-1 gap-2 rounded-md overflow-hidden">
         <Sidebar items={sidebarItems} />
-        <section className="flex-1 flex bg-slate-1 flex-col rounded-md overflow-y-auto">
+        <section className="flex-1 flex bg-slate-1 flex-col rounded-md overflow-y-auto [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.2)_transparent]">
           <ErrorCardBoundary>{children}</ErrorCardBoundary>
         </section>
       </main>
@@ -57,8 +58,7 @@ interface SidebarProps {
 function Sidebar({ items }: SidebarProps): JSX.Element {
   const [isSidebarOpen, setSidebarOpen] = useAtom(isSidebarOpenAtom)
 
-  const StyledAside = styled(
-    "aside",
+  const StyledAside = styled.aside(
     "overflow-y-auto bg-slate-1 rounded-md",
     "flex flex-col p-2 ps-0 gap-2 w-64",
     "[scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.2)_transparent]",
@@ -107,23 +107,19 @@ function SidebarItem({ text = "---", icon: Icon = HouseIcon, url }: SidebarItemP
   const { pathname } = useLocation()
   const isActive = pathname === url
 
-  const StyledSidebarItem = styled(
-    Link,
+  const classes = cn(
     "text-slate-10 min-w-52 flex gap-2 p-2 rounded-sm items-center relative",
-    "hover:bg-slate-3 hover:text-slate-12 active:scale-95",
-    isActive
-      ? `
-        font-bold text-brand-10 border-s-2 ps-4
-        rounded-tr-none rounded-br-none border-brand-10
-        hover:bg-brand-3 hover:text-brand-11
-      `
-      : "ms-2",
+    "hover:bg-slate-3 hover:text-slate-12 active:scale-95 ms-2",
+    {
+      "font-bold text-brand-10 border-s-2 ps-4 rounded-tr-none rounded-br-none border-brand-10 hover:bg-brand-3 hover:text-brand-11 ms-0":
+        isActive,
+    },
   )
 
   return (
-    <StyledSidebarItem to={url}>
+    <Link to={url} className={classes}>
       <Icon weight={isActive ? "fill" : "regular"} size={24} />
       <span>{text}</span>
-    </StyledSidebarItem>
+    </Link>
   )
 }

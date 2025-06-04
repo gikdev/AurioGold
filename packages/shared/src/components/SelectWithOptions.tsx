@@ -1,5 +1,5 @@
-import { type JSX, type Ref, type SelectHTMLAttributes, forwardRef } from "react"
-import { StyledSelect } from "./Select"
+import { type Ref, type SelectHTMLAttributes, forwardRef } from "react"
+import { Select } from "./Select"
 
 // --- Generic props with constraint
 interface SelectWithOptionsProps<T>
@@ -16,19 +16,19 @@ interface SelectWithOptionsProps<T>
 }
 
 // --- Generic forwardRef wrapper
-function SelectInner<T>(
-  {
-    options,
-    placeholder = "انتخاب کنید",
-    loadingLabel = "در حال بارگذاری...",
-    isLoading = false,
-    keys,
-    ...rest
-  }: SelectWithOptionsProps<T>,
-  ref: Ref<HTMLSelectElement>,
-) {
-  return (
-    <StyledSelect {...rest} ref={ref} defaultValue="" disabled={isLoading || rest.disabled}>
+export const SelectWithOptions = forwardRef(
+  <T,>(
+    {
+      options,
+      placeholder = "انتخاب کنید",
+      loadingLabel = "در حال بارگذاری...",
+      isLoading = false,
+      keys,
+      ...rest
+    }: SelectWithOptionsProps<T>,
+    ref: Ref<string>,
+  ) => (
+    <Select {...rest} ref={ref} defaultValue="" disabled={isLoading || rest.disabled}>
       <option value="" disabled>
         {isLoading ? loadingLabel : placeholder}
       </option>
@@ -37,11 +37,6 @@ function SelectInner<T>(
           {String(option[keys.text])}
         </option>
       ))}
-    </StyledSelect>
-  )
-}
-
-// --- Wrap with forwardRef, preserve generic using a helper
-export const SelectWithOptions = forwardRef(SelectInner) as unknown as <T>(
-  props: SelectWithOptionsProps<T> & { ref?: Ref<HTMLSelectElement> },
-) => JSX.Element
+    </Select>
+  ),
+)

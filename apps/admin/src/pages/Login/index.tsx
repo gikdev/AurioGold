@@ -1,42 +1,70 @@
 import { apiRequest } from "@gikdev/react-datapi/src"
-import { DEFAULT_ERROR_MESSAGES } from "@gikdev/react-datapi/src"
-import { ArrowsClockwiseIcon, SignInIcon, SpinnerGapIcon } from "@phosphor-icons/react"
-import type { LoginModel, MasterLoginModel } from "@repo/api-client/client"
-import { notifManager, storageManager } from "@repo/shared/adapters"
+import { zodResolver } from "@hookform/resolvers/zod"
+import styled from "@master/styled.react"
+import { ArrowsClockwiseIcon, SignInIcon } from "@phosphor-icons/react"
+import type { MasterLoginModel } from "@repo/api-client/client"
+import { storageManager } from "@repo/shared/adapters"
 import { Btn, Heading, Hr, Input, Labeler } from "@repo/shared/components"
-import { styled } from "@repo/shared/helpers"
+import { createControlledAsyncToast, createFieldsWithLabels } from "@repo/shared/helpers"
 import { sha512 } from "js-sha512"
-import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
-import datApiConfig from "#/shared/datapi-config"
+import { z } from "zod"
+import genDatApiConfig from "#/shared/datapi-config"
 import routes from "../routes"
 
-const StyledForm = styled(
-  "form",
-  `
-    bg-slate-2 border-2 border-slate-6 w-full max-w-96 
-    px-4 py-8 flex flex-col gap-4 text-center rounded-lg
-  `,
-)
+const { fields, labels } = createFieldsWithLabels({
+  username: "نام کاربری",
+  password: "گذرواژه",
+})
+
+const loginSchema = z.object({
+  [fields.username]: z.string().trim().min(1, `${labels.username} باید وارد شود!`),
+  [fields.password]: z.string().trim(),
+})
+type LoginFormValues = z.infer<typeof loginSchema>
+
+const StyledForm = styled.form`
+  bg-slate-2 border-2 border-slate-6 w-full max-w-96 
+  px-4 py-8 flex flex-col gap-4 text-center rounded-lg
+`
 
 export default function Login() {
-  const { register, handleSubmit, formState } = useForm<LoginModel>()
-  const { errors } = formState
+  const { register, handleSubmit, formState } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+  })
+  const { errors, isSubmitting } = formState
   const navigate = useNavigate()
-  const [isLoading, setLoading] = useState(false)
 
-  const onSubmit = async (data: LoginModel) => {
-    setLoading(true)
+  async function onSubmit(data: LoginFormValues) {
+    const { reject, resolve } = createControlledAsyncToast({
+      pending: "در حال ورود به برنامه...",
+      success: "با موفقیت وارد شدید!",
+    })
 
-    const res = await loginAdmin(data)
+    const dataToSend = JSON.stringify({
+      un: data.username,
+      pw: sha512(data.password ?? ""),
+    })
 
-    if (res.success) {
-      navigate(routes.home)
-      return
-    }
+    await apiRequest<MasterLoginModel>({
+      options: {
+        baseUrl: genDatApiConfig().baseUrl,
+        url: "/Master/loginMaster",
+        method: "POST",
+        body: dataToSend,
+        onError: msg => reject(msg),
+        onSuccess(data) {
+          resolve()
 
-    setLoading(false)
+          for (const key in data) {
+            storageManager.save(key, String(data[key as keyof MasterLoginModel]), "sessionStorage")
+          }
+
+          navigate(routes.home)
+        },
+      },
+    })
   }
 
   return (
@@ -57,59 +85,19 @@ export default function Login() {
 
         <Hr />
 
-        <Labeler labelText="نام کاربری:" errorMsg={errors.un?.message}>
-          <Input
-            dir="ltr"
-            type="text"
-            autoFocus
-            {...register("un", { required: "نام کاربری الزامی هست" })}
-          />
+        <Labeler labelText={labels.username} errorMsg={errors.username?.message}>
+          <Input dir="ltr" type="text" autoFocus {...register(fields.username)} />
         </Labeler>
 
-        <Labeler labelText="رمز:" errorMsg={errors.pw?.message}>
-          <Input
-            dir="ltr"
-            type="password"
-            {...register("pw", { required: "رمز ورود الزامی هست" })}
-          />
+        <Labeler labelText={labels.password} errorMsg={errors.password?.message}>
+          <Input dir="ltr" type="password" {...register(fields.password)} />
         </Labeler>
 
-        {isLoading ? (
-          <Btn disabled themeType="filled" theme="primary">
-            <SpinnerGapIcon size={24} className="animate-spin" />
-            <span>در حال ورود</span>
-          </Btn>
-        ) : (
-          <Btn type="submit" themeType="filled" theme="primary">
-            <SignInIcon size={24} />
-            <span>ورود</span>
-          </Btn>
-        )}
+        <Btn type="submit" themeType="filled" theme="primary" disabled={isSubmitting}>
+          <SignInIcon size={24} />
+          <span>ورود</span>
+        </Btn>
       </StyledForm>
     </div>
   )
-}
-
-function loginAdmin(data: LoginModel) {
-  const dataToSend = JSON.stringify({
-    un: data.un,
-    pw: sha512(data.pw ?? ""),
-  })
-
-  return apiRequest<MasterLoginModel>({
-    options: {
-      baseUrl: datApiConfig.baseUrl,
-      url: "/Master/loginMaster",
-      method: "POST",
-      body: dataToSend,
-      onError: msg =>
-        notifManager.notify(msg || DEFAULT_ERROR_MESSAGES.GENERAL, "toast", { status: "error" }),
-      onSuccess(data) {
-        notifManager.notify("با موفقیت وارد شدید!", "toast", { status: "success" })
-        for (const key in data) {
-          storageManager.save(key, String(data[key as keyof MasterLoginModel]), "sessionStorage")
-        }
-      },
-    },
-  })
 }

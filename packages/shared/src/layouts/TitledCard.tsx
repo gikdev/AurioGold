@@ -1,6 +1,5 @@
 import type { ElementType, HTMLAttributes, ReactNode } from "react"
 import { Heading } from "#shared/components"
-import { styled } from "#shared/helpers"
 
 interface TitledCardProps extends HTMLAttributes<HTMLElement> {
   title?: string
@@ -14,16 +13,14 @@ export function TitledCard({
   as: Tag = "section",
   ...other
 }: TitledCardProps) {
-  const StyledContainer = styled(Tag, "px-4 py-8 rounded-xl border-2 bg-slate-2 border-slate-6")
-
   return (
-    <StyledContainer {...other}>
+    <Tag {...other} className="px-4 py-8 rounded-xl border-2 bg-slate-2 border-slate-6">
       {title && (
         <Heading as="h1" size={3} className="text-slate-11 mb-4 text-center">
           {title}
         </Heading>
       )}
       {children}
-    </StyledContainer>
+    </Tag>
   )
 }

@@ -3,6 +3,7 @@ import { currentProfile } from "@repo/profile-manager"
 import { notifManager, storageManager } from "@repo/shared/adapters"
 import { atom, useAtomValue, useSetAtom } from "jotai"
 import { useEffect } from "react"
+import routes from "#/pages/routes"
 
 // Usage example is at the end of the file
 
@@ -16,7 +17,7 @@ function isLoggedInOrHasToken() {
 
 function logOut() {
   storageManager.remove("ttkk", "sessionStorage")
-  location.href = "/login"
+  location.href = routes.login
 }
 
 export type ConnectionState = "unknown" | "disconnected" | "connected" | "loading"

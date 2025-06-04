@@ -1,3 +1,4 @@
+import styled from "@master/styled.react"
 import {
   ArrowClockwiseIcon,
   CircleNotchIcon,
@@ -8,7 +9,6 @@ import {
   UsersFourIcon,
 } from "@phosphor-icons/react"
 import { notifManager } from "@repo/shared/adapters"
-import { styled } from "@repo/shared/helpers"
 import { useAtomValue, useSetAtom } from "jotai"
 import { useEffect, useState } from "react"
 import { Link } from "react-router"
@@ -30,8 +30,8 @@ export default function StatusBar() {
       <div className="flex gap-2 items-center">
         <ReloadStatusBtn />
         <OnlinePeopleCount />
-        <ToggleAdminOnline />
         <ServerConnectionStatus />
+        <ToggleAdminOnline />
       </div>
     </div>
   )
@@ -44,8 +44,7 @@ function ToggleAdminOnline() {
   const isConnected = connectionState === "connected"
   const IconToRender = isConnected ? StorefrontIcon : CircleNotchIcon
 
-  const StyledBtn = styled(
-    "button",
+  const StyledBtn = styled.button(
     "px-2 h-full",
     isConnected ? "cursor-pointer" : "cursor-not-allowed",
     isAdminOnline && isConnected
@@ -76,14 +75,10 @@ function ServerConnectionStatus() {
   if (connectionState === "disconnected") IconToRender = CloudSlashIcon
   if (connectionState === "loading") IconToRender = CircleNotchIcon
 
-  const StyledElement = styled(
-    "div",
-    "px-2 items-center justify-center flex h-full hover:bg-slate-2 hover:text-slate-12",
-    {
-      "bg-green-2 text-green-11 hover:bg-green-3": isConnected,
-      "bg-red-2 text-red-11 hover:bg-red-3": connectionState === "disconnected",
-    },
-  )
+  const StyledElement = styled.div("px-2 items-center justify-center flex h-full", {
+    "bg-green-2 text-green-11": isConnected,
+    "bg-red-2 text-red-11": connectionState === "disconnected",
+  })
 
   return (
     <abbr title="وضعیت اتصال به سرور" className="contents">
@@ -103,8 +98,7 @@ function OnlinePeopleCount() {
   const isLoading = connectionState === "loading"
   const IconToRender = isLoading ? CircleNotchIcon : UsersFourIcon
 
-  const StyledLink = styled(
-    Link,
+  const StyledLink = styled(Link)(
     "px-2 items-center justify-center flex h-full gap-1 hover:bg-slate-3 hover:text-slate-12",
   )
 
@@ -119,10 +113,7 @@ function OnlinePeopleCount() {
 }
 
 function ReloadStatusBtn() {
-  const StyledBtn = styled(
-    "button",
-    "px-2 h-full hover:bg-slate-3 hover:text-slate-12 cursor-pointer",
-  )
+  const StyledBtn = styled.button("px-2 h-full hover:bg-slate-3 hover:text-slate-12 cursor-pointer")
 
   const handleClick = () => {
     location.reload()

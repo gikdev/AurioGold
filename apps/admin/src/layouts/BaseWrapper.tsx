@@ -10,7 +10,7 @@ import { connectionRefAtom, connectionStateAtom } from "#/atoms/signalr"
 import { SignalRManager } from "#/atoms/signalr"
 import StatusBar from "#/layouts/StatusBar"
 import routes from "#/pages/routes"
-import datApiConfig from "#/shared/datapi-config"
+import genDatApiConfig from "#/shared/datapi-config"
 import { Nav } from "./Nav"
 
 const getTime = () =>
@@ -19,7 +19,7 @@ const getTime = () =>
       url: "/TyStocks/GetTime",
       onError: msg => console.log(msg),
     },
-    config: datApiConfig,
+    config: genDatApiConfig(),
   })
 
 const SIDEBAR_ITEMS: SidebarItem[] = [
@@ -61,7 +61,7 @@ export function BaseWrapper() {
 
   return (
     <ErrorCardBoundary>
-      <DatapiConfigProvider config={datApiConfig}>
+      <DatapiConfigProvider config={genDatApiConfig()}>
         <SignalRManager />
         <Base nav={<Nav />} footer={<StatusBar />} sidebarItems={SIDEBAR_ITEMS}>
           <Outlet />

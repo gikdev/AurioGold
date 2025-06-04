@@ -15,7 +15,7 @@ export function useToggleAdminConnectivity() {
     if (!connection) return
     if (connectionState !== "connected") return
 
-    const token = storageManager.get("adminToken", "sessionStorage")
+    const token = storageManager.get("ttkk", "sessionStorage")
     const masterId = storageManager.get("masterID", "sessionStorage")
 
     connection

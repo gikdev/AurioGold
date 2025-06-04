@@ -25,13 +25,13 @@ export async function apiRequest<TOutput = unknown, TRaw = unknown>({
 }: ApiRequestProps<TOutput, TRaw>): Promise<ApiResponse<TOutput>> {
   const { queryParams, body, transformResponse, onSuccess } = options
 
-  const baseUrl = options.baseUrl || config?.baseUrl || ""
-  const url = options.url || config?.url || ""
-  const token = options.token || config?.token || ""
+  const baseUrl = options?.baseUrl || config?.baseUrl || ""
+  const url = options?.url || config?.url || ""
+  const token = options?.token || config?.token || ""
   const headers = { ...(config?.headers || {}), ...(options.headers || {}) }
-  const method = options.method || config?.method || "GET"
-  const skipAuth = options.skipAuth || config?.skipAuth || false
-  const skipContentType = options.skipAuth || config?.skipContentType || false
+  const method = options?.method || config?.method || "GET"
+  const skipAuth = options?.skipAuth || config?.skipAuth || false
+  const skipContentType = options?.skipAuth || config?.skipContentType || false
 
   function handleErrorMsg(msg: string) {
     options?.onError?.(msg)

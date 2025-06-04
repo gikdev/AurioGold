@@ -28,6 +28,8 @@ export const extractMessage = (input: unknown): string => {
 
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   if (typeof (input as any).message === "string") return (input as any).message
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  if (typeof (input as any).msg === "string") return (input as any).msg
 
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   if (Array.isArray((input as any).message) && typeof (input as any).message[0] === "string")

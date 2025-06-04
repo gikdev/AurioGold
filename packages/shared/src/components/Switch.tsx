@@ -1,7 +1,7 @@
+import styled from "@master/styled.react"
 import { Switch as RadixSwitch } from "radix-ui"
 import { forwardRef } from "react"
-import type { ComponentPropsWithoutRef, ForwardedRef } from "react"
-import { styled } from "../helpers"
+import type { ComponentProps, ComponentPropsWithoutRef, ForwardedRef } from "react"
 
 export interface SwitchProps extends ComponentPropsWithoutRef<typeof RadixSwitch.Root> {
   /** Optional classes to apply when the switch is ON */
@@ -31,23 +31,28 @@ export const Switch = forwardRef(function Switch(
     checked,
     checkedClassName = "bg-amber-9",
     unCheckedClassName = "bg-slate-6",
-    className,
+    className = "",
     ...rest
   } = props
 
-  const StyledSwithRoot = styled(
-    RadixSwitch.Root,
+  const StyledSwitchRoot = styled(RadixSwitch.Root)(
     "w-12 h-7 p-1 flex items-center rounded transition-all cursor-pointer",
     checked ? checkedClassName : unCheckedClassName,
     checked ? "justify-end" : "justify-start",
     className,
   )
 
-  const StyledThumb = styled(RadixSwitch.Thumb, "size-5 bg-white inline-block rounded shadow-lg")
+  const StyledThumb = styled(RadixSwitch.Thumb)`
+    size-5 bg-white inline-block rounded shadow-lg
+  `
 
   return (
-    <StyledSwithRoot ref={ref} checked={checked} {...rest}>
+    <StyledSwitchRoot
+      ref={ref as ComponentProps<typeof StyledSwitchRoot>["ref"]}
+      checked={checked}
+      {...rest}
+    >
       <StyledThumb />
-    </StyledSwithRoot>
+    </StyledSwitchRoot>
   )
 })

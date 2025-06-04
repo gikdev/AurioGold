@@ -1,14 +1,13 @@
+import styled from "@master/styled.react"
 import { type ComponentProps, useEffect, useRef } from "react"
 import DatePicker from "react-multi-date-picker"
-import { styled } from "#shared/helpers"
 
-const StyledDatePicker = styled(
-  DatePicker,
-  "w-full grow shrink text-center px-4 py-3",
-  "bg-slate-3 border border-slate-6",
-  "rounded text-slate-11 w-full focus:text-slate-12",
-  "focus:border-transparent focus:bg-slate-5",
-)
+const StyledDatePicker = styled(DatePicker)`
+  w-full grow shrink text-center px-4 py-3
+  bg-slate-3 border border-slate-6
+  rounded text-slate-11 w-full focus:text-slate-12
+  focus:border-transparent focus:bg-slate-5
+`
 
 interface FilterProps {
   fromDate: Date

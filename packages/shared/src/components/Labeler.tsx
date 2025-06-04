@@ -1,7 +1,8 @@
 import { WarningIcon } from "@phosphor-icons/react/Warning"
-import type { LabelHTMLAttributes, ReactNode } from "react"
+import type { ComponentPropsWithoutRef, ElementType, ReactNode } from "react"
+import { cn } from "#shared/helpers"
 
-interface LabelerProps extends LabelHTMLAttributes<HTMLLabelElement> {
+interface LabelerCommonProps {
   labelText: ReactNode
   labelTextClassName?: string
   children: ReactNode
@@ -9,27 +10,34 @@ interface LabelerProps extends LabelHTMLAttributes<HTMLLabelElement> {
   hints?: ReactNode
 }
 
-export function Labeler({
+type PolymorphicProps<T extends ElementType> = {
+  as?: T
+} & LabelerCommonProps &
+  ComponentPropsWithoutRef<T>
+
+export function Labeler<T extends ElementType = "label">({
   labelText,
   labelTextClassName,
   children,
   hints,
+  as,
   errorMsg,
   ...others
-}: LabelerProps) {
+}: PolymorphicProps<T>) {
+  const Tag = as || "label"
   return (
-    <label className="flex flex-col gap-2" {...others}>
+    <Tag className="flex flex-col gap-2" {...others}>
       <div className="flex gap-1 items-center">
-        <span className={labelTextClassName}>{labelText}</span>
+        <span className={cn("text-slate-12 font-bold", labelTextClassName)}>{labelText}</span>
         <span className="me-auto" />
-        <span>{errorMsg && <WarningIcon size={24} className="text-red-9" />}</span>
+        {errorMsg && <WarningIcon size={20} className="text-red-9" />}
       </div>
 
       {children}
 
-      {hints}
+      {!!hints && hints}
 
       {errorMsg && <p className="text-xs text-red-10 text-start">{errorMsg}</p>}
-    </label>
+    </Tag>
   )
 }

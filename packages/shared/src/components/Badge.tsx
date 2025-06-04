@@ -1,5 +1,5 @@
 import type { ElementType, ReactNode } from "react"
-import { styled } from "#shared/helpers"
+import { cn } from "#shared/helpers"
 
 const styles = {
   base: "inline-block rounded px-2 py-1 text-xs",
@@ -19,13 +19,17 @@ interface BadgeProps {
 }
 
 export function Badge({
-  as = "span",
+  as: Tag = "span",
   className = "",
   theme = "neutral",
   children,
-  ...delegated
+  ...other
 }: BadgeProps) {
-  const StyledTag = styled(as, styles.base, styles[theme], className)
+  const classes = cn(styles.base, styles[theme], className)
 
-  return <StyledTag {...delegated}>{children}</StyledTag>
+  return (
+    <Tag {...other} className={classes}>
+      {children}
+    </Tag>
+  )
 }

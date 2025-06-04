@@ -25,9 +25,13 @@
     "@types/node": "^22.15.3",
     "@types/react": "19.1.0",
     "@types/react-dom": "19.1.1",
+    "tailwind-styled-components": "^2.2.0",
+    "twin.macro": "^3.4.1",
     "typescript": "5.8.2"
   },
   "dependencies": {
+    "@repo/api-client": "workspace:*",
+    "@gikdev/react-datapi": "workspace:*",
     "@hookform/resolvers": "^5.0.1",
     "@master/styled.react": "^2.0.4",
     "@microsoft/signalr": "^8.0.7",
@@ -50,7 +54,6 @@
     "react-router": "^7.6.0",
     "react-toastify": "^11.0.5",
     "tailwind-merge": "^3.3.0",
-    "tailwind-styled-components": "^2.2.0",
     "uuid": "^11.1.0",
     "zod": "^3.25.28"
   }

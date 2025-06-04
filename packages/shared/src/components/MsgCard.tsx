@@ -1,5 +1,5 @@
+import styled from "@master/styled.react"
 import { Heading, Hr } from "#shared/components"
-import { styled } from "#shared/helpers"
 
 interface MsgCardProps {
   title: string
@@ -7,10 +7,10 @@ interface MsgCardProps {
 }
 
 export function MessageCard({ title, children }: MsgCardProps) {
-  const Container = styled(
-    "div",
-    "bg-slate-2 border-2 border-slate-6 px-4 py-8 flex flex-col gap-4 rounded-lg max-w-max",
-  )
+  const Container = styled.div`
+    bg-slate-2 border-2 border-slate-6 px-4 py-8
+    flex flex-col gap-4 rounded-lg max-w-max
+  `
 
   return (
     <Container>

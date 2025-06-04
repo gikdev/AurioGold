@@ -1,5 +1,5 @@
 import type { ButtonHTMLAttributes, ElementType } from "react"
-import { styled } from "../helpers"
+import { cn } from "#shared/helpers"
 
 const styles = {
   base: `
@@ -22,7 +22,7 @@ const styles = {
     error: "bg-red-3 text-red-11",
     warning: "bg-yellow-3 text-yellow-11",
     info: "bg-blue-3 text-blue-11",
-    primary: "bg-amber-3 text-amber-11",
+    primary: "bg-brand-3 text-brand-11",
     neutral: "bg-slate-3 text-slate-11",
   },
 }
@@ -36,14 +36,18 @@ interface BtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export function Btn({
-  as = "button",
+  as: Tag = "button",
   className = "",
   themeType = "outline",
   theme = "neutral",
   children = null,
-  ...delegated
+  ...other
 }: BtnProps) {
-  const StyledTag = styled(as, styles.base, styles[themeType][theme], className)
+  const classes = cn(styles.base, styles[themeType][theme], className)
 
-  return <StyledTag {...delegated}>{children}</StyledTag>
+  return (
+    <Tag {...other} className={classes}>
+      {children}
+    </Tag>
+  )
 }

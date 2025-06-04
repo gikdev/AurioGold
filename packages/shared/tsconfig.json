@@ -1,26 +1,19 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "moduleDetection": "force",
     "lib": ["es2022", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
-
-    "strict": true,
+    "target": "esnext",
     "noEmit": true,
-    "checkJs": false,
-    "allowJs": false,
-    "incremental": false,
-    "isolatedModules": true,
     "skipLibCheck": true,
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "isolatedModules": true,
     "resolveJsonModule": true,
-    "noUncheckedIndexedAccess": true,
-
+    "moduleResolution": "bundler",
+    "strict": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true, 
-
+    "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
     "paths": {
       "#shared/*": ["src/*"]

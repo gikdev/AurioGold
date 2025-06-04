@@ -1,5 +1,5 @@
-import { ErrorCardBoundary, Heading, Hr } from "#shared/components"
-import { styled } from "#shared/helpers"
+import styled from "@master/styled.react"
+import { ErrorCardBoundary, Heading } from "#shared/components"
 
 interface HeadingLineProps {
   title: string
@@ -8,14 +8,17 @@ interface HeadingLineProps {
 }
 
 export function HeadingLine({ title, className = "", children = null }: HeadingLineProps) {
-  const StyledSection = styled("section", "px-4 py-8 md:p-8", className)
+  const StyledSection = styled.section("px-4 py-8 md:p-8", className)
 
   return (
     <>
-      <Heading as="h1" size={5} className="text-slate-12 mb-4 mt-6 text-center">
+      <Heading
+        as="h1"
+        size={5}
+        className="text-slate-12 mb-6 mt-6 text-center border-b max-w-max mx-auto pb-6 border-slate-6"
+      >
         {title}
       </Heading>
-      <Hr />
       <StyledSection>
         <ErrorCardBoundary>{children}</ErrorCardBoundary>
       </StyledSection>
