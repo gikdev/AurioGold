@@ -229,6 +229,7 @@ function FileInput({
 }: FileInputProps) {
   const [file, setFile] = useState<File | null>(null)
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (!file) return
     let cancelled = false
@@ -254,7 +255,7 @@ function FileInput({
     return () => {
       cancelled = true
     }
-  }, [file, onUploaded, uploadFn])
+  }, [file])
 
   return (
     <FileInputContainer title={label}>
@@ -275,32 +276,32 @@ function FileInput({
   )
 }
 
-function useFileInputHelpers() {
-  const generateAllowedExtensionsNote = useCallback(
-    (formats: string[]) => `فرمت‌های جایز: ${formats.join(" ،")}`,
-    [],
-  )
-
-  const generateFileSizeNote = useCallback(
-    (maxFileSizeInMb: number) => `حداکثر حجم مجاز فایل ${maxFileSizeInMb} مگابایت هست`,
-    [],
-  )
-
-  const generateFileTypeNote = useCallback((fileTypes: string | string[]) => {
-    if (typeof fileTypes === "string") return `فقط میتوانید «${fileTypes}» انتخاب کنید`
-    if (Array.isArray(fileTypes) && fileTypes.length === 1)
-      return `فقط میتوانید «${fileTypes[0]}» انتخاب کنید`
-
-    const fileTypesString = fileTypes
-      .map((f, i) => (i >= fileTypes.length - 1 ? `و «${f}»` : `«${f}»، `))
-      .join("")
-
-    return `فقط میتوانید ${fileTypesString} انتخاب کنید`
-  }, [])
-
-  return { generateAllowedExtensionsNote, generateFileSizeNote, generateFileTypeNote }
+function generateAllowedExtensionsNote(formats: string[]) {
+  return `فرمت‌های جایز: ${formats.join(" ،")}`
 }
 
-FileInput.useHelpers = useFileInputHelpers
+function generateFileSizeNote(maxFileSizeInMb: number) {
+  return `حداکثر حجم مجاز فایل ${maxFileSizeInMb} مگابایت هست`
+}
+
+function generateFileTypeNote(fileTypes: string | string[]) {
+  if (typeof fileTypes === "string") return `فقط میتوانید «${fileTypes}» انتخاب کنید`
+  if (Array.isArray(fileTypes) && fileTypes.length === 1)
+    return `فقط میتوانید «${fileTypes[0]}» انتخاب کنید`
+
+  const fileTypesString = fileTypes
+    .map((f, i) => (i >= fileTypes.length - 1 ? `و «${f}»` : `«${f}»، `))
+    .join("")
+
+  return `فقط میتوانید ${fileTypesString} انتخاب کنید`
+}
+
+const helpers = {
+  generateAllowedExtensionsNote,
+  generateFileSizeNote,
+  generateFileTypeNote,
+}
+
+FileInput.helpers = helpers
 
 export { FileInput }

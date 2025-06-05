@@ -27,7 +27,7 @@ export default function StatusBar() {
     <div className="w-full bg-slate-1 flex rounded-md h-8 gap-2 overflow-hidden">
       <OnlineUsers />
 
-      <div className="flex gap-2 items-center">
+      <div className="flex items-center">
         <ReloadStatusBtn />
         <OnlinePeopleCount />
         <ServerConnectionStatus />
