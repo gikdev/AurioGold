@@ -20,3 +20,8 @@
     }
   }
 }
+
+[class^="ag-"],
+[className^="ag-"] {
+  font-family: "Vazirmatn", sans-serif !important;
+}

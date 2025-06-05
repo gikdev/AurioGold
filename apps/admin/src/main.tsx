@@ -1,3 +1,4 @@
+import { AllCommunityModule, ModuleRegistry } from "ag-grid-community"
 import { NuqsAdapter } from "nuqs/adapters/react-router/v7"
 import { StrictMode, Suspense, lazy } from "react"
 import { createRoot } from "react-dom/client"
@@ -10,11 +11,14 @@ import Loading from "./pages/Loading"
 import routes from "./pages/routes"
 import "./styles/index.css"
 
+ModuleRegistry.registerModules([AllCommunityModule])
+
 const Home = lazy(() => import("./pages/Home"))
 const Login = lazy(() => import("./pages/Login"))
 const NotFound = lazy(() => import("./pages/NotFound"))
 const Test = lazy(() => import("./pages/Test"))
 const Profile = lazy(() => import("./pages/Profile"))
+const SendSms = lazy(() => import("./pages/SendSms"))
 
 const container = document.querySelector("#root")
 if (!container) throw new Error("No `#root` found!")
@@ -45,6 +49,7 @@ root.render(
                 <Route element={<BaseWrapper />}>
                   <Route index element={<Home />} />
                   <Route path={routes.profile} element={<Profile />} />
+                  <Route path={routes.sendSms} element={<SendSms />} />
                   <Route path={routes.test} element={<Test />} />
                   <Route path="*" element={<NotFound />} />
                 </Route>

@@ -77,7 +77,7 @@ export default function Login() {
 
           <a
             href={window.location.href}
-            className="p-2 hover:bg-slatedark-3 rounded-full active:scale-90 inline-block"
+            className="p-2 hover:bg-slate-3 rounded-full active:scale-90 inline-block"
           >
             <ArrowsClockwiseIcon size={20} />
           </a>

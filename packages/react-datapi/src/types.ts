@@ -19,6 +19,7 @@ export interface ApiOptions<TOutput = unknown, TRaw = unknown> {
   skipAuth?: boolean
   skipContentType?: boolean
   onSuccess?(data: TOutput): void
+  onFinally?(): void
   onError?(message: string): void
 }
 

@@ -1,4 +1,4 @@
-import { themeBalham } from "ag-grid-community"
+import { themeQuartz } from "ag-grid-community"
 import { AgGridReact } from "ag-grid-react"
 import { type ComponentProps, forwardRef } from "react"
 import { AG_GRID_LOCALE_IR } from "../constants"
@@ -17,7 +17,7 @@ export interface TableFaProps extends AgGridReactProps {}
 
 export const TableFa = forwardRef<AgGridReact, TableFaProps>(({ className, ...other }, ref) => (
   <AgGridReact
-    theme={themeBalham}
+    theme={themeQuartz}
     ref={ref}
     localeText={AG_GRID_LOCALE_IR}
     pagination

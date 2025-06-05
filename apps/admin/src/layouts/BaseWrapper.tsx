@@ -1,5 +1,5 @@
 import { DatapiConfigProvider, apiRequest } from "@gikdev/react-datapi/src"
-import { HouseLineIcon, UserCircleIcon } from "@phosphor-icons/react"
+import { ChatTextIcon, HouseLineIcon, UserCircleIcon } from "@phosphor-icons/react"
 import { ErrorCardBoundary } from "@repo/shared/components"
 import { Base, type SidebarItem } from "@repo/shared/layouts"
 import { useAtomValue, useSetAtom } from "jotai"
@@ -13,19 +13,10 @@ import routes from "#/pages/routes"
 import genDatApiConfig from "#/shared/datapi-config"
 import { Nav } from "./Nav"
 
-const getTime = () =>
-  apiRequest({
-    options: {
-      url: "/TyStocks/GetTime",
-      onError: msg => console.log(msg),
-    },
-    config: genDatApiConfig(),
-  })
-
 const SIDEBAR_ITEMS: SidebarItem[] = [
   { id: 0, text: "خانه", icon: HouseLineIcon, url: routes.home },
   { id: 1, text: "پروفایل", icon: UserCircleIcon, url: routes.profile },
-  // { id: 2, text: "ارسال پیامک", icon: ChatTextIcon, url: "/send-sms" },
+  { id: 2, text: "ارسال پیامک", icon: ChatTextIcon, url: routes.sendSms },
   // { id: 3, text: "مدیریت کاربران", icon: UserCircleGearIcon, url: "/customers" },
   // { id: 4, text: "مدیریت گروه مشتری گرمی", icon: UsersFourIcon, url: "/groups-gram" },
   // { id: 5, text: "مدیریت گروه مشتری عددی", icon: UsersFourIcon, url: "/groups-number" },
@@ -43,25 +34,14 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
   // { id: 17, text: "تنظیمات", icon: GearIcon, url: "/settings" },
 ]
 
+// Memoized config (only created once)
+const config = genDatApiConfig()
+
 export function BaseWrapper() {
-  const setOnlineUsersCount = useSetAtom(onlineUsersCountAtom)
-  const connectionState = useAtomValue(connectionStateAtom)
-  const connection = useAtomValue(connectionRefAtom)
-
-  useEffect(() => void getTime(), [])
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    if (connectionState !== "connected" || !connection) return
-
-    connection.on("OnlineCount", c => setOnlineUsersCount(c))
-
-    return () => connection.off("OnlineCount")
-  }, [connectionState])
-
   return (
     <ErrorCardBoundary>
-      <DatapiConfigProvider config={genDatApiConfig()}>
+      <DatapiConfigProvider config={config}>
+        <ConnectionHandler />
         <SignalRManager />
         <Base nav={<Nav />} footer={<StatusBar />} sidebarItems={SIDEBAR_ITEMS}>
           <Outlet />
@@ -69,4 +49,43 @@ export function BaseWrapper() {
       </DatapiConfigProvider>
     </ErrorCardBoundary>
   )
+}
+
+function ConnectionHandler() {
+  const setOnlineUsersCount = useSetAtom(onlineUsersCountAtom)
+  const connectionState = useAtomValue(connectionStateAtom)
+  const connection = useAtomValue(connectionRefAtom)
+
+  // Time fetch with proper cleanup
+  useEffect(() => {
+    const controller = new AbortController()
+
+    apiRequest({
+      options: {
+        url: "/TyStocks/GetTime",
+        onError: console.error,
+      },
+      signal: controller.signal,
+      config,
+    })
+
+    return () => controller.abort()
+  }, [])
+
+  // Connection handler with proper dependencies
+  useEffect(() => {
+    if (connectionState !== "connected" || !connection) return
+
+    const handler = (count: number) => {
+      setOnlineUsersCount(count)
+    }
+
+    connection.on("OnlineCount", handler)
+
+    return () => {
+      connection.off("OnlineCount", handler)
+    }
+  }, [connectionState, connection, setOnlineUsersCount])
+
+  return null
 }

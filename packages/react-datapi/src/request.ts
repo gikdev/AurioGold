@@ -77,5 +77,10 @@ export async function apiRequest<TOutput = unknown, TRaw = unknown>({
     const message = DEFAULT_ERROR_MESSAGES.NETWORK
     handleErrorMsg?.(message)
     return { success: false, status: 0, error: message, data: null }
+  } finally {
+    safeExecute(
+      () => options?.onFinally?.(),
+      () => handleErrorMsg?.(DEFAULT_ERROR_MESSAGES.GENERAL),
+    )
   }
 }
