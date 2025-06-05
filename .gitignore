@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # Dependencies
-node_modules
+node_modules/
 .pnp
 .pnp.js
 
@@ -40,3 +40,4 @@ yarn-error.log*
 # Editors
 .idea/
 .vscode/settings.json
+**/node_modules/
