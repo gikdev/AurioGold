@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 import genDatApiConfig from "#/shared/datapi-config"
 import FormCard from "../Profile/FormCard"
-import { TableMultiSelect } from "./table-mutliselect"
+import { TableMultiSelect } from "./TableMultiSelect"
 
 const columnDefs: ColDef[] = [
   { field: "displayName", headerName: "نام" },
