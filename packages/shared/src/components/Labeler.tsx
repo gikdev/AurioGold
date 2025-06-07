@@ -1,5 +1,5 @@
 import { WarningIcon } from "@phosphor-icons/react/Warning"
-import type { ComponentPropsWithoutRef, ElementType, ReactNode } from "react"
+import { memo, type ComponentPropsWithoutRef, type ElementType, type ReactNode } from "react"
 import { cn } from "#shared/helpers"
 
 interface LabelerCommonProps {
@@ -15,18 +15,19 @@ type PolymorphicProps<T extends ElementType> = {
 } & LabelerCommonProps &
   ComponentPropsWithoutRef<T>
 
-export function Labeler<T extends ElementType = "label">({
+function _Labeler<T extends ElementType = "label">({
   labelText,
   labelTextClassName,
   children,
   hints,
   as,
   errorMsg,
+  className,
   ...others
 }: PolymorphicProps<T>) {
   const Tag = as || "label"
   return (
-    <Tag className="flex flex-col gap-2" {...others}>
+    <Tag className={cn("flex flex-col gap-2", className)} {...others}>
       <div className="flex gap-1 items-center">
         <span className={cn("text-slate-12 font-bold", labelTextClassName)}>{labelText}</span>
         <span className="me-auto" />
@@ -41,3 +42,5 @@ export function Labeler<T extends ElementType = "label">({
     </Tag>
   )
 }
+
+export const Labeler = memo(_Labeler)

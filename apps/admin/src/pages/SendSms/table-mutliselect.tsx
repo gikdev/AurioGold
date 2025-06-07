@@ -1,14 +1,14 @@
 import { TableFa } from "@repo/shared/components"
 import type { ComponentProps } from "react"
 
-type TableMutliSelectProps = ComponentProps<typeof TableFa> & {}
+type TableMultiSelectProps = ComponentProps<typeof TableFa> & {}
 
-const rowSelection: TableMutliSelectProps["rowSelection"] = {
+const rowSelection: TableMultiSelectProps["rowSelection"] = {
   mode: "multiRow",
   enableClickSelection: true,
   enableSelectionWithoutKeys: true,
 }
 
-export function TableMutliSelect({ ...other }: TableMutliSelectProps) {
+export function TableMultiSelect({ ...other }: TableMultiSelectProps) {
   return <TableFa rowSelection={rowSelection} {...other} />
 }

@@ -1,58 +1,14 @@
-import styled from "@master/styled.react"
-import { Switch as RadixSwitch } from "radix-ui"
 import { forwardRef } from "react"
-import type { ComponentProps, ComponentPropsWithoutRef, ForwardedRef } from "react"
 
-export interface SwitchProps extends ComponentPropsWithoutRef<typeof RadixSwitch.Root> {
-  /** Optional classes to apply when the switch is ON */
-  checkedClassName?: string
-  /** Optional classes to apply when the switch is OFF */
-  unCheckedClassName?: string
-}
-
-/**
- * A custom switch component built on top of Radix UI with dynamic styling.
- *
- * @example
- * ```tsx
- * <Switch
- *   checked={isEnabled}
- *   onCheckedChange={setIsEnabled}
- *   checkedClassName="bg-green-600"
- *   unCheckedClassName="bg-red-400"
- * />
- * ```
- */
-export const Switch = forwardRef(function Switch(
-  props: SwitchProps,
-  ref: ForwardedRef<HTMLButtonElement>,
-) {
-  const {
-    checked,
-    checkedClassName = "bg-amber-9",
-    unCheckedClassName = "bg-slate-6",
-    className = "",
-    ...rest
-  } = props
-
-  const StyledSwitchRoot = styled(RadixSwitch.Root)(
-    "w-12 h-7 p-1 flex items-center rounded transition-all cursor-pointer",
-    checked ? checkedClassName : unCheckedClassName,
-    checked ? "justify-end" : "justify-start",
-    className,
-  )
-
-  const StyledThumb = styled(RadixSwitch.Thumb)`
-    size-5 bg-white inline-block rounded shadow-lg
-  `
-
-  return (
-    <StyledSwitchRoot
-      ref={ref as ComponentProps<typeof StyledSwitchRoot>["ref"]}
-      checked={checked}
-      {...rest}
-    >
-      <StyledThumb />
-    </StyledSwitchRoot>
-  )
-})
+export const Switch = forwardRef<HTMLInputElement, React.ComponentPropsWithoutRef<"input">>(
+  ({ checked, className = "", ...props }, ref) => {
+    return (
+      <label className={`relative inline-flex items-center cursor-pointer ${className}`}>
+        <input type="checkbox" className="sr-only peer" checked={checked} ref={ref} {...props} />
+        <div className="w-12 h-7 bg-slate-6 rounded-full peer-checked:bg-brand-9 transition-colors" />
+        <div className="absolute left-1 top-1 w-5 h-5 bg-white rounded-full shadow transform peer-checked:translate-x-5 transition-transform" />
+      </label>
+    )
+  },
+)
+Switch.displayName = "Switch"

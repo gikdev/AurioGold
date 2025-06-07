@@ -12,8 +12,7 @@
     "resolveJsonModule": true,
     "moduleResolution": "bundler",
     "strict": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": false,
     "baseUrl": "./",
     "paths": {
       "#shared/*": ["src/*"]
