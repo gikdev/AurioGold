@@ -8,6 +8,7 @@ interface LabelerCommonProps {
   children: ReactNode
   errorMsg?: string
   hints?: ReactNode
+  titleSlot?: ReactNode
 }
 
 type PolymorphicProps<T extends ElementType> = {
@@ -23,6 +24,7 @@ function _Labeler<T extends ElementType = "label">({
   as,
   errorMsg,
   className,
+  titleSlot,
   ...others
 }: PolymorphicProps<T>) {
   const Tag = as || "label"
@@ -30,15 +32,19 @@ function _Labeler<T extends ElementType = "label">({
     <Tag className={cn("flex flex-col gap-2", className)} {...others}>
       <div className="flex gap-1 items-center">
         <span className={cn("text-slate-12 font-bold", labelTextClassName)}>{labelText}</span>
-        <span className="me-auto" />
-        {errorMsg && <WarningIcon size={20} className="text-red-9" />}
+        {titleSlot}
       </div>
 
       {children}
 
       {!!hints && hints}
 
-      {errorMsg && <p className="text-xs text-red-10 text-start">{errorMsg}</p>}
+      {errorMsg && (
+        <p className="text-xs text-red-10 text-start">
+          <WarningIcon size={16} className="inline m-1" />
+          {errorMsg}
+        </p>
+      )}
     </Tag>
   )
 }
