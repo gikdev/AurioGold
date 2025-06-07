@@ -1,3 +1,13 @@
+- Do theme based on user's pref:
+  - https://www.reacthaiku.dev/docs/hooks/usePrefersTheme
+
+- {isMobile ? <MobileFAB /> : <TopRightButton />}
+  - 👆🏻 + 👇🏻
+- Sheet / Drawer based on useWindowSize()
+  - https://www.reacthaiku.dev/docs/hooks/useWindowSize
+
+---
+
 Vitest
 Playwright
 Tailwind v4

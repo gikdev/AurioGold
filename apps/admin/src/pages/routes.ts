@@ -6,6 +6,7 @@ const routes = {
   profile_changePassword: "/profile/change-password",
   onlineCount: "/online-count",
   sendSms: "/send-sms",
+  customers: "/customers",
 
   /** ⚠️ FOR DEV TEST ONLY! */
   test: "/test",

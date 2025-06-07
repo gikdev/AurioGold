@@ -19,6 +19,7 @@ const NotFound = lazy(() => import("./pages/NotFound"))
 const Test = lazy(() => import("./pages/Test"))
 const Profile = lazy(() => import("./pages/Profile"))
 const SendSms = lazy(() => import("./pages/SendSms"))
+const Customers = lazy(() => import("./pages/Customers"))
 
 const container = document.querySelector("#root")
 if (!container) throw new Error("No `#root` found!")
@@ -50,6 +51,7 @@ root.render(
                   <Route index element={<Home />} />
                   <Route path={routes.profile} element={<Profile />} />
                   <Route path={routes.sendSms} element={<SendSms />} />
+                  <Route path={routes.customers} element={<Customers />} />
                   <Route path={routes.test} element={<Test />} />
                   <Route path="*" element={<NotFound />} />
                 </Route>
