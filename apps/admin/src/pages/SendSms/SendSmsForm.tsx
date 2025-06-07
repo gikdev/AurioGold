@@ -1,6 +1,6 @@
 import { apiRequest, useApiRequest } from "@gikdev/react-datapi/src"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ChatTextIcon, CheckSquareOffsetIcon } from "@phosphor-icons/react"
+import { ChatTextIcon } from "@phosphor-icons/react"
 import type { CustomerDto, SmsMsgDto } from "@repo/api-client/client"
 import { notifManager } from "@repo/shared/adapters"
 import { Btn, ErrorCardBoundary, Labeler, TextArea } from "@repo/shared/components"
@@ -34,7 +34,7 @@ const { fields, labels } = createFieldsWithLabels({
 const SendSmsFormSchema = z
   .object({
     [fields.message]: z.string().min(1, { message: `پر کردن ${labels.message} الزامی‌است` }),
-    [fields.receivers]: z.number().array().nullable(),
+    [fields.receivers]: z.number().array().nullable().optional(),
     [fields.toAll]: z.boolean(),
   })
   .refine(data => data.toAll === true || (data.receivers?.length ?? 0) > 0, {
@@ -51,14 +51,15 @@ export default function SendSmsForm() {
   const customersRes = useApiRequest<CustomerDto[]>(() => ({
     url: "/Master/GetCustomers",
     defaultValue: [],
-    onFinally: () => console.log("did this!"),
   }))
 
-  const { reset, handleSubmit, setValue, register, formState } = useForm<SendSmsFormData>({
+  const { reset, handleSubmit, setValue, register, formState, watch } = useForm<SendSmsFormData>({
     resolver: zodResolver(SendSmsFormSchema),
     mode: "onChange",
   })
   const { isSubmitting, errors } = formState
+
+  const isToAll = watch(fields.toAll)
 
   const onSelectionChanged = useCallback(
     (event: SelectionChangedEvent) => {
@@ -70,10 +71,10 @@ export default function SendSmsForm() {
     [setValue],
   )
 
-  async function onSubmit(data: Required<SendSmsFormData>) {
+  async function onSubmit(data: SendSmsFormData) {
     const dataToSend: Required<SmsMsgDto> = {
       toAll: data.toAll,
-      receivers: data.receivers,
+      receivers: data.receivers || null,
       message: data.message,
     }
 
@@ -91,15 +92,11 @@ export default function SendSmsForm() {
     })
   }
 
-  const selectAll = useCallback(() => {
-    gridRef.current?.api.selectAll("all")
-  }, [])
-
-  const selectAllBtn = (
-    <Btn type="button" className="ms-auto text-xs px-2 h-8" theme="info" onClick={selectAll}>
-      <CheckSquareOffsetIcon size={16} />
-      <span>انتخاب همه</span>
-    </Btn>
+  const selectAllSwitch = (
+    <label className="text-xs flex gap-1 items-center ms-auto hover:bg-slate-3 py-1 px-2 rounded-sm cursor-pointer">
+      <span>{labels.toAll}</span>
+      <input type="checkbox" {...register(fields.toAll)} className="accent-brand-9" />
+    </label>
   )
 
   return (
@@ -112,18 +109,24 @@ export default function SendSmsForm() {
       >
         <Labeler
           labelText={labels.receivers}
-          className="h-120 relative"
+          className="h-120"
           as="div"
           errorMsg={errors.receivers?.message}
-          titleSlot={selectAllBtn}
+          titleSlot={selectAllSwitch}
         >
-          <TableMultiSelect
-            onSelectionChanged={onSelectionChanged}
-            rowData={customersRes.data}
-            columnDefs={columnDefs}
-            getRowId={getRowId}
-            ref={gridRef}
-          />
+          <div className="relative h-full">
+            {isToAll && (
+              <span className="absolute top-0 left-0 right-0 bottom-0 bg-black/75 w-full h-full block z-10" />
+            )}
+
+            <TableMultiSelect
+              onSelectionChanged={onSelectionChanged}
+              rowData={customersRes.data}
+              columnDefs={columnDefs}
+              getRowId={getRowId}
+              ref={gridRef}
+            />
+          </div>
         </Labeler>
 
         <Labeler labelText={labels.message} errorMsg={errors.message?.message}>

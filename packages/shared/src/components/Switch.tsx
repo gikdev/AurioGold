@@ -11,4 +11,5 @@ export const Switch = forwardRef<HTMLInputElement, React.ComponentPropsWithoutRe
     )
   },
 )
+
 Switch.displayName = "Switch"
