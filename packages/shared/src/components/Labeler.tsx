@@ -1,5 +1,5 @@
 import { WarningIcon } from "@phosphor-icons/react/Warning"
-import { memo, type ComponentPropsWithoutRef, type ElementType, type ReactNode } from "react"
+import { type ComponentPropsWithoutRef, type ElementType, type ReactNode, memo } from "react"
 import { cn } from "#shared/helpers"
 
 interface LabelerCommonProps {

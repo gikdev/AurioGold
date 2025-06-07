@@ -1,19 +1,19 @@
 import { apiRequest, useApiRequest } from "@gikdev/react-datapi/src"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { ChatTextIcon } from "@phosphor-icons/react"
 import type { CustomerDto, SmsMsgDto } from "@repo/api-client/client"
 import { notifManager } from "@repo/shared/adapters"
 import { Btn, ErrorCardBoundary, Labeler, Switch, TextArea } from "@repo/shared/components"
 import { createFieldsWithLabels } from "@repo/shared/helpers"
 import { HeadingLine } from "@repo/shared/layouts"
 import type { GetRowIdFunc, SelectionChangedEvent } from "ag-grid-community"
+import type { AgGridReact } from "ag-grid-react"
 import { type ComponentProps, useCallback, useRef } from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import genDatApiConfig from "#/shared/datapi-config"
-import { TableMultiSelect } from "./table-mutliselect"
 import FormCard from "../Profile/FormCard"
-import { ChatTextIcon } from "@phosphor-icons/react"
-import type { AgGridReact } from "ag-grid-react"
+import { TableMultiSelect } from "./table-mutliselect"
 
 const columnDefs: ComponentProps<typeof TableMultiSelect>["columnDefs"] = [
   { field: "displayName" as never, headerName: "نام" },
