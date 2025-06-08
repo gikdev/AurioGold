@@ -101,6 +101,9 @@ importers:
       react-error-boundary:
         specifier: ^6.0.0
         version: 6.0.0(react@19.1.0)
+      react-haiku:
+        specifier: ^2.3.0
+        version: 2.3.0(react@19.1.0)
       react-hook-form:
         specifier: ^7.56.4
         version: 7.56.4(react@19.1.0)
@@ -210,6 +213,9 @@ importers:
       react-error-boundary:
         specifier: ^6.0.0
         version: 6.0.0(react@19.1.0)
+      react-haiku:
+        specifier: ^2.3.0
+        version: 2.3.0(react@19.1.0)
       react-hook-form:
         specifier: ^7.56.4
         version: 7.56.4(react@19.1.0)
@@ -382,6 +388,9 @@ importers:
       react-error-boundary:
         specifier: ^6.0.0
         version: 6.0.0(react@19.1.0)
+      react-haiku:
+        specifier: ^2.3.0
+        version: 2.3.0(react@19.1.0)
       react-hook-form:
         specifier: ^7.56.4
         version: 7.56.4(react@19.1.0)
@@ -3495,6 +3504,11 @@ packages:
 
   react-fast-compare@3.2.2:
     resolution: {integrity: sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==}
+
+  react-haiku@2.3.0:
+    resolution: {integrity: sha512-4bDW2uEQdHwjUbxWzTtUsO02Oic9fo+B9RlYDsz1zkYa7S/BvwRcIrzVPmNJfQLlGAj5xnCJi2qTEWlGsRHWBw==}
+    peerDependencies:
+      react: '>=16.8.0'
 
   react-hook-form@7.56.4:
     resolution: {integrity: sha512-Rob7Ftz2vyZ/ZGsQZPaRdIefkgOSrQSPXfqBdvOPwJfoGnjwRJUs7EM7Kc1mcoDv3NOtqBzPGbcMB8CGn9CKgw==}
@@ -8154,6 +8168,10 @@ snapshots:
       react: 19.1.0
 
   react-fast-compare@3.2.2: {}
+
+  react-haiku@2.3.0(react@19.1.0):
+    dependencies:
+      react: 19.1.0
 
   react-hook-form@7.56.4(react@19.1.0):
     dependencies:

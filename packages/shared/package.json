@@ -30,12 +30,12 @@
     "typescript": "5.8.2"
   },
   "dependencies": {
-    "@repo/api-client": "workspace:*",
     "@gikdev/react-datapi": "workspace:*",
     "@hookform/resolvers": "^5.0.1",
     "@master/styled.react": "^2.0.4",
     "@microsoft/signalr": "^8.0.7",
     "@phosphor-icons/react": "^2.1.10",
+    "@repo/api-client": "workspace:*",
     "ag-grid-community": "^33.3.0",
     "ag-grid-react": "^33.3.0",
     "ahooks": "^3.8.5",
@@ -49,6 +49,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-error-boundary": "^6.0.0",
+    "react-haiku": "^2.3.0",
     "react-hook-form": "^7.56.4",
     "react-multi-date-picker": "^4.5.2",
     "react-router": "^7.6.0",

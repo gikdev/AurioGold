@@ -3,8 +3,6 @@
 ## Todo
 
 - Make profiler (WinForm / NPM / ConsoleApp)
-- Add TanStackQuery / ApiClient (refactored & as a seperate package!)
-- ~~Add themeability~~
 
 ## Tools Used:
 
@@ -32,9 +30,10 @@
 - [husky](https://typicode.github.io/husky/) *Ultra-fast modern native git hooks*
 - [Zod](https://zod.dev/): *TypeScript-first schema validation with static type inference*
 - [React Hook Form](https://react-hook-form.com/): *Performant, flexible and extensible forms with easy-to-use validation.*
-- [Immer](): *work with immutable state in a more convenient way*
-- [React Toastify](): *Good* toasting library
-- [React Error Boundary](): Error boundary component for React
+- [Immer](https://immerjs.github.io/immer/): *work with immutable state in a more convenient way*
+- [React Haiku](https://www.reacthaiku.dev/): An awesome collection of React Hooks & Utilities!
+- [React Toastify](https://fkhadra.github.io/react-toastify): *Good* toasting library
+- [React Error Boundary](https://www.npmjs.com/package/react-error-boundary): Error boundary component for React
 - [Motion](https://motion.dev/): Animation library
 - To be continued...
 <!-- - [driver.js](https://driverjs.com): Visual tours -->

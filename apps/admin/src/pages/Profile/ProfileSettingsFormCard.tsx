@@ -1,11 +1,17 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CircleNotchIcon, FloppyDiskBackIcon, GearSixIcon } from "@phosphor-icons/react"
-import { Btn, FileInput, Input, Labeler, type UploadResult } from "@repo/shared/components"
+import {
+  Btn,
+  FileInput,
+  FormCard,
+  Input,
+  Labeler,
+  type UploadResult,
+} from "@repo/shared/components"
 import { createFieldsWithLabels } from "@repo/shared/helpers"
 import { useCallback } from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import FormCard from "./FormCard"
 
 const { fields, labels } = createFieldsWithLabels({
   fullName: "نام",

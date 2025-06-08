@@ -1,3 +1,4 @@
+import { motion } from "motion/react"
 import type { ButtonHTMLAttributes, ElementType } from "react"
 import { cn } from "#shared/helpers"
 
@@ -7,7 +8,7 @@ const styles = {
     flex items-center justify-center gap-2 disabled:bg-slate-3 
     disabled:text-slate-11 disabled:opacity-50
     disabled:active:scale-100 disabled:cursor-not-allowed
-    select-none cursor-pointer
+    select-none cursor-pointer disabled:border-slate-6
   `,
   filled: {
     success: "bg-jade-10 text-jade-1",
@@ -18,12 +19,12 @@ const styles = {
     neutral: "bg-slate-12 text-slate-1",
   },
   outline: {
-    success: "bg-jade-3 text-jade-11",
-    error: "bg-red-3 text-red-11",
-    warning: "bg-yellow-3 text-yellow-11",
-    info: "bg-blue-3 text-blue-11",
-    primary: "bg-brand-3 text-brand-11",
-    neutral: "bg-slate-3 text-slate-11",
+    success: "bg-jade-3 text-jade-11 border border-jade-7",
+    error: "bg-red-3 text-red-11 border border-red-7",
+    warning: "bg-yellow-3 text-yellow-11 border border-yellow-7",
+    info: "bg-blue-3 text-blue-11 border border-blue-7",
+    primary: "bg-brand-3 text-brand-11 border border-brand-7",
+    neutral: "bg-slate-3 text-slate-11 border border-slate-7",
   },
 }
 
@@ -45,9 +46,16 @@ export function Btn({
 }: BtnProps) {
   const classes = cn(styles.base, styles[themeType][theme], className)
 
+  const MotionTag = motion(Tag)
+
   return (
-    <Tag {...other} className={classes}>
+    <MotionTag
+      whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 0.95 }}
+      {...other}
+      className={classes}
+    >
       {children}
-    </Tag>
+    </MotionTag>
   )
 }

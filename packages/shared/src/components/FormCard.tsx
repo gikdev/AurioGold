@@ -18,7 +18,7 @@ interface FormCardProps extends FormHTMLAttributes<HTMLFormElement> {
   titleSlot?: ReactNode
 }
 
-export default function FormCard({
+export function FormCard({
   children,
   icon: Icon,
   title,

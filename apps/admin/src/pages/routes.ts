@@ -1,3 +1,5 @@
+import type { CustomerDto } from "@repo/api-client/client"
+
 const routes = {
   base: "/",
   home: "/",
@@ -7,6 +9,10 @@ const routes = {
   onlineCount: "/online-count",
   sendSms: "/send-sms",
   customers: "/customers",
+  customers_createNew: "/customers?create-new",
+  customers_viewDetailsById: (id: CustomerDto["id"]) => `/customers?details=${id}`,
+  customers_editById: (id: CustomerDto["id"]) => `/customers?edit=${id}`,
+  customers_deleteById: (id: CustomerDto["id"]) => `/customers?delete=${id}`,
 
   /** ⚠️ FOR DEV TEST ONLY! */
   test: "/test",
