@@ -2,7 +2,11 @@ import { UsersThreeIcon } from "@phosphor-icons/react"
 import { DrawerSheet, useDrawerSheetNumber } from "@repo/shared/components"
 import { queryStateKeys } from "."
 
-export default function CustomerForm() {
+interface EditCustomerFormProps {
+  reloadCustomers: () => void
+}
+
+export default function EditCustomerForm({ reloadCustomers }: EditCustomerFormProps) {
   const [customerId, setCustomerId] = useDrawerSheetNumber(queryStateKeys.edit)
 
   return (

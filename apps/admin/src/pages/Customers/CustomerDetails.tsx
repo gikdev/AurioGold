@@ -21,7 +21,7 @@ export default function CustomerDetails({ customers }: CustomerDetailsProps) {
   const [customerId, setCustomerId] = useDrawerSheetNumber(queryStateKeys.details)
   const customer = customers.find(c => c.id === customerId)
 
-  const actions = (
+  const btns = (
     <>
       <Btn
         as={Link}
@@ -51,8 +51,7 @@ export default function CustomerDetails({ customers }: CustomerDetailsProps) {
       open={customerId !== null}
       title="مشخصات مشتری"
       icon={InfoIcon}
-      actions={actions}
-      actionsClassName="flex items-center gap-2 p-2"
+      btns={btns}
     >
       {customer === undefined && (
         <div className="bg-red-2 border border-red-6 text-red-11 p-4 flex flex-col gap-2 items-center rounded-md">
@@ -94,7 +93,7 @@ interface KeyValueDetailProps {
 
 function KeyValueDetail({ title: key, value }: KeyValueDetailProps) {
   return (
-    <p className="flex items-center justify-between hover:bg-slate-2 p-2">
+    <p className="flex items-center justify-between hover:bg-slate-2 p-2 rounded-md">
       <span className="font-bold inline-flex gap-1 items-center">
         <CaretLeftIcon />
         <span>{key}:</span>

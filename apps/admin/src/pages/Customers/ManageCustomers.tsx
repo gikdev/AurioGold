@@ -26,6 +26,7 @@ import routes from "../routes"
 import CreateCustomerForm from "./CreateCustomerForm"
 import { CustomerCard, CustomerCardsContainer } from "./CustomerCards"
 import CustomerDetails from "./CustomerDetails"
+import DeleteCustomerModal from "./DeleteCustomerModal"
 import EditCustomerForm from "./EditCustomerForm"
 
 const viewModeSetup = createViewModes([
@@ -56,8 +57,9 @@ export default function ManageCustomers() {
 
   return (
     <>
-      <CreateCustomerForm />
-      <EditCustomerForm />
+      <DeleteCustomerModal reloadCustomers={() => customersRes.reload()} />
+      <CreateCustomerForm reloadCustomers={() => customersRes.reload()} />
+      <EditCustomerForm reloadCustomers={() => customersRes.reload()} />
       <CustomerDetails customers={customersRes.data ?? []} />
 
       <TitledCard

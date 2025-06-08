@@ -4,7 +4,7 @@ import { cn } from "@repo/shared/helpers"
 import { useIsMobile } from "@repo/shared/hooks"
 import { AnimatePresence, motion } from "motion/react"
 import { parseAsBoolean, parseAsInteger, useQueryState } from "nuqs"
-import type { ReactNode } from "react"
+import { type ReactNode, useEffect } from "react"
 
 interface DrawerSheetProps {
   open: boolean
@@ -14,6 +14,7 @@ interface DrawerSheetProps {
   icon: Icon
   actions?: ReactNode
   actionsClassName?: string
+  btns?: ReactNode
 }
 
 export function DrawerSheet({
@@ -24,8 +25,17 @@ export function DrawerSheet({
   icon: IconToRender,
   actionsClassName = "",
   actions,
+  btns,
 }: DrawerSheetProps) {
   const isMobile = useIsMobile()
+
+  useEffect(() => {
+    const closeOnEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose()
+    }
+    document.addEventListener("keydown", closeOnEscape)
+    return () => document.removeEventListener("keydown", closeOnEscape)
+  }, [onClose])
 
   return (
     <AnimatePresence>
@@ -38,7 +48,7 @@ export function DrawerSheet({
         >
           {/* Overlay */}
           <motion.div
-            className="absolute inset-0 bg-black/80"
+            className="absolute inset-0 bg-black/80 backdrop-blur"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -50,7 +60,7 @@ export function DrawerSheet({
             className={cn(
               "absolute bg-slate-1 flex flex-col shadow-lg",
               isMobile
-                ? "left-0 right-0 bottom-0 rounded-t-md h-[90vh]"
+                ? "left-0 right-0 bottom-0 rounded-t-md h-[90dvh]"
                 : "top-0 left-0 h-full rounded-r-md w-[40vw] border-r border-slate-6",
             )}
             initial={isMobile ? { y: "100%" } : { x: "-100%" }}
@@ -76,6 +86,11 @@ export function DrawerSheet({
             {actions && (
               <div className={cn("h-12 bg-slate-2 border-t border-slate-6", actionsClassName)}>
                 {actions}
+              </div>
+            )}
+            {btns && (
+              <div className="h-12 bg-slate-2 border-t border-slate-6 flex items-center p-2 gap-2">
+                {btns}
               </div>
             )}
           </motion.div>

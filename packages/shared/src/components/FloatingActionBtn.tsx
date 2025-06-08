@@ -32,7 +32,7 @@ export function FloatingActionBtn({
       to={to}
       title={title}
       onClick={onClick}
-      className="w-14 h-14 p-1 absolute right-[5%] bottom-[5%] shadow-lg shadow-slate-12/20 z-[2]"
+      className="w-14 h-14 p-1 absolute left-[8%] bottom-[8%] shadow-lg shadow-slate-12/20 z-[2]"
       theme={theme}
       themeType="filled"
     >
