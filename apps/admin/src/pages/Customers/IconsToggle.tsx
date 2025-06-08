@@ -1,6 +1,6 @@
-import { motion } from "motion/react"
-import { cn } from "@repo/shared/helpers"
 import type { Icon } from "@phosphor-icons/react"
+import { cn } from "@repo/shared/helpers"
+import { motion } from "motion/react"
 
 export function createViewModes<const T extends IconsToggleItem[]>(items: T) {
   type Id = T[number]["id"]

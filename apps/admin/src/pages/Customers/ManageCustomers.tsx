@@ -7,19 +7,19 @@ import {
   UserCirclePlusIcon,
   UsersThreeIcon,
 } from "@phosphor-icons/react"
-import { Btn, FloatingActionBtn, TableFa, TitledCard } from "@repo/shared/components"
-import CreateCustomerForm from "./CreateCustomerForm"
-import EditCustomerForm from "./EditCustomerForm"
-import { useDrawerSheet } from "./DrawerSheet"
-import { createViewModes, IconsToggle } from "./IconsToggle"
-import { useState } from "react"
 import type { CustomerDto } from "@repo/api-client/client"
-import { CustomerCard, CustomerCardsContainer } from "./CustomerCards"
-import CustomerDetails from "./CustomerDetails"
-import type { ColDef } from "ag-grid-community"
+import { Btn, FloatingActionBtn, TableFa, TitledCard } from "@repo/shared/components"
 import { useIsMobile } from "@repo/shared/hooks"
+import type { ColDef } from "ag-grid-community"
+import { useState } from "react"
 import { Link } from "react-router"
 import routes from "../routes"
+import CreateCustomerForm from "./CreateCustomerForm"
+import { CustomerCard, CustomerCardsContainer } from "./CustomerCards"
+import CustomerDetails from "./CustomerDetails"
+import { useDrawerSheet } from "./DrawerSheet"
+import EditCustomerForm from "./EditCustomerForm"
+import { IconsToggle, createViewModes } from "./IconsToggle"
 
 const sampleCustomers: Required<CustomerDto>[] = [
   {

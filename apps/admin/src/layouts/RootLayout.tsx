@@ -1,7 +1,7 @@
 import { currentThemeAtom } from "@repo/shared/atoms"
 import { useAtomValue } from "jotai"
-import { Outlet } from "react-router"
 import { usePrefersTheme } from "react-haiku"
+import { Outlet } from "react-router"
 
 export default function RootLayout() {
   const currentTheme = useAtomValue(currentThemeAtom)

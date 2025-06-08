@@ -1,4 +1,4 @@
-import { UserCircleIcon, ProhibitIcon, PowerIcon } from "@phosphor-icons/react"
+import { PowerIcon, ProhibitIcon, UserCircleIcon } from "@phosphor-icons/react"
 import type { CustomerDto } from "@repo/api-client/client"
 import { Btn } from "@repo/shared/components"
 import type { ReactNode } from "react"

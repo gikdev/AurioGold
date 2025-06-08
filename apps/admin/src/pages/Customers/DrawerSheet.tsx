@@ -1,4 +1,4 @@
-import { XIcon, type Icon } from "@phosphor-icons/react"
+import { type Icon, XIcon } from "@phosphor-icons/react"
 import { Btn } from "@repo/shared/components"
 import { cn } from "@repo/shared/helpers"
 import { useIsMobile } from "@repo/shared/hooks"
