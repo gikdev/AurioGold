@@ -1,4 +1,6 @@
+import { useApiRequest } from "@gikdev/react-datapi/src"
 import {
+  ArrowCounterClockwiseIcon,
   CardsIcon,
   InfoIcon,
   PenIcon,
@@ -8,7 +10,14 @@ import {
   UsersThreeIcon,
 } from "@phosphor-icons/react"
 import type { CustomerDto } from "@repo/api-client/client"
-import { Btn, FloatingActionBtn, TableFa, TitledCard } from "@repo/shared/components"
+import {
+  Btn,
+  FloatingActionBtn,
+  IconsToggle,
+  TableFa,
+  TitledCard,
+  createViewModes,
+} from "@repo/shared/components"
 import { useIsMobile } from "@repo/shared/hooks"
 import type { ColDef } from "ag-grid-community"
 import { useState } from "react"
@@ -17,192 +26,7 @@ import routes from "../routes"
 import CreateCustomerForm from "./CreateCustomerForm"
 import { CustomerCard, CustomerCardsContainer } from "./CustomerCards"
 import CustomerDetails from "./CustomerDetails"
-import { useDrawerSheet } from "./DrawerSheet"
 import EditCustomerForm from "./EditCustomerForm"
-import { IconsToggle, createViewModes } from "./IconsToggle"
-
-const sampleCustomers: Required<CustomerDto>[] = [
-  {
-    id: 3027,
-    masterID: 1,
-    groupID: 6,
-    groupIntID: 3,
-    displayName: "Reza reza",
-    mobile: "09121212121",
-    codeMelli: "",
-    address: "",
-    city: "",
-    melliID: null,
-    kasbsID: null,
-    isActive: true,
-    isBlocked: false,
-    allowedDevices: 4,
-    connectedDevices: null,
-    groupName: "15",
-    groupIntName: "پفکیان",
-    accountingID: null,
-  },
-  {
-    id: 3057,
-    masterID: 1,
-    groupID: 6,
-    groupIntID: 4,
-    displayName: "بنیامین",
-    mobile: "09364635201",
-    codeMelli: "",
-    address: "",
-    city: "",
-    melliID: null,
-    kasbsID: null,
-    isActive: true,
-    isBlocked: false,
-    allowedDevices: 10,
-    connectedDevices: null,
-    groupName: "15",
-    groupIntName: "5 خط",
-    accountingID: null,
-  },
-  {
-    id: 3058,
-    masterID: 1,
-    groupID: 6,
-    groupIntID: 4,
-    displayName: "محمو",
-    mobile: "09127642796",
-    codeMelli: "",
-    address: "",
-    city: "",
-    melliID: null,
-    kasbsID: null,
-    isActive: true,
-    isBlocked: false,
-    allowedDevices: 1,
-    connectedDevices: null,
-    groupName: "15",
-    groupIntName: "5 خط",
-    accountingID: null,
-  },
-  {
-    id: 3059,
-    masterID: 1,
-    groupID: 7,
-    groupIntID: 3,
-    displayName: "بهرامی2",
-    mobile: "09309421787",
-    codeMelli: "",
-    address: "",
-    city: "",
-    melliID: null,
-    kasbsID: null,
-    isActive: true,
-    isBlocked: false,
-    allowedDevices: 10,
-    connectedDevices: null,
-    groupName: "20",
-    groupIntName: "پفکیان",
-    accountingID: "138510275",
-  },
-  {
-    id: 3060,
-    masterID: 1,
-    groupID: 1,
-    groupIntID: 2,
-    displayName: "smhss",
-    mobile: "09196025113",
-    codeMelli: "025",
-    address: "pardisann",
-    city: "qhomm",
-    melliID: null,
-    kasbsID: null,
-    isActive: false,
-    isBlocked: false,
-    allowedDevices: 5,
-    connectedDevices: null,
-    groupName: "گروه صفر",
-    groupIntName: "پشمکیان",
-    accountingID: null,
-  },
-  {
-    id: 3061,
-    masterID: 1,
-    groupID: 1,
-    groupIntID: 2,
-    displayName: "smhs2",
-    mobile: "09383073240",
-    codeMelli: "035",
-    address: "tehran",
-    city: "qhods",
-    melliID: null,
-    kasbsID: null,
-    isActive: true,
-    isBlocked: true,
-    allowedDevices: 1,
-    connectedDevices: null,
-    groupName: "گروه صفر",
-    groupIntName: "پشمکیان",
-    accountingID: null,
-  },
-  {
-    id: 3062,
-    masterID: 1,
-    groupID: 6,
-    groupIntID: 2,
-    displayName: "smhss3",
-    mobile: "09045443714",
-    codeMelli: "025",
-    address: "tehran",
-    city: "qhods",
-    melliID: null,
-    kasbsID: null,
-    isActive: true,
-    isBlocked: false,
-    allowedDevices: 2,
-    connectedDevices: null,
-    groupName: "15",
-    groupIntName: "پشمکیان",
-    accountingID: null,
-  },
-  {
-    id: 3064,
-    masterID: 1,
-    groupID: 1,
-    groupIntID: 2,
-    displayName: "تست",
-    mobile: "0811153935001",
-    codeMelli: "",
-    address: "",
-    city: "",
-    melliID: null,
-    kasbsID: null,
-    isActive: false,
-    isBlocked: true,
-    allowedDevices: 3,
-    connectedDevices: null,
-    groupName: "گروه صفر",
-    groupIntName: "پشمکیان",
-    accountingID: null,
-  },
-  {
-    id: 3066,
-    masterID: 1,
-    groupID: 1,
-    groupIntID: 2,
-    displayName: "علی",
-    mobile: "09128055416",
-    codeMelli: "",
-    address: "",
-    city: "",
-    melliID: null,
-    kasbsID: null,
-    isActive: true,
-    isBlocked: false,
-    allowedDevices: 3,
-    connectedDevices: null,
-    groupName: "گروه صفر",
-    groupIntName: "پشمکیان",
-    accountingID: "1001",
-  },
-]
 
 const viewModeSetup = createViewModes([
   { id: "cards", icon: CardsIcon },
@@ -214,9 +38,17 @@ const viewModes = viewModeSetup.items
 export default function ManageCustomers() {
   const isMobile = useIsMobile()
   const [viewMode, setMode] = useState<ViewModes>("cards")
+  const customersRes = useApiRequest<CustomerDto[]>(() => ({
+    url: "/Master/GetCustomers",
+    defaultValue: [],
+  }))
 
   const titledCardActions = (
     <div className="ms-auto flex items-center gap-2">
+      <Btn className="h-10 w-10 p-1" onClick={() => customersRes.reload()}>
+        <ArrowCounterClockwiseIcon size={24} />
+      </Btn>
+
       <CreateCustomerFAB />
       <IconsToggle items={viewModes} activeItemId={viewMode} onChange={setMode} />
     </div>
@@ -226,7 +58,7 @@ export default function ManageCustomers() {
     <>
       <CreateCustomerForm />
       <EditCustomerForm />
-      <CustomerDetails />
+      <CustomerDetails customers={customersRes.data ?? []} />
 
       <TitledCard
         title="مدیریت مشتریان"
@@ -234,9 +66,11 @@ export default function ManageCustomers() {
         titleSlot={titledCardActions}
         className={!isMobile && viewMode === "table" ? "max-w-240" : undefined}
       >
-        {viewMode === "cards" && (
+        {customersRes.loading && <div className="h-100 rounded-md animate-pulse bg-slate-4" />}
+
+        {customersRes.success && !customersRes.loading && viewMode === "cards" && (
           <CustomerCardsContainer>
-            {sampleCustomers.map(c => (
+            {(customersRes.data || []).map(c => (
               <CustomerCard
                 key={c.id}
                 displayName={c.displayName}
@@ -248,19 +82,17 @@ export default function ManageCustomers() {
           </CustomerCardsContainer>
         )}
 
-        {viewMode === "table" && <CustomersTable customers={sampleCustomers} />}
+        {customersRes.success && !customersRes.loading && viewMode === "table" && (
+          <CustomersTable customers={customersRes.data || []} />
+        )}
       </TitledCard>
     </>
   )
 }
 
 function CreateCustomerFAB() {
-  const [, setOpen] = useDrawerSheet("create-new")
-  const openDrawer = () => setOpen(true)
-
   return (
     <FloatingActionBtn
-      onClick={openDrawer}
       title="ایجاد مشتری جدید"
       icon={UserCirclePlusIcon}
       to={routes.customers_createNew}
@@ -268,7 +100,6 @@ function CreateCustomerFAB() {
       fallback={
         <Btn
           type="button"
-          onClick={openDrawer}
           className="h-10 w-10 text-xs px-0"
           theme="success"
           title="ایجاد مشتری جدید"

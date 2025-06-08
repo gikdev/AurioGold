@@ -28,5 +28,5 @@
       "#/*": ["src/*"]
     }
   },
-  "include": ["src", "../../packages/shared/src/components/FormCard.tsx"]
+  "include": ["src"]
 }

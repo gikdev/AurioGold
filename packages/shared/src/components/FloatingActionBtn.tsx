@@ -6,7 +6,7 @@ import { Btn } from "./Btn"
 
 interface FloatingActionBtnProps {
   fallback: ReactNode
-  onClick: () => void
+  onClick?: () => void
   icon: Icon
   title?: string
   to?: string

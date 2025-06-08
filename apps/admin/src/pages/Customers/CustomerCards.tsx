@@ -37,11 +37,11 @@ export function CustomerCard({ displayName, id, isActive, isBlocked }: CustomerC
       <p>{displayName}</p>
 
       <div className="flex items-center gap-1">
-        <abbr title={isBlockedTitle} className="contents">
+        <abbr title={isBlockedTitle} dir="rtl">
           <ProhibitIcon className={isBlocked ? "text-red-10" : "text-slate-11"} size={20} />
         </abbr>
 
-        <abbr title={isActiveTitle} className="contents">
+        <abbr title={isActiveTitle} dir="rtl">
           <PowerIcon className={isActive ? "text-green-10" : "text-slate-11"} size={20} />
         </abbr>
       </div>

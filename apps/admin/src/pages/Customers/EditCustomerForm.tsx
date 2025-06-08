@@ -1,8 +1,9 @@
 import { UsersThreeIcon } from "@phosphor-icons/react"
-import { DrawerSheet, useDrawerSheetNumber } from "./DrawerSheet"
+import { DrawerSheet, useDrawerSheetNumber } from "@repo/shared/components"
+import { queryStateKeys } from "."
 
 export default function CustomerForm() {
-  const [customerId, setCustomerId] = useDrawerSheetNumber("edit")
+  const [customerId, setCustomerId] = useDrawerSheetNumber(queryStateKeys.edit)
 
   return (
     <DrawerSheet

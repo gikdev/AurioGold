@@ -1,8 +1,9 @@
 import { UsersThreeIcon } from "@phosphor-icons/react"
-import { DrawerSheet, useDrawerSheet } from "./DrawerSheet"
+import { DrawerSheet, useDrawerSheet } from "@repo/shared/components"
+import { queryStateKeys } from "."
 
 export default function CustomerForm() {
-  const [isOpen, setOpen] = useDrawerSheet("create-new")
+  const [isOpen, setOpen] = useDrawerSheet(queryStateKeys.createNew)
 
   return (
     <DrawerSheet

@@ -12,6 +12,8 @@ interface DrawerSheetProps {
   children: ReactNode
   title: string
   icon: Icon
+  actions?: ReactNode
+  actionsClassName?: string
 }
 
 export function DrawerSheet({
@@ -20,6 +22,8 @@ export function DrawerSheet({
   onClose,
   open,
   icon: IconToRender,
+  actionsClassName = "",
+  actions,
 }: DrawerSheetProps) {
   const isMobile = useIsMobile()
 
@@ -68,6 +72,12 @@ export function DrawerSheet({
 
             {/* Content */}
             <div className="flex-1 overflow-y-auto p-2">{children}</div>
+
+            {actions && (
+              <div className={cn("h-12 bg-slate-2 border-t border-slate-6", actionsClassName)}>
+                {actions}
+              </div>
+            )}
           </motion.div>
         </motion.div>
       )}
