@@ -135,7 +135,11 @@ export default function CreateCustomerForm({ reloadCustomers }: CreateCustomForm
         </>
       }
     >
-      <form className="min-h-full flex flex-col py-4 gap-5" autoComplete="off" data-testid="create-customer-form">
+      <form
+        className="min-h-full flex flex-col py-4 gap-5"
+        autoComplete="off"
+        data-testid="create-customer-form"
+      >
         {/* Dummy hidden inputs to trick Chrome autofill behavior... */}
         <input type="text" name="fake-username" autoComplete="username" className="hidden" />
         <input
