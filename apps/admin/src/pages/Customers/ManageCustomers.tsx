@@ -23,11 +23,11 @@ import type { ColDef } from "ag-grid-community"
 import { useState } from "react"
 import { Link } from "react-router"
 import routes from "../routes"
-import CreateCustomerForm from "./CreateCustomerForm"
+import CreateCustomerDrawer from "./CreateCustomerDrawer"
 import { CustomerCard, CustomerCardsContainer } from "./CustomerCards"
 import CustomerDetails from "./CustomerDetails"
 import DeleteCustomerModal from "./DeleteCustomerModal"
-import EditCustomerForm from "./EditCustomerForm"
+import EditCustomerDrawer from "./EditCustomerDrawer"
 
 const viewModeSetup = createViewModes([
   { id: "cards", icon: CardsIcon },
@@ -58,8 +58,11 @@ export default function ManageCustomers() {
   return (
     <>
       <DeleteCustomerModal reloadCustomers={() => customersRes.reload()} />
-      <CreateCustomerForm reloadCustomers={() => customersRes.reload()} />
-      <EditCustomerForm reloadCustomers={() => customersRes.reload()} />
+      <CreateCustomerDrawer reloadCustomers={() => customersRes.reload()} />
+      <EditCustomerDrawer
+        reloadCustomers={() => customersRes.reload()}
+        customers={customersRes.data ?? []}
+      />
       <CustomerDetails customers={customersRes.data ?? []} />
 
       <TitledCard
