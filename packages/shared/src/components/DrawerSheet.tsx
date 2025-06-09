@@ -84,12 +84,12 @@ export function DrawerSheet({
             <div className="flex-1 overflow-y-auto p-2">{children}</div>
 
             {actions && (
-              <div className={cn("h-12 bg-slate-2 border-t border-slate-6", actionsClassName)}>
+              <div className={cn("bg-slate-2 border-t border-slate-6", actionsClassName)}>
                 {actions}
               </div>
             )}
             {btns && (
-              <div className="h-12 bg-slate-2 border-t border-slate-6 flex items-center p-2 gap-2">
+              <div className="bg-slate-2 border-t border-slate-6 flex items-center p-2 gap-2">
                 {btns}
               </div>
             )}

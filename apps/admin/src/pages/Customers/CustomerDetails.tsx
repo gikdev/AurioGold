@@ -61,7 +61,7 @@ export default function CustomerDetails({ customers }: CustomerDetailsProps) {
         </div>
       )}
       {customer && (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3" data-testid="customer-details-section">
           <KeyValueDetail title="آی‌دی حساب‌داری" value={customer.accountingID} />
           <KeyValueDetail title="آدرس" value={customer.address} />
           <KeyValueDetail title="تعداد دستگاه‌های مجاز" value={customer.allowedDevices} />
