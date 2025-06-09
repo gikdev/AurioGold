@@ -69,7 +69,7 @@ export default function Login() {
 
   return (
     <div className="min-h-dvh flex justify-center items-center px-4 py-8 bg-slate-1 -m-2">
-      <StyledForm onSubmit={handleSubmit(onSubmit)}>
+      <StyledForm onSubmit={handleSubmit(onSubmit)} data-testid="login-form">
         <div className="flex items-center justify-between">
           <Heading as="h2" size={2}>
             ورود
@@ -86,14 +86,26 @@ export default function Login() {
         <Hr />
 
         <Labeler labelText={labels.username} errorMsg={errors.username?.message}>
-          <Input dir="ltr" type="text" autoFocus {...register(fields.username)} />
+          <Input
+            data-testid="username"
+            dir="ltr"
+            type="text"
+            autoFocus
+            {...register(fields.username)}
+          />
         </Labeler>
 
         <Labeler labelText={labels.password} errorMsg={errors.password?.message}>
-          <Input dir="ltr" type="password" {...register(fields.password)} />
+          <Input data-testid="password" dir="ltr" type="password" {...register(fields.password)} />
         </Labeler>
 
-        <Btn type="submit" themeType="filled" theme="primary" disabled={isSubmitting}>
+        <Btn
+          data-testid="submit"
+          type="submit"
+          themeType="filled"
+          theme="primary"
+          disabled={isSubmitting}
+        >
           <SignInIcon size={24} />
           <span>ورود</span>
         </Btn>
