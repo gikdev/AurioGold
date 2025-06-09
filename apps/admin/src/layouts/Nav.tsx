@@ -41,6 +41,9 @@ export function Nav() {
                 src={currentProfile.logoName}
                 alt=""
                 className="w-full h-full object-cover rounded-full"
+                onError={e => {
+                  e.currentTarget.src = "https://placehold.co/200"
+                }}
               />
             </ProfileWrapper>
             <p className="text-sm">{displayName}</p>

@@ -215,6 +215,7 @@ interface FileInputProps {
   onUploaded: (fileStr: string) => void
   onRemove?: FileInputFileInputProps["onRemove"]
   uploadFn: (file: File) => Promise<UploadResult>
+  errorMsg?: string
 }
 
 function FileInput({
@@ -226,6 +227,7 @@ function FileInput({
   onUploaded,
   uploadFn,
   onRemove,
+  errorMsg,
 }: FileInputProps) {
   const [file, setFile] = useState<File | null>(null)
 
@@ -272,6 +274,8 @@ function FileInput({
         onRemove={onRemove}
         onInvalidFile={msg => notifManager.notify(msg, "toast", { status: "error" })}
       />
+
+      {errorMsg && <p className="text-xs text-start text-red-10">{errorMsg}</p>}
     </FileInputContainer>
   )
 }

@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { GearSixIcon } from "@phosphor-icons/react"
-import { Input, Labeler, SelectWithOptions } from "@repo/shared/components"
+import { Input, Labeler, createSelectWithOptions } from "@repo/shared/components"
 import { HeadingLine } from "@repo/shared/layouts"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -22,6 +22,7 @@ interface Country {
 export default function Test() {
   const [countries, setCountries] = useState<Country[]>([])
   const [loading, setLoading] = useState(true)
+  const SelectWithCountry = createSelectWithOptions<Country>()
 
   const { register, formState, reset, getFieldState } = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
@@ -83,7 +84,7 @@ export default function Test() {
           errorMsg={errors.country?.message}
           isValid={isFieldValid("country")}
         >
-          <SelectWithOptions
+          <SelectWithCountry
             {...register("country")}
             options={countries}
             isLoading={loading}

@@ -31,9 +31,20 @@ export async function apiRequest<TOutput = unknown, TRaw = unknown>({
   const headers = { ...(config?.headers || {}), ...(options.headers || {}) }
   const method = options?.method || config?.method || "GET"
   const skipAuth = options?.skipAuth || config?.skipAuth || false
-  const skipContentType = options?.skipAuth || config?.skipContentType || false
+  const skipContentType = options?.skipContentType || config?.skipContentType || false
 
   function handleErrorMsg(msg: string) {
+    if (
+      !("onError" in options) &&
+      config &&
+      !("onError" in config) &&
+      !("handleErrorMsg" in config) &&
+      "handleFallbackErrorMsg" in config &&
+      config.handleFallbackErrorMsg
+    ) {
+      config.handleFallbackErrorMsg(msg)
+    }
+
     options?.onError?.(msg)
     config?.onError?.(msg)
     config?.handleErrorMsg?.(msg)

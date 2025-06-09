@@ -38,4 +38,5 @@ type GloballyConfigurableOptions = Partial<
 export interface GlobalConfigOptions extends GloballyConfigurableOptions {
   baseUrl?: string
   handleErrorMsg?: (msg?: string) => void
+  handleFallbackErrorMsg?: (msg?: string) => void
 }
