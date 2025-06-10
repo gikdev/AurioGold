@@ -9,6 +9,7 @@ const routes = {
   customers: "/customers",
   groupsGram: "/groups-gram",
   groupsNumeric: "/groups-numeric",
+  onlineUsers: "/online-users",
   settings: "/settings",
 
   /** ⚠️ FOR DEV TEST ONLY! */
