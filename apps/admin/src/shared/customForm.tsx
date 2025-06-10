@@ -54,6 +54,12 @@ export const convertPersianToEnglish = (str: string) => {
   return str.replace(/[۰-۹]/g, char => englishDigits[persianDigits.indexOf(char)])
 }
 
+export const convertEnglishToPersian = (str: string) => {
+  const persianDigits = "۰۱۲۳۴۵۶۷۸۹"
+  const englishDigits = "0123456789"
+  return str.replace(/[0-9]/g, char => persianDigits[englishDigits.indexOf(char)])
+}
+
 export async function uploadFile(file: File, isPrivate: boolean): Promise<UploadResult> {
   const formData = new FormData()
   const fileName = file.name

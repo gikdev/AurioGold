@@ -2,14 +2,14 @@ import { useApiRequest } from "@gikdev/react-datapi/src"
 import {
   ArrowCounterClockwiseIcon,
   CardsIcon,
+  CirclesThreePlusIcon,
   InfoIcon,
   PenIcon,
   TableIcon,
   TrashIcon,
-  UserCirclePlusIcon,
   UsersThreeIcon,
 } from "@phosphor-icons/react"
-import type { CustomerDto } from "@repo/api-client/client"
+import type { CustomerDto, CustomerGroupDto } from "@repo/api-client/client"
 import {
   Btn,
   FloatingActionBtn,
@@ -22,12 +22,10 @@ import { useIsMobile } from "@repo/shared/hooks"
 import type { ColDef } from "ag-grid-community"
 import { useState } from "react"
 import { Link } from "react-router"
-import CreateCustomerDrawer from "./CreateCustomerDrawer"
-import { CustomerCard, CustomerCardsContainer } from "./CustomerCards"
-import CustomerDetails from "./CustomerDetails"
-import DeleteCustomerModal from "./DeleteCustomerModal"
-import EditCustomerDrawer from "./EditCustomerDrawer"
 import { queryStateUrls } from "."
+import { GroupCard, GroupCardsContainer } from "./GroupCard"
+import GroupDetails from "./GroupDetails"
+import DeleteGroupModal from "./DeleteGroupModal"
 
 const viewModeSetup = createViewModes([
   { id: "cards", icon: CardsIcon },
@@ -36,70 +34,67 @@ const viewModeSetup = createViewModes([
 type ViewModes = typeof viewModeSetup.type
 const viewModes = viewModeSetup.items
 
-export default function ManageCustomers() {
+export default function ManageGroupsGram() {
   const isMobile = useIsMobile()
   const [viewMode, setMode] = useState<ViewModes>("cards")
-  const customersRes = useApiRequest<CustomerDto[]>(() => ({
-    url: "/Master/GetCustomers",
+  const groupsRes = useApiRequest<CustomerGroupDto[]>(() => ({
+    url: "/TyCustomerGroups",
     defaultValue: [],
   }))
 
   const titledCardActions = (
     <div className="ms-auto flex items-center gap-2">
-      <Btn className="h-10 w-10 p-1" onClick={() => customersRes.reload()}>
+      <Btn className="h-10 w-10 p-1" onClick={() => groupsRes.reload()}>
         <ArrowCounterClockwiseIcon size={24} />
       </Btn>
 
-      <CreateCustomerFAB />
+      <CreateGroupFAB />
       <IconsToggle items={viewModes} activeItemId={viewMode} onChange={setMode} />
     </div>
   )
 
   return (
     <>
-      <DeleteCustomerModal reloadCustomers={() => customersRes.reload()} />
-      <CreateCustomerDrawer reloadCustomers={() => customersRes.reload()} />
-      <EditCustomerDrawer
-        reloadCustomers={() => customersRes.reload()}
-        customers={customersRes.data ?? []}
-      />
-      <CustomerDetails customers={customersRes.data ?? []} />
+      <DeleteGroupModal reloadGroups={() => groupsRes.reload()} />
+      {/* <CreateGroupDrawer reloadGroups={() => groupsRes.reload()} /> */}
+      {/* <EditGroupDrawer reloadGroups={() => groupsRes.reload()} groups={groupsRes.data ?? []} /> */}
+      <GroupDetails groups={groupsRes.data ?? []} />
 
       <TitledCard
-        title="مدیریت مشتریان"
+        title="مدیریت گروه گرمی"
         icon={UsersThreeIcon}
         titleSlot={titledCardActions}
         className={!isMobile && viewMode === "table" ? "max-w-240" : undefined}
       >
-        {customersRes.loading && <div className="h-100 rounded-md animate-pulse bg-slate-4" />}
+        {groupsRes.loading && <div className="h-100 rounded-md animate-pulse bg-slate-4" />}
 
-        {customersRes.success && !customersRes.loading && viewMode === "cards" && (
-          <CustomerCardsContainer>
-            {(customersRes.data || []).map(c => (
-              <CustomerCard
-                key={c.id}
-                displayName={c.displayName}
-                id={c.id}
-                isActive={c.isActive}
-                isBlocked={c.isBlocked}
+        {groupsRes.success && !groupsRes.loading && viewMode === "cards" && (
+          <GroupCardsContainer>
+            {(groupsRes.data || []).map(g => (
+              <GroupCard
+                key={g.id}
+                id={g.id}
+                diffBuyPrice={g.diffBuyPrice}
+                diffSellPrice={g.diffSellPrice}
+                name={g.name}
               />
             ))}
-          </CustomerCardsContainer>
+          </GroupCardsContainer>
         )}
 
-        {customersRes.success && !customersRes.loading && viewMode === "table" && (
-          <CustomersTable customers={customersRes.data || []} />
+        {groupsRes.success && !groupsRes.loading && viewMode === "table" && (
+          <GroupsGramTable groupsGram={groupsRes.data || []} />
         )}
       </TitledCard>
     </>
   )
 }
 
-function CreateCustomerFAB() {
+function CreateGroupFAB() {
   return (
     <FloatingActionBtn
-      title="ایجاد مشتری جدید"
-      icon={UserCirclePlusIcon}
+      title="ایجاد گروه جدید"
+      icon={CirclesThreePlusIcon}
       to={queryStateUrls.createNew()}
       data-testid="create-customer-btn"
       theme="success"
@@ -108,12 +103,12 @@ function CreateCustomerFAB() {
           type="button"
           className="h-10 w-10 text-xs px-0"
           theme="success"
-          title="ایجاد مشتری جدید"
+          title="ایجاد گروه جدید"
           as={Link}
           to={queryStateUrls.createNew()}
           data-testid="create-customer-btn"
         >
-          <UserCirclePlusIcon size={24} className="transition-all" />
+          <CirclesThreePlusIcon size={24} className="transition-all" />
         </Btn>
       }
     />
@@ -140,21 +135,17 @@ function ManagementBtns({ data: { id } }: { data: CustomerDto }) {
 
 const columnDefs: ColDef[] = [
   { headerName: "مدیریت", cellRenderer: ManagementBtns },
-  { field: "groupName", headerName: "گروه گرمی" },
-  { field: "groupIntName", headerName: "گروه عددی" },
-  { field: "displayName", headerName: "نام" },
-  { field: "mobile", headerName: "موبایل" },
-  { field: "codeMelli", headerName: "کد ملی" },
-  { field: "isActive", headerName: "فعال هست؟" },
-  { field: "isBlocked", headerName: "مسدود کردن معامله" },
-  { field: "allowedDevices", headerName: "تعداد دستگاه های مجاز", minWidth: 200 },
+  { field: "name", headerName: "نام" },
+  { field: "description", headerName: "توضیح" },
+  { field: "diffBuyPrice", headerName: "اختلاف خرید مشتری" },
+  { field: "diffSellPrice", headerName: "اختلاف فروش مشتری" },
   { field: "id", headerName: "آیدی" },
 ]
 
-function CustomersTable({ customers }: { customers: CustomerDto[] }) {
+function GroupsGramTable({ groupsGram }: { groupsGram: CustomerGroupDto[] }) {
   return (
     <div className="h-160">
-      <TableFa columnDefs={columnDefs} rowData={customers} />
+      <TableFa columnDefs={columnDefs} rowData={groupsGram} />
     </div>
   )
 }

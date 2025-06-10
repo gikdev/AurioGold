@@ -10,7 +10,6 @@ import RootLayout from "./layouts/RootLayout"
 import Loading from "./pages/Loading"
 import routes from "./pages/routes"
 import "./styles/index.css"
-import Settings from "./pages/Settings"
 
 ModuleRegistry.registerModules([AllCommunityModule])
 
@@ -21,6 +20,8 @@ const Test = lazy(() => import("./pages/Test"))
 const Profile = lazy(() => import("./pages/Profile"))
 const SendSms = lazy(() => import("./pages/SendSms"))
 const Customers = lazy(() => import("./pages/Customers"))
+const GroupsGram = lazy(() => import("./pages/GroupsGram"))
+const Settings = lazy(() => import("./pages/Settings"))
 
 const container = document.querySelector("#root")
 if (!container) throw new Error("No `#root` found!")
@@ -53,6 +54,7 @@ root.render(
                   <Route path={routes.profile} element={<Profile />} />
                   <Route path={routes.sendSms} element={<SendSms />} />
                   <Route path={routes.customers} element={<Customers />} />
+                  <Route path={routes.groupsGram} element={<GroupsGram />} />
                   <Route path={routes.settings} element={<Settings />} />
                   <Route path={routes.test} element={<Test />} />
                   <Route path="*" element={<NotFound />} />

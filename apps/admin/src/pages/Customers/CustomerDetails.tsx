@@ -1,17 +1,9 @@
-import {
-  CaretLeftIcon,
-  CheckIcon,
-  InfoIcon,
-  PenIcon,
-  ReceiptXIcon,
-  TrashIcon,
-  XIcon,
-} from "@phosphor-icons/react"
+import { InfoIcon, PenIcon, ReceiptXIcon, TrashIcon } from "@phosphor-icons/react"
 import type { CustomerDto } from "@repo/api-client/client"
 import { Btn, DrawerSheet, useDrawerSheetNumber } from "@repo/shared/components"
 import { Link } from "react-router"
-import { queryStateKeys } from "."
-import routes from "../routes"
+import { queryStateKeys, queryStateUrls } from "."
+import { KeyValueDetail, KeyValueDetailsContainer } from "#/components"
 
 interface CustomerDetailsProps {
   customers: CustomerDto[]
@@ -25,7 +17,7 @@ export default function CustomerDetails({ customers }: CustomerDetailsProps) {
     <>
       <Btn
         as={Link}
-        to={routes.customers_editById(customerId!)}
+        to={queryStateUrls.edit(customerId!)}
         theme="warning"
         className="flex-1 h-8 text-sm"
       >
@@ -35,7 +27,7 @@ export default function CustomerDetails({ customers }: CustomerDetailsProps) {
 
       <Btn
         as={Link}
-        to={routes.customers_deleteById(customerId!)}
+        to={queryStateUrls.delete(customerId!)}
         theme="error"
         className="flex-1 h-8 text-sm"
       >
@@ -61,7 +53,10 @@ export default function CustomerDetails({ customers }: CustomerDetailsProps) {
         </div>
       )}
       {customer && (
-        <div className="flex flex-col gap-3" data-testid="customer-details-section">
+        <KeyValueDetailsContainer
+          className="flex flex-col gap-3"
+          data-testid="customer-details-section"
+        >
           <KeyValueDetail title="آی‌دی حساب‌داری" value={customer.accountingID} />
           <KeyValueDetail title="آدرس" value={customer.address} />
           <KeyValueDetail title="تعداد دستگاه‌های مجاز" value={customer.allowedDevices} />
@@ -80,45 +75,8 @@ export default function CustomerDetails({ customers }: CustomerDetailsProps) {
           <KeyValueDetail title="آی‌دی ملی" value={customer.melliID} />
           <KeyValueDetail title="آی‌دی مستر" value={customer.masterID} />
           <KeyValueDetail title="موبایل" value={customer.mobile} />
-        </div>
+        </KeyValueDetailsContainer>
       )}
     </DrawerSheet>
   )
-}
-
-interface KeyValueDetailProps {
-  title: string
-  value: number | string | null | undefined | boolean
-}
-
-function KeyValueDetail({ title: key, value }: KeyValueDetailProps) {
-  return (
-    <p className="flex items-center justify-between hover:bg-slate-2 p-2 rounded-md">
-      <span className="font-bold inline-flex gap-1 items-center">
-        <CaretLeftIcon />
-        <span>{key}:</span>
-      </span>
-
-      <span className="">
-        <RenderAValue value={value} />
-      </span>
-    </p>
-  )
-}
-
-interface RenderAValueProps {
-  value: unknown
-}
-
-function RenderAValue({ value }: RenderAValueProps) {
-  if (value == null || value === undefined || value === "") return "-"
-  if (typeof value === "string") return value
-  if (typeof value === "number") return value
-  if (typeof value === "object") return JSON.stringify(value)
-  if (typeof value === "boolean" && value.toString() === "false")
-    return <XIcon size={24} className="text-red-10" />
-  if (typeof value === "boolean" && value.toString() === "true")
-    return <CheckIcon size={24} className="text-green-10" />
-
-  return "?؟?"
 }
