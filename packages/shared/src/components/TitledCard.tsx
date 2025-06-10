@@ -1,6 +1,7 @@
 import styled from "@master/styled.react"
 import type { Icon } from "@phosphor-icons/react"
 import type { HTMLAttributes, ReactNode } from "react"
+import { Heading } from "./Heading"
 
 const StyledContainer = styled.div`
   flex flex-col gap-8 bg-slate-2 border border-slate-6
@@ -31,8 +32,8 @@ export function TitledCard({
     <StyledContainer {...other}>
       <StyledHeader className={headerClassName}>
         <div className="flex items-center gap-1">
-          <Icon size={32} />
-          <h2 className="text-2xl font-bold text-slate-12">{title}</h2>
+          <Icon size={24} />
+          <Heading size={1}>{title}</Heading>
         </div>
 
         {titleSlot}

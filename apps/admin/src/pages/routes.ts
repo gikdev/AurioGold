@@ -13,6 +13,7 @@ const routes = {
   customers_viewDetailsById: (id: CustomerDto["id"]) => `/customers?details=${id}`,
   customers_editById: (id: CustomerDto["id"]) => `/customers?edit=${id}`,
   customers_deleteById: (id: CustomerDto["id"]) => `/customers?delete=${id}`,
+  settings: "/settings",
 
   /** ⚠️ FOR DEV TEST ONLY! */
   test: "/test",

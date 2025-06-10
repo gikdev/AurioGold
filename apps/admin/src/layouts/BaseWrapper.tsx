@@ -1,6 +1,7 @@
 import { DatapiConfigProvider, apiRequest } from "@gikdev/react-datapi/src"
 import {
   ChatTextIcon,
+  GearIcon,
   HouseLineIcon,
   UserCircleGearIcon,
   UserCircleIcon,
@@ -36,7 +37,7 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
   // { id: 14, text: "ثبت اطلاعات فروشگاه", icon: StorefrontIcon, url: "/edit-home" },
   // { id: 15, text: "ثبت قوانین", icon: ScalesIcon, url: "/edit-rules" },
   // { id: 16, text: "ثبت درباره ما", icon: InfoIcon, url: "/edit-about" },
-  // { id: 17, text: "تنظیمات", icon: GearIcon, url: "/settings" },
+  { id: 17, text: "تنظیمات", icon: GearIcon, url: routes.settings },
 ]
 
 // Memoized config (only created once)

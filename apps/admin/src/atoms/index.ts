@@ -1,6 +1,10 @@
 import { atom } from "jotai"
+import { atomWithStorage } from "jotai/utils"
 
-export const showOnlineUsersInStatusbarAtom = atom(true)
+export const showOnlineUsersInStatusbarAtom = atomWithStorage(
+  "SHOW_ONLINE_USERS_IN_STATUSBAR",
+  true,
+)
 
 export const onlineUsersCountAtom = atom<"؟" | number>("؟")
 

@@ -23,9 +23,11 @@ import {
 import routes from "#/pages/routes"
 
 export default function StatusBar() {
+  const showOnlineUsers = useAtomValue(showOnlineUsersInStatusbarAtom)
+
   return (
     <div className="w-full bg-slate-1 flex rounded-md h-8 gap-2 overflow-hidden">
-      <OnlineUsers />
+      {showOnlineUsers ? <OnlineUsers /> : <div className="flex-1" />}
 
       <div className="flex items-center">
         <ReloadStatusBtn />
@@ -129,7 +131,6 @@ function ReloadStatusBtn() {
 }
 
 function OnlineUsers() {
-  const showOnlineUsersInStatusbar = useAtomValue(showOnlineUsersInStatusbarAtom)
   const connection = useAtomValue(connectionRefAtom)
   const connectionState = useAtomValue(connectionStateAtom)
   const setOnlineUsersCount = useSetAtom(onlineUsersCountAtom)
@@ -161,8 +162,6 @@ function OnlineUsers() {
 
     return
   }, [connectionState])
-
-  if (!showOnlineUsersInStatusbar) return null
 
   return (
     <div className="h-full flex items-center flex-1 text-xs">

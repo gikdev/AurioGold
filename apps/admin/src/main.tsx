@@ -10,6 +10,7 @@ import RootLayout from "./layouts/RootLayout"
 import Loading from "./pages/Loading"
 import routes from "./pages/routes"
 import "./styles/index.css"
+import Settings from "./pages/Settings"
 
 ModuleRegistry.registerModules([AllCommunityModule])
 
@@ -52,6 +53,7 @@ root.render(
                   <Route path={routes.profile} element={<Profile />} />
                   <Route path={routes.sendSms} element={<SendSms />} />
                   <Route path={routes.customers} element={<Customers />} />
+                  <Route path={routes.settings} element={<Settings />} />
                   <Route path={routes.test} element={<Test />} />
                   <Route path="*" element={<NotFound />} />
                 </Route>
