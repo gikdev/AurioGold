@@ -4,7 +4,6 @@ const routes = {
   login: "/login",
   profile: "/profile",
   profile_changePassword: "/profile/change-password",
-  onlineCount: "/online-count",
   sendSms: "/send-sms",
   customers: "/customers",
   groupsGram: "/groups-gram",

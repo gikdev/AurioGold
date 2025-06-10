@@ -106,7 +106,7 @@ function OnlinePeopleCount() {
 
   return (
     <abbr title={`تعداد افراد آنلاین: ${onlineUsersCount}`} className="contents no-underline">
-      <StyledLink to={routes.onlineCount}>
+      <StyledLink to={routes.onlineUsers}>
         <IconToRender size={20} className={isLoading ? "animate-spin" : undefined} />
         <span>{onlineUsersCount}</span>
       </StyledLink>
