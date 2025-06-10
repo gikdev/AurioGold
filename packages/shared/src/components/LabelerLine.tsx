@@ -25,7 +25,7 @@ export function LabelerLine({
   return (
     <label className={cn("flex flex-col gap-2", className)} {...others}>
       <div className="flex gap-1 items-center justify-between">
-        <span className={cn("text-slate-12 font-bold", labelTextClassName)}>{labelText}</span>
+        <span className={cn("", labelTextClassName)}>{labelText}</span>
         {children}
       </div>
 
