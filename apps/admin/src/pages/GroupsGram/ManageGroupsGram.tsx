@@ -23,11 +23,11 @@ import type { ColDef } from "ag-grid-community"
 import { useState } from "react"
 import { Link } from "react-router"
 import { queryStateUrls } from "."
+import CreateGroupDrawer from "./CreateGroupDrawer"
 import DeleteGroupModal from "./DeleteGroupModal"
+import EditGroupDrawer from "./EditGroupDrawer"
 import { GroupCard, GroupCardsContainer } from "./GroupCard"
 import GroupDetails from "./GroupDetails"
-import CreateGroupDrawer from "./CreateGroupDrawer"
-import EditGroupDrawer from "./EditGroupDrawer"
 
 const viewModeSetup = createViewModes([
   { id: "cards", icon: CardsIcon },
