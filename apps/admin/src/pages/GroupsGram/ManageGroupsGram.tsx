@@ -26,6 +26,8 @@ import { queryStateUrls } from "."
 import DeleteGroupModal from "./DeleteGroupModal"
 import { GroupCard, GroupCardsContainer } from "./GroupCard"
 import GroupDetails from "./GroupDetails"
+import CreateGroupDrawer from "./CreateGroupDrawer"
+import EditGroupDrawer from "./EditGroupDrawer"
 
 const viewModeSetup = createViewModes([
   { id: "cards", icon: CardsIcon },
@@ -56,8 +58,8 @@ export default function ManageGroupsGram() {
   return (
     <>
       <DeleteGroupModal reloadGroups={() => groupsRes.reload()} />
-      {/* <CreateGroupDrawer reloadGroups={() => groupsRes.reload()} /> */}
-      {/* <EditGroupDrawer reloadGroups={() => groupsRes.reload()} groups={groupsRes.data ?? []} /> */}
+      <CreateGroupDrawer reloadGroups={() => groupsRes.reload()} />
+      <EditGroupDrawer reloadGroups={() => groupsRes.reload()} groups={groupsRes.data ?? []} />
       <GroupDetails groups={groupsRes.data ?? []} />
 
       <TitledCard

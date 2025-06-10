@@ -34,7 +34,7 @@ export function GroupCard({ diffBuyPrice, diffSellPrice, id, name }: GroupCardPr
         dir="ltr"
         className="text-green-10 decoration-slate-7 hover:decoration-slate-8 text-xs"
       >
-        {convertEnglishToPersian((-(diffBuyPrice || 0))?.toString() || "")}
+        {convertEnglishToPersian(diffBuyPrice?.toString() || "")}
       </abbr>
 
       <abbr
