@@ -21,6 +21,7 @@ const Profile = lazy(() => import("./pages/Profile"))
 const SendSms = lazy(() => import("./pages/SendSms"))
 const Customers = lazy(() => import("./pages/Customers"))
 const GroupsGram = lazy(() => import("./pages/GroupsGram"))
+const GroupsNumeric = lazy(() => import("./pages/GroupsNumeric"))
 const Settings = lazy(() => import("./pages/Settings"))
 
 const container = document.querySelector("#root")
@@ -55,6 +56,7 @@ root.render(
                   <Route path={routes.sendSms} element={<SendSms />} />
                   <Route path={routes.customers} element={<Customers />} />
                   <Route path={routes.groupsGram} element={<GroupsGram />} />
+                  <Route path={routes.groupsNumeric} element={<GroupsNumeric />} />
                   <Route path={routes.settings} element={<Settings />} />
                   <Route path={routes.test} element={<Test />} />
                   <Route path="*" element={<NotFound />} />

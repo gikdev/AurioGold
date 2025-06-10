@@ -26,7 +26,7 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
   { id: 2, text: "ارسال پیامک", icon: ChatTextIcon, url: routes.sendSms },
   { id: 3, text: "مدیریت مشتریان", icon: UserCircleGearIcon, url: routes.customers },
   { id: 4, text: "مدیریت گروه گرمی", icon: UsersFourIcon, url: routes.groupsGram },
-  // { id: 5, text: "مدیریت گروه عددی", icon: UsersFourIcon, url: "/groups-number" },
+  { id: 5, text: "مدیریت گروه عددی", icon: UsersFourIcon, url: routes.groupsNumeric },
   // { id: 6, text: "کاربران آنلاین", icon: UsersFourIcon, url: "/online-users" },
   // { id: 7, text: "مدیریت منابع قیمت", icon: ArrowsCounterClockwiseIcon, url: "/price-sources" },
   // { id: 8, text: "مدیریت محصولات", icon: CubeIcon, url: "/products" },
