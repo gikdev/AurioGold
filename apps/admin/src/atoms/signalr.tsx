@@ -1,9 +1,10 @@
 import * as signalR from "@microsoft/signalr"
 import { currentProfile } from "@repo/profile-manager"
 import { notifManager, storageManager } from "@repo/shared/adapters"
-import { atom, useAtomValue, useSetAtom } from "jotai"
-import { useEffect } from "react"
+import { atom, useAtom } from "jotai"
+import { useCallback, useEffect, useRef } from "react"
 import routes from "#/pages/routes"
+import { isAdminOnlineAtom } from "./adminConnectivity"
 
 // Usage example is at the end of the file
 
@@ -25,54 +26,76 @@ export type ConnectionState = "unknown" | "disconnected" | "connected" | "loadin
 export const connectionStateAtom = atom<ConnectionState>("unknown")
 export const connectionRefAtom = atom<signalR.HubConnection | null>(null)
 
-export const startSignalRAtom = atom(null, async (_, set) => {
-  const isDev = import.meta.env.DEV
-
-  const connection = new signalR.HubConnectionBuilder()
-    .configureLogging(isDev ? signalR.LogLevel.Information : signalR.LogLevel.Error)
-    .withUrl(`${getBaseUrl()}/priceHub`)
-    .build()
-
-  connection.on("UserNotFound", () => {
-    notifManager.notify("کاربر پیدا نشد. لطفا دوباره وارد شوید", "toast", { status: "warning" })
-    if (isLoggedInOrHasToken()) setTimeout(() => logOut(), 2000)
-  })
-
-  connection.onreconnected(() => set(connectionStateAtom, "connected"))
-  connection.onclose(() => set(connectionStateAtom, "disconnected"))
-
-  try {
-    set(connectionStateAtom, "loading")
-    await connection.start()
-    set(connectionStateAtom, "connected")
-    const token = storageManager.get("ttkk", "sessionStorage")
-    if (token) await connection.invoke("InitializeConnection", token)
-  } catch (err) {
-    set(connectionStateAtom, "disconnected")
-  }
-
-  set(connectionRefAtom, connection)
-})
-
-export const stopSignalRAtom = atom(null, async get => {
-  const connection = get(connectionRefAtom)
-  try {
-    await connection?.stop()
-  } catch (err) {
-    notifManager.notify("Failed to stop the connection...", "console")
-  }
-})
-
 export function SignalRManager() {
-  const connectionState = useAtomValue(connectionStateAtom)
-  const startConnection = useSetAtom(startSignalRAtom)
-  const stopConnection = useSetAtom(stopSignalRAtom)
+  const initializationCountRef = useRef(0)
+  const [connectionState, setConnectionState] = useAtom(connectionStateAtom)
+  const [connectionRef, setConnectionRef] = useAtom(connectionRefAtom)
+  const [_, setAdminOnline] = useAtom(isAdminOnlineAtom)
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  const stopConnection = useCallback(async () => {
+    try {
+      await connectionRef?.stop()
+    } catch (err) {
+      notifManager.notify("Failed to stop the connection...", "console")
+    }
+  }, [])
+
+  const startConnection = useCallback(async () => {
+    const isDev = import.meta.env.DEV
+
+    const connection = new signalR.HubConnectionBuilder()
+      .configureLogging(isDev ? signalR.LogLevel.Information : signalR.LogLevel.Error)
+      .withUrl(`${getBaseUrl()}/priceHub`)
+      .build()
+
+    connection.on("UserNotFound", () => {
+      notifManager.notify("کاربر پیدا نشد. لطفا دوباره وارد شوید", "toast", { status: "warning" })
+      if (isLoggedInOrHasToken()) setTimeout(() => logOut(), 2000)
+    })
+
+    connection.onreconnected(() => setConnectionState("connected"))
+    connection.onclose(() => setConnectionState("disconnected"))
+
+    try {
+      setConnectionState("loading")
+      await connection.start()
+      setConnectionState("connected")
+      const token = storageManager.get("ttkk", "sessionStorage")
+      // In dev mode, StrictMode, makes it so this runs twice...
+      // I had to stop it from doing it...
+      if (token) {
+        if (initializationCountRef.current > 0) return
+        initializationCountRef.current++
+        await connection.invoke("InitializeConnection", token)
+      }
+    } catch (err) {
+      setConnectionState("disconnected")
+    }
+
+    setConnectionRef(connection)
+  }, [setConnectionRef, setConnectionState])
 
   useEffect(() => {
     startConnection()
     return () => void stopConnection()
   }, [startConnection, stopConnection])
 
+  // Handle UI update when admin connectivity status changed on another instance of the app
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (!connectionRef) return
+
+    connectionRef.on("MasterStatusChange", (incomingMasterId, _isOnline) => {
+      const masterId = storageManager.get("masterID", "sessionStorage")
+      if (Number(masterId) !== Number(incomingMasterId)) return
+      setAdminOnline(_isOnline)
+    })
+
+    return () => connectionRef.off("MasterStatusChange")
+  }, [])
+
+  // Connect again if disconnected
   useEffect(() => {
     const interval = setInterval(() => {
       if (connectionState === "disconnected") startConnection()
