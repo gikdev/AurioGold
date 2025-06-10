@@ -22,12 +22,12 @@ import { useIsMobile } from "@repo/shared/hooks"
 import type { ColDef } from "ag-grid-community"
 import { useState } from "react"
 import { Link } from "react-router"
+import { queryStateUrls } from "."
 import CreateCustomerDrawer from "./CreateCustomerDrawer"
 import { CustomerCard, CustomerCardsContainer } from "./CustomerCards"
 import CustomerDetails from "./CustomerDetails"
 import DeleteCustomerModal from "./DeleteCustomerModal"
 import EditCustomerDrawer from "./EditCustomerDrawer"
-import { queryStateUrls } from "."
 
 const viewModeSetup = createViewModes([
   { id: "cards", icon: CardsIcon },

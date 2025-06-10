@@ -2,8 +2,8 @@ import { InfoIcon, PenIcon, ReceiptXIcon, TrashIcon } from "@phosphor-icons/reac
 import type { CustomerGroupDto } from "@repo/api-client/client"
 import { Btn, DrawerSheet, useDrawerSheetNumber } from "@repo/shared/components"
 import { Link } from "react-router"
-import { queryStateKeys, queryStateUrls } from "."
 import { KeyValueDetail, KeyValueDetailsContainer } from "#/components"
+import { queryStateKeys, queryStateUrls } from "."
 
 interface GroupDetailsProps {
   groups: CustomerGroupDto[]

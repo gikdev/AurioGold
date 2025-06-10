@@ -1,5 +1,5 @@
 import styled from "@master/styled.react"
-import { CaretLeftIcon, XIcon, CheckIcon } from "@phosphor-icons/react"
+import { CaretLeftIcon, CheckIcon, XIcon } from "@phosphor-icons/react"
 
 export const KeyValueDetailsContainer = styled.div`
   flex flex-col gap-3

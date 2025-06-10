@@ -1,7 +1,7 @@
-import { HeadingLine } from "@repo/shared/layouts"
-import ManageCustomers from "./ManageCustomers"
 import type { CustomerDto } from "@repo/api-client/client"
+import { HeadingLine } from "@repo/shared/layouts"
 import routes from "../routes"
+import ManageCustomers from "./ManageCustomers"
 
 export const queryStateKeys = {
   createNew: "create-new",
