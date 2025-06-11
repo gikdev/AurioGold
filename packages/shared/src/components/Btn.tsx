@@ -1,4 +1,4 @@
-import { motion } from "motion/react"
+import { type HTMLMotionProps, motion } from "motion/react"
 import type { ButtonHTMLAttributes, ElementType } from "react"
 import { cn } from "#shared/helpers"
 
@@ -28,7 +28,7 @@ const styles = {
   },
 }
 
-interface BtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface BtnProps extends HTMLMotionProps<"button"> {
   as?: ElementType
   themeType?: Exclude<keyof typeof styles, "base">
   theme?: keyof (typeof styles)["filled"]

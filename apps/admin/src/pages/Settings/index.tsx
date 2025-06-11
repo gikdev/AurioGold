@@ -1,25 +1,16 @@
-import { LayoutIcon } from "@phosphor-icons/react"
-import { LabelerLine, Switch, TitledCard } from "@repo/shared/components"
 import { HeadingLine } from "@repo/shared/layouts"
-import { useAtom } from "jotai"
-import { showOnlineUsersInStatusbarAtom } from "#/atoms"
+import EditAboutCard from "./EditAboutCard"
+import EditMainPageContentCard from "./EditHomePageContentCard"
+import EditRulesCard from "./EditRulesCard"
+import UiSettingsCard from "./UiSettingsCard"
 
 export default function Settings() {
   return (
-    <HeadingLine title="تنظیمات">
+    <HeadingLine title="تنظیمات" className="flex flex-col gap-8">
       <UiSettingsCard />
+      <EditMainPageContentCard />
+      <EditRulesCard />
+      <EditAboutCard />
     </HeadingLine>
-  )
-}
-
-function UiSettingsCard() {
-  const [showOnlineUsers, setShowOnlineUsers] = useAtom(showOnlineUsersInStatusbarAtom)
-
-  return (
-    <TitledCard title="تنظیمات رابط کاربری" icon={LayoutIcon}>
-      <LabelerLine labelText="افراد آنلاین را در نوار وضعیت نمایش بده">
-        <Switch checked={showOnlineUsers} onChange={e => setShowOnlineUsers(e.target.checked)} />
-      </LabelerLine>
-    </TitledCard>
   )
 }

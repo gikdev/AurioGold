@@ -4,11 +4,11 @@ import { PasswordIcon } from "@phosphor-icons/react"
 import type { ChangePasswordDto } from "@repo/api-client/client"
 import { Btn, FormCard, Input, Labeler } from "@repo/shared/components"
 import { createControlledAsyncToast, createFieldsWithLabels } from "@repo/shared/helpers"
+import { usePasswordEyeBtn } from "@repo/shared/hooks"
 import { sha512 } from "js-sha512"
 import { useForm } from "react-hook-form"
 import z from "zod"
 import genDatApiConfig from "#/shared/datapi-config"
-import usePasswordEyeBtn from "./usePasswordEyeBtn"
 
 const { fields, labels } = createFieldsWithLabels({
   oldPassword: "گذرواژه قدیمی",

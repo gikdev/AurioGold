@@ -1,7 +1,7 @@
 import type { Icon } from "@phosphor-icons/react"
 import type { ComponentProps, ReactNode } from "react"
 import { Link } from "react-router"
-import { useIsMobile } from "#shared/hooks"
+import { getIsMobile, useIsMobile } from "#shared/hooks"
 import { Btn } from "./Btn"
 
 interface FloatingActionBtnProps {
@@ -21,7 +21,7 @@ export function FloatingActionBtn({
   theme = "primary",
   to,
 }: FloatingActionBtnProps) {
-  const isMobile = useIsMobile()
+  const isMobile = getIsMobile()
 
   if (!isMobile) return fallback
 

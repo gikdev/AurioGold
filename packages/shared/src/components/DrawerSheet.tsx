@@ -1,7 +1,7 @@
 import { type Icon, XIcon } from "@phosphor-icons/react"
 import { Btn } from "@repo/shared/components"
 import { cn } from "@repo/shared/helpers"
-import { useIsMobile } from "@repo/shared/hooks"
+import { getIsMobile, useIsMobile } from "@repo/shared/hooks"
 import { AnimatePresence, motion } from "motion/react"
 import { parseAsBoolean, parseAsInteger, useQueryState } from "nuqs"
 import { type ReactNode, useEffect } from "react"
@@ -27,7 +27,7 @@ export function DrawerSheet({
   actions,
   btns,
 }: DrawerSheetProps) {
-  const isMobile = useIsMobile()
+  const isMobile = getIsMobile()
 
   useEffect(() => {
     const closeOnEscape = (e: KeyboardEvent) => {

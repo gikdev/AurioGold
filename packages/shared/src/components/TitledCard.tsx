@@ -1,16 +1,19 @@
 import styled from "@master/styled.react"
 import type { Icon } from "@phosphor-icons/react"
 import type { HTMLAttributes, ReactNode } from "react"
+import { cn } from "#shared/helpers"
 import { Heading } from "./Heading"
 
 const StyledContainer = styled.div`
   flex flex-col gap-8 bg-slate-2 border border-slate-6
   p-4 rounded-md max-w-160 w-full mx-auto transition-all
 `
-const StyledHeader = styled.h2`
-  flex flex-wrap gap-1 justify-start
-  border-b border-slate-6 pb-4
-`
+const classes = {
+  header: `
+    flex flex-wrap gap-1 justify-start
+    border-b border-slate-6 pb-4 transition-all
+  `,
+}
 
 interface TitledCardProps extends HTMLAttributes<HTMLElement> {
   children: ReactNode
@@ -30,14 +33,14 @@ export function TitledCard({
 }: TitledCardProps) {
   return (
     <StyledContainer {...other}>
-      <StyledHeader className={headerClassName}>
+      <div className={cn(classes.header, headerClassName)}>
         <div className="flex items-center gap-1">
           <Icon size={24} />
           <Heading size={1}>{title}</Heading>
         </div>
 
         {titleSlot}
-      </StyledHeader>
+      </div>
 
       {children}
     </StyledContainer>

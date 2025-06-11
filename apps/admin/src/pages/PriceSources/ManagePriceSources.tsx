@@ -18,7 +18,7 @@ import {
   createTypedTableFa,
   createViewModes,
 } from "@repo/shared/components"
-import { useIsMobile } from "@repo/shared/hooks"
+import { getIsMobile } from "@repo/shared/hooks"
 import type { ColDef } from "ag-grid-community"
 import { useState } from "react"
 import { Link } from "react-router"
@@ -40,7 +40,7 @@ type ViewModes = typeof viewModeSetup.type
 const viewModes = viewModeSetup.items
 
 export default function ManagePriceSources() {
-  const isMobile = useIsMobile()
+  const isMobile = getIsMobile()
   const [viewMode, setMode] = useState<ViewModes>("cards")
   const sourcesRes = useApiRequest<StockPriceSourceResponse[]>(() => ({
     url: "/StockPriceSource/GetStockPriceSources",
