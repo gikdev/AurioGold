@@ -46,7 +46,7 @@ export function Btn({
 }: BtnProps) {
   const classes = cn(styles.base, styles[themeType][theme], className)
 
-  const MotionTag = motion(Tag)
+  const MotionTag = motion.create(Tag)
 
   return (
     <MotionTag

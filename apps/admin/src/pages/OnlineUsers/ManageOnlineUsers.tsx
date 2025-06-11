@@ -28,7 +28,7 @@ interface OnlineUser {
 }
 
 export default function ManageOnlineUsers() {
-  const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>([])
+  const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>()
   const connectionRef = useAtomValue(connectionRefAtom)
   const connectionState = useAtomValue(connectionStateAtom)
   const [onlineUsersCount, setOnlineUsersCount] = useAtom(onlineUsersCountAtom)
@@ -45,6 +45,11 @@ export default function ManageOnlineUsers() {
         })
       })
   }
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    getOnlineUsers()
+  }, [onlineUsersCount])
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
@@ -75,16 +80,30 @@ export default function ManageOnlineUsers() {
   return (
     <TitledCard title="کاربران آنلاین" icon={UsersFourIcon} titleSlot={cardTitleSlot}>
       <div className="flex justify-center items-center gap-5 flex-wrap">
-        <OnlineNumberCard num={onlineUsers.length} description="تعداد مشتریان آنلاین" />
-
         <OnlineNumberCard
-          num={typeof onlineUsersCount === "number" ? onlineUsersCount : 0}
-          description="تعداد کاربران آنلاین"
+          isOnline={onlineUsers && onlineUsers?.length > 0}
+          num={onlineUsers ? onlineUsers.length : "؟"}
+          description="مشتری آنلاین"
         />
 
         <OnlineNumberCard
-          num={(typeof onlineUsersCount === "number" ? onlineUsersCount : 0) - onlineUsers.length}
-          description="تعداد ادمین‌های آنلاین"
+          isOnline={typeof onlineUsersCount === "number" && onlineUsersCount > 0}
+          num={onlineUsersCount}
+          description="کاربر آنلاین"
+        />
+
+        <OnlineNumberCard
+          description="ادمین آنلاین"
+          isOnline={
+            typeof onlineUsersCount === "number" &&
+            onlineUsers &&
+            onlineUsersCount - onlineUsers.length > 0
+          }
+          num={
+            typeof onlineUsersCount === "number" && onlineUsers
+              ? onlineUsersCount - onlineUsers.length
+              : "؟"
+          }
         />
       </div>
 

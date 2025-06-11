@@ -1,12 +1,15 @@
+import { convertEnglishToPersian } from "#/shared/customForm"
+
 interface OnlineNumberCardProps {
-  num: number
+  num: number | string
   description: string
+  isOnline?: boolean
 }
 
-export default function OnlineNumberCard({ description, num }: OnlineNumberCardProps) {
+export default function OnlineNumberCard({ description, num, isOnline = false }: OnlineNumberCardProps) {
   return (
     <div className="flex flex-col gap-2 border border-slate-6 bg-slate-3 max-w-40 p-4 items-center rounded-md w-full relative">
-      {num > 0 && (
+      {isOnline && (
         <span
           className="
             inline-block bg-green-9 rounded-full w-4 h-4
@@ -18,7 +21,7 @@ export default function OnlineNumberCard({ description, num }: OnlineNumberCardP
         />
       )}
 
-      <p className="text-5xl text-slate-12 font-bold">{num}</p>
+      <p className="text-5xl text-slate-12 font-bold">{convertEnglishToPersian(num.toString())}</p>
 
       <p className="text-xs text-slate-11">{description}</p>
     </div>
