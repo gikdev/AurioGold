@@ -1,3 +1,6 @@
+Have it as <AppPage>
+which has animations & <ErrorBoundaryPage>
+
 Yes, you **can use page animations in React Router** by combining it with **Framer Motion**'s `AnimatePresence`. Here's a **simple setup** that works with `react-router-dom@6+`.
 
 ---
