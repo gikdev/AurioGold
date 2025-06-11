@@ -89,3 +89,30 @@ export async function uploadFile(file: File, isPrivate: boolean): Promise<Upload
 
   return { success: false, errorMsg: "یه مشکلی موقع آپلود فایل پیش‌اومد..." }
 }
+
+/**
+ * Generates a function that retrieves labels from a provided labels object,
+ * automatically removing the last two characters (typically used to trim formatting suffixes like " *" or ": ").
+ *
+ * @template T - The type of the labels object
+ * @param labels - An object mapping keys to label strings
+ * @returns A getter function that returns the trimmed label for a given key
+ *
+ * @example
+ * // Basic usage
+ * const formLabels = {
+ *   username: 'Username: ',
+ *   password: 'Password *',
+ *   email: 'Email address: '
+ * };
+ *
+ * const getLabel = generateLabelPropertyGetter(formLabels);
+ *
+ * console.log(getLabel('username')); // 'Username'
+ * console.log(getLabel('password')); // 'Password'
+ * console.log(getLabel('email'));   // 'Email address'
+ */
+export function generateLabelPropertyGetter<T extends Record<string, string>>(labels: T) {
+  // .slice(0, -2) to remove " *" or ": " parts of form field labels!
+  return (key: keyof typeof labels) => labels[key].slice(0, -2)
+}

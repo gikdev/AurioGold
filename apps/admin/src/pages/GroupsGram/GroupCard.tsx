@@ -1,12 +1,11 @@
 import styled from "@master/styled.react"
 import type { CustomerGroupDto } from "@repo/api-client/client"
 import { Btn } from "@repo/shared/components"
+import { formatPersianNumber } from "@repo/shared/utils"
 import { Link } from "react-router"
-import { convertEnglishToPersian } from "#/shared/customForm"
 import { queryStateUrls } from "."
 
 export const GroupCardsContainer = styled.div`
-  flex flex-wrap gap-5
   grid auto-rows-fr gap-4
   grid-cols-[repeat(auto-fit,minmax(150px,1fr))]
 `
@@ -34,7 +33,7 @@ export function GroupCard({ diffBuyPrice, diffSellPrice, id, name }: GroupCardPr
         dir="ltr"
         className="text-green-10 decoration-slate-7 hover:decoration-slate-8 text-xs"
       >
-        {convertEnglishToPersian(diffBuyPrice?.toString() || "")}
+        {formatPersianNumber(diffBuyPrice?.toString() || "")}
       </abbr>
 
       <abbr
@@ -42,7 +41,7 @@ export function GroupCard({ diffBuyPrice, diffSellPrice, id, name }: GroupCardPr
         dir="ltr"
         className="text-red-10 decoration-slate-7 hover:decoration-slate-8 text-xs"
       >
-        {convertEnglishToPersian(diffSellPrice?.toString() || "")}
+        {formatPersianNumber(diffSellPrice?.toString() || "")}
       </abbr>
     </Btn>
   )

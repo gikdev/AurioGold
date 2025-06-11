@@ -14,20 +14,23 @@ import {
   Btn,
   FloatingActionBtn,
   IconsToggle,
-  TableFa,
   TitledCard,
+  createTypedTableFa,
   createViewModes,
 } from "@repo/shared/components"
 import { useIsMobile } from "@repo/shared/hooks"
 import type { ColDef } from "ag-grid-community"
 import { useState } from "react"
 import { Link } from "react-router"
+import { cellRenderers } from "#/shared/agGrid"
+import { generateLabelPropertyGetter } from "#/shared/customForm"
 import { queryStateUrls } from "."
 import CreateGroupDrawer from "./CreateGroupDrawer"
 import DeleteGroupModal from "./DeleteGroupModal"
 import EditGroupDrawer from "./EditGroupDrawer"
 import { GroupCard, GroupCardsContainer } from "./GroupCard"
 import GroupDetails from "./GroupDetails"
+import { groupFormFields } from "./groupFormShared"
 
 const viewModeSetup = createViewModes([
   { id: "cards", icon: CardsIcon },
@@ -135,19 +138,31 @@ function ManagementBtns({ data: { id } }: { data: CustomerDto }) {
   )
 }
 
-const columnDefs: ColDef[] = [
+const getLabelProperty = generateLabelPropertyGetter(groupFormFields.labels)
+
+const columnDefs: ColDef<CustomerGroupDto>[] = [
   { headerName: "مدیریت", cellRenderer: ManagementBtns },
-  { field: "name", headerName: "نام" },
-  { field: "description", headerName: "توضیح" },
-  { field: "diffBuyPrice", headerName: "اختلاف خرید مشتری" },
-  { field: "diffSellPrice", headerName: "اختلاف فروش مشتری" },
-  { field: "id", headerName: "آیدی" },
+  { field: "name", headerName: getLabelProperty("name") },
+  { field: "description", headerName: getLabelProperty("description"), minWidth: 200 },
+  {
+    field: "diffBuyPrice",
+    headerName: getLabelProperty("diffBuyPrice"),
+    cellRenderer: cellRenderers.Price,
+  },
+  {
+    field: "diffSellPrice",
+    headerName: getLabelProperty("diffSellPrice"),
+    cellRenderer: cellRenderers.Price,
+  },
+  { field: "id", headerName: "آی‌دی" },
 ]
+
+const Table = createTypedTableFa<CustomerGroupDto>()
 
 function GroupsGramTable({ groupsGram }: { groupsGram: CustomerGroupDto[] }) {
   return (
     <div className="h-160">
-      <TableFa columnDefs={columnDefs} rowData={groupsGram} />
+      <Table columnDefs={columnDefs} rowData={groupsGram} />
     </div>
   )
 }

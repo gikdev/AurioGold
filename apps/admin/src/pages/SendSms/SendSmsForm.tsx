@@ -3,17 +3,24 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { ChatTextIcon } from "@phosphor-icons/react"
 import type { CustomerDto, SmsMsgDto } from "@repo/api-client/client"
 import { notifManager } from "@repo/shared/adapters"
-import { Btn, ErrorCardBoundary, FormCard, Labeler, TextArea } from "@repo/shared/components"
+import {
+  Btn,
+  ErrorCardBoundary,
+  FormCard,
+  Labeler,
+  TextArea,
+  createTypedTableFa,
+} from "@repo/shared/components"
 import { createFieldsWithLabels } from "@repo/shared/helpers"
 import type { ColDef, GetRowIdFunc, SelectionChangedEvent } from "ag-grid-community"
 import type { AgGridReact } from "ag-grid-react"
 import { useCallback, useRef } from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+import { multiRowSelectionOptions } from "#/shared/agGrid"
 import genDatApiConfig from "#/shared/datapi-config"
-import { TableMultiSelect } from "./TableMultiSelect"
 
-const columnDefs: ColDef[] = [
+const columnDefs: ColDef<CustomerDto>[] = [
   { field: "displayName", headerName: "نام" },
   { field: "groupName", headerName: "گروه گرمی" },
   { field: "groupIntName", headerName: "گروه عددی" },
@@ -43,7 +50,9 @@ const SendSmsFormSchema = z
 
 type SendSmsFormData = z.infer<typeof SendSmsFormSchema>
 
-const getRowId: GetRowIdFunc<unknown> = params => (params.data as { id: number }).id.toString()
+const getRowId: GetRowIdFunc<CustomerDto> = params => (params.data as { id: number }).id.toString()
+
+const Table = createTypedTableFa<CustomerDto>()
 
 export default function SendSmsForm() {
   const gridRef = useRef<AgGridReact<CustomerDto>>(null)
@@ -118,9 +127,11 @@ export default function SendSmsForm() {
               <span className="absolute top-0 left-0 right-0 bottom-0 bg-black/75 w-full h-full block z-10" />
             )}
 
-            <TableMultiSelect
+            <Table
+              rowSelection={multiRowSelectionOptions}
               onSelectionChanged={onSelectionChanged}
-              rowData={customersRes.data}
+              rowData={customersRes.data ?? []}
+              loading={!customersRes.data}
               columnDefs={columnDefs}
               getRowId={getRowId}
               ref={gridRef}

@@ -9,6 +9,7 @@ const routes = {
   groupsGram: "/groups-gram",
   groupsNumeric: "/groups-numeric",
   onlineUsers: "/online-users",
+  priceSources: "/price-sources",
   settings: "/settings",
 
   /** ⚠️ FOR DEV TEST ONLY! */

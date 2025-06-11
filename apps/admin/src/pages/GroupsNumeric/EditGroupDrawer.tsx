@@ -1,7 +1,7 @@
 import { apiRequest } from "@gikdev/react-datapi/src"
-import { ArrowRightIcon, PenIcon, ReceiptXIcon, UserPlusIcon } from "@phosphor-icons/react"
+import { ReceiptXIcon, UserPlusIcon } from "@phosphor-icons/react"
 import type { CustomerDto, CustomerGroupIntDto } from "@repo/api-client/client"
-import { Btn, DrawerSheet, useDrawerSheetNumber } from "@repo/shared/components"
+import { BtnTemplates, DrawerSheet, useDrawerSheetNumber } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { useEffect } from "react"
 import { useCustomForm } from "#/shared/customForm"
@@ -69,21 +69,12 @@ export default function EditGroupDrawer({ reloadGroups, groups }: EditGroupDrawe
       onClose={() => setGroupId(null)}
       btns={
         <>
-          <Btn className="flex-1" onClick={() => setGroupId(null)}>
-            <ArrowRightIcon size={24} />
-            <span>انصراف</span>
-          </Btn>
-
-          <Btn
-            className="flex-1"
+          <BtnTemplates.Cancel onClick={() => setGroupId(null)} />
+          <BtnTemplates.Edit
             disabled={isSubmitting}
-            theme="warning"
             themeType="filled"
             onClick={submitTheFormManually}
-          >
-            <PenIcon size={24} />
-            <span>ویرایش</span>
-          </Btn>
+          />
         </>
       }
     >

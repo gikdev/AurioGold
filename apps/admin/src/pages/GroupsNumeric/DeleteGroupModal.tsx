@@ -1,7 +1,6 @@
 import { apiRequest } from "@gikdev/react-datapi/src"
-import { ArrowRightIcon, TrashIcon } from "@phosphor-icons/react"
-import { useDrawerSheetNumber } from "@repo/shared/components"
-import { Btn, Modal } from "@repo/shared/components"
+import { BtnTemplates, useDrawerSheetNumber } from "@repo/shared/components"
+import { Modal } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
 import genDatApiConfig from "#/shared/datapi-config"
 import { queryStateKeys } from "."
@@ -44,15 +43,8 @@ export default function DeleteGroupModal({ reloadGroups }: DeleteGroupModalProps
       onClose={handleClose}
       btns={
         <>
-          <Btn className="flex-1" onClick={handleClose}>
-            <ArrowRightIcon size={24} />
-            <span>انصراف</span>
-          </Btn>
-
-          <Btn className="flex-1" theme="error" themeType="filled" onClick={handleDelete}>
-            <TrashIcon size={24} />
-            <span>حذف</span>
-          </Btn>
+          <BtnTemplates.Cancel onClick={() => handleClose()} />
+          <BtnTemplates.Delete themeType="filled" onClick={handleDelete} />
         </>
       }
     />

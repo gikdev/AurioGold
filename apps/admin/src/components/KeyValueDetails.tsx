@@ -8,9 +8,10 @@ export const KeyValueDetailsContainer = styled.div`
 interface KeyValueDetailProps {
   title: string
   value: number | string | null | undefined | boolean
+  ltr?: boolean
 }
 
-export function KeyValueDetail({ title: key, value }: KeyValueDetailProps) {
+export function KeyValueDetail({ title: key, value, ltr = false }: KeyValueDetailProps) {
   return (
     <p className="flex items-center justify-between hover:bg-slate-2 p-2 rounded-md">
       <span className="font-bold inline-flex gap-1 items-center">
@@ -18,7 +19,7 @@ export function KeyValueDetail({ title: key, value }: KeyValueDetailProps) {
         <span>{key}:</span>
       </span>
 
-      <span className="">
+      <span className="" dir={ltr ? "ltr" : "rtl"}>
         <RenderAValue value={value} />
       </span>
     </p>

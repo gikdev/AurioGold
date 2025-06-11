@@ -1,13 +1,17 @@
-import { InfoIcon, PenIcon, ReceiptXIcon, TrashIcon } from "@phosphor-icons/react"
+import { InfoIcon, ReceiptXIcon } from "@phosphor-icons/react"
 import type { CustomerDto } from "@repo/api-client/client"
-import { Btn, DrawerSheet, useDrawerSheetNumber } from "@repo/shared/components"
+import { BtnTemplates, DrawerSheet, useDrawerSheetNumber } from "@repo/shared/components"
 import { Link } from "react-router"
 import { KeyValueDetail, KeyValueDetailsContainer } from "#/components"
+import { generateLabelPropertyGetter } from "#/shared/customForm"
 import { queryStateKeys, queryStateUrls } from "."
+import { customerFormFields } from "./customerFormShared"
 
 interface CustomerDetailsProps {
   customers: CustomerDto[]
 }
+
+const getLabelProperty = generateLabelPropertyGetter(customerFormFields.labels)
 
 export default function CustomerDetails({ customers }: CustomerDetailsProps) {
   const [customerId, setCustomerId] = useDrawerSheetNumber(queryStateKeys.details)
@@ -15,25 +19,8 @@ export default function CustomerDetails({ customers }: CustomerDetailsProps) {
 
   const btns = (
     <>
-      <Btn
-        as={Link}
-        to={queryStateUrls.edit(customerId!)}
-        theme="warning"
-        className="flex-1 h-8 text-sm"
-      >
-        <PenIcon size={20} />
-        <span>ویرایش مشتری</span>
-      </Btn>
-
-      <Btn
-        as={Link}
-        to={queryStateUrls.delete(customerId!)}
-        theme="error"
-        className="flex-1 h-8 text-sm"
-      >
-        <TrashIcon size={20} />
-        <span>حذف مشتری</span>
-      </Btn>
+      <BtnTemplates.Edit as={Link} to={queryStateUrls.edit(customerId!)} />
+      <BtnTemplates.Delete as={Link} to={queryStateUrls.delete(customerId!)} />
     </>
   )
 
@@ -57,24 +44,33 @@ export default function CustomerDetails({ customers }: CustomerDetailsProps) {
           className="flex flex-col gap-3"
           data-testid="customer-details-section"
         >
-          <KeyValueDetail title="آی‌دی حساب‌داری" value={customer.accountingID} />
-          <KeyValueDetail title="آدرس" value={customer.address} />
-          <KeyValueDetail title="تعداد دستگاه‌های مجاز" value={customer.allowedDevices} />
-          <KeyValueDetail title="شهر" value={customer.city} />
-          <KeyValueDetail title="کد ملی" value={customer.codeMelli} />
-          <KeyValueDetail title="دستگاه‌های متصل" value={customer.connectedDevices} />
-          <KeyValueDetail title="نام" value={customer.displayName} />
-          <KeyValueDetail title="آی‌دی گروه گرمی" value={customer.groupID} />
-          <KeyValueDetail title="نام گروه گرمی" value={customer.groupName} />
-          <KeyValueDetail title="آی‌دی گروه عددی" value={customer.groupIntID} />
-          <KeyValueDetail title="نام گروه عددی" value={customer.groupIntName} />
-          <KeyValueDetail title="آی‌دی مشتری" value={customer.id} />
-          <KeyValueDetail title="فعال هست؟" value={customer.isActive} />
-          <KeyValueDetail title="مسدود است؟" value={customer.isBlocked} />
-          <KeyValueDetail title="آی‌دی کسب" value={customer.kasbsID} />
-          <KeyValueDetail title="آی‌دی ملی" value={customer.melliID} />
-          <KeyValueDetail title="آی‌دی مستر" value={customer.masterID} />
-          <KeyValueDetail title="موبایل" value={customer.mobile} />
+          <KeyValueDetail
+            ltr
+            title={getLabelProperty("accountingId")}
+            value={customer.accountingID}
+          />
+          <KeyValueDetail title={getLabelProperty("address")} value={customer.address} />
+          <KeyValueDetail
+            ltr
+            title={getLabelProperty("maxAllowedDevices")}
+            value={customer.allowedDevices}
+          />
+          <KeyValueDetail title={getLabelProperty("city")} value={customer.city} />
+          <KeyValueDetail ltr title={getLabelProperty("nationalId")} value={customer.codeMelli} />
+          <KeyValueDetail ltr title="تعداد دستگاه‌های متصل" value={customer.connectedDevices} />
+          <KeyValueDetail title={getLabelProperty("displayName")} value={customer.displayName} />
+          <KeyValueDetail title={getLabelProperty("groupId")} value={customer.groupName} />
+          <KeyValueDetail
+            title={getLabelProperty("numericGroupId")}
+            value={customer.groupIntName}
+          />
+          <KeyValueDetail ltr title={getLabelProperty("isActive")} value={customer.isActive} />
+          <KeyValueDetail ltr title={getLabelProperty("isBlocked")} value={customer.isBlocked} />
+          <KeyValueDetail title={getLabelProperty("businessLicense")} value={customer.kasbsID} />
+          <KeyValueDetail title={getLabelProperty("nationalCard")} value={customer.melliID} />
+          <KeyValueDetail ltr title={getLabelProperty("phone")} value={customer.mobile} />
+          <KeyValueDetail ltr title="مستر آی‌دی" value={customer.masterID} />
+          <KeyValueDetail ltr title="آی‌دی" value={customer.id} />
         </KeyValueDetailsContainer>
       )}
     </DrawerSheet>

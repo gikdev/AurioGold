@@ -1,7 +1,7 @@
 import { apiRequest } from "@gikdev/react-datapi/src"
-import { ArrowRightIcon, UserPlusIcon } from "@phosphor-icons/react"
+import { UserPlusIcon } from "@phosphor-icons/react"
 import type { CustomerGroupIntDto } from "@repo/api-client/client"
-import { Btn, DrawerSheet, useDrawerSheet } from "@repo/shared/components"
+import { BtnTemplates, DrawerSheet, useDrawerSheet } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { useCustomForm } from "#/shared/customForm"
 import genDatApiConfig from "#/shared/datapi-config"
@@ -58,21 +58,12 @@ export default function CreateGroupDrawer({ reloadGroups }: CreateGroupFormProps
       onClose={() => setOpen(false)}
       btns={
         <>
-          <Btn className="flex-1" onClick={() => setOpen(false)}>
-            <ArrowRightIcon size={24} />
-            <span>انصراف</span>
-          </Btn>
-
-          <Btn
-            className="flex-1"
+          <BtnTemplates.Cancel onClick={() => setOpen(false)} />
+          <BtnTemplates.Create
             disabled={isSubmitting}
-            theme="success"
             themeType="filled"
             onClick={submitTheFormManually}
-          >
-            <UserPlusIcon size={24} />
-            <span>ایجاد</span>
-          </Btn>
+          />
         </>
       }
     >

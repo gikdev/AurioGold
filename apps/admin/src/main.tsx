@@ -23,6 +23,7 @@ const Customers = lazy(() => import("./pages/Customers"))
 const GroupsGram = lazy(() => import("./pages/GroupsGram"))
 const GroupsNumeric = lazy(() => import("./pages/GroupsNumeric"))
 const OnlineUsers = lazy(() => import("./pages/OnlineUsers"))
+const PriceSources = lazy(() => import("./pages/PriceSources"))
 const Settings = lazy(() => import("./pages/Settings"))
 
 const container = document.querySelector("#root")
@@ -59,6 +60,7 @@ root.render(
                   <Route path={routes.groupsGram} element={<GroupsGram />} />
                   <Route path={routes.groupsNumeric} element={<GroupsNumeric />} />
                   <Route path={routes.onlineUsers} element={<OnlineUsers />} />
+                  <Route path={routes.priceSources} element={<PriceSources />} />
                   <Route path={routes.settings} element={<Settings />} />
                   <Route path={routes.test} element={<Test />} />
                   <Route path="*" element={<NotFound />} />

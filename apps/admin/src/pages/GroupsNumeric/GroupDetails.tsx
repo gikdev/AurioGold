@@ -1,13 +1,17 @@
-import { InfoIcon, PenIcon, ReceiptXIcon, TrashIcon } from "@phosphor-icons/react"
+import { InfoIcon, ReceiptXIcon } from "@phosphor-icons/react"
 import type { CustomerGroupDto } from "@repo/api-client/client"
-import { Btn, DrawerSheet, useDrawerSheetNumber } from "@repo/shared/components"
+import { BtnTemplates, DrawerSheet, useDrawerSheetNumber } from "@repo/shared/components"
 import { Link } from "react-router"
 import { KeyValueDetail, KeyValueDetailsContainer } from "#/components"
+import { generateLabelPropertyGetter } from "#/shared/customForm"
 import { queryStateKeys, queryStateUrls } from "."
+import { groupFormFields } from "./groupFormShared"
 
 interface GroupDetailsProps {
   groups: CustomerGroupDto[]
 }
+
+const getLabelProperty = generateLabelPropertyGetter(groupFormFields.labels)
 
 export default function GroupDetails({ groups }: GroupDetailsProps) {
   const [groupId, setGroupId] = useDrawerSheetNumber(queryStateKeys.details)
@@ -15,25 +19,8 @@ export default function GroupDetails({ groups }: GroupDetailsProps) {
 
   const btns = (
     <>
-      <Btn
-        as={Link}
-        to={queryStateUrls.edit(groupId!)}
-        theme="warning"
-        className="flex-1 h-8 text-sm"
-      >
-        <PenIcon size={20} />
-        <span>ویرایش گروه</span>
-      </Btn>
-
-      <Btn
-        as={Link}
-        to={queryStateUrls.delete(groupId!)}
-        theme="error"
-        className="flex-1 h-8 text-sm"
-      >
-        <TrashIcon size={20} />
-        <span>حذف گروه</span>
-      </Btn>
+      <BtnTemplates.Edit as={Link} to={queryStateUrls.edit(groupId!)} />
+      <BtnTemplates.Delete as={Link} to={queryStateUrls.delete(groupId!)} />
     </>
   )
 
@@ -55,11 +42,15 @@ export default function GroupDetails({ groups }: GroupDetailsProps) {
 
       {group && (
         <KeyValueDetailsContainer>
-          <KeyValueDetail title="نام" value={group.name} />
-          <KeyValueDetail title="توضیحات" value={group.description} />
-          <KeyValueDetail title="تفاوت خرید مشتری" value={group.diffBuyPrice} />
-          <KeyValueDetail title="تفاوت فروش مشتری" value={group.diffSellPrice} />
-          <KeyValueDetail title="آی‌دی گروه" value={group.id} />
+          <KeyValueDetail title={getLabelProperty("name")} value={group.name} />
+          <KeyValueDetail title={getLabelProperty("description")} value={group.description} />
+          <KeyValueDetail ltr title={getLabelProperty("diffBuyPrice")} value={group.diffBuyPrice} />
+          <KeyValueDetail
+            ltr
+            title={getLabelProperty("diffSellPrice")}
+            value={group.diffSellPrice}
+          />
+          <KeyValueDetail ltr title="آی‌دی" value={group.id} />
         </KeyValueDetailsContainer>
       )}
     </DrawerSheet>

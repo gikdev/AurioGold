@@ -1,20 +1,20 @@
 import { ArrowCounterClockwiseIcon, UsersFourIcon } from "@phosphor-icons/react"
 import { notifManager } from "@repo/shared/adapters"
-import { Btn, TableFa, TitledCard } from "@repo/shared/components"
+import { Btn, TitledCard, createTypedTableFa } from "@repo/shared/components"
 import type { ColDef } from "ag-grid-community"
 import { useAtom, useAtomValue } from "jotai"
 import { useEffect, useState } from "react"
 import { connectionRefAtom, connectionStateAtom, onlineUsersCountAtom } from "#/atoms"
 import OnlineNumberCard from "./OnlineNumberCard"
 
-const colDefs: ColDef[] = [
+const colDefs: ColDef<OnlineUser>[] = [
   { field: "displayName", headerName: "نام" },
   { field: "mobile", headerName: "موبایل" },
   { field: "isActive", headerName: "فعال هست؟" },
   { field: "isBlocked", headerName: "مسدود کردن معامله" },
   { field: "allowedDevices", headerName: "تعداد دستگاه های مجاز" },
   { field: "connectedDevices", headerName: "تعداد دستگاه‌های فعال" },
-  { field: "id", headerName: "آیدی" },
+  { field: "id", headerName: "آی‌دی" },
 ]
 
 interface OnlineUser {
@@ -26,6 +26,8 @@ interface OnlineUser {
   allowedDevices: number
   connectedDevices: number
 }
+
+const Table = createTypedTableFa<OnlineUser>()
 
 export default function ManageOnlineUsers() {
   const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>()
@@ -108,7 +110,7 @@ export default function ManageOnlineUsers() {
       </div>
 
       <div className="h-120">
-        <TableFa rowData={onlineUsers} columnDefs={colDefs} />
+        <Table rowData={onlineUsers ?? []} loading={!onlineUsers} columnDefs={colDefs} />
       </div>
     </TitledCard>
   )

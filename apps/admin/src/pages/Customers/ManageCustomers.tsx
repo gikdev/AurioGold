@@ -14,20 +14,23 @@ import {
   Btn,
   FloatingActionBtn,
   IconsToggle,
-  TableFa,
   TitledCard,
+  createTypedTableFa,
   createViewModes,
 } from "@repo/shared/components"
 import { useIsMobile } from "@repo/shared/hooks"
 import type { ColDef } from "ag-grid-community"
 import { useState } from "react"
 import { Link } from "react-router"
+import { cellRenderers } from "#/shared/agGrid"
+import { generateLabelPropertyGetter } from "#/shared/customForm"
 import { queryStateUrls } from "."
 import CreateCustomerDrawer from "./CreateCustomerDrawer"
 import { CustomerCard, CustomerCardsContainer } from "./CustomerCards"
 import CustomerDetails from "./CustomerDetails"
 import DeleteCustomerModal from "./DeleteCustomerModal"
 import EditCustomerDrawer from "./EditCustomerDrawer"
+import { customerFormFields } from "./customerFormShared"
 
 const viewModeSetup = createViewModes([
   { id: "cards", icon: CardsIcon },
@@ -138,23 +141,44 @@ function ManagementBtns({ data: { id } }: { data: CustomerDto }) {
   )
 }
 
-const columnDefs: ColDef[] = [
+const getLabelProperty = generateLabelPropertyGetter(customerFormFields.labels)
+
+const columnDefs: ColDef<CustomerDto>[] = [
   { headerName: "مدیریت", cellRenderer: ManagementBtns },
-  { field: "groupName", headerName: "گروه گرمی" },
-  { field: "groupIntName", headerName: "گروه عددی" },
-  { field: "displayName", headerName: "نام" },
-  { field: "mobile", headerName: "موبایل" },
-  { field: "codeMelli", headerName: "کد ملی" },
-  { field: "isActive", headerName: "فعال هست؟" },
-  { field: "isBlocked", headerName: "مسدود کردن معامله" },
-  { field: "allowedDevices", headerName: "تعداد دستگاه های مجاز", minWidth: 200 },
-  { field: "id", headerName: "آیدی" },
+  { field: "groupName", headerName: getLabelProperty("groupId") },
+  { field: "groupIntName", headerName: getLabelProperty("numericGroupId") },
+  { field: "displayName", headerName: getLabelProperty("displayName") },
+  { field: "mobile", headerName: getLabelProperty("phone"), cellRenderer: cellRenderers.Ltr },
+  {
+    field: "codeMelli",
+    headerName: getLabelProperty("nationalId"),
+    cellRenderer: cellRenderers.Ltr,
+  },
+  {
+    field: "isActive",
+    headerName: getLabelProperty("isActive"),
+    cellRenderer: cellRenderers.TrueFalse,
+  },
+  {
+    field: "isBlocked",
+    headerName: getLabelProperty("isBlocked"),
+    cellRenderer: cellRenderers.TrueFalse,
+  },
+  {
+    field: "allowedDevices",
+    headerName: getLabelProperty("maxAllowedDevices"),
+    cellRenderer: cellRenderers.Ltr,
+    minWidth: 240,
+  },
+  { field: "id", headerName: "آی‌دی", cellRenderer: cellRenderers.Ltr },
 ]
+
+const Table = createTypedTableFa<CustomerDto>()
 
 function CustomersTable({ customers }: { customers: CustomerDto[] }) {
   return (
     <div className="h-160">
-      <TableFa columnDefs={columnDefs} rowData={customers} />
+      <Table columnDefs={columnDefs} rowData={customers} />
     </div>
   )
 }

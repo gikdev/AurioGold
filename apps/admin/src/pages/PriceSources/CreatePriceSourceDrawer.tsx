@@ -1,43 +1,49 @@
 import { apiRequest } from "@gikdev/react-datapi/src"
 import { UserPlusIcon } from "@phosphor-icons/react"
-import type { CustomerGroupDto } from "@repo/api-client/client"
+import type { StockPriceSourceAddRequest } from "@repo/api-client/client"
 import { BtnTemplates, DrawerSheet, useDrawerSheet } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { useCustomForm } from "#/shared/customForm"
 import genDatApiConfig from "#/shared/datapi-config"
 import { queryStateKeys } from "."
-import GroupForm from "./GroupForm"
-import { type GroupFormValues, emptyGroupValues, groupSchema } from "./groupFormShared"
+import PriceSourceForm from "./PriceSourceForm"
+import {
+  type PriceSourceFormValues,
+  emptyPriceSourceValues,
+  priceSourceSchema,
+} from "./priceSourceFormShared"
 
-interface CreateGroupFormProps {
-  reloadGroups: () => void
+interface CreatePriceSourceFormProps {
+  reloadPriceSources: () => void
 }
 
-export default function CreateGroupDrawer({ reloadGroups }: CreateGroupFormProps) {
+export default function CreatePriceSourceDrawer({
+  reloadPriceSources,
+}: CreatePriceSourceFormProps) {
   const [isOpen, setOpen] = useDrawerSheet(queryStateKeys.createNew)
 
-  const form = useCustomForm(groupSchema, emptyGroupValues)
+  const form = useCustomForm(priceSourceSchema, emptyPriceSourceValues)
   const { formState, trigger, reset, handleSubmit } = form
   const { isSubmitting } = formState
 
-  const onSubmit = async (data: GroupFormValues) => {
+  const onSubmit = async (data: PriceSourceFormValues) => {
     const dataToSend = convertFormValuesToApiPayload(data)
 
     const { reject, resolve } = createControlledAsyncToast({
-      pending: "در حال ایجاد گروه...",
-      success: "گروه با موفقیت ایجاد شد!",
+      pending: "در حال ایجاد منبع قیمت...",
+      success: "منبع قیمت با موفقیت ایجاد شد!",
     })
 
     await apiRequest({
       config: genDatApiConfig(),
       options: {
-        url: "/TyCustomerGroups",
+        url: "/StockPriceSource/AddStockPriceSource",
         method: "POST",
         body: JSON.stringify(dataToSend),
         onError: msg => reject(msg),
         onSuccess: () => {
           resolve()
-          reloadGroups()
+          reloadPriceSources()
           setOpen(false)
           reset()
         },
@@ -53,7 +59,7 @@ export default function CreateGroupDrawer({ reloadGroups }: CreateGroupFormProps
   return (
     <DrawerSheet
       open={isOpen}
-      title="ایجاد گروه جدید"
+      title="ایجاد منبع قیمت جدید"
       icon={UserPlusIcon}
       onClose={() => setOpen(false)}
       btns={
@@ -67,17 +73,18 @@ export default function CreateGroupDrawer({ reloadGroups }: CreateGroupFormProps
         </>
       }
     >
-      <GroupForm form={form} />
+      <PriceSourceForm form={form} />
     </DrawerSheet>
   )
 }
 
-function convertFormValuesToApiPayload(values: GroupFormValues): Required<CustomerGroupDto> {
+function convertFormValuesToApiPayload(
+  values: PriceSourceFormValues,
+): Required<StockPriceSourceAddRequest> {
   return {
-    id: 0,
-    description: values.description ?? null,
     name: values.name,
-    diffBuyPrice: values.diffBuyPrice ?? 0,
-    diffSellPrice: values.diffSellPrice ?? 0,
+    code: values.code,
+    price: values.price ?? 0,
+    sourceUrl: values.sourceUrl,
   }
 }
