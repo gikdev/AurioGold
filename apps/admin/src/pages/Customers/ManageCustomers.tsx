@@ -1,10 +1,8 @@
 import { useApiRequest } from "@gikdev/react-datapi/src"
 import {
   ArrowCounterClockwiseIcon,
-  CardsIcon,
   InfoIcon,
   PenIcon,
-  TableIcon,
   TrashIcon,
   UserCirclePlusIcon,
   UsersThreeIcon,
@@ -13,14 +11,12 @@ import type { CustomerDto } from "@repo/api-client/client"
 import {
   Btn,
   FloatingActionBtn,
-  IconsToggle,
   TitledCard,
   createTypedTableFa,
-  createViewModes,
+  useViewModes,
 } from "@repo/shared/components"
 import { getIsMobile } from "@repo/shared/hooks"
 import type { ColDef } from "ag-grid-community"
-import { useState } from "react"
 import { Link } from "react-router"
 import { cellRenderers } from "#/shared/agGrid"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
@@ -32,16 +28,9 @@ import DeleteCustomerModal from "./DeleteCustomerModal"
 import EditCustomerDrawer from "./EditCustomerDrawer"
 import { customerFormFields } from "./customerFormShared"
 
-const viewModeSetup = createViewModes([
-  { id: "cards", icon: CardsIcon },
-  { id: "table", icon: TableIcon },
-])
-type ViewModes = typeof viewModeSetup.type
-const viewModes = viewModeSetup.items
-
 export default function ManageCustomers() {
   const isMobile = getIsMobile()
-  const [viewMode, setMode] = useState<ViewModes>("cards")
+  const { renderedIconsToggle, viewMode } = useViewModes()
   const customersRes = useApiRequest<CustomerDto[]>(() => ({
     url: "/Master/GetCustomers",
     defaultValue: [],
@@ -54,7 +43,7 @@ export default function ManageCustomers() {
       </Btn>
 
       <CreateCustomerFAB />
-      <IconsToggle items={viewModes} activeItemId={viewMode} onChange={setMode} />
+      {renderedIconsToggle}
     </div>
   )
 

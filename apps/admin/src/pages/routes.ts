@@ -10,6 +10,7 @@ const routes = {
   groupsNumeric: "/groups-numeric",
   onlineUsers: "/online-users",
   priceSources: "/price-sources",
+  balance: "/balance",
   settings: "/settings",
 
   /** ⚠️ FOR DEV TEST ONLY! */

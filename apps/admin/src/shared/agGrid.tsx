@@ -1,3 +1,6 @@
+import { CopyIcon } from "@phosphor-icons/react"
+import { notifManager } from "@repo/shared/adapters"
+import { Btn } from "@repo/shared/components"
 import { formatPersianNumber } from "@repo/shared/utils"
 import type { RowSelectionOptions } from "ag-grid-community"
 import type { CustomCellRendererProps } from "ag-grid-react"
@@ -18,6 +21,34 @@ export const cellRenderers = {
       <code>{p.value}</code>
     </p>
   ),
+  Debt: (p: CustomCellRendererProps) => {
+    const value: number = p.value
+
+    function handleCopyBtnClick() {
+      navigator.clipboard
+        .writeText(Math.abs(Number(value.toFixed(3))).toString())
+        .then(() => notifManager.notify("کپی شد!", "toast", { status: "success" }))
+        .catch(() =>
+          notifManager.notify("یه اروری موقع کپی کردن پیش آمد...", "toast", { status: "error" }),
+        )
+    }
+
+    const finalNumber = Math.abs(Number(value))
+
+    return (
+      <span className="flex gap-1 items-center" dir="ltr">
+        <span dir="ltr" className={value >= 0 ? "text-green-10" : "text-red-10"}>
+          {formatPersianNumber(finalNumber.toLocaleString())}
+        </span>
+
+        {value < 0 ? "(بدهکار)" : "(بستانکار)"}
+
+        <Btn onClick={handleCopyBtnClick} className="w-8 h-8 p-1">
+          <CopyIcon size={20} />
+        </Btn>
+      </span>
+    )
+  },
   Price: (p: CustomCellRendererProps) => (
     <p dir="ltr" className="text-left">
       {formatPersianNumber(p.value)}

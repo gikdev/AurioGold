@@ -1,16 +1,24 @@
-import type { Icon } from "@phosphor-icons/react"
+import { CardsIcon, type Icon, TableIcon } from "@phosphor-icons/react"
 import { cn } from "@repo/shared/helpers"
 import { motion } from "motion/react"
+import { useState } from "react"
 
-export function createViewModes<const T extends IconsToggleItem[]>(items: T) {
-  type Id = T[number]["id"]
+type ViewMode = "cards" | "table"
 
-  return {
-    items,
-    ids: items.map(i => i.id) as Id[],
-    default: items[0].id as Id,
-    type: null as unknown as Id, // for inference
-  }
+export function useViewModes() {
+  const modes: IconsToggleItem<ViewMode>[] = [
+    { id: "cards", icon: CardsIcon },
+    { id: "table", icon: TableIcon },
+  ]
+
+  const defaultViewMode = modes[0].id
+  const [viewMode, setMode] = useState<ViewMode>(defaultViewMode)
+
+  const renderedIconsToggle = (
+    <IconsToggle items={modes} activeItemId={viewMode} onChange={setMode} />
+  )
+
+  return { renderedIconsToggle, viewMode }
 }
 
 export interface IconsToggleItem<T extends string = string> {

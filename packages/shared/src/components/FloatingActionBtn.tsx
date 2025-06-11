@@ -11,6 +11,7 @@ interface FloatingActionBtnProps {
   title?: string
   to?: string
   theme?: ComponentProps<typeof Btn>["theme"]
+  disabled?: boolean
 }
 
 export function FloatingActionBtn({
@@ -20,8 +21,9 @@ export function FloatingActionBtn({
   icon: IconToRender,
   theme = "primary",
   to,
+  disabled = false,
 }: FloatingActionBtnProps) {
-  const isMobile = getIsMobile()
+  const isMobile = useIsMobile()
 
   if (!isMobile) return fallback
 
@@ -32,9 +34,10 @@ export function FloatingActionBtn({
       to={to}
       title={title}
       onClick={onClick}
-      className="w-14 h-14 p-1 absolute left-[8%] bottom-[8%] shadow-lg shadow-slate-12/20 z-[2]"
+      className="w-14 h-14 p-1 absolute left-[8%] bottom-[8%] shadow-lg shadow-slate-12/20 z-[2] disabled:shadow-none"
       theme={theme}
       themeType="filled"
+      disabled={disabled}
     >
       <IconToRender size={32} />
     </Btn>

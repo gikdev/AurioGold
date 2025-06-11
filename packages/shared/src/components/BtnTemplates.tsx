@@ -1,5 +1,6 @@
 import {
   ArrowClockwiseIcon,
+  CopyIcon,
   FloppyDiskIcon,
   InfoIcon,
   PenIcon,
@@ -101,8 +102,17 @@ function BtnTemplateIconDelete({ ...other }: BtnTemplateIconDeleteProps) {
 type BtnTemplateIconInfoProps = BtnPropsOmitted
 function BtnTemplateIconInfo({ ...other }: BtnTemplateIconInfoProps) {
   return (
-    <Btn className="w-10 p-1" {...other} theme="neutral">
+    <Btn className="w-10 p-1" {...other} theme="info">
       <InfoIcon size={24} />
+    </Btn>
+  )
+}
+
+type BtnTemplateIconCopyProps = BtnPropsOmitted
+function BtnTemplateIconCopy({ ...other }: BtnTemplateIconCopyProps) {
+  return (
+    <Btn className="w-10 p-1" {...other} theme="neutral">
+      <CopyIcon size={24} />
     </Btn>
   )
 }
@@ -119,4 +129,5 @@ export const BtnTemplates = {
   IconEdit: BtnTemplateIconEdit,
   IconDelete: BtnTemplateIconDelete,
   IconInfo: BtnTemplateIconInfo,
+  IconCopy: BtnTemplateIconCopy,
 }
