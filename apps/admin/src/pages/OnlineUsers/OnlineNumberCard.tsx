@@ -6,7 +6,11 @@ interface OnlineNumberCardProps {
   isOnline?: boolean
 }
 
-export default function OnlineNumberCard({ description, num, isOnline = false }: OnlineNumberCardProps) {
+export default function OnlineNumberCard({
+  description,
+  num,
+  isOnline = false,
+}: OnlineNumberCardProps) {
   return (
     <div className="flex flex-col gap-2 border border-slate-6 bg-slate-3 max-w-40 p-4 items-center rounded-md w-full relative">
       {isOnline && (
