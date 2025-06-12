@@ -5,8 +5,8 @@ export const Switch = forwardRef<HTMLInputElement, React.ComponentPropsWithoutRe
     return (
       <label className={`relative inline-flex items-center cursor-pointer ${className}`}>
         <input type="checkbox" className="sr-only peer" checked={checked} ref={ref} {...props} />
-        <div className="w-12 h-7 bg-slate-6 rounded-full peer-checked:bg-brand-9 transition-colors" />
-        <div className="absolute left-1 top-1 w-5 h-5 bg-white rounded-full shadow transform peer-checked:translate-x-5 transition-transform" />
+        <span className="w-12 h-7 bg-slate-6 rounded-full peer-checked:bg-brand-9 transition-colors" />
+        <span className="absolute left-1 top-1 w-5 h-5 bg-white rounded-full shadow transform peer-checked:translate-x-5 transition-transform" />
       </label>
     )
   },
