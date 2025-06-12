@@ -3,7 +3,6 @@ import { CoinsIcon, CopyIcon } from "@phosphor-icons/react"
 import type { MasterPortfolioDto } from "@repo/api-client/client"
 import { notifManager } from "@repo/shared/adapters"
 import { BtnTemplates, FloatingActionBtn, TitledCard, useViewModes } from "@repo/shared/components"
-import { getIsMobile } from "@repo/shared/hooks"
 import { useState } from "react"
 import { v4 as uuid } from "uuid"
 import BalanceTable from "./BalanceTable"
@@ -25,8 +24,6 @@ function mapSinglePortfolioItem(item: MasterPortfolioDto): MasterPortfolioWithId
   }
 }
 
-const isMobile = getIsMobile()
-
 export default function ManageBalance() {
   const { renderedIconsToggle, viewMode } = useViewModes()
   const [selectedPortfolioId, setSelectedPortfolioId] = useState<MasterPortfolioWithId["id"]>()
@@ -41,6 +38,13 @@ export default function ManageBalance() {
     if (!portfolioById) return
 
     const valueToCopy = Math.abs(Number(portfolioById.volume.toFixed(3))).toString()
+
+    if (!navigator.clipboard || !window.isSecureContext) {
+      notifManager.notify("برای کپی کردن، لطفاً از HTTPS استفاده کنید", "toast", {
+        status: "warning",
+      })
+      return
+    }
 
     navigator.clipboard
       .writeText(valueToCopy)
@@ -77,12 +81,7 @@ export default function ManageBalance() {
   )
 
   return (
-    <TitledCard
-      title="مدیریت مانده حساب"
-      icon={CoinsIcon}
-      titleSlot={titledCardActions}
-      className={!isMobile && viewMode === "table" ? "max-w-240" : undefined}
-    >
+    <TitledCard title="مدیریت مانده حساب" icon={CoinsIcon} titleSlot={titledCardActions}>
       {resBalance.loading && <div className="h-100 rounded-md animate-pulse bg-slate-4" />}
 
       {resBalance.success && !resBalance.loading && viewMode === "cards" && (

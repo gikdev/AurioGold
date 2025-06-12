@@ -57,7 +57,7 @@ function PortfolioCard({
       whileTap={{ scale: 0.95 }}
       className={cn(
         "bg-slate-3 hover:bg-slate-4 border rounded-md p-2 flex flex-col gap-5 min-w-max cursor-pointer",
-        isSelected ? "border-brand-7 hover:border-brand-8" : "border-slate-7 hover:border-slate-8",
+        isSelected ? "border-brand-9 hover:border-brand-10" : "border-slate-7 hover:border-slate-8",
       )}
     >
       <p className="flex items-center gap-1">
