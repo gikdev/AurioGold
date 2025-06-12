@@ -27,11 +27,11 @@ import CustomerBalanceDrawer from "./CustomerBalanceDrawer"
 import { CustomerCard, CustomerCardsContainer } from "./CustomerCards"
 import CustomerDetails from "./CustomerDetails"
 import CustomerDocDrawer from "./CustomerDocDrawer"
+import CustomerTransferDrawer from "./CustomerTransferDrawer"
 import DeleteCustomerModal from "./DeleteCustomerModal"
 import EditCustomerDrawer from "./EditCustomerDrawer"
 import { customerFormFields } from "./customerFormShared"
 import { CustomerNavigation } from "./navigation"
-import CustomerTransferDrawer from "./CustomerTransferDrawer"
 
 export default function ManageCustomers() {
   const isMobile = getIsMobile()
