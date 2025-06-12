@@ -114,3 +114,9 @@ export function useDrawerSheetNumber(id: string) {
 
   return [num, setNum] as const
 }
+
+export function useDrawerSheetString(id: string) {
+  const [str, setStr] = useQueryState(id)
+
+  return [str, setStr] as const
+}
