@@ -11,6 +11,7 @@ const routes = {
   onlineUsers: "/online-users",
   priceSources: "/price-sources",
   balance: "/balance",
+  orders: "/orders",
   settings: "/settings",
 
   /** ⚠️ FOR DEV TEST ONLY! */
