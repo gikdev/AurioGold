@@ -43,7 +43,7 @@ export const cellRenderers = {
 
         {value < 0 ? "(بدهکار)" : "(بستانکار)"}
 
-        <Btn onClick={handleCopyBtnClick} className="w-8 h-8 p-1">
+        <Btn onClick={handleCopyBtnClick} className="w-8 min-h-8 p-1">
           <CopyIcon size={20} />
         </Btn>
       </span>

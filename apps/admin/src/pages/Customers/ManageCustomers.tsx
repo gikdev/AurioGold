@@ -1,15 +1,13 @@
 import { useApiRequest } from "@gikdev/react-datapi/src"
 import {
   ArrowCounterClockwiseIcon,
-  InfoIcon,
-  PenIcon,
-  TrashIcon,
   UserCirclePlusIcon,
   UsersThreeIcon,
 } from "@phosphor-icons/react"
 import type { CustomerDto } from "@repo/api-client/client"
 import {
   Btn,
+  BtnTemplates,
   FloatingActionBtn,
   TitledCard,
   createTypedTableFa,
@@ -122,17 +120,21 @@ function CreateCustomerFAB() {
 function ManagementBtns({ data: { id } }: { data: CustomerDto }) {
   return (
     <div className="flex items-center gap-1 py-1">
-      <Btn as={Link} to={CustomerNavigation.details(id!)} className="h-8 w-8 p-1" theme="info">
-        <InfoIcon size={20} />
-      </Btn>
-
-      <Btn as={Link} to={CustomerNavigation.edit(id!)} className="h-8 w-8 p-1" theme="warning">
-        <PenIcon size={20} />
-      </Btn>
-
-      <Btn as={Link} to={CustomerNavigation.delete(id!)} className="h-8 w-8 p-1" theme="error">
-        <TrashIcon size={20} />
-      </Btn>
+      <BtnTemplates.IconInfo
+        as={Link}
+        to={CustomerNavigation.details(id!)}
+        className="min-h-8 w-8 p-1"
+      />
+      <BtnTemplates.IconEdit
+        as={Link}
+        to={CustomerNavigation.edit(id!)}
+        className="min-h-8 w-8 p-1"
+      />
+      <BtnTemplates.IconDelete
+        as={Link}
+        to={CustomerNavigation.delete(id!)}
+        className="min-h-8 w-8 p-1"
+      />
     </div>
   )
 }
