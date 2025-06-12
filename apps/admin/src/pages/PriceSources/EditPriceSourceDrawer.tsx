@@ -1,9 +1,10 @@
 import { apiRequest } from "@gikdev/react-datapi/src"
-import { ReceiptXIcon, UserPlusIcon } from "@phosphor-icons/react"
+import { UserPlusIcon } from "@phosphor-icons/react"
 import type { StockPriceSourceEditRequest, StockPriceSourceResponse } from "@repo/api-client/client"
 import { BtnTemplates, DrawerSheet, useDrawerSheetNumber } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { useEffect } from "react"
+import { EntityNotFoundCard } from "#/components"
 import { useCustomForm } from "#/shared/customForm"
 import genDatApiConfig from "#/shared/datapi-config"
 import { queryStateKeys } from "."
@@ -86,11 +87,7 @@ export default function EditPriceSourceDrawer({
       }
     >
       {priceSource === undefined ? (
-        <div className="bg-red-2 border border-red-6 text-red-11 p-4 flex flex-col gap-2 items-center rounded-md">
-          <ReceiptXIcon size={64} />
-          <p className="text-xl font-bold text-red-12">پیدا نشد!</p>
-          <p>منبع قیمت مورد نظر پیدا نشد!</p>
-        </div>
+        <EntityNotFoundCard entity="منبع قیمت" />
       ) : (
         <PriceSourceForm form={form} />
       )}

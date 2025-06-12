@@ -243,11 +243,7 @@ export default function EditXyzDrawer({
       }
     >
       {xyz === undefined ? (
-        <div className="bg-red-2 border border-red-6 text-red-11 p-4 flex flex-col gap-2 items-center rounded-md">
-          <ReceiptXIcon size={64} />
-          <p className="text-xl font-bold text-red-12">پیدا نشد!</p>
-          <p>xyz مورد نظر پیدا نشد!</p>
-        </div>
+        <EntityNotFoundCard entity="xyz" />
       ) : (
         <XyzForm form={form} isEditMode />
       )}

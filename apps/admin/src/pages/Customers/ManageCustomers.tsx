@@ -17,23 +17,29 @@ import {
 } from "@repo/shared/components"
 import { getIsMobile } from "@repo/shared/hooks"
 import type { ColDef } from "ag-grid-community"
+import { useSetAtom } from "jotai"
 import { Link } from "react-router"
 import { cellRenderers } from "#/shared/agGrid"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
-import { queryStateUrls } from "."
+import { customersAtom } from "."
 import CreateCustomerDrawer from "./CreateCustomerDrawer"
+import CustomerBalanceDrawer from "./CustomerBalanceDrawer"
 import { CustomerCard, CustomerCardsContainer } from "./CustomerCards"
 import CustomerDetails from "./CustomerDetails"
+import CustomerDocDrawer from "./CustomerDocDrawer"
 import DeleteCustomerModal from "./DeleteCustomerModal"
 import EditCustomerDrawer from "./EditCustomerDrawer"
 import { customerFormFields } from "./customerFormShared"
+import { CustomerNavigation } from "./navigation"
 
 export default function ManageCustomers() {
   const isMobile = getIsMobile()
   const { renderedIconsToggle, viewMode } = useViewModes()
+  const setCustomers = useSetAtom(customersAtom)
   const customersRes = useApiRequest<CustomerDto[]>(() => ({
     url: "/Master/GetCustomers",
     defaultValue: [],
+    onSuccess: data => setCustomers(data),
   }))
 
   const titledCardActions = (
@@ -51,11 +57,10 @@ export default function ManageCustomers() {
     <>
       <DeleteCustomerModal reloadCustomers={() => customersRes.reload()} />
       <CreateCustomerDrawer reloadCustomers={() => customersRes.reload()} />
-      <EditCustomerDrawer
-        reloadCustomers={() => customersRes.reload()}
-        customers={customersRes.data ?? []}
-      />
-      <CustomerDetails customers={customersRes.data ?? []} />
+      <EditCustomerDrawer reloadCustomers={() => customersRes.reload()} />
+      <CustomerDetails />
+      <CustomerDocDrawer />
+      <CustomerBalanceDrawer />
 
       <TitledCard
         title="مدیریت مشتریان"
@@ -92,7 +97,7 @@ function CreateCustomerFAB() {
     <FloatingActionBtn
       title="ایجاد مشتری جدید"
       icon={UserCirclePlusIcon}
-      to={queryStateUrls.createNew()}
+      to={CustomerNavigation.createNew()}
       data-testid="create-customer-btn"
       theme="success"
       fallback={
@@ -102,7 +107,7 @@ function CreateCustomerFAB() {
           theme="success"
           title="ایجاد مشتری جدید"
           as={Link}
-          to={queryStateUrls.createNew()}
+          to={CustomerNavigation.createNew()}
           data-testid="create-customer-btn"
         >
           <UserCirclePlusIcon size={24} className="transition-all" />
@@ -115,15 +120,15 @@ function CreateCustomerFAB() {
 function ManagementBtns({ data: { id } }: { data: CustomerDto }) {
   return (
     <div className="flex items-center gap-1 py-1">
-      <Btn as={Link} to={queryStateUrls.details(id)} className="h-8 w-8 p-1" theme="info">
+      <Btn as={Link} to={CustomerNavigation.details(id!)} className="h-8 w-8 p-1" theme="info">
         <InfoIcon size={20} />
       </Btn>
 
-      <Btn as={Link} to={queryStateUrls.edit(id)} className="h-8 w-8 p-1" theme="warning">
+      <Btn as={Link} to={CustomerNavigation.edit(id!)} className="h-8 w-8 p-1" theme="warning">
         <PenIcon size={20} />
       </Btn>
 
-      <Btn as={Link} to={queryStateUrls.delete(id)} className="h-8 w-8 p-1" theme="error">
+      <Btn as={Link} to={CustomerNavigation.delete(id!)} className="h-8 w-8 p-1" theme="error">
         <TrashIcon size={20} />
       </Btn>
     </div>

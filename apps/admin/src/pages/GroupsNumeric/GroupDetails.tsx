@@ -1,8 +1,8 @@
-import { InfoIcon, ReceiptXIcon } from "@phosphor-icons/react"
+import { InfoIcon } from "@phosphor-icons/react"
 import type { CustomerGroupDto } from "@repo/api-client/client"
 import { BtnTemplates, DrawerSheet, useDrawerSheetNumber } from "@repo/shared/components"
 import { Link } from "react-router"
-import { KeyValueDetail, KeyValueDetailsContainer } from "#/components"
+import { EntityNotFoundCard, KeyValueDetail, KeyValueDetailsContainer } from "#/components"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
 import { queryStateKeys, queryStateUrls } from "."
 import { groupFormFields } from "./groupFormShared"
@@ -32,13 +32,7 @@ export default function GroupDetails({ groups }: GroupDetailsProps) {
       icon={InfoIcon}
       btns={btns}
     >
-      {group === undefined && (
-        <div className="bg-red-2 border border-red-6 text-red-11 p-4 flex flex-col gap-2 items-center rounded-md">
-          <ReceiptXIcon size={64} />
-          <p className="text-xl font-bold text-red-12">پیدا نشد!</p>
-          <p>گروه مورد نظر پیدا نشد!</p>
-        </div>
-      )}
+      {group === undefined && <EntityNotFoundCard entity="گروه" />}
 
       {group && (
         <KeyValueDetailsContainer>

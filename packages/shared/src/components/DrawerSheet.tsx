@@ -89,7 +89,7 @@ export function DrawerSheet({
               </div>
             )}
             {btns && (
-              <div className="bg-slate-2 border-t border-slate-6 flex items-center p-2 gap-2">
+              <div className="bg-slate-2 border-t border-slate-6 grid grid-cols-2 p-2 gap-2">
                 {btns}
               </div>
             )}

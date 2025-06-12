@@ -3,7 +3,7 @@ import { PowerIcon, ProhibitIcon, UserCircleIcon } from "@phosphor-icons/react"
 import type { CustomerDto } from "@repo/api-client/client"
 import { Btn } from "@repo/shared/components"
 import { Link } from "react-router"
-import { queryStateUrls } from "."
+import { CustomerNavigation } from "./navigation"
 
 export const CustomerCardsContainer = styled.div`flex flex-wrap gap-5 items-center justify-center`
 
@@ -21,7 +21,7 @@ export function CustomerCard({ displayName, id, isActive, isBlocked }: CustomerC
   return (
     <Btn
       as={Link}
-      to={queryStateUrls.details(id)}
+      to={CustomerNavigation.details(id!)}
       type="button"
       className="flex flex-col w-32 bg-slate-3 p-2 items-center gap-2 text-slate-11 h-auto"
       data-testid="view-customer-btn"

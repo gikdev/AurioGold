@@ -7,7 +7,7 @@ export function useApiRequest<TOutput = unknown, TRaw = unknown>(
   optionsFn: () => ApiHookOptions<TOutput, TRaw>,
 ) {
   const config = useDatapiConfigContext()
-  const abortControllerRef = useRef<AbortController>(null)
+  const abortControllerRef = useRef<AbortController | null>(null)
   const [loading, setLoading] = useState(false)
   const optionsRef = useRef(optionsFn())
   optionsRef.current = optionsFn()
@@ -18,7 +18,39 @@ export function useApiRequest<TOutput = unknown, TRaw = unknown>(
     data: optionsRef.current.defaultValue,
   })
 
+  const handleErrorMsg = useCallback(
+    (msg: string) => {
+      if (
+        !("onError" in optionsRef.current) &&
+        config &&
+        !("onError" in config) &&
+        !("handleErrorMsg" in config) &&
+        "handleFallbackErrorMsg" in config &&
+        config.handleFallbackErrorMsg
+      ) {
+        config.handleFallbackErrorMsg(msg)
+      }
+
+      optionsRef.current?.onError?.(msg)
+      config?.onError?.(msg)
+      config?.handleErrorMsg?.(msg)
+    },
+    [config],
+  )
+
   const fetchData = useCallback(async () => {
+    let canRun: boolean | undefined = true
+
+    try {
+      canRun = await optionsRef.current.shouldRun?.()
+
+      if (optionsRef.current.shouldRun && canRun === false) return
+    } catch (err) {
+      handleErrorMsg("shouldRun FAILED!!!")
+      console.error("shouldRun FAILED!!!")
+      return
+    }
+
     if (abortControllerRef.current) {
       abortControllerRef.current.abort()
     }
@@ -32,7 +64,7 @@ export function useApiRequest<TOutput = unknown, TRaw = unknown>(
     } finally {
       setLoading(false)
     }
-  }, [config])
+  }, [config, handleErrorMsg])
 
   useEffect(() => {
     fetchData()

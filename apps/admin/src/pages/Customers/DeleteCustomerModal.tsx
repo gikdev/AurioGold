@@ -1,19 +1,24 @@
 import { apiRequest } from "@gikdev/react-datapi/src"
 import type { PostApiMasterRemoveCustomerData } from "@repo/api-client/client"
-import { BtnTemplates, useDrawerSheetNumber } from "@repo/shared/components"
+import { BtnTemplates, useDrawerSheet, useDrawerSheetNumber } from "@repo/shared/components"
 import { Modal } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
+import { memo } from "react"
 import genDatApiConfig from "#/shared/datapi-config"
-import { queryStateKeys } from "."
+import { QUERY_KEYS } from "./navigation"
 
 interface DeleteCustomerModalProps {
   reloadCustomers: () => void
 }
 
-export default function DeleteCustomerModal({ reloadCustomers }: DeleteCustomerModalProps) {
-  const [customerId, setCustomerId] = useDrawerSheetNumber(queryStateKeys.delete)
+function _DeleteCustomerModal({ reloadCustomers }: DeleteCustomerModalProps) {
+  const [customerId, setCustomerId] = useDrawerSheetNumber(QUERY_KEYS.customerId)
+  const [showDeleteModal, setShowDeleteModal] = useDrawerSheet(QUERY_KEYS.delete)
 
-  const handleClose = () => setCustomerId(null)
+  const handleClose = () => {
+    setCustomerId(null)
+    setShowDeleteModal(false)
+  }
 
   const handleDelete = async () => {
     const { reject, resolve } = createControlledAsyncToast({
@@ -48,7 +53,7 @@ export default function DeleteCustomerModal({ reloadCustomers }: DeleteCustomerM
 
   return (
     <Modal
-      isOpen={customerId != null}
+      isOpen={customerId != null && showDeleteModal}
       title="حذف مشتری"
       description="آیا از حذف این مشتری مطمئن هستید؟"
       onClose={handleClose}
@@ -61,3 +66,6 @@ export default function DeleteCustomerModal({ reloadCustomers }: DeleteCustomerM
     />
   )
 }
+
+const DeleteCustomerModal = memo(_DeleteCustomerModal)
+export default DeleteCustomerModal

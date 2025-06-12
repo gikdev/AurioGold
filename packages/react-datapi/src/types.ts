@@ -26,6 +26,7 @@ export interface ApiOptions<TOutput = unknown, TRaw = unknown> {
 export interface ApiHookOptions<TOutput, TRaw = unknown> extends ApiOptions<TOutput, TRaw> {
   defaultValue: TOutput
   dependencies?: unknown[]
+  shouldRun?: () => boolean | Promise<boolean>
 }
 
 type GloballyConfigurableOptions = Partial<

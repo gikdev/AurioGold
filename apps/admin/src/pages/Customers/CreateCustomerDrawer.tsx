@@ -3,22 +3,23 @@ import { UserPlusIcon } from "@phosphor-icons/react"
 import type { PostApiMasterAddCustomerData } from "@repo/api-client/client"
 import { BtnTemplates, DrawerSheet, useDrawerSheet } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
+import { memo } from "react"
 import { useCustomForm } from "#/shared/customForm"
 import genDatApiConfig from "#/shared/datapi-config"
-import { queryStateKeys } from "."
 import CustomerForm from "./CustomerForm"
 import {
   type CreateCustomerFormValues,
   createCustomerSchema,
   emptyCustomerValues,
 } from "./customerFormShared"
+import { QUERY_KEYS } from "./navigation"
 
 interface CreateCustomerFormProps {
   reloadCustomers: () => void
 }
 
-export default function CreateCustomerDrawer({ reloadCustomers }: CreateCustomerFormProps) {
-  const [isOpen, setOpen] = useDrawerSheet(queryStateKeys.createNew)
+function _CreateCustomerDrawer({ reloadCustomers }: CreateCustomerFormProps) {
+  const [showCreateDrawer, setShowCreateDrawer] = useDrawerSheet(QUERY_KEYS.createNew)
 
   const form = useCustomForm(createCustomerSchema, emptyCustomerValues)
   const { formState, trigger, reset, handleSubmit } = form
@@ -42,7 +43,7 @@ export default function CreateCustomerDrawer({ reloadCustomers }: CreateCustomer
         onSuccess: () => {
           resolve()
           reloadCustomers()
-          setOpen(false)
+          setShowCreateDrawer(false)
           reset()
         },
       },
@@ -56,13 +57,13 @@ export default function CreateCustomerDrawer({ reloadCustomers }: CreateCustomer
 
   return (
     <DrawerSheet
-      open={isOpen}
+      open={showCreateDrawer}
       title="ایجاد مشتری جدید"
       icon={UserPlusIcon}
-      onClose={() => setOpen(false)}
+      onClose={() => setShowCreateDrawer(false)}
       btns={
         <>
-          <BtnTemplates.Cancel onClick={() => setOpen(false)} />
+          <BtnTemplates.Cancel onClick={() => setShowCreateDrawer(false)} />
 
           <BtnTemplates.Create
             disabled={isSubmitting}
@@ -99,3 +100,6 @@ function convertFormValuesToApiPayload(
     accountingID: values.accountingId || "",
   }
 }
+
+const CreateCustomerDrawer = memo(_CreateCustomerDrawer)
+export default CreateCustomerDrawer

@@ -4,7 +4,7 @@ import { cn } from "#shared/helpers"
 
 const styles = {
   base: `
-    rounded h-10 px-4 active:scale-95 
+    rounded min-h-10 px-4 active:scale-95 
     flex items-center justify-center gap-1 disabled:bg-slate-3 
     disabled:text-slate-11 disabled:opacity-50
     disabled:active:scale-100 disabled:cursor-not-allowed

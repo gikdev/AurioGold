@@ -1,44 +1,61 @@
-import { InfoIcon, ReceiptXIcon } from "@phosphor-icons/react"
-import type { CustomerDto } from "@repo/api-client/client"
-import { BtnTemplates, DrawerSheet, useDrawerSheetNumber } from "@repo/shared/components"
+import { CoinsIcon, InfoIcon } from "@phosphor-icons/react"
+import {
+  Btn,
+  BtnTemplates,
+  DrawerSheet,
+  useDrawerSheet,
+  useDrawerSheetNumber,
+} from "@repo/shared/components"
+import { useAtomValue } from "jotai"
+import { memo } from "react"
 import { Link } from "react-router"
-import { KeyValueDetail, KeyValueDetailsContainer } from "#/components"
+import { EntityNotFoundCard, KeyValueDetail, KeyValueDetailsContainer } from "#/components"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
-import { queryStateKeys, queryStateUrls } from "."
+import { customersAtom } from "."
 import { customerFormFields } from "./customerFormShared"
+import { CustomerNavigation, QUERY_KEYS } from "./navigation"
 
-interface CustomerDetailsProps {
-  customers: CustomerDto[]
-}
+// interface CustomerDetailsProps {}
 
 const getLabelProperty = generateLabelPropertyGetter(customerFormFields.labels)
 
-export default function CustomerDetails({ customers }: CustomerDetailsProps) {
-  const [customerId, setCustomerId] = useDrawerSheetNumber(queryStateKeys.details)
+function _CustomerDetails(
+  // {}: CustomerDetailsProps
+) {
+  const customers = useAtomValue(customersAtom)
+  const [customerId, setCustomerId] = useDrawerSheetNumber(QUERY_KEYS.customerId)
+  const [showDetailsDrawer, setShowDetailsDrawer] = useDrawerSheet(QUERY_KEYS.details)
   const customer = customers.find(c => c.id === customerId)
 
-  const btns = (
-    <>
-      <BtnTemplates.Edit as={Link} to={queryStateUrls.edit(customerId!)} />
-      <BtnTemplates.Delete as={Link} to={queryStateUrls.delete(customerId!)} />
-    </>
+  if (!customerId) return null
+
+  const handleClose = () => {
+    setShowDetailsDrawer(false)
+    setCustomerId(null)
+  }
+
+  const actions = (
+    <div className="grid grid-cols-2 gap-2 p-2">
+      <BtnTemplates.Cancel onClick={handleClose} />
+      <Btn theme="info" as={Link} to={CustomerNavigation.balance(customerId)}>
+        <CoinsIcon size={24} />
+        <span>مانده حساب</span>
+      </Btn>
+      <BtnTemplates.Edit as={Link} to={CustomerNavigation.edit(customerId)} />
+      <BtnTemplates.Delete as={Link} to={CustomerNavigation.delete(customerId)} />
+    </div>
   )
 
   return (
     <DrawerSheet
-      onClose={() => setCustomerId(null)}
-      open={customerId !== null}
+      onClose={handleClose}
+      open={customerId !== null && showDetailsDrawer}
       title="مشخصات مشتری"
       icon={InfoIcon}
-      btns={btns}
+      actions={actions}
     >
-      {customer === undefined && (
-        <div className="bg-red-2 border border-red-6 text-red-11 p-4 flex flex-col gap-2 items-center rounded-md">
-          <ReceiptXIcon size={64} />
-          <p className="text-xl font-bold text-red-12">پیدا نشد!</p>
-          <p>مشتری مورد نظر پیدا نشد!</p>
-        </div>
-      )}
+      {customer === undefined && <EntityNotFoundCard entity="مشتری" />}
+
       {customer && (
         <KeyValueDetailsContainer
           className="flex flex-col gap-3"
@@ -76,3 +93,6 @@ export default function CustomerDetails({ customers }: CustomerDetailsProps) {
     </DrawerSheet>
   )
 }
+
+const CustomerDetails = memo(_CustomerDetails)
+export default CustomerDetails

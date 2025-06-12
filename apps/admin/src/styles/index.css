@@ -7,6 +7,7 @@
 
 @theme {
   --font-main: "Vazirmatn", sans-serif;
+  --font-mono: "JetBrains Mono", monospace !important;
 
   --animate-marquee-slow: marquee 10s linear infinite;
   --animate-marquee-fast: marquee 5s linear infinite;
@@ -24,4 +25,8 @@
 [class^="ag-"],
 [className^="ag-"] {
   font-family: "Vazirmatn", sans-serif !important;
+}
+
+[class^="language-"] {
+  font-family: "JetBrains Mono", monospace !important;
 }

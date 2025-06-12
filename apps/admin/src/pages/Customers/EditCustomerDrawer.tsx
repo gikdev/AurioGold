@@ -1,33 +1,44 @@
 import { apiRequest } from "@gikdev/react-datapi/src"
-import { ReceiptXIcon, UserPlusIcon } from "@phosphor-icons/react"
+import { UserPlusIcon } from "@phosphor-icons/react"
 import type { CustomerDto, PostApiMasterUpdateCustomerData } from "@repo/api-client/client"
 import { storageManager } from "@repo/shared/adapters"
-import { BtnTemplates, DrawerSheet, useDrawerSheetNumber } from "@repo/shared/components"
+import {
+  BtnTemplates,
+  DrawerSheet,
+  useDrawerSheet,
+  useDrawerSheetNumber,
+} from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
-import { useEffect } from "react"
+import { useAtomValue } from "jotai"
+import { memo, useEffect } from "react"
+import { EntityNotFoundCard } from "#/components"
 import { useCustomForm } from "#/shared/customForm"
 import genDatApiConfig from "#/shared/datapi-config"
-import { queryStateKeys } from "."
+import { customersAtom } from "."
 import CustomerForm from "./CustomerForm"
 import {
   type EditCustomerFormValues,
   editCustomerSchema,
   emptyCustomerValues,
 } from "./customerFormShared"
+import { QUERY_KEYS } from "./navigation"
 
 interface EditCustomerDrawerProps {
   reloadCustomers: () => void
-  customers: CustomerDto[]
 }
 
-export default function EditCustomerDrawer({
-  reloadCustomers,
-  customers,
-}: EditCustomerDrawerProps) {
-  const [customerId, setCustomerId] = useDrawerSheetNumber(queryStateKeys.edit)
+function _EditCustomerDrawer({ reloadCustomers }: EditCustomerDrawerProps) {
+  const customers = useAtomValue(customersAtom)
+  const [customerId, setCustomerId] = useDrawerSheetNumber(QUERY_KEYS.customerId)
+  const [showEditDrawer, setShowEditDrawer] = useDrawerSheet(QUERY_KEYS.edit)
   const customer = customers.find(c => c.id === customerId)
 
   const defaultValues = customer ? convertPartialCustomerDtoToFormValues(customer) : undefined
+
+  const handleClose = () => {
+    setCustomerId(null)
+    setShowEditDrawer(false)
+  }
 
   const form = useCustomForm(editCustomerSchema, emptyCustomerValues, true, defaultValues)
   const { formState, trigger, reset, handleSubmit } = form
@@ -57,7 +68,7 @@ export default function EditCustomerDrawer({
         onSuccess: () => {
           resolve()
           reloadCustomers()
-          setCustomerId(null)
+          handleClose()
           reset()
         },
       },
@@ -71,13 +82,13 @@ export default function EditCustomerDrawer({
 
   return (
     <DrawerSheet
-      open={customerId != null}
+      open={customerId != null && showEditDrawer}
       title="ویرایش مشتری"
       icon={UserPlusIcon}
-      onClose={() => setCustomerId(null)}
+      onClose={handleClose}
       btns={
         <>
-          <BtnTemplates.Cancel onClick={() => setCustomerId(null)} />
+          <BtnTemplates.Cancel onClick={handleClose} />
           <BtnTemplates.Edit
             disabled={isSubmitting}
             onClick={submitTheFormManually}
@@ -87,11 +98,7 @@ export default function EditCustomerDrawer({
       }
     >
       {customer === undefined ? (
-        <div className="bg-red-2 border border-red-6 text-red-11 p-4 flex flex-col gap-2 items-center rounded-md">
-          <ReceiptXIcon size={64} />
-          <p className="text-xl font-bold text-red-12">پیدا نشد!</p>
-          <p>مشتری مورد نظر پیدا نشد!</p>
-        </div>
+        <EntityNotFoundCard entity="مشتری" />
       ) : (
         <CustomerForm form={form} isEditMode />
       )}
@@ -152,3 +159,6 @@ function convertPartialCustomerDtoToFormValues(
 
   return obj
 }
+
+const EditCustomerDrawer = memo(_EditCustomerDrawer)
+export default EditCustomerDrawer

@@ -8,6 +8,7 @@ import {
   Switch,
   createSelectWithOptions,
 } from "@repo/shared/components"
+import { MAX_FILE_SIZE_FOR_UPLOAD } from "@repo/shared/lib"
 import type { UseFormReturn } from "react-hook-form"
 import { uploadFile } from "#/shared/customForm"
 import {
@@ -18,7 +19,7 @@ import {
 
 const imageNotes = [
   FileInput.helpers.generateAllowedExtensionsNote(["png", "jpg", "jpeg"]),
-  FileInput.helpers.generateFileSizeNote(5),
+  FileInput.helpers.generateFileSizeNote(MAX_FILE_SIZE_FOR_UPLOAD),
   FileInput.helpers.generateFileTypeNote("تصویر"),
 ]
 

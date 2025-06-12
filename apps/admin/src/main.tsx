@@ -10,6 +10,7 @@ import RootLayout from "./layouts/RootLayout"
 import Loading from "./pages/Loading"
 import routes from "./pages/routes"
 import "./styles/index.css"
+import { JsonToastContainer } from "./pages/Customers/useJsonToast"
 
 ModuleRegistry.registerModules([AllCommunityModule])
 
@@ -32,6 +33,7 @@ if (!container) throw new Error("No `#root` found!")
 const root = createRoot(container)
 root.render(
   <StrictMode>
+    <JsonToastContainer />
     <ToastContainer
       autoClose={5000}
       closeOnClick={false}
