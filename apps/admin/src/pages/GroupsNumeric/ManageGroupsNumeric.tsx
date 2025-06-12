@@ -1,11 +1,9 @@
 import { useApiRequest } from "@gikdev/react-datapi/src"
 import {
   ArrowCounterClockwiseIcon,
-  CardsIcon,
   CirclesThreePlusIcon,
   InfoIcon,
   PenIcon,
-  TableIcon,
   TrashIcon,
   UsersThreeIcon,
 } from "@phosphor-icons/react"
@@ -13,14 +11,12 @@ import type { CustomerDto, CustomerGroupIntDto } from "@repo/api-client/client"
 import {
   Btn,
   FloatingActionBtn,
-  IconsToggle,
   TitledCard,
   createTypedTableFa,
-  createViewModes,
+  useViewModes,
 } from "@repo/shared/components"
 import { getIsMobile } from "@repo/shared/hooks"
 import type { ColDef } from "ag-grid-community"
-import { useState } from "react"
 import { Link } from "react-router"
 import { cellRenderers } from "#/shared/agGrid"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
@@ -32,16 +28,9 @@ import { GroupCard, GroupCardsContainer } from "./GroupCard"
 import GroupDetails from "./GroupDetails"
 import { groupFormFields } from "./groupFormShared"
 
-const viewModeSetup = createViewModes([
-  { id: "cards", icon: CardsIcon },
-  { id: "table", icon: TableIcon },
-])
-type ViewModes = typeof viewModeSetup.type
-const viewModes = viewModeSetup.items
-
 export default function ManageGroupsNumeric() {
   const isMobile = getIsMobile()
-  const [viewMode, setMode] = useState<ViewModes>("cards")
+  const { renderedIconsToggle, viewMode } = useViewModes()
   const groupsRes = useApiRequest<CustomerGroupIntDto[]>(() => ({
     url: "/TyCustomerGroupIntInts",
     defaultValue: [],
@@ -54,7 +43,7 @@ export default function ManageGroupsNumeric() {
       </Btn>
 
       <CreateGroupFAB />
-      <IconsToggle items={viewModes} activeItemId={viewMode} onChange={setMode} />
+      {renderedIconsToggle}
     </div>
   )
 
