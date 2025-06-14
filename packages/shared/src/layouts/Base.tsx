@@ -38,7 +38,7 @@ export function Base({ children, nav, footer, sidebarItems }: BaseProps) {
       {nav}
       <main className="flex flex-1 gap-2 rounded-md overflow-hidden">
         <Sidebar items={sidebarItems} />
-        <section className="flex-1 flex bg-slate-1 flex-col rounded-md overflow-y-auto [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.2)_transparent]">
+        <section className="flex-1 flex bg-slate-1 min-h-0 flex-col rounded-md overflow-y-auto [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.2)_transparent]">
           <ErrorCardBoundary>{children}</ErrorCardBoundary>
         </section>
       </main>

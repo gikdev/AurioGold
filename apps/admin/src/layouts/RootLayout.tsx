@@ -10,7 +10,7 @@ export default function RootLayout() {
   return (
     <div
       data-theme={preferredTheme}
-      className="h-dvh bg-slate-3 text-slate-11 overflow-hidden flex flex-col p-2 gap-2"
+      className="h-dvh bg-slate-3 text-slate-11 overflow-hidden flex flex-col p-2 gap-2 fixed inset-0"
     >
       <Outlet />
     </div>

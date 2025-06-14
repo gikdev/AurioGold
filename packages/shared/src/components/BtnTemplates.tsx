@@ -63,6 +63,16 @@ function BtnTemplateCancel({ ...other }: BtnTemplateCancelProps) {
   )
 }
 
+type BtnTemplateCloseProps = BtnPropsOmitted
+function BtnTemplateClose({ ...other }: BtnTemplateCloseProps) {
+  return (
+    <Btn className="flex-1" {...other} theme="neutral">
+      <XCircleIcon size={24} />
+      <span>بستن</span>
+    </Btn>
+  )
+}
+
 type BtnTemplateIconReloadProps = BtnPropsOmitted
 function BtnTemplateIconReload({ ...other }: BtnTemplateIconReloadProps) {
   return (
@@ -122,6 +132,7 @@ export const BtnTemplates = {
   Save: BtnTemplateSave,
   Edit: BtnTemplateEdit,
   Cancel: BtnTemplateCancel,
+  Close: BtnTemplateClose,
   Delete: BtnTemplateDelete,
 
   IconReload: BtnTemplateIconReload,

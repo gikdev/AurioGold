@@ -1,6 +1,12 @@
 - Do theme based on user's pref:
   - https://www.reacthaiku.dev/docs/hooks/usePrefersTheme
 
+- Add a theme switch in settings...
+
+- Alternative Data Grids:
+  - https://grid.glideapps.com/
+  - revo grid
+
 - {isMobile ? <MobileFAB /> : <TopRightButton />}
   - 👆🏻 + 👇🏻
 - Sheet / Drawer based on useWindowSize()

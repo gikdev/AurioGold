@@ -14,8 +14,8 @@ export function HeadingLine({ title, className = "", children = null }: HeadingL
     <>
       <Heading
         as="h1"
-        size={4}
-        className="text-slate-12 mb-6 mt-6 text-center border-b max-w-max mx-auto pb-6 border-slate-6"
+        size={3}
+        className="text-slate-12 mb-0 mt-6 text-center border-b max-w-max mx-auto pb-6 border-slate-6"
       >
         {title}
       </Heading>

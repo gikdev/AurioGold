@@ -1,17 +1,9 @@
 import { type ColDef, type ColGroupDef, colorSchemeDarkBlue, themeQuartz } from "ag-grid-community"
 import { AgGridReact, type AgGridReactProps } from "ag-grid-react"
-import { forwardRef } from "react"
+import { forwardRef, useMemo } from "react"
 import { AG_GRID_LOCALE_IR } from "../constants"
 
 const selectedTheme = themeQuartz.withPart(colorSchemeDarkBlue)
-
-const defaultColDef: ColDef = {
-  minWidth: 150,
-  flex: 1,
-  filter: true,
-  floatingFilter: true,
-  lockPosition: true,
-}
 
 type TableFaProps<T> = Omit<AgGridReactProps<T>, "columnDefs" | "rowData"> & {
   columnDefs?: (ColDef<T> | ColGroupDef<T>)[]
@@ -23,6 +15,17 @@ function _TableFaInner<T>(
   { className, columnDefs = [], rowData = [], ...other }: TableFaProps<T>,
   ref: React.Ref<AgGridReact<T>>,
 ) {
+  const defaultColDef: ColDef<T> = useMemo(
+    () => ({
+      minWidth: 150,
+      flex: 1,
+      filter: true,
+      floatingFilter: true,
+      lockPosition: true,
+    }),
+    [],
+  )
+
   return (
     <AgGridReact<T>
       ref={ref}
@@ -31,7 +34,7 @@ function _TableFaInner<T>(
       paginationPageSize={50}
       enableRtl
       localeText={AG_GRID_LOCALE_IR}
-      defaultColDef={defaultColDef}
+      defaultColDef={{ ...defaultColDef, ...other.defaultColDef }}
       columnDefs={columnDefs}
       rowData={rowData}
       {...other}
