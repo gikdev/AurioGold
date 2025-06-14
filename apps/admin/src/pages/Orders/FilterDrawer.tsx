@@ -1,11 +1,11 @@
 import { FunnelIcon } from "@phosphor-icons/react"
 import { BtnTemplates, DrawerSheet, Labeler, useDrawerSheet } from "@repo/shared/components"
 import { memo } from "react"
-import { QUERY_KEYS } from "./navigation"
-import type { DateFilterReturn } from "./useDateFilter"
-import { Calendar } from "react-multi-date-picker"
 import persian from "react-date-object/calendars/persian"
 import persian_fa from "react-date-object/locales/persian_fa"
+import { Calendar } from "react-multi-date-picker"
+import { QUERY_KEYS } from "./navigation"
+import type { DateFilterReturn } from "./useDateFilter"
 import "react-multi-date-picker/styles/backgrounds/bg-dark.css"
 import "react-multi-date-picker/styles/colors/green.css"
 
@@ -37,11 +37,25 @@ function _FilterDrawer({ dateFilterState }: FilterDrawerProps) {
     >
       <div className="min-h-full flex flex-col py-4 gap-5">
         <Labeler labelText="از:" as="div">
-          <Calendar className="bg-dark border-none" shadow={false} calendar={persian} locale={persian_fa} value={fromDate} onChange={v => setFromDate(v?.toDate() ?? new Date())} />
+          <Calendar
+            className="bg-dark border-none"
+            shadow={false}
+            calendar={persian}
+            locale={persian_fa}
+            value={fromDate}
+            onChange={v => setFromDate(v?.toDate() ?? new Date())}
+          />
         </Labeler>
 
         <Labeler labelText="تا:" as="div">
-          <Calendar className="green bg-dark" shadow={false} calendar={persian} locale={persian_fa} value={toDate} onChange={v => setToDate(v?.toDate() ?? new Date())} />
+          <Calendar
+            className="green bg-dark"
+            shadow={false}
+            calendar={persian}
+            locale={persian_fa}
+            value={toDate}
+            onChange={v => setToDate(v?.toDate() ?? new Date())}
+          />
         </Labeler>
       </div>
     </DrawerSheet>
