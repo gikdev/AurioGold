@@ -3,9 +3,9 @@ import { BtnTemplates, createTypedTableFa } from "@repo/shared/components"
 import type { CustomCellRendererProps } from "ag-grid-react"
 import type { ComponentProps } from "react"
 import { Link } from "react-router"
-import { Navigation } from "./navigation"
 import { cellRenderers } from "#/shared/agGrid"
 import { calcA11yStuff } from "./ProductCards"
+import { Navigation } from "./navigation"
 
 type DataShape = Required<StockDtoForMaster>
 const Table = createTypedTableFa<DataShape>()

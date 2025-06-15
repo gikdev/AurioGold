@@ -1,17 +1,17 @@
+import { CirclesThreePlusIcon, PackageIcon } from "@phosphor-icons/react"
 import type { StockDtoForMaster } from "@repo/api-client/client"
 import {
   BtnTemplates,
   FloatingActionBtn,
   TitledCard,
-  useCurrentViewMode,
   ViewModesToggle,
+  useCurrentViewMode,
 } from "@repo/shared/components"
-import { ProductCards } from "./ProductCards"
-import { CirclesThreePlusIcon, PackageIcon } from "@phosphor-icons/react"
-import { Link } from "react-router"
-import { Navigation } from "./navigation"
-import ProductsTable from "./ProductsTable"
 import { getIsMobile } from "@repo/shared/hooks"
+import { Link } from "react-router"
+import { ProductCards } from "./ProductCards"
+import ProductsTable from "./ProductsTable"
+import { Navigation } from "./navigation"
 
 const sampleProducts: Required<StockDtoForMaster>[] = [
   {
