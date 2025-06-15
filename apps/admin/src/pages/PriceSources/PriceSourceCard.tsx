@@ -2,7 +2,7 @@ import styled from "@master/styled.react"
 import { TagIcon } from "@phosphor-icons/react"
 import type { StockPriceSourceResponse } from "@repo/api-client/client"
 import { Btn } from "@repo/shared/components"
-import { formatPersianNumber } from "@repo/shared/utils"
+import { formatPersianPrice } from "@repo/shared/utils"
 import { Link } from "react-router"
 import { queryStateUrls } from "."
 
@@ -35,7 +35,7 @@ export function PriceSourceCard({ id, name, price }: PriceSourceCardProps) {
         >
           <TagIcon />
 
-          <span>{formatPersianNumber(price?.toString() || "")}</span>
+          <span>{formatPersianPrice(price?.toString() || "")}</span>
         </p>
       </div>
     </Btn>

@@ -1,26 +1,186 @@
-import { useApiRequest } from "@gikdev/react-datapi/src"
-import { FunnelIcon } from "@phosphor-icons/react"
-import type { OrderFm, OrdersByStuckDto, OrdersReturnFm } from "@repo/api-client/client"
-import { createTypedTableFa } from "@repo/shared/components"
+import { apiRequest, useApiRequest } from "@gikdev/react-datapi/src"
+import type { HubConnection } from "@microsoft/signalr"
+import { CheckIcon, FunnelIcon, XIcon } from "@phosphor-icons/react"
+import type { Gidto, OrderFm, OrdersByStuckDto, OrdersReturnFm } from "@repo/api-client/client"
+import { notifManager, storageManager } from "@repo/shared/adapters"
+import { Btn, createTypedTableFa } from "@repo/shared/components"
 import type { ColDef } from "ag-grid-community"
-import { useMemo } from "react"
+import type { CustomCellRendererProps } from "ag-grid-react"
+import { useAtomValue } from "jotai"
+import { useCallback, useEffect } from "react"
 import { Link } from "react-router"
+import { connectionRefAtom, logOut } from "#/atoms"
+import { cellRenderers } from "#/shared/agGrid"
+import genDatApiConfig from "#/shared/datapi-config"
 import FilterDrawer from "./FilterDrawer"
 import { OrdersNavigation } from "./navigation"
 import { useDateFilter } from "./useDateFilter"
 
+function acceptOrRejectOrder(
+  isOrderNotif: boolean,
+  id: number,
+  isAccepted: boolean,
+  cb: () => void,
+) {
+  const dataToSend: Required<Gidto> = {
+    gid: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    id: Number(id),
+    str: "",
+    tf: isAccepted,
+  }
+
+  apiRequest({
+    config: genDatApiConfig(),
+    options: {
+      url: "/Master/AcceptOrders",
+      method: "POST",
+      body: JSON.stringify(dataToSend),
+      onSuccess() {
+        cb()
+        if (isOrderNotif) return
+        notifManager.notify("با موفقیت انجام شد", "toast", { status: "success" })
+      },
+    },
+  })
+}
+
+function signalrDecideOrder(
+  connection: HubConnection,
+  token: string,
+  isAccepted: boolean,
+  orderId: number,
+  userId: number,
+) {
+  connection
+    .invoke("DecideOrder", token, isAccepted, orderId, userId)
+    .catch(err =>
+      notifManager.notify(err ? String(err) : "یه مشکلی پیش آمد!", "toast", { status: "error" }),
+    )
+}
+
+function ManagementBtns({ data }: CustomCellRendererProps<OrderFm>) {
+  const connection = useAtomValue(connectionRefAtom)
+  const areDisabled = [3, 4].includes(data?.orderStatus || 0)
+  const className = "min-h-8 py-1 px-2 text-xs flex items-center"
+
+  const handleAccept = useCallback(() => {
+    const isAccepted = true
+    const token = storageManager.get("ttkk", "sessionStorage")
+
+    if (!token) {
+      notifManager.notify("خودتان معتبر نیستید!!! دوباره وارد شوید!", "toast", { status: "error" })
+      logOut()
+
+      return
+    }
+
+    if (!connection) {
+      notifManager.notify("وقتی متصل نیستیم، نمی‌توان سفارشی را رد یا تایید کرد...", "toast", {
+        status: "error",
+      })
+
+      return
+    }
+
+    if (!data || typeof data.userID !== "number") {
+      notifManager.notify("آی‌دی مشتری مورد نظر معتبر نیست!", "toast", {
+        status: "error",
+      })
+
+      return
+    }
+
+    if (!data || typeof data.id !== "number") {
+      notifManager.notify("آی‌دی سفارش مورد نظر معتبر نیست!", "toast", {
+        status: "error",
+      })
+
+      return
+    }
+
+    const { id: orderId, userID } = data
+
+    acceptOrRejectOrder(false, orderId, isAccepted, () => {
+      signalrDecideOrder(connection, token, isAccepted, orderId, userID)
+    })
+  }, [data, connection])
+
+  const handleReject = useCallback(() => {
+    const isAccepted = false
+    const token = storageManager.get("ttkk", "sessionStorage")
+
+    if (!token) {
+      notifManager.notify("خودتان معتبر نیستید!!! دوباره وارد شوید!", "toast", { status: "error" })
+
+      return
+    }
+
+    if (!connection) {
+      notifManager.notify("وقتی متصل نیستیم، نمی‌توان سفارشی را رد یا تایید کرد...", "toast", {
+        status: "error",
+      })
+
+      return
+    }
+
+    if (!data || typeof data.userID !== "number") {
+      notifManager.notify("آی‌دی مشتری مورد نظر معتبر نیست!", "toast", {
+        status: "error",
+      })
+
+      return
+    }
+
+    if (!data || typeof data.id !== "number") {
+      notifManager.notify("آی‌دی سفارش مورد نظر معتبر نیست!", "toast", {
+        status: "error",
+      })
+
+      return
+    }
+
+    const { id: orderId, userID } = data
+
+    acceptOrRejectOrder(false, orderId, isAccepted, () => {
+      signalrDecideOrder(connection, token, isAccepted, orderId, userID)
+    })
+  }, [data, connection])
+
+  return (
+    <div className="flex gap-1 items-center pt-1">
+      <Btn className={className} theme="success" disabled={areDisabled} onClick={handleAccept}>
+        <CheckIcon size={16} />
+        <span>تایید</span>
+      </Btn>
+
+      <Btn className={className} theme="error" disabled={areDisabled} onClick={handleReject}>
+        <XIcon size={16} />
+        <span>رد کردن</span>
+      </Btn>
+    </div>
+  )
+}
+
 const ordersColDef: ColDef<OrderFm>[] = [
+  {
+    headerName: "مدیریت",
+    cellRenderer: ManagementBtns,
+    minWidth: 180,
+  },
   {
     field: "price",
     headerName: "قیمت",
+    cellRenderer: cellRenderers.PersianComma,
   },
   {
     field: "volume",
     headerName: "مقدار",
+    cellRenderer: cellRenderers.PersianNum,
   },
   {
     field: "value",
     headerName: "ارزش معامله (ریال)",
+    cellRenderer: cellRenderers.PersianComma,
   },
   {
     field: "side",
@@ -33,6 +193,7 @@ const ordersColDef: ColDef<OrderFm>[] = [
   {
     field: "dlrPhone",
     headerName: "موبایل",
+    cellRenderer: cellRenderers.PersianNum,
   },
   {
     field: "orderStatus",
@@ -41,10 +202,12 @@ const ordersColDef: ColDef<OrderFm>[] = [
   {
     field: "createDate",
     headerName: "تاریخ ثبت",
+    cellRenderer: cellRenderers.DateOnly,
   },
   {
     field: "time",
     headerName: "زمان",
+    cellRenderer: cellRenderers.TimeOnly,
   },
   {
     field: "stockName",
@@ -60,34 +223,42 @@ const stocksColDef: ColDef<OrdersByStuckDto>[] = [
   {
     field: "volumeBuyAvg",
     headerName: "میانگین خرید حجمی",
+    cellRenderer: cellRenderers.PersianComma,
   },
   {
     field: "volumeSellAvg",
     headerName: "میانگین فروش حجمی",
+    cellRenderer: cellRenderers.PersianComma,
   },
   {
     field: "buySum",
     headerName: "جمع خرید ریالی",
+    cellRenderer: cellRenderers.PersianComma,
   },
   {
     field: "sellSum",
     headerName: "جمع فروش ریالی",
+    cellRenderer: cellRenderers.PersianComma,
   },
   {
     field: "volumeBuySum",
     headerName: "جمع خرید وزنی",
+    cellRenderer: cellRenderers.PersianComma,
   },
   {
     field: "volumeSellSum",
     headerName: "جمع فروش وزنی",
+    cellRenderer: cellRenderers.PersianComma,
   },
   {
     field: "volumeTaraaz",
     headerName: "تراز وزنی",
+    cellRenderer: cellRenderers.PersianComma,
   },
   {
     field: "taraaz",
     headerName: "تراز",
+    cellRenderer: cellRenderers.PersianComma,
   },
 ]
 
@@ -99,7 +270,13 @@ const emptyOrdersReturnFm: OrdersReturnFm = {
   stucksFMs: null,
 }
 
+const stocksDefaultColDef: ColDef<OrdersByStuckDto> = {
+  filter: false,
+  floatingFilter: false,
+}
+
 export default function OrdersTable() {
+  const connection = useAtomValue(connectionRefAtom)
   const dateFilterState = useDateFilter()
   const dataToSend = {
     start: dateFilterState.fromDate.toISOString(),
@@ -114,13 +291,21 @@ export default function OrdersTable() {
     defaultValue: emptyOrdersReturnFm,
     dependencies: [dateFilterState.fromDate, dateFilterState.toDate],
   }))
-  const stocksDefaultColDef: ColDef<OrdersByStuckDto> = useMemo(
-    () => ({
-      filter: false,
-      floatingFilter: false,
-    }),
-    [],
-  )
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (!connection) return undefined
+
+    connection.on("ReceiveOrder2", () => resOrders.reload())
+    connection.on("UpdateCOrder", () => resOrders.reload())
+    connection.on("Decided", () => resOrders.reload())
+
+    return () => {
+      connection.off("ReceiveOrder2")
+      connection.off("UpdateCOrder")
+      connection.off("Decided")
+    }
+  }, [connection])
 
   return (
     <div className="flex flex-col gap-10">
@@ -135,18 +320,40 @@ export default function OrdersTable() {
           <Link
             to={OrdersNavigation.filter()}
             className="
-            text-slate-11 bg-slate-3 transition-all
-            hover:text-slate-12 hover:bg-slate-4
-            pt-1 px-2 rounded-t-md pb-3 top-2 
-            relative border border-slate-6
-            cursor-pointer active:top-3
-          "
+              text-slate-11 bg-slate-3 transition-all
+              hover:text-slate-12 hover:bg-slate-4
+              pt-1 px-2 rounded-t-md pb-3 top-2 
+              relative border border-slate-6
+              cursor-pointer active:top-3
+            "
           >
             <FunnelIcon size={24} />
           </Link>
         </div>
 
-        <TableOrders rowData={resOrders.data?.orderFMs ?? []} columnDefs={ordersColDef} />
+        <TableOrders
+          rowData={resOrders.data?.orderFMs ?? []}
+          columnDefs={ordersColDef}
+          getRowStyle={p => {
+            if (!p.data) return
+
+            const { orderStatus, side } = p.data
+
+            // رد شده
+            // slatedark-3
+            if (orderStatus === 4) return { background: "#212225" }
+
+            // خرید
+            // greendark-3
+            if (side === 1) return { background: "#0f2e22" }
+
+            // فروش
+            // reddark-3
+            if (side === 2) return { background: "#3b1219" }
+
+            return
+          }}
+        />
       </div>
 
       <div className="h-120 flex flex-col">
@@ -158,12 +365,12 @@ export default function OrdersTable() {
           <Link
             to={OrdersNavigation.filter()}
             className="
-            text-slate-11 bg-slate-3 transition-all
-            hover:text-slate-12 hover:bg-slate-4
-            pt-1 px-2 rounded-t-md pb-3 top-2 
-            relative border border-slate-6
-            cursor-pointer active:top-3
-          "
+              text-slate-11 bg-slate-3 transition-all
+              hover:text-slate-12 hover:bg-slate-4
+              pt-1 px-2 rounded-t-md pb-3 top-2 
+              relative border border-slate-6
+              cursor-pointer active:top-3
+            "
           >
             <FunnelIcon size={24} />
           </Link>

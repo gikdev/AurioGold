@@ -134,12 +134,12 @@ const columnDefs: ColDef<CustomerGroupIntDto>[] = [
   {
     field: "diffBuyPrice",
     headerName: getLabelProperty("diffBuyPrice"),
-    cellRenderer: cellRenderers.Price,
+    cellRenderer: cellRenderers.PersianComma,
   },
   {
     field: "diffSellPrice",
     headerName: getLabelProperty("diffSellPrice"),
-    cellRenderer: cellRenderers.Price,
+    cellRenderer: cellRenderers.PersianComma,
   },
   { field: "id", headerName: "آی‌دی" },
 ]

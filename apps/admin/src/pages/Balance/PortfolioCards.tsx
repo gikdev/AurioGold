@@ -1,7 +1,7 @@
 import { PackageIcon } from "@phosphor-icons/react"
 import { Radio } from "@repo/shared/components"
 import { cn } from "@repo/shared/helpers"
-import { formatPersianNumber } from "@repo/shared/utils"
+import { formatPersianPrice } from "@repo/shared/utils"
 import { motion } from "motion/react"
 import type { MasterPortfolioWithId } from "./ManageBalance"
 
@@ -77,7 +77,7 @@ function PortfolioCard({
         </span>
 
         <span dir="ltr" className="font-bold text-lg text-slate-12">
-          {formatPersianNumber(Math.abs(Number(volume.toFixed(3))))}
+          {formatPersianPrice(Math.abs(Number(volume.toFixed(3))))}
         </span>
       </p>
     </motion.label>

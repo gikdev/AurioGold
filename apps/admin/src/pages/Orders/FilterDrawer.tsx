@@ -18,7 +18,11 @@ function _FilterDrawer({ dateFilterState }: FilterDrawerProps) {
   const { fromDate, setFromDate, toDate, setToDate } = dateFilterState
 
   const handleClose = () => setShowFilterDrawer(false)
-  const handleDelete = () => {}
+  const handleDelete = () => {
+    setFromDate(new Date())
+    setToDate(new Date())
+    handleClose()
+  }
 
   const btns = (
     <>

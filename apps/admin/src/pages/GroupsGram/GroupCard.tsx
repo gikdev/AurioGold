@@ -1,7 +1,7 @@
 import styled from "@master/styled.react"
 import type { CustomerGroupDto } from "@repo/api-client/client"
 import { Btn } from "@repo/shared/components"
-import { formatPersianNumber } from "@repo/shared/utils"
+import { formatPersianPrice } from "@repo/shared/utils"
 import { Link } from "react-router"
 import { queryStateUrls } from "."
 
@@ -33,7 +33,7 @@ export function GroupCard({ diffBuyPrice, diffSellPrice, id, name }: GroupCardPr
         dir="ltr"
         className="text-green-10 decoration-slate-7 hover:decoration-slate-8 text-xs"
       >
-        {formatPersianNumber(diffBuyPrice?.toString() || "")}
+        {formatPersianPrice(diffBuyPrice?.toString() || "")}
       </abbr>
 
       <abbr
@@ -41,7 +41,7 @@ export function GroupCard({ diffBuyPrice, diffSellPrice, id, name }: GroupCardPr
         dir="ltr"
         className="text-red-10 decoration-slate-7 hover:decoration-slate-8 text-xs"
       >
-        {formatPersianNumber(diffSellPrice?.toString() || "")}
+        {formatPersianPrice(diffSellPrice?.toString() || "")}
       </abbr>
     </Btn>
   )

@@ -16,7 +16,7 @@ function isLoggedInOrHasToken() {
   return !!storageManager.get("ttkk", "sessionStorage")
 }
 
-function logOut() {
+export function logOut() {
   storageManager.remove("ttkk", "sessionStorage")
   location.href = routes.login
 }

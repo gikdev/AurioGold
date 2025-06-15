@@ -145,7 +145,7 @@ const columnDefs: ColDef<StockPriceSourceResponse>[] = [
   {
     field: "price",
     headerName: getLabelProperty("price"),
-    cellRenderer: cellRenderers.Price,
+    cellRenderer: cellRenderers.PersianComma,
   },
   {
     field: "sourceUrl",

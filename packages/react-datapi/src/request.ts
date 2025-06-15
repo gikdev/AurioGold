@@ -70,6 +70,7 @@ export async function apiRequest<TOutput = unknown, TRaw = unknown>({
     const raw = isJson ? await res.json() : await res.text()
 
     if (!res.ok) {
+      if (res.status === 401) config?.handle401?.()
       const msg =
         extractMessage(raw) || DEFAULT_ERROR_MESSAGES[res.status] || DEFAULT_ERROR_MESSAGES.GENERAL
       const errorMessage =

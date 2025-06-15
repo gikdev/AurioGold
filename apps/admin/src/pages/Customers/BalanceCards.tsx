@@ -1,6 +1,6 @@
 import { CaretLeftIcon, PackageIcon } from "@phosphor-icons/react"
 import { cn } from "@repo/shared/helpers"
-import { formatPersianNumber } from "@repo/shared/utils"
+import { formatPersianPrice } from "@repo/shared/utils"
 import { motion } from "motion/react"
 import { Link } from "react-router"
 import type { UserBalanceItemWithId } from "./CustomerBalanceDrawer"
@@ -62,7 +62,7 @@ function BalanceCard({ stockName, volume, stockId, customerId }: BalanceCardProp
         </span>
 
         <span dir="ltr" className="font-bold text-lg text-slate-12">
-          {formatPersianNumber(Math.abs(Number(volume.toFixed(3))))}
+          {formatPersianPrice(Math.abs(Number(volume.toFixed(3))))}
         </span>
       </p>
     </MotionLink>
