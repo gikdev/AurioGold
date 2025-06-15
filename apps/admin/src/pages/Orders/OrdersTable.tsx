@@ -4,7 +4,7 @@ import { CheckIcon, FunnelIcon, XIcon } from "@phosphor-icons/react"
 import type { Gidto, OrderFm, OrdersByStuckDto, OrdersReturnFm } from "@repo/api-client/client"
 import { notifManager, storageManager } from "@repo/shared/adapters"
 import { Btn, createTypedTableFa } from "@repo/shared/components"
-import type { ColDef } from "ag-grid-community"
+import type { ColDef, RowClassParams, RowStyle } from "ag-grid-community"
 import type { CustomCellRendererProps } from "ag-grid-react"
 import { useAtomValue } from "jotai"
 import { useCallback, useEffect } from "react"
@@ -161,6 +161,26 @@ function ManagementBtns({ data }: CustomCellRendererProps<OrderFm>) {
   )
 }
 
+function getRowStyle({ data }: RowClassParams<OrderFm>): RowStyle | undefined {
+  if (!data) return
+
+  const { orderStatus, side } = data
+
+  // رد شده
+  // slatedark-3
+  if (orderStatus === 4) return { background: "#212225" }
+
+  // خرید
+  // greendark-3
+  if (side === 1) return { background: "#0f2e22" }
+
+  // فروش
+  // reddark-3
+  if (side === 2) return { background: "#3b1219" }
+
+  return
+}
+
 const ordersColDef: ColDef<OrderFm>[] = [
   {
     headerName: "مدیریت",
@@ -292,6 +312,9 @@ export default function OrdersTable() {
     dependencies: [dateFilterState.fromDate, dateFilterState.toDate],
   }))
 
+  // Refetch stuff from API when something changed...
+  // I know it should be like I'd be modifying data myself...
+  // But it's what it is...
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (!connection) return undefined
@@ -334,25 +357,7 @@ export default function OrdersTable() {
         <TableOrders
           rowData={resOrders.data?.orderFMs ?? []}
           columnDefs={ordersColDef}
-          getRowStyle={p => {
-            if (!p.data) return
-
-            const { orderStatus, side } = p.data
-
-            // رد شده
-            // slatedark-3
-            if (orderStatus === 4) return { background: "#212225" }
-
-            // خرید
-            // greendark-3
-            if (side === 1) return { background: "#0f2e22" }
-
-            // فروش
-            // reddark-3
-            if (side === 2) return { background: "#3b1219" }
-
-            return
-          }}
+          getRowStyle={getRowStyle}
         />
       </div>
 
