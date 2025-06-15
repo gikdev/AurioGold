@@ -1,6 +1,17 @@
 import type { StockDtoForMaster } from "@repo/api-client/client"
-import { useCurrentViewMode } from "@repo/shared/components"
+import {
+  BtnTemplates,
+  FloatingActionBtn,
+  TitledCard,
+  useCurrentViewMode,
+  ViewModesToggle,
+} from "@repo/shared/components"
 import { ProductCards } from "./ProductCards"
+import { CirclesThreePlusIcon, PackageIcon } from "@phosphor-icons/react"
+import { Link } from "react-router"
+import { Navigation } from "./navigation"
+import ProductsTable from "./ProductsTable"
+import { getIsMobile } from "@repo/shared/hooks"
 
 const sampleProducts: Required<StockDtoForMaster>[] = [
   {
@@ -156,11 +167,40 @@ const sampleProducts: Required<StockDtoForMaster>[] = [
 ]
 
 export default function ManageProducts() {
+  const isMobile = getIsMobile()
   const viewMode = useCurrentViewMode()
 
-  return (
-    <div className="max-h-full overflow-y-auto p-2 [scrollbar-width:thin]">
-      {viewMode === "cards" && <ProductCards products={sampleProducts} />}
+  const titleSlot = (
+    <div className="flex items-center ms-auto gap-2">
+      <BtnTemplates.IconReload />
+      <CreateProductFAB />
+      <ViewModesToggle />
     </div>
   )
+
+  return (
+    <>
+      <TitledCard
+        title="مدیریت محصولات"
+        icon={PackageIcon}
+        titleSlot={titleSlot}
+        className={!isMobile && viewMode === "table" ? "max-w-240" : undefined}
+      >
+        {viewMode === "cards" && <ProductCards products={sampleProducts} />}
+        {viewMode === "table" && <ProductsTable products={sampleProducts} />}
+      </TitledCard>
+    </>
+  )
 }
+
+const CreateProductFAB = () => (
+  <FloatingActionBtn
+    title="ایجاد محصول جدید"
+    icon={CirclesThreePlusIcon}
+    to={Navigation.createNew()}
+    theme="success"
+    fallback={
+      <BtnTemplates.IconCreate as={Link} title="ایجاد محصول جدید" to={Navigation.createNew()} />
+    }
+  />
+)

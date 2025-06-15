@@ -67,25 +67,46 @@ function ProductCard({ product: p }: ProductCardProps) {
   )
 }
 
-function calcA11yStuff(status: StockStatus) {
-  let Icon = QuestionIcon
-  let classes = "text-slate-10"
-  let title = "؟؟؟"
+export function calcA11yStuff(status: StockStatus) {
+  switch (status) {
+    case 0:
+      return {
+        classes: "text-slate-10",
+        Icon: ProhibitIcon,
+        name: "غیرفعال",
+        title: "وضعیت دسترسی: غیرفعال",
+      }
 
-  if (status === 0) Icon = ProhibitIcon
-  if (status === 1) Icon = ArrowRightIcon
-  if (status === 2) Icon = ArrowLeftIcon
-  if (status === 3) Icon = ArrowsLeftRightIcon
+    case 1:
+      return {
+        classes: "text-green-10",
+        Icon: ArrowRightIcon,
+        name: "قابل خرید توسط مشتری",
+        title: "وضعیت دسترسی: قابل خرید توسط مشتری",
+      }
 
-  if (status === 0) classes = "text-slate-10"
-  if (status === 1) classes = "text-green-10"
-  if (status === 2) classes = "text-red-10"
-  if (status === 3) classes = "text-blue-10"
+    case 2:
+      return {
+        classes: "text-red-10",
+        Icon: ArrowLeftIcon,
+        name: "قابل فروش توسط مشتری",
+        title: "وضعیت دسترسی: قابل فروش توسط مشتری",
+      }
 
-  if (status === 0) title = "وضعیت دسترسی: غیرفعال"
-  if (status === 1) title = "وضعیت دسترسی: قابل خرید توسط مشتری"
-  if (status === 2) title = "وضعیت دسترسی: قابل فروش توسط مشتری"
-  if (status === 3) title = "وضعیت دسترسی: قابل خرید و فروش"
+    case 3:
+      return {
+        classes: "text-blue-10",
+        Icon: ArrowsLeftRightIcon,
+        name: "قابل خرید و فروش",
+        title: "وضعیت دسترسی: قابل خرید و فروش",
+      }
 
-  return { Icon, classes, title }
+    default:
+      return {
+        Icon: QuestionIcon,
+        classes: "text-slate-10",
+        title: "؟؟؟",
+        name: "؟؟؟",
+      }
+  }
 }

@@ -10,7 +10,7 @@ interface HeadingLineProps {
 }
 
 export function HeadingLine({ title, actions, className = "", children = null }: HeadingLineProps) {
-  const StyledSection = styled.section("px-4 py-8 md:p-8", className)
+  const StyledSection = styled.section("p-4", className)
 
   return (
     <>
@@ -31,6 +31,7 @@ export function HeadingLine({ title, actions, className = "", children = null }:
           {title}
         </Heading>
       )}
+
       <ErrorCardBoundary>
         {actions ? children : <StyledSection>{children}</StyledSection>}
       </ErrorCardBoundary>
