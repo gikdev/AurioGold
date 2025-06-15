@@ -27,6 +27,7 @@ const OnlineUsers = lazy(() => import("./pages/OnlineUsers"))
 const PriceSources = lazy(() => import("./pages/PriceSources"))
 const Balance = lazy(() => import("./pages/Balance"))
 const Orders = lazy(() => import("./pages/Orders"))
+const Products = lazy(() => import("./pages/Products"))
 const Settings = lazy(() => import("./pages/Settings"))
 
 const container = document.querySelector("#root")
@@ -67,6 +68,7 @@ root.render(
                   <Route path={routes.priceSources} element={<PriceSources />} />
                   <Route path={routes.balance} element={<Balance />} />
                   <Route path={routes.orders} element={<Orders />} />
+                  <Route path={routes.products} element={<Products />} />
                   <Route path={routes.settings} element={<Settings />} />
                   <Route path={routes.test} element={<Test />} />
                   <Route path="*" element={<NotFound />} />

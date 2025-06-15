@@ -1,9 +1,12 @@
 import { CardsIcon, type Icon, TableIcon } from "@phosphor-icons/react"
 import { cn } from "@repo/shared/helpers"
 import { motion } from "motion/react"
-import { useState } from "react"
+import { atomWithStorage } from "jotai/utils"
+import { useAtom, useAtomValue } from "jotai"
 
 type ViewMode = "cards" | "table"
+
+const viewModeAtom = atomWithStorage<ViewMode>("VIEW_MODE", "cards")
 
 export function useViewModes() {
   const modes: IconsToggleItem<ViewMode>[] = [
@@ -11,14 +14,29 @@ export function useViewModes() {
     { id: "table", icon: TableIcon },
   ]
 
-  const defaultViewMode = modes[0].id
-  const [viewMode, setMode] = useState<ViewMode>(defaultViewMode)
+  const [viewMode, setMode] = useAtom(viewModeAtom)
 
   const renderedIconsToggle = (
     <IconsToggle items={modes} activeItemId={viewMode} onChange={setMode} />
   )
 
   return { renderedIconsToggle, viewMode }
+}
+
+export function useCurrentViewMode() {
+  const viewMode = useAtomValue(viewModeAtom)
+
+  return viewMode
+}
+
+export const ViewModesToggle = () => {
+  const [viewMode, setMode] = useAtom(viewModeAtom)
+  const modes: IconsToggleItem<ViewMode>[] = [
+    { id: "cards", icon: CardsIcon },
+    { id: "table", icon: TableIcon },
+  ]
+
+  return <IconsToggle items={modes} activeItemId={viewMode} onChange={setMode} />
 }
 
 export interface IconsToggleItem<T extends string = string> {

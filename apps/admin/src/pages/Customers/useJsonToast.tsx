@@ -13,7 +13,7 @@ export function JsonToastContainer() {
   const [isClosed, setClosed] = useState(false)
   const jsonToastContent = useAtomValue(jsonToastContentAtom)
 
-  if (import.meta.env.PROD || isClosed) return
+  if (import.meta.env.PROD || isClosed || !jsonToastContent) return
 
   return (
     <div

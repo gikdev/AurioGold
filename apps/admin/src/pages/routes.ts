@@ -12,6 +12,7 @@ const routes = {
   priceSources: "/price-sources",
   balance: "/balance",
   orders: "/orders",
+  products: "/products",
   settings: "/settings",
 
   /** ⚠️ FOR DEV TEST ONLY! */

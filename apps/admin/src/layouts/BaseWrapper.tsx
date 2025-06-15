@@ -2,6 +2,7 @@ import { DatapiConfigProvider, apiRequest } from "@gikdev/react-datapi/src"
 import {
   ChatTextIcon,
   CoinsIcon,
+  CubeIcon,
   GearIcon,
   HouseLineIcon,
   ReceiptIcon,
@@ -32,7 +33,7 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
   { id: 5, text: "مدیریت گروه عددی", icon: UsersFourIcon, url: routes.groupsNumeric },
   { id: 6, text: "کاربران آنلاین", icon: UsersFourIcon, url: routes.onlineUsers },
   { id: 7, text: "مدیریت منابع قیمت", icon: TagIcon, url: routes.priceSources },
-  // { id: 8, text: "مدیریت محصولات", icon: CubeIcon, url: "/products" },
+  { id: 8, text: "مدیریت محصولات", icon: CubeIcon, url: routes.products },
   { id: 9, text: "مدیریت سفارشات", icon: ReceiptIcon, url: routes.orders },
   // { id: 10, text: "مدیریت حواله‌ها", icon: ScrollIcon, url: "/transfers" },
   // { id: 11, text: "مدیریت سندها", icon: ScrollIcon, url: "/docs" },
