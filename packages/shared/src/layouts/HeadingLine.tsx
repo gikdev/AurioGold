@@ -1,6 +1,6 @@
 import styled from "@master/styled.react"
-import { ErrorCardBoundary, Heading } from "#shared/components"
 import type { ReactNode } from "react"
+import { ErrorCardBoundary, Heading } from "#shared/components"
 
 interface HeadingLineProps {
   title: string

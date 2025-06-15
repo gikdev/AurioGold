@@ -1,9 +1,9 @@
 import { CirclesThreePlusIcon } from "@phosphor-icons/react"
 import { BtnTemplates, FloatingActionBtn, ViewModesToggle } from "@repo/shared/components"
 import { HeadingLine } from "@repo/shared/layouts"
-import { Navigation } from "./navigation"
 import { Link } from "react-router"
 import ManageProducts from "./ManageProducts"
+import { Navigation } from "./navigation"
 
 export default function Products() {
   const actions = (

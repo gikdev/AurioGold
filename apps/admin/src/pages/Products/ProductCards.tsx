@@ -1,3 +1,4 @@
+import styled from "@master/styled.react"
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -7,12 +8,11 @@ import {
   ProhibitIcon,
   QuestionIcon,
 } from "@phosphor-icons/react"
+import type { StockDtoForMaster, StockStatus } from "@repo/api-client/client"
+import { formatPersianPrice } from "@repo/shared/utils"
+import { motion } from "motion/react"
 import { Link } from "react-router"
 import { Navigation } from "./navigation"
-import type { StockDtoForMaster, StockStatus } from "@repo/api-client/client"
-import { motion } from "motion/react"
-import { formatPersianPrice } from "@repo/shared/utils"
-import styled from "@master/styled.react"
 
 interface ProductCardsProps {
   products: Required<StockDtoForMaster>[]

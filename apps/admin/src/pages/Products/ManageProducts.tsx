@@ -1,6 +1,6 @@
+import type { StockDtoForMaster } from "@repo/api-client/client"
 import { useCurrentViewMode } from "@repo/shared/components"
 import { ProductCards } from "./ProductCards"
-import type { StockDtoForMaster } from "@repo/api-client/client"
 
 const sampleProducts: Required<StockDtoForMaster>[] = [
   {
