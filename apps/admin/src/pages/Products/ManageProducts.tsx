@@ -17,19 +17,56 @@ import { ProductCards } from "./ProductCards"
 import ProductDetails from "./ProductDetails"
 import ProductsTable from "./ProductsTable"
 import { Navigation } from "./navigation"
+import { useAtomValue, useSetAtom } from "jotai"
+import { useCallback, useEffect, useRef } from "react"
+import { productsAtom } from "."
+import { connectionRefAtom } from "#/atoms"
 
 export default function ManageProducts() {
+  const connection = useAtomValue(connectionRefAtom)
   const isMobile = getIsMobile()
   const viewMode = useCurrentViewMode()
+  const setProductsAtom = useSetAtom(productsAtom)
+  const previousResProductsRef = useRef<Required<StockDtoForMaster>[]>([])
   const resProducts = useApiRequest<Required<StockDtoForMaster>[], StockDtoForMaster[]>(() => ({
     url: "/TyStocks",
     defaultValue: [],
     transformResponse: rawItems => rawItems.map(requiredify),
   }))
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    setProductsAtom(resProducts.data ?? [])
+    previousResProductsRef.current = resProducts.data ?? []
+  }, [resProducts.data])
+
+  useEffect(() => {
+    if (!connection) return
+    connection.on("ReceivePriceUpdate", handleReceivePriceUpdate)
+    return () => connection.off("ReceivePriceUpdate")
+  }, [connection])
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  const handleReceivePriceUpdate = useCallback(
+    (
+      productId: NonNullable<StockDtoForMaster["id"]>,
+      newPrice: number,
+      priceType: "price" | "diffSellPrice" | "diffBuyPrice",
+      date: string,
+    ) => {
+      setProductsAtom(draft => {
+        const idx = draft.findIndex(p => p.id === productId)
+        if (idx === -1) return
+        draft[idx][priceType] = newPrice
+        draft[idx].dateUpdate = date
+      })
+    },
+    [],
+  )
+
   const titleSlot = (
     <div className="flex items-center ms-auto gap-2">
-      <BtnTemplates.IconReload />
+      <BtnTemplates.IconReload onClick={() => resProducts.reload()} />
       <CreateProductFAB />
       <ViewModesToggle />
     </div>
@@ -39,11 +76,8 @@ export default function ManageProducts() {
     <>
       <CreateProductDrawer reloadProducts={() => resProducts.reload()} />
       <DeleteProductsModal reloadProducts={() => resProducts.reload()} />
-      <EditProductDrawer
-        reloadProducts={() => resProducts.reload()}
-        products={resProducts.data ?? []}
-      />
-      <ProductDetails products={resProducts.data ?? []} />
+      <EditProductDrawer reloadProducts={() => resProducts.reload()} />
+      <ProductDetails />
 
       <TitledCard
         title="مدیریت محصولات"

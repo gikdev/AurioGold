@@ -44,6 +44,7 @@
     "clsx": "^2.1.1",
     "immer": "^10.1.1",
     "jotai": "^2.12.4",
+    "jotai-immer": "^0.4.1",
     "js-cookie": "^3.0.5",
     "moment-jalaali": "^0.10.4",
     "motion": "^12.15.0",

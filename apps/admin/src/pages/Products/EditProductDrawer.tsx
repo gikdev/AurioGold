@@ -26,13 +26,15 @@ import {
   productFormSchema,
   toSafeNumber,
 } from "./productFormShared"
+import { useAtomValue } from "jotai"
+import { productsAtom } from "."
 
 interface EditProductDrawerProps {
   reloadProducts: () => void
-  products: Required<StockDtoForMaster>[]
 }
 
-function _EditProductDrawer({ reloadProducts, products }: EditProductDrawerProps) {
+function _EditProductDrawer({ reloadProducts }: EditProductDrawerProps) {
+  const products = useAtomValue(productsAtom)
   const [productId, setProductId] = useDrawerSheetNumber(QUERY_KEYS.productId)
   const [showEditDrawer, setShowEditDrawer] = useDrawerSheet(QUERY_KEYS.edit)
   const product = products.find(p => p.id === productId)
@@ -66,7 +68,7 @@ function _EditProductDrawer({ reloadProducts, products }: EditProductDrawerProps
       config: genDatApiConfig(),
       options: {
         url: `/TyStocks/${productId}`,
-        method: "POST",
+        method: "PUT",
         body: JSON.stringify(dataToSend),
         onError: msg => reject(msg),
         onSuccess: () => {

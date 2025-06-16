@@ -54,15 +54,41 @@ export const cellRenderers = {
     </p>
   ),
   PersianComma: ({ value }: { value: string | number | null | undefined }) => (
-    <p dir="ltr" className="text-left">
-      {value ? formatPersianPrice(value) : "-"}
-    </p>
+    <span dir="ltr" className="text-left">
+      {typeof value === "number" ? formatPersianPrice(value) : "-"}
+    </span>
   ),
   TrueFalse: ({ value }: { value: boolean }) => (
     <p dir="auto" className="text-center">
       {value ? "✅" : "❌"}
     </p>
   ),
+  DateAndTime: ({ value }: { value: Date | string }) => {
+    const date = new Date(value)
+    const persianDate = isoToPersianObject(typeof value === "string" ? value : value.toISOString())
+
+    const formatDigit = (digit: number) => formatPersianString(digit.toString().padStart(2, "0"))
+
+    return (
+      <span dir="auto">
+        <span>
+          <span>{formatDigit(persianDate.year)}</span>
+          <span>٫</span>
+          <span>{formatDigit(persianDate.monthCode)}</span>
+          <span>٫</span>
+          <span>{formatDigit(persianDate.day)}</span>
+        </span>
+        <span> - </span>
+        <span>
+          <span>{formatDigit(date.getHours())}</span>
+          <span>:</span>
+          <span>{formatDigit(date.getMinutes())}</span>
+          <span>:</span>
+          <span>{formatDigit(date.getSeconds())}</span>
+        </span>
+      </span>
+    )
+  },
   TimeOnly: ({ value }: { value: Date | string }) => {
     const d = new Date(value)
 

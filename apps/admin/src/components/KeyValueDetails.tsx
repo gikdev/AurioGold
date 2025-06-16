@@ -24,7 +24,7 @@ export function KeyValueDetail({
   return (
     <div className="flex flex-col gap-2">
       <p className="flex items-center justify-between hover:bg-slate-2 p-2 rounded-md gap-2">
-        <span className="font-bold inline-flex gap-1 items-center">
+        <span className="inline-flex gap-1 items-center">
           <CaretLeftIcon />
           <span>{key}:</span>
         </span>
@@ -32,7 +32,7 @@ export function KeyValueDetail({
         {bottomSlot ? (
           <span />
         ) : (
-          <span className="" dir={ltr ? "ltr" : "rtl"}>
+          <span className="text-slate-12 font-bold" dir={ltr ? "ltr" : "rtl"}>
             {cellRendered ? cellRendered : <RenderAValue value={value} />}
           </span>
         )}
