@@ -7,11 +7,14 @@ import {
   useDrawerSheet,
   useDrawerSheetNumber,
 } from "@repo/shared/components"
+import { useAtomValue } from "jotai"
 import { memo } from "react"
 import { Link } from "react-router"
 import { EntityNotFoundCard, KeyValueDetail, KeyValueDetailsContainer } from "#/components"
 import { cellRenderers } from "#/shared/agGrid"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
+import { productsAtom } from "."
+import DetailsCardsSection from "./DetailsCardsSection"
 import { Navigation, QUERY_KEYS } from "./navigation"
 import {
   productFormFields,
@@ -19,9 +22,6 @@ import {
   transactionStatuses,
   transactionTypes,
 } from "./productFormShared"
-import { useAtomValue } from "jotai"
-import { productsAtom } from "."
-import DetailsCardsSection from "./DetailsCardsSection"
 
 const getLabelProperty = generateLabelPropertyGetter(productFormFields.labels)
 

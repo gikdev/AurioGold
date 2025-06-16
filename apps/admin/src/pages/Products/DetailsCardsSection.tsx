@@ -1,14 +1,14 @@
-import { CaretDownIcon, CaretUpIcon } from "@phosphor-icons/react"
-import { Btn, useDrawerSheetNumber } from "@repo/shared/components"
-import { memo, useCallback } from "react"
-import { QUERY_KEYS } from "./navigation"
-import { productsAtom } from "."
-import { useAtom, useAtomValue } from "jotai"
-import { formatPersianPrice } from "@repo/shared/utils"
 import styled from "@master/styled.react"
+import { CaretDownIcon, CaretUpIcon } from "@phosphor-icons/react"
+import { notifManager, storageManager } from "@repo/shared/adapters"
+import { Btn, useDrawerSheetNumber } from "@repo/shared/components"
+import { formatPersianPrice } from "@repo/shared/utils"
+import { useAtom, useAtomValue } from "jotai"
+import { memo, useCallback } from "react"
 import tw from "tailwind-styled-components"
 import { connectionRefAtom } from "#/atoms"
-import { notifManager, storageManager } from "@repo/shared/adapters"
+import { productsAtom } from "."
+import { QUERY_KEYS } from "./navigation"
 
 const CardContainer = styled.div`
   bg-slate-2 border border-slate-6

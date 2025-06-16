@@ -14,10 +14,12 @@ import {
   useDrawerSheetNumber,
 } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
+import { useAtomValue } from "jotai"
 import { memo, useEffect } from "react"
 import { EntityNotFoundCard } from "#/components"
 import { useCustomForm } from "#/shared/customForm"
 import genDatApiConfig from "#/shared/datapi-config"
+import { productsAtom } from "."
 import ProductForm from "./ProductForm"
 import { QUERY_KEYS } from "./navigation"
 import {
@@ -26,8 +28,6 @@ import {
   productFormSchema,
   toSafeNumber,
 } from "./productFormShared"
-import { useAtomValue } from "jotai"
-import { productsAtom } from "."
 
 interface EditProductDrawerProps {
   reloadProducts: () => void

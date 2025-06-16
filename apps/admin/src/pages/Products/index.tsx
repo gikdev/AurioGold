@@ -1,7 +1,7 @@
 import type { StockDtoForMaster } from "@repo/api-client/client"
 import { HeadingLine } from "@repo/shared/layouts"
-import ManageProducts from "./ManageProducts"
 import { atomWithImmer } from "jotai-immer"
+import ManageProducts from "./ManageProducts"
 
 export const productsAtom = atomWithImmer<Required<StockDtoForMaster>[]>([])
 

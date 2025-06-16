@@ -9,7 +9,11 @@ import {
   useCurrentViewMode,
 } from "@repo/shared/components"
 import { getIsMobile } from "@repo/shared/hooks"
+import { useAtomValue, useSetAtom } from "jotai"
+import { useCallback, useEffect, useRef } from "react"
 import { Link } from "react-router"
+import { connectionRefAtom } from "#/atoms"
+import { productsAtom } from "."
 import CreateProductDrawer from "./CreateProductDrawer"
 import DeleteProductsModal from "./DeleteProductModal"
 import EditProductDrawer from "./EditProductDrawer"
@@ -17,10 +21,6 @@ import { ProductCards } from "./ProductCards"
 import ProductDetails from "./ProductDetails"
 import ProductsTable from "./ProductsTable"
 import { Navigation } from "./navigation"
-import { useAtomValue, useSetAtom } from "jotai"
-import { useCallback, useEffect, useRef } from "react"
-import { productsAtom } from "."
-import { connectionRefAtom } from "#/atoms"
 
 export default function ManageProducts() {
   const connection = useAtomValue(connectionRefAtom)
