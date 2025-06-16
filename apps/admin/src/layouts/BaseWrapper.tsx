@@ -14,7 +14,7 @@ import {
 import { ErrorCardBoundary } from "@repo/shared/components"
 import { Base, type SidebarItem } from "@repo/shared/layouts"
 import { useAtomValue, useSetAtom } from "jotai"
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import { Outlet } from "react-router"
 import { onlineUsersCountAtom } from "#/atoms"
 import { connectionRefAtom, connectionStateAtom } from "#/atoms/signalr"
@@ -41,10 +41,9 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
   { id: 14, text: "تنظیمات", icon: GearIcon, url: routes.settings },
 ]
 
-// Memoized config (only created once)
-const config = genDatApiConfig()
-
 export function BaseWrapper() {
+  const config = useMemo(() => genDatApiConfig(), [])
+
   return (
     <ErrorCardBoundary>
       <DatapiConfigProvider config={config}>
@@ -68,12 +67,12 @@ function ConnectionHandler() {
     const controller = new AbortController()
 
     apiRequest({
+      signal: controller.signal,
+      config: genDatApiConfig(),
       options: {
         url: "/TyStocks/GetTime",
         onError: console.error,
       },
-      signal: controller.signal,
-      config,
     })
 
     return () => controller.abort()

@@ -1,3 +1,4 @@
+import { useApiRequest } from "@gikdev/react-datapi/src"
 import { CirclesThreePlusIcon, PackageIcon } from "@phosphor-icons/react"
 import type { StockDtoForMaster } from "@repo/api-client/client"
 import {
@@ -9,166 +10,22 @@ import {
 } from "@repo/shared/components"
 import { getIsMobile } from "@repo/shared/hooks"
 import { Link } from "react-router"
+import CreateProductDrawer from "./CreateProductDrawer"
+import DeleteProductsModal from "./DeleteProductModal"
+import EditProductDrawer from "./EditProductDrawer"
 import { ProductCards } from "./ProductCards"
+import ProductDetails from "./ProductDetails"
 import ProductsTable from "./ProductsTable"
 import { Navigation } from "./navigation"
-
-const sampleProducts: Required<StockDtoForMaster>[] = [
-  {
-    id: 9,
-    name: "خرید فروش رسمی  3",
-    description: "",
-    price: 279000000,
-    diffBuyPrice: 2200000,
-    diffSellPrice: 2000000,
-    priceStep: 5000,
-    diffPriceStep: 50000,
-    status: 1,
-    mode: 2,
-    maxAutoMin: 0.2,
-    dateUpdate: "2025-06-15T18:02:53.146642",
-    minValue: 0,
-    maxValue: 0,
-    minVoume: 5,
-    maxVoume: 1000,
-    isCountable: false,
-    unitPriceRatio: 4.3318,
-    decimalNumber: 3,
-    supply: -380.64956647398844,
-    priceSourceID: 2034,
-    accountCode: "",
-    unit: 2,
-  },
-  {
-    id: 1013,
-    name: "سکه امامی",
-    description: "",
-    price: 710000000,
-    diffBuyPrice: 6500000,
-    diffSellPrice: 5100000,
-    priceStep: 100000,
-    diffPriceStep: 100000,
-    status: 3,
-    mode: 2,
-    maxAutoMin: 50,
-    dateUpdate: "2025-06-01T11:09:41.8210852",
-    minValue: 870000000,
-    maxValue: 90500000005,
-    minVoume: 6,
-    maxVoume: 50,
-    isCountable: true,
-    unitPriceRatio: 1,
-    decimalNumber: 1,
-    supply: -131,
-    priceSourceID: 18,
-    accountCode: "1",
-    unit: 1,
-  },
-  {
-    id: 1021,
-    name: "نقره",
-    description: "",
-    price: 31000000,
-    diffBuyPrice: 5000000,
-    diffSellPrice: 5000000,
-    priceStep: 1000000,
-    diffPriceStep: 1000000,
-    status: 2,
-    mode: 0,
-    maxAutoMin: 0.1,
-    dateUpdate: "2025-05-24T11:00:04.818504",
-    minValue: 100000,
-    maxValue: 2500000000,
-    minVoume: 10,
-    maxVoume: 50,
-    isCountable: true,
-    unitPriceRatio: 1,
-    decimalNumber: 1,
-    supply: -23,
-    priceSourceID: 24,
-    accountCode: null,
-    unit: 1,
-  },
-  {
-    id: 1026,
-    name: "ربع سکه ",
-    description: "",
-    price: 250000000,
-    diffBuyPrice: 5000000,
-    diffSellPrice: 5000000,
-    priceStep: 0,
-    diffPriceStep: 0,
-    status: 3,
-    mode: 2,
-    maxAutoMin: 0.5,
-    dateUpdate: "2025-06-01T18:56:29.9968265",
-    minValue: 0,
-    maxValue: 0,
-    minVoume: 0,
-    maxVoume: 0,
-    isCountable: true,
-    unitPriceRatio: 1,
-    decimalNumber: 2,
-    supply: -37,
-    priceSourceID: null,
-    accountCode: "3",
-    unit: 1,
-  },
-  {
-    id: 1044,
-    name: "نقره خام",
-    description: "",
-    price: 30000000,
-    diffBuyPrice: 5000000,
-    diffSellPrice: 5000000,
-    priceStep: 1000000,
-    diffPriceStep: 5000000,
-    status: 0,
-    mode: 1,
-    maxAutoMin: 0.5,
-    dateUpdate: "2025-06-09T11:36:44.673",
-    minValue: 0,
-    maxValue: 0,
-    minVoume: 3,
-    maxVoume: 100,
-    isCountable: false,
-    unitPriceRatio: 4.3318,
-    decimalNumber: 2,
-    supply: -3.5,
-    priceSourceID: 31,
-    accountCode: null,
-    unit: 2,
-  },
-  {
-    id: 1045,
-    name: "پشمک طلایی",
-    description: "",
-    price: 100000000,
-    diffBuyPrice: 1000000,
-    diffSellPrice: 1000000,
-    priceStep: 10000000,
-    diffPriceStep: 5000000,
-    status: 1,
-    mode: 2,
-    maxAutoMin: 0.5,
-    dateUpdate: "2025-06-12T18:50:45.508",
-    minValue: 0,
-    maxValue: 0,
-    minVoume: 1,
-    maxVoume: 30,
-    isCountable: false,
-    unitPriceRatio: 1,
-    decimalNumber: 2,
-    supply: -2,
-    priceSourceID: null,
-    accountCode: null,
-    unit: 0,
-  },
-]
 
 export default function ManageProducts() {
   const isMobile = getIsMobile()
   const viewMode = useCurrentViewMode()
+  const resProducts = useApiRequest<Required<StockDtoForMaster>[], StockDtoForMaster[]>(() => ({
+    url: "/TyStocks",
+    defaultValue: [],
+    transformResponse: rawItems => rawItems.map(requiredify),
+  }))
 
   const titleSlot = (
     <div className="flex items-center ms-auto gap-2">
@@ -180,14 +37,22 @@ export default function ManageProducts() {
 
   return (
     <>
+      <CreateProductDrawer reloadProducts={() => resProducts.reload()} />
+      <DeleteProductsModal reloadProducts={() => resProducts.reload()} />
+      <EditProductDrawer
+        reloadProducts={() => resProducts.reload()}
+        products={resProducts.data ?? []}
+      />
+      <ProductDetails products={resProducts.data ?? []} />
+
       <TitledCard
         title="مدیریت محصولات"
         icon={PackageIcon}
         titleSlot={titleSlot}
         className={!isMobile && viewMode === "table" ? "max-w-240" : undefined}
       >
-        {viewMode === "cards" && <ProductCards products={sampleProducts} />}
-        {viewMode === "table" && <ProductsTable products={sampleProducts} />}
+        {viewMode === "cards" && <ProductCards products={resProducts.data ?? []} />}
+        {viewMode === "table" && <ProductsTable products={resProducts.data ?? []} />}
       </TitledCard>
     </>
   )
@@ -204,3 +69,31 @@ const CreateProductFAB = () => (
     }
   />
 )
+
+function requiredify(input: StockDtoForMaster): Required<StockDtoForMaster> {
+  return {
+    id: input.id ?? 0,
+    name: input.name ?? "---",
+    description: input.description ?? null,
+    price: input.price ?? 0,
+    diffBuyPrice: input.diffBuyPrice ?? 0,
+    diffSellPrice: input.diffSellPrice ?? 0,
+    priceStep: input.priceStep ?? 0,
+    diffPriceStep: input.diffPriceStep ?? 0,
+    status: input.status ?? 0,
+    mode: input.mode ?? 0,
+    maxAutoMin: input.maxAutoMin ?? 0,
+    dateUpdate: input.dateUpdate ?? new Date(1).toISOString(),
+    minValue: input.minValue ?? 0,
+    maxValue: input.maxValue ?? 0,
+    minVoume: input.minVoume ?? 0,
+    maxVoume: input.maxVoume ?? 0,
+    isCountable: input.isCountable ?? false,
+    unitPriceRatio: input.unitPriceRatio ?? 0,
+    decimalNumber: input.decimalNumber ?? 0,
+    supply: input.supply ?? 0,
+    priceSourceID: input.priceSourceID ?? null,
+    accountCode: input.accountCode ?? null,
+    unit: input.unit ?? 0,
+  }
+}

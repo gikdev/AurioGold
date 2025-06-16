@@ -1,30 +1,28 @@
 import JalaliUtils from "@date-io/jalaali"
 import { CopyIcon } from "@phosphor-icons/react"
 import { notifManager } from "@repo/shared/adapters"
-import { Btn } from "@repo/shared/components"
+import { Btn, TextArea } from "@repo/shared/components"
 import { formatPersianPrice, formatPersianString } from "@repo/shared/utils"
 import type { RowSelectionOptions } from "ag-grid-community"
-import type { CustomCellRendererProps } from "ag-grid-react"
+import type { ReactNode } from "react"
 
 export const cellRenderers = {
-  Rtl: (p: CustomCellRendererProps) => (
+  Rtl: ({ value }: { value: ReactNode }) => (
     <p dir="rtl" className="text-right">
-      {p.value}
+      {value}
     </p>
   ),
-  Ltr: (p: CustomCellRendererProps) => (
+  Ltr: ({ value }: { value: ReactNode }) => (
     <p dir="ltr" className="text-left">
-      {p.value}
+      {value}
     </p>
   ),
-  Monospaced: (p: CustomCellRendererProps) => (
+  Monospaced: ({ value }: { value: ReactNode }) => (
     <p dir="ltr" className="text-left">
-      <code>{p.value}</code>
+      <code>{value}</code>
     </p>
   ),
-  Debt: (p: CustomCellRendererProps) => {
-    const value: number = p.value
-
+  Debt: ({ value }: { value: number }) => {
     function handleCopyBtnClick() {
       navigator.clipboard
         .writeText(Math.abs(Number(value.toFixed(3))).toString())
@@ -50,23 +48,23 @@ export const cellRenderers = {
       </span>
     )
   },
-  PersianNum: (p: CustomCellRendererProps) => (
+  PersianNum: ({ value }: { value: string | number }) => (
     <p dir="ltr" className="text-left">
-      {formatPersianString(p.value)}
+      {formatPersianString(value)}
     </p>
   ),
-  PersianComma: (p: CustomCellRendererProps) => (
+  PersianComma: ({ value }: { value: string | number | null | undefined }) => (
     <p dir="ltr" className="text-left">
-      {formatPersianPrice(p.value)}
+      {value ? formatPersianPrice(value) : "-"}
     </p>
   ),
-  TrueFalse: (p: CustomCellRendererProps) => (
+  TrueFalse: ({ value }: { value: boolean }) => (
     <p dir="auto" className="text-center">
-      {p.value ? "✅" : "❌"}
+      {value ? "✅" : "❌"}
     </p>
   ),
-  TimeOnly: (p: CustomCellRendererProps) => {
-    const d = new Date(p.value)
+  TimeOnly: ({ value }: { value: Date | string }) => {
+    const d = new Date(value)
 
     const formatDigit = (digit: number) => formatPersianPrice(digit.toString().padStart(2, "0"))
 
@@ -80,8 +78,8 @@ export const cellRenderers = {
       </p>
     )
   },
-  DateOnly: (p: CustomCellRendererProps) => {
-    const d = isoToPersianObject(p.value)
+  DateOnly: ({ value }: { value: Date | string }) => {
+    const d = isoToPersianObject(typeof value === "string" ? value : value.toISOString())
 
     const formatDigit = (digit: number) => formatPersianString(digit.toString().padStart(2, "0"))
 
@@ -91,15 +89,18 @@ export const cellRenderers = {
       </p>
     )
   },
-  Center: (p: CustomCellRendererProps) => (
+  Center: ({ value }: { value: ReactNode }) => (
     <p dir="auto" className="text-center">
-      {p.value}
+      {value}
     </p>
   ),
-  AutoLink: (p: CustomCellRendererProps) => (
-    <a href={p.value} dir="ltr" className="text-left text-blue-9 underline block">
-      {p.value}
+  AutoLink: ({ value }: { value: string }) => (
+    <a href={value} dir="ltr" className="text-left text-blue-9 underline block">
+      {value}
     </a>
+  ),
+  LongText: ({ value }: { value: string }) => (
+    <TextArea className="text-xs min-h-32" value={value} readOnly />
   ),
 }
 

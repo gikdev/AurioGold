@@ -1,5 +1,6 @@
 import styled from "@master/styled.react"
 import { CaretLeftIcon, CheckIcon, XIcon } from "@phosphor-icons/react"
+import type { ReactNode } from "react"
 
 export const KeyValueDetailsContainer = styled.div`
   flex flex-col gap-3
@@ -7,22 +8,37 @@ export const KeyValueDetailsContainer = styled.div`
 
 interface KeyValueDetailProps {
   title: string
-  value: number | string | null | undefined | boolean
+  value?: number | string | null | undefined | boolean
   ltr?: boolean
+  cellRendered?: ReactNode
+  bottomSlot?: ReactNode
 }
 
-export function KeyValueDetail({ title: key, value, ltr = false }: KeyValueDetailProps) {
+export function KeyValueDetail({
+  title: key,
+  value,
+  cellRendered,
+  ltr = false,
+  bottomSlot,
+}: KeyValueDetailProps) {
   return (
-    <p className="flex items-center justify-between hover:bg-slate-2 p-2 rounded-md">
-      <span className="font-bold inline-flex gap-1 items-center">
-        <CaretLeftIcon />
-        <span>{key}:</span>
-      </span>
+    <div className="flex flex-col gap-2">
+      <p className="flex items-center justify-between hover:bg-slate-2 p-2 rounded-md gap-2">
+        <span className="font-bold inline-flex gap-1 items-center">
+          <CaretLeftIcon />
+          <span>{key}:</span>
+        </span>
 
-      <span className="" dir={ltr ? "ltr" : "rtl"}>
-        <RenderAValue value={value} />
-      </span>
-    </p>
+        {bottomSlot ? (
+          <span />
+        ) : (
+          <span className="" dir={ltr ? "ltr" : "rtl"}>
+            {cellRendered ? cellRendered : <RenderAValue value={value} />}
+          </span>
+        )}
+      </p>
+      {bottomSlot}
+    </div>
   )
 }
 
