@@ -1,16 +1,13 @@
 import styled from "@master/styled.react"
-import type { Icon } from "@phosphor-icons/react"
+import { DotsThreeCircleVerticalIcon, DotsThreeOutlineIcon, type Icon } from "@phosphor-icons/react"
 import { HouseIcon } from "@phosphor-icons/react/House"
-import { XCircleIcon } from "@phosphor-icons/react/XCircle"
-import { useAtom } from "jotai"
-import { type ReactNode, useEffect } from "react"
+import { type ReactNode, useEffect, useMemo, useState } from "react"
 import type { JSX } from "react"
 import { Link, useLocation } from "react-router"
 import { storageManager } from "#shared/adapters"
-import { isSidebarOpenAtom } from "#shared/atoms"
-import { ErrorCardBoundary } from "#shared/components"
-import { Btn } from "#shared/components"
+import { DrawerSheet, ErrorCardBoundary } from "#shared/components"
 import { cn } from "#shared/helpers"
+import { getIsMobile, useBooleanishQueryState } from "#shared/hooks"
 
 function getIsLoggedIn() {
   return !!storageManager.get("ttkk", "sessionStorage")
@@ -24,6 +21,8 @@ interface BaseProps {
 }
 
 export function Base({ children, nav, footer, sidebarItems }: BaseProps) {
+  const isMobile = useMemo(() => getIsMobile(), [])
+
   useEffect(() => {
     if (!getIsLoggedIn()) location.href = "/login"
   }, [])
@@ -37,7 +36,8 @@ export function Base({ children, nav, footer, sidebarItems }: BaseProps) {
     <>
       {nav}
       <main className="flex flex-1 gap-2 rounded-md overflow-hidden">
-        <Sidebar items={sidebarItems} />
+        {isMobile ? <MobileSidebar items={sidebarItems} /> : <PCSidebar items={sidebarItems} />}
+
         <section className="flex-1 flex bg-slate-1 min-h-0 flex-col rounded-md overflow-y-auto [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.2)_transparent]">
           <ErrorCardBoundary>{children}</ErrorCardBoundary>
         </section>
@@ -48,44 +48,54 @@ export function Base({ children, nav, footer, sidebarItems }: BaseProps) {
 }
 
 // ─────────────────────────────────────────── //
-// Sidebar                                     //
+// MobileSidebar                               //
 // ─────────────────────────────────────────── //
 
-interface SidebarProps {
+interface MobileSidebarProps {
   items: SidebarItem[]
 }
 
-function Sidebar({ items }: SidebarProps): JSX.Element {
-  const [isSidebarOpen, setSidebarOpen] = useAtom(isSidebarOpenAtom)
+function MobileSidebar({ items }: MobileSidebarProps) {
+  const [isOpen, setOpen] = useBooleanishQueryState("menu")
 
+  return (
+    <DrawerSheet
+      open={isOpen}
+      title="منو"
+      onClose={() => setOpen(false)}
+      icon={DotsThreeCircleVerticalIcon}
+    >
+      <div className="flex flex-col p-2 ps-0 gap-2">
+        {items.map(item => (
+          <SidebarItem key={item.id} {...item} onClick={() => setOpen(false)} />
+        ))}
+      </div>
+    </DrawerSheet>
+  )
+}
+
+// ─────────────────────────────────────────── //
+// PCSidebar                                   //
+// ─────────────────────────────────────────── //
+
+interface PCSidbarProps {
+  items: SidebarItem[]
+}
+
+function PCSidebar({ items }: PCSidbarProps): JSX.Element {
   const StyledAside = styled.aside(
-    "overflow-y-auto bg-slate-1 rounded-md",
+    "hidden overflow-y-auto bg-slate-1 rounded-md",
     "flex flex-col p-2 ps-0 gap-2 w-64",
     "[scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.2)_transparent]",
     "inset-0 w-full max-w-full",
     "md:relative md:max-w-max md:flex",
-    {
-      hidden: !isSidebarOpen,
-      fixed: isSidebarOpen,
-    },
   )
 
   return (
-    <StyledAside onClick={() => setSidebarOpen(false)}>
-      <img
-        className="inline-block max-h-16 mx-auto md:hidden max-w-max"
-        src="/images/vgold-full.png"
-        alt=""
-      />
-
+    <StyledAside>
       {items.map(item => (
         <SidebarItem key={item.id} {...item} />
       ))}
-
-      <Btn onClick={() => setSidebarOpen(false)} className="shrink-0 grow-0 mt-auto md:hidden">
-        <XCircleIcon size={24} />
-        <span>بستن</span>
-      </Btn>
     </StyledAside>
   )
 }
@@ -101,9 +111,11 @@ export interface SidebarItem {
   icon?: Icon
 }
 
-interface SidebarItemProps extends Omit<SidebarItem, "id"> {}
+interface SidebarItemProps extends Omit<SidebarItem, "id"> {
+  onClick?: () => void
+}
 
-function SidebarItem({ text = "---", icon: Icon = HouseIcon, url }: SidebarItemProps) {
+function SidebarItem({ text = "---", icon: Icon = HouseIcon, url, onClick }: SidebarItemProps) {
   const { pathname } = useLocation()
   const isActive = pathname === url
 
@@ -117,7 +129,7 @@ function SidebarItem({ text = "---", icon: Icon = HouseIcon, url }: SidebarItemP
   )
 
   return (
-    <Link to={url} className={classes}>
+    <Link to={url} className={classes} onClick={onClick}>
       <Icon weight={isActive ? "fill" : "regular"} size={24} />
       <span>{text}</span>
     </Link>

@@ -2,9 +2,9 @@ import styled from "@master/styled.react"
 import { ListIcon } from "@phosphor-icons/react"
 import { currentProfile } from "@repo/profile-manager"
 import { storageManager } from "@repo/shared/adapters"
-import { isSidebarOpenAtom } from "@repo/shared/atoms"
 import { Btn } from "@repo/shared/components"
-import { useAtomValue, useSetAtom } from "jotai"
+import { useBooleanishQueryState } from "@repo/shared/hooks"
+import { useAtomValue } from "jotai"
 import { Link } from "react-router"
 import { connectionStateAtom, isAdminOnlineAtom } from "#/atoms"
 import routes from "#/pages/routes"
@@ -12,9 +12,9 @@ import routes from "#/pages/routes"
 const StyledAdminChip = styled(Link)`flex flex-row-reverse gap-2 items-center justify-center`
 
 export function Nav() {
-  const setSidebarOpen = useSetAtom(isSidebarOpenAtom)
   const connectionState = useAtomValue(connectionStateAtom)
   const isAdminOnline = useAtomValue(isAdminOnlineAtom)
+  const [, setSidebarOpen] = useBooleanishQueryState("menu")
 
   const displayName = storageManager.get("name", "sessionStorage") ?? "طلا فروشی ناکجاآباد"
 

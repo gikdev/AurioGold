@@ -1,5 +1,6 @@
 import { CaretDownIcon, CaretUpIcon, EyeIcon, EyeSlashIcon } from "@phosphor-icons/react"
 import { Btn } from "@repo/shared/components"
+import { parseAsBoolean, useQueryState } from "nuqs"
 import { useCallback, useState } from "react"
 import { useWindowSize } from "react-haiku"
 import { cn } from "#shared/helpers"
@@ -63,4 +64,13 @@ export function useToggleLessOrMoreBtn(defaultValue = false) {
   )
 
   return { ToggleLessOrMoreBtn, isOpen, setOpen }
+}
+
+export function useBooleanishQueryState(id: string) {
+  const [isOpen, setOpen] = useQueryState(
+    id,
+    parseAsBoolean.withDefault(false).withOptions({ history: "push" }),
+  )
+
+  return [isOpen, setOpen] as const
 }
