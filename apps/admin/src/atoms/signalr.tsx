@@ -1,11 +1,11 @@
 import * as signalR from "@microsoft/signalr"
 import { currentProfile } from "@repo/profile-manager"
 import { notifManager, storageManager } from "@repo/shared/adapters"
+import { useEffectButNotOnMount } from "@repo/shared/hooks"
 import { atom, useAtom } from "jotai"
 import { useCallback, useEffect, useRef } from "react"
 import routes from "#/pages/routes"
 import { isAdminOnlineAtom } from "./adminConnectivity"
-import { useEffectButNotOnMount } from "@repo/shared/hooks"
 
 const AdminStatus = {
   Offline: 1,
