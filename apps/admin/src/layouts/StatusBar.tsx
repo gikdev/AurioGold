@@ -9,7 +9,7 @@ import {
   UsersFourIcon,
 } from "@phosphor-icons/react"
 import { notifManager } from "@repo/shared/adapters"
-import { useAtomValue, useSetAtom } from "jotai"
+import { useAtomValue } from "jotai"
 import { useEffect, useState } from "react"
 import { Link } from "react-router"
 import {
@@ -133,7 +133,6 @@ function ReloadStatusBtn() {
 function OnlineUsers() {
   const connection = useAtomValue(connectionRefAtom)
   const connectionState = useAtomValue(connectionStateAtom)
-  const setOnlineUsersCount = useSetAtom(onlineUsersCountAtom)
   const [onlineUsers, setOnlineUsers] = useState<Array<{ id: number; displayName: string }>>([])
 
   const getOnlineUsers = () => {
@@ -142,26 +141,21 @@ function OnlineUsers() {
     connection
       .invoke("GetConnectedUsers")
       .then(users => setOnlineUsers(users))
-      .catch(() => notifManager.notify("یه مشکلی پیش آمده (E-AXE6785)", "console"))
+      .catch((err: unknown) => {
+        notifManager.notify(String(err) || "یه مشکلی پیش آمده (E-AXE6785)", "toast", {
+          status: "error",
+        })
+      })
   }
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    if (connectionState === "connected" && connection) {
-      getOnlineUsers()
+    if (connectionState !== "connected" || !connection) return
+    getOnlineUsers()
+    connection.on("OnlineCount", getOnlineUsers)
 
-      const onOnlineCount = (count: number) => {
-        getOnlineUsers()
-        setOnlineUsersCount(count || "؟")
-      }
-
-      connection.on("OnlineCount", onOnlineCount)
-
-      return () => connection.off("OnlineCount")
-    }
-
-    return
-  }, [connectionState])
+    return () => connection.off("OnlineCount")
+  }, [connectionState, connection])
 
   return (
     <div className="h-full flex items-center flex-1 text-xs">

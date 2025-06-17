@@ -2,7 +2,7 @@ import { ArrowCounterClockwiseIcon, UsersFourIcon } from "@phosphor-icons/react"
 import { notifManager } from "@repo/shared/adapters"
 import { Btn, TitledCard, createTypedTableFa } from "@repo/shared/components"
 import type { ColDef } from "ag-grid-community"
-import { useAtom, useAtomValue } from "jotai"
+import { useAtomValue } from "jotai"
 import { useEffect, useState } from "react"
 import { connectionRefAtom, connectionStateAtom, onlineUsersCountAtom } from "#/atoms"
 import OnlineNumberCard from "./OnlineNumberCard"
@@ -33,7 +33,7 @@ export default function ManageOnlineUsers() {
   const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>()
   const connectionRef = useAtomValue(connectionRefAtom)
   const connectionState = useAtomValue(connectionStateAtom)
-  const [onlineUsersCount, setOnlineUsersCount] = useAtom(onlineUsersCountAtom)
+  const onlineUsersCount = useAtomValue(onlineUsersCountAtom)
 
   const getOnlineUsers = () => {
     if (!connectionRef || connectionState !== "connected") return
@@ -55,21 +55,12 @@ export default function ManageOnlineUsers() {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    if (connectionState === "connected" && connectionRef) {
-      getOnlineUsers()
+    if (connectionState !== "connected" || !connectionRef) return
+    getOnlineUsers()
+    connectionRef.on("OnlineCount", getOnlineUsers)
 
-      const onOnlineCount = (count: number) => {
-        setOnlineUsersCount(count || "؟")
-        getOnlineUsers()
-      }
-
-      connectionRef?.on("OnlineCount", onOnlineCount)
-
-      return () => connectionRef?.off("OnlineCount")
-    }
-
-    return
-  }, [connectionState])
+    return () => connectionRef.off("OnlineCount")
+  }, [connectionState, connectionRef])
 
   const cardTitleSlot = (
     <div className="flex gap-2 items-center ms-auto">

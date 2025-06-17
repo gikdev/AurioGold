@@ -64,34 +64,24 @@ function ConnectionHandler() {
 
   // Time fetch with proper cleanup
   useEffect(() => {
-    const controller = new AbortController()
-
     apiRequest({
-      signal: controller.signal,
       config: genDatApiConfig(),
       options: {
         url: "/TyStocks/GetTime",
         onError: console.error,
       },
     })
-
-    return () => controller.abort()
   }, [])
 
   // Connection handler with proper dependencies
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (connectionState !== "connected" || !connection) return
 
-    const handler = (count: number) => {
-      setOnlineUsersCount(count)
-    }
+    connection.on("OnlineCount", (count: number) => setOnlineUsersCount(count))
 
-    connection.on("OnlineCount", handler)
-
-    return () => {
-      connection.off("OnlineCount", handler)
-    }
-  }, [connectionState, connection, setOnlineUsersCount])
+    return () => connection.off("OnlineCount")
+  }, [connectionState, connection])
 
   return null
 }

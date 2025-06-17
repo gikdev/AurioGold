@@ -3,7 +3,7 @@ import { currentProfile } from "@repo/profile-manager"
 import { notifManager, storageManager } from "@repo/shared/adapters"
 import { useEffectButNotOnMount } from "@repo/shared/hooks"
 import { atom, useAtom } from "jotai"
-import { useCallback, useEffect, useRef } from "react"
+import { useCallback, useEffect } from "react"
 import routes from "#/pages/routes"
 import { isAdminOnlineAtom } from "./adminConnectivity"
 
@@ -34,7 +34,6 @@ export const connectionStateAtom = atom<ConnectionState>("unknown")
 export const connectionRefAtom = atom<signalR.HubConnection | null>(null)
 
 export function SignalRManager() {
-  const initializationCountRef = useRef(0)
   const [connectionState, setConnectionState] = useAtom(connectionStateAtom)
   const [connectionRef, setConnectionRef] = useAtom(connectionRefAtom)
   const [isAdminOnline, setAdminOnline] = useAtom(isAdminOnlineAtom)
@@ -69,13 +68,7 @@ export function SignalRManager() {
       await connection.start()
       setConnectionState("connected")
       const token = storageManager.get("ttkk", "sessionStorage")
-      // In dev mode, StrictMode, makes it so this runs twice...
-      // I had to stop it from doing it...
-      if (token) {
-        if (initializationCountRef.current > 0) return
-        initializationCountRef.current++
-        await connection.invoke("InitializeConnection", token)
-      }
+      await connection.invoke("InitializeConnection", token)
     } catch (err) {
       setConnectionState("disconnected")
     }
