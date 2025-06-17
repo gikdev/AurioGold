@@ -1,9 +1,11 @@
 import type { StockDtoForMaster } from "@repo/api-client/client"
 import { BtnTemplates, createTypedTableFa } from "@repo/shared/components"
 import type { CustomCellRendererProps } from "ag-grid-react"
+import { useAtomValue } from "jotai"
 import type { ComponentProps } from "react"
 import { Link } from "react-router"
 import { cellRenderers } from "#/shared/agGrid"
+import { productsAtom } from "."
 import { calcA11yStuff } from "./ProductCards"
 import { Navigation } from "./navigation"
 
@@ -38,11 +40,9 @@ const columnDefs: TableProps["columnDefs"] = [
   },
 ]
 
-interface ProductsTableProps {
-  products: TableProps["rowData"]
-}
+export default function ProductsTable() {
+  const products = useAtomValue(productsAtom)
 
-export default function ProductsTable({ products }: ProductsTableProps) {
   return (
     <div className="h-160">
       <Table rowData={products} columnDefs={columnDefs} />

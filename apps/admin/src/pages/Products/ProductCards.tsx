@@ -10,15 +10,15 @@ import {
 } from "@phosphor-icons/react"
 import type { StockDtoForMaster, StockStatus } from "@repo/api-client/client"
 import { formatPersianPrice } from "@repo/shared/utils"
+import { useAtomValue } from "jotai"
 import { motion } from "motion/react"
 import { Link } from "react-router"
+import { productsAtom } from "."
 import { Navigation } from "./navigation"
 
-interface ProductCardsProps {
-  products: Required<StockDtoForMaster>[]
-}
+export function ProductCards() {
+  const products = useAtomValue(productsAtom)
 
-export function ProductCards({ products }: ProductCardsProps) {
   return (
     <div className="grid auto-rows-fr gap-4 grid-cols-[repeat(auto-fit,minmax(200px,1fr))]">
       {products.map(p => (

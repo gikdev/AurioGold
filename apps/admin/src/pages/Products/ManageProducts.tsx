@@ -85,8 +85,8 @@ export default function ManageProducts() {
         titleSlot={titleSlot}
         className={!isMobile && viewMode === "table" ? "max-w-240" : undefined}
       >
-        {viewMode === "cards" && <ProductCards products={resProducts.data ?? []} />}
-        {viewMode === "table" && <ProductsTable products={resProducts.data ?? []} />}
+        {viewMode === "cards" && <ProductCards />}
+        {viewMode === "table" && <ProductsTable />}
       </TitledCard>
     </>
   )
