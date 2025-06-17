@@ -1,9 +1,5 @@
 import { useApiRequest } from "@gikdev/react-datapi/src"
-import {
-  ArrowCounterClockwiseIcon,
-  UserCirclePlusIcon,
-  UsersThreeIcon,
-} from "@phosphor-icons/react"
+import { ArrowClockwiseIcon, UserCirclePlusIcon, UsersThreeIcon } from "@phosphor-icons/react"
 import type { CustomerDto } from "@repo/api-client/client"
 import {
   Btn,
@@ -44,7 +40,7 @@ export default function ManageCustomers() {
   const titledCardActions = (
     <div className="ms-auto flex items-center gap-2">
       <Btn className="h-10 w-10 p-1" onClick={() => customersRes.reload()}>
-        <ArrowCounterClockwiseIcon size={24} />
+        <ArrowClockwiseIcon size={24} />
       </Btn>
 
       <CreateCustomerFAB />

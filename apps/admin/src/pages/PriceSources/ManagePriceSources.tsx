@@ -1,9 +1,5 @@
 import { useApiRequest } from "@gikdev/react-datapi/src"
-import {
-  ArrowCounterClockwiseIcon,
-  CirclesThreePlusIcon,
-  UsersThreeIcon,
-} from "@phosphor-icons/react"
+import { ArrowClockwiseIcon, CirclesThreePlusIcon, UsersThreeIcon } from "@phosphor-icons/react"
 import type { CustomerDto, StockPriceSourceResponse } from "@repo/api-client/client"
 import {
   Btn,
@@ -37,7 +33,7 @@ export default function ManagePriceSources() {
   const titledCardActions = (
     <div className="ms-auto flex items-center gap-2">
       <Btn className="h-10 w-10 p-1" onClick={() => sourcesRes.reload()}>
-        <ArrowCounterClockwiseIcon size={24} />
+        <ArrowClockwiseIcon size={24} />
       </Btn>
 
       <CreatePriceSourceFAB />

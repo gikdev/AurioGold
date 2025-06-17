@@ -1,4 +1,4 @@
-import { ArrowCounterClockwiseIcon, UsersFourIcon } from "@phosphor-icons/react"
+import { ArrowClockwiseIcon, UsersFourIcon } from "@phosphor-icons/react"
 import { notifManager } from "@repo/shared/adapters"
 import { Btn, TitledCard, createTypedTableFa } from "@repo/shared/components"
 import type { ColDef } from "ag-grid-community"
@@ -64,7 +64,7 @@ export default function ManageOnlineUsers() {
   const cardTitleSlot = (
     <div className="flex gap-2 items-center ms-auto">
       <Btn className="h-10 w-10 p-1" onClick={() => getOnlineUsers()}>
-        <ArrowCounterClockwiseIcon size={24} />
+        <ArrowClockwiseIcon size={24} />
       </Btn>
     </div>
   )
