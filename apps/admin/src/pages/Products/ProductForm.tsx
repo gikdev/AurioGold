@@ -80,11 +80,19 @@ export default function ProductForm({ form }: ProductFormProps) {
       </Labeler>
 
       <Labeler labelText={labels.transactionStatus} errorMsg={errors.transactionStatus?.message}>
-        <SelectWithTransactionStatus options={transactionStatuses} keys={keysConfig} />
+        <SelectWithTransactionStatus
+          {...register(fields.transactionStatus)}
+          options={transactionStatuses}
+          keys={keysConfig}
+        />
       </Labeler>
 
       <Labeler labelText={labels.transactionMethod} errorMsg={errors.transactionMethod?.message}>
-        <SelectWithTransactionMethod options={transactionMethods} keys={keysConfig} />
+        <SelectWithTransactionMethod
+          {...register(fields.transactionMethod)}
+          options={transactionMethods}
+          keys={keysConfig}
+        />
       </Labeler>
 
       <Labeler
@@ -108,7 +116,11 @@ export default function ProductForm({ form }: ProductFormProps) {
       </Labeler>
 
       <Labeler labelText={labels.transactionType} errorMsg={errors.transactionType?.message}>
-        <SelectWithTransactionType options={transactionTypes} keys={keysConfig} />
+        <SelectWithTransactionType
+          {...register(fields.transactionType)}
+          options={transactionTypes}
+          keys={keysConfig}
+        />
       </Labeler>
 
       <Labeler labelText={labels.priceToGramRatio} errorMsg={errors.priceToGramRatio?.message}>
