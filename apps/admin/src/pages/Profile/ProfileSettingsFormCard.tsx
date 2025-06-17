@@ -14,8 +14,8 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 
 const { fields, labels } = createFieldsWithLabels({
-  fullName: "نام",
-  profileImageGuid: "عکس پروفایل",
+  fullName: "نام *",
+  profileImageGuid: "عکس پروفایل: ",
 })
 
 const MAX_FILE_SIZE_IN_MB = 2

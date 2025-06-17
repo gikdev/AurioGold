@@ -78,8 +78,6 @@ export function useNotifyOrders() {
     orderDto: Required<OrderFm>,
     userDisplayName: string,
   ) {
-    console.log("Running!", orderDto)
-
     try {
       notifSound.play()
     } catch (err) {
