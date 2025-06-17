@@ -150,11 +150,10 @@ function OnlineUsers() {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    if (connectionState !== "connected" || !connection) return
     getOnlineUsers()
-    connection.on("OnlineCount", getOnlineUsers)
+    connection?.on("OnlineCount", getOnlineUsers)
 
-    return () => connection.off("OnlineCount")
+    return () => connection?.off("OnlineCount")
   }, [connectionState, connection])
 
   return (

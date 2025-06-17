@@ -1,6 +1,6 @@
 import { apiRequest, useApiRequest } from "@gikdev/react-datapi/src"
 import type { HubConnection } from "@microsoft/signalr"
-import { CheckIcon, FunnelIcon, XIcon } from "@phosphor-icons/react"
+import { ArrowClockwiseIcon, CheckIcon, FunnelIcon, XIcon } from "@phosphor-icons/react"
 import type { Gidto, OrderFm, OrdersByStuckDto, OrdersReturnFm } from "@repo/api-client/client"
 import { notifManager, storageManager } from "@repo/shared/adapters"
 import { Btn, createTypedTableFa } from "@repo/shared/components"
@@ -16,7 +16,7 @@ import FilterDrawer from "./FilterDrawer"
 import { OrdersNavigation } from "./navigation"
 import { useDateFilter } from "./useDateFilter"
 
-function acceptOrRejectOrder(
+export function acceptOrRejectOrder(
   isOrderNotif: boolean,
   id: number,
   isAccepted: boolean,
@@ -167,15 +167,15 @@ function getRowStyle({ data }: RowClassParams<OrderFm>): RowStyle | undefined {
   const { orderStatus, side } = data
 
   // رد شده
-  // slatedark-3
+  // slate-3
   if (orderStatus === 4) return { background: "#212225" }
 
   // خرید
-  // greendark-3
+  // green-3
   if (side === 1) return { background: "#0f2e22" }
 
   // فروش
-  // reddark-3
+  // red-3
   if (side === 2) return { background: "#3b1219" }
 
   return
@@ -340,6 +340,20 @@ export default function OrdersTable() {
             جدول سفارشات:
           </h2>
 
+          <button
+            type="button"
+            onClick={() => resOrders.reload()}
+            className="
+              text-slate-11 bg-slate-3 transition-all
+              hover:text-slate-12 hover:bg-slate-4
+              pt-1 px-2 rounded-t-md pb-3 top-2 
+              relative border border-slate-6
+              cursor-pointer active:top-3
+            "
+          >
+            <ArrowClockwiseIcon size={24} />
+          </button>
+
           <Link
             to={OrdersNavigation.filter()}
             className="
@@ -366,6 +380,20 @@ export default function OrdersTable() {
           <h2 className="text-slate-12 font-bold bg-slate-2 pt-1 px-2 rounded-t-md pb-3 relative top-3 border border-slate-6 me-auto">
             جدول خلاصه:
           </h2>
+
+          <button
+            type="button"
+            onClick={() => resOrders.reload()}
+            className="
+              text-slate-11 bg-slate-3 transition-all
+              hover:text-slate-12 hover:bg-slate-4
+              pt-1 px-2 rounded-t-md pb-3 top-2 
+              relative border border-slate-6
+              cursor-pointer active:top-3
+            "
+          >
+            <ArrowClockwiseIcon size={24} />
+          </button>
 
           <Link
             to={OrdersNavigation.filter()}

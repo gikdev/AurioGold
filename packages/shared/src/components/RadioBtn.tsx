@@ -4,13 +4,17 @@ export const Radio = forwardRef<HTMLInputElement, React.ComponentPropsWithoutRef
   ({ checked, className = "", ...props }, ref) => {
     return (
       <label className={`relative inline-flex items-center cursor-pointer ${className}`}>
-        <input type="radio" className="peer sr-only" checked={checked} ref={ref} {...props} />
+        <input type="radio" className="sr-only" checked={checked} ref={ref} {...props} />
         <span
-          className="
-            w-5 h-5 rounded-full border border-slate-7 bg-slate-3 peer-checked:border-brand-9 peer-checked:bg-brand-3 transition-colors flex items-center justify-center flex items-center justify-center
-            after:w-3 after:h-3 after:rounded-full after:bg-brand-9 after:opacity-0 peer-checked:after:opacity-100 after:transition-opacity
-            after:inline-block 
-          "
+          className={`
+            w-5 h-5 rounded-full border transition-all flex 
+            ${checked ? "border-brand-9" : "border-slate-7"}
+            ${checked ? "bg-brand-3" : "bg-slate-3"}
+            items-center justify-center
+            after:size-3 after:rounded-full
+            ${checked ? "after:bg-brand-9" : "after:bg-slate-3"}
+            after:transition-all after:inline-block 
+          `}
         />
       </label>
     )

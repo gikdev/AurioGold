@@ -23,6 +23,7 @@ import StatusBar from "#/layouts/StatusBar"
 import routes from "#/pages/routes"
 import genDatApiConfig from "#/shared/datapi-config"
 import { Nav } from "./Nav"
+import { useNotifyOrders } from "./useNotifyOrders"
 
 const SIDEBAR_ITEMS: SidebarItem[] = [
   { id: 0, text: "خانه", icon: HouseLineIcon, url: routes.home },
@@ -43,6 +44,7 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
 
 export function BaseWrapper() {
   const config = useMemo(() => genDatApiConfig(), [])
+  useNotifyOrders()
 
   return (
     <ErrorCardBoundary>

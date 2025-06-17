@@ -31,14 +31,14 @@ const Table = createTypedTableFa<OnlineUser>()
 
 export default function ManageOnlineUsers() {
   const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>()
-  const connectionRef = useAtomValue(connectionRefAtom)
+  const connection = useAtomValue(connectionRefAtom)
   const connectionState = useAtomValue(connectionStateAtom)
   const onlineUsersCount = useAtomValue(onlineUsersCountAtom)
 
   const getOnlineUsers = () => {
-    if (!connectionRef || connectionState !== "connected") return
+    if (!connection || connectionState !== "connected") return
 
-    connectionRef
+    connection
       .invoke("GetConnectedUsers")
       .then(users => setOnlineUsers(users))
       .catch((err: unknown) => {
@@ -55,12 +55,11 @@ export default function ManageOnlineUsers() {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    if (connectionState !== "connected" || !connectionRef) return
     getOnlineUsers()
-    connectionRef.on("OnlineCount", getOnlineUsers)
+    connection?.on("OnlineCount", getOnlineUsers)
 
-    return () => connectionRef.off("OnlineCount")
-  }, [connectionState, connectionRef])
+    return () => connection?.off("OnlineCount")
+  }, [connectionState, connection])
 
   const cardTitleSlot = (
     <div className="flex gap-2 items-center ms-auto">

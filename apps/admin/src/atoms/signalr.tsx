@@ -47,6 +47,7 @@ export function SignalRManager() {
     }
   }, [])
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const startConnection = useCallback(async () => {
     const isDev = import.meta.env.DEV
 
@@ -74,7 +75,7 @@ export function SignalRManager() {
     }
 
     setConnectionRef(connection)
-  }, [setConnectionRef, setConnectionState])
+  }, [])
 
   useEffect(() => {
     startConnection()

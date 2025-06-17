@@ -10,11 +10,13 @@ const columnDefs: TableProps["columnDefs"] = [
   {
     field: "stockName",
     headerName: "نام محصول",
+    minWidth: 200,
   },
   {
     field: "volume",
     headerName: "مقدار محصول",
     cellRenderer: cellRenderers.Debt,
+    minWidth: 240,
   },
 ]
 

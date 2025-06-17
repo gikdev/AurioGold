@@ -3,6 +3,7 @@ import { cn } from "@repo/shared/helpers"
 import { useAtom, useAtomValue } from "jotai"
 import { atomWithStorage } from "jotai/utils"
 import { motion } from "motion/react"
+import { Btn } from "./Btn"
 
 type ViewMode = "cards" | "table"
 
@@ -56,23 +57,19 @@ export function IconsToggle<T extends string = string>({
   onChange,
 }: IconsToggleProps<T>) {
   return (
-    <div className="inline-flex items-center bg-slate-3 rounded-md overflow-clip">
+    <div className="inline-flex items-center bg-slate-3 rounded-md overflow-hidden">
       {items.map(({ id, icon: Icon }) => {
         const isActive = id === activeItemId
 
         return (
-          <motion.button
+          <Btn
             key={id}
             onClick={() => onChange(id)}
-            whileTap={{ scale: 0.9 }}
-            whileHover={{ scale: 1.05 }}
-            className={cn(
-              "w-10 h-10 flex items-center justify-center transition-colors cursor-pointer",
-              isActive ? "bg-blue-9 text-blue-1" : "bg-transparent text-blue-11 hover:bg-blue-4",
-            )}
+            className="w-10 p-1 rounded-none border-none"
+            theme={isActive ? "info" : "neutral"}
           >
             <Icon size={24} weight={isActive ? "fill" : "regular"} />
-          </motion.button>
+          </Btn>
         )
       })}
     </div>
