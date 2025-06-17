@@ -5,6 +5,13 @@ import { atom, useAtom } from "jotai"
 import { useCallback, useEffect, useRef } from "react"
 import routes from "#/pages/routes"
 import { isAdminOnlineAtom } from "./adminConnectivity"
+import { useEffectButNotOnMount } from "@repo/shared/hooks"
+
+const AdminStatus = {
+  Offline: 1,
+  Online: 2,
+  DISABLED: 3,
+}
 
 // Usage example is at the end of the file
 
@@ -30,7 +37,7 @@ export function SignalRManager() {
   const initializationCountRef = useRef(0)
   const [connectionState, setConnectionState] = useAtom(connectionStateAtom)
   const [connectionRef, setConnectionRef] = useAtom(connectionRefAtom)
-  const [_, setAdminOnline] = useAtom(isAdminOnlineAtom)
+  const [isAdminOnline, setAdminOnline] = useAtom(isAdminOnlineAtom)
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const stopConnection = useCallback(async () => {
@@ -81,6 +88,19 @@ export function SignalRManager() {
     return () => void stopConnection()
   }, [startConnection, stopConnection])
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    const isOnline =
+      storageManager.get("status", "sessionStorage")?.toString() === AdminStatus.Online.toString()
+
+    setAdminOnline(isOnline)
+  }, [])
+
+  useEffectButNotOnMount(() => {
+    const val = isAdminOnline ? AdminStatus.Online : AdminStatus.Offline
+    storageManager.save("status", val.toString(), "sessionStorage")
+  }, [isAdminOnline])
+
   // Handle UI update when admin connectivity status changed on another instance of the app
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
@@ -93,7 +113,7 @@ export function SignalRManager() {
     })
 
     return () => connectionRef.off("MasterStatusChange")
-  }, [])
+  }, [connectionRef, connectionState])
 
   // Connect again if disconnected
   useEffect(() => {
