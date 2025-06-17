@@ -10,6 +10,7 @@ import RootLayout from "./layouts/RootLayout"
 import Loading from "./pages/Loading"
 import routes from "./pages/routes"
 import "./styles/index.css"
+import { AnimatePresence } from "motion/react"
 import { JsonToastContainer } from "./pages/Customers/useJsonToast"
 
 ModuleRegistry.registerModules([AllCommunityModule])
@@ -52,31 +53,33 @@ root.render(
     />
     <BrowserRouter>
       <NuqsAdapter>
-        <Suspense fallback={<Loading />}>
-          <Routes>
-            <Route element={<RootLayout />}>
-              <Route path={routes.login} element={<Login />} />
-              <Route element={<Protected />}>
-                <Route element={<BaseWrapper />}>
-                  <Route index element={<Home />} />
-                  <Route path={routes.profile} element={<Profile />} />
-                  <Route path={routes.sendSms} element={<SendSms />} />
-                  <Route path={routes.customers} element={<Customers />} />
-                  <Route path={routes.groupsGram} element={<GroupsGram />} />
-                  <Route path={routes.groupsNumeric} element={<GroupsNumeric />} />
-                  <Route path={routes.onlineUsers} element={<OnlineUsers />} />
-                  <Route path={routes.priceSources} element={<PriceSources />} />
-                  <Route path={routes.balance} element={<Balance />} />
-                  <Route path={routes.orders} element={<Orders />} />
-                  <Route path={routes.products} element={<Products />} />
-                  <Route path={routes.settings} element={<Settings />} />
-                  <Route path={routes.test} element={<Test />} />
-                  <Route path="*" element={<NotFound />} />
+        <AnimatePresence mode="wait">
+          <Suspense fallback={<Loading />}>
+            <Routes>
+              <Route element={<RootLayout />}>
+                <Route path={routes.login} element={<Login />} />
+                <Route element={<Protected />}>
+                  <Route element={<BaseWrapper />}>
+                    <Route index element={<Home />} />
+                    <Route path={routes.profile} element={<Profile />} />
+                    <Route path={routes.sendSms} element={<SendSms />} />
+                    <Route path={routes.customers} element={<Customers />} />
+                    <Route path={routes.groupsGram} element={<GroupsGram />} />
+                    <Route path={routes.groupsNumeric} element={<GroupsNumeric />} />
+                    <Route path={routes.onlineUsers} element={<OnlineUsers />} />
+                    <Route path={routes.priceSources} element={<PriceSources />} />
+                    <Route path={routes.balance} element={<Balance />} />
+                    <Route path={routes.orders} element={<Orders />} />
+                    <Route path={routes.products} element={<Products />} />
+                    <Route path={routes.settings} element={<Settings />} />
+                    <Route path={routes.test} element={<Test />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Route>
                 </Route>
               </Route>
-            </Route>
-          </Routes>
-        </Suspense>
+            </Routes>
+          </Suspense>
+        </AnimatePresence>
       </NuqsAdapter>
     </BrowserRouter>
   </StrictMode>,

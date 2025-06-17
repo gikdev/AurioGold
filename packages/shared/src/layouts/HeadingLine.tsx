@@ -1,6 +1,7 @@
 import styled from "@master/styled.react"
 import type { ReactNode } from "react"
 import { ErrorCardBoundary, Heading } from "#shared/components"
+import AppPage from "./AppPage"
 
 interface HeadingLineProps {
   title: string
@@ -13,7 +14,7 @@ export function HeadingLine({ title, actions, className = "", children = null }:
   const StyledSection = styled.section("p-4", className)
 
   return (
-    <>
+    <AppPage>
       {actions ? (
         <div className="flex items-center gap-2 border-b border-slate-6 p-2">
           <Heading as="h1" size={3} className="text-slate-12">
@@ -35,6 +36,6 @@ export function HeadingLine({ title, actions, className = "", children = null }:
       <ErrorCardBoundary>
         {actions ? children : <StyledSection>{children}</StyledSection>}
       </ErrorCardBoundary>
-    </>
+    </AppPage>
   )
 }

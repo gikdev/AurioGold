@@ -1,5 +1,5 @@
 import styled from "@master/styled.react"
-import type { ReactNode } from "react"
+import type { PropsWithChildren, ReactNode } from "react"
 import { ErrorBoundary } from "react-error-boundary"
 import { Heading, Hr } from "#shared/components"
 
@@ -20,10 +20,24 @@ function ErrorCard() {
   )
 }
 
-interface ErrorCardBoundaryProps {
-  children: ReactNode
+function ErrorPage() {
+  return (
+    <div className="p-5 bg-red-2">
+      <StyledContainer>
+        <Heading as="h2" size={2}>
+          خطا!
+        </Heading>
+        <Hr className="bg-red-6" />
+        <p>یه مشکلی پیش اومده و به احتمال زیاد تقصیر ماست. میتوانید به مسئول مربوطه پیام دهید.</p>
+      </StyledContainer>
+    </div>
+  )
 }
 
-export function ErrorCardBoundary({ children }: ErrorCardBoundaryProps) {
+export function ErrorCardBoundary({ children }: PropsWithChildren) {
   return <ErrorBoundary FallbackComponent={ErrorCard}>{children}</ErrorBoundary>
+}
+
+export function ErrorPageBoundary({ children }: PropsWithChildren) {
+  return <ErrorBoundary FallbackComponent={ErrorPage}>{children}</ErrorBoundary>
 }
