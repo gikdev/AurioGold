@@ -2,6 +2,7 @@ const routes = {
   base: "/",
   home: "/",
   login: "/login",
+  logout: "/logout",
   profile: "/profile",
   profile_changePassword: "/profile/change-password",
   sendSms: "/send-sms",

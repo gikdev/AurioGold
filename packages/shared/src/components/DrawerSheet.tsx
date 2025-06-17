@@ -15,6 +15,7 @@ interface DrawerSheetProps {
   actions?: ReactNode
   actionsClassName?: string
   btns?: ReactNode
+  additionalBtns?: ReactNode
 }
 
 export function DrawerSheet({
@@ -26,6 +27,7 @@ export function DrawerSheet({
   actionsClassName = "",
   actions,
   btns,
+  additionalBtns,
 }: DrawerSheetProps) {
   const isMobile = getIsMobile()
 
@@ -69,12 +71,13 @@ export function DrawerSheet({
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
           >
             {/* Header */}
-            <div className="bg-slate-2 h-12 flex items-center px-2 rounded-t-md justify-between border-b border-slate-6">
-              <div className="text-slate-12 flex items-center gap-1">
+            <div className="bg-slate-2 h-12 flex items-center px-2 rounded-t-md border-b border-slate-6">
+              <div className="text-slate-12 flex items-center gap-1 me-auto">
                 <IconToRender size={24} />
                 <span className="font-bold">{title}</span>
               </div>
 
+              {additionalBtns}
               <Btn className="p-1 w-10 bg-transparent border-transparent" onClick={onClose}>
                 <XIcon size={24} />
               </Btn>
