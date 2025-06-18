@@ -15,10 +15,10 @@ import { Link } from "react-router"
 import { cellRenderers } from "#/shared/agGrid"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
 import { queryStateUrls } from "."
+import { GroupCard, GroupCardsContainer } from "../GroupsGram/GroupCard"
 import CreateGroupDrawer from "./CreateGroupDrawer"
 import DeleteGroupModal from "./DeleteGroupModal"
 import EditGroupDrawer from "./EditGroupDrawer"
-import { GroupCard, GroupCardsContainer } from "./GroupCard"
 import GroupDetails from "./GroupDetails"
 import { groupFormFields } from "./groupFormShared"
 
@@ -61,10 +61,11 @@ export default function ManageGroupsNumeric() {
             {(groupsRes.data || []).map(g => (
               <GroupCard
                 key={g.id}
-                id={g.id}
-                diffBuyPrice={g.diffBuyPrice}
-                diffSellPrice={g.diffSellPrice}
-                name={g.name}
+                id={g.id ?? 0}
+                diffBuyPrice={g.diffBuyPrice ?? 0}
+                diffSellPrice={g.diffSellPrice ?? 0}
+                name={g.name ?? "---"}
+                details={queryStateUrls.details}
               />
             ))}
           </GroupCardsContainer>

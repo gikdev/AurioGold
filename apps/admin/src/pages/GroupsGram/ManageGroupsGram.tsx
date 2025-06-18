@@ -61,10 +61,11 @@ export default function ManageGroupsGram() {
             {(groupsRes.data || []).map(g => (
               <GroupCard
                 key={g.id}
-                id={g.id}
-                diffBuyPrice={g.diffBuyPrice}
-                diffSellPrice={g.diffSellPrice}
-                name={g.name}
+                id={g.id ?? 0}
+                diffBuyPrice={g.diffBuyPrice ?? 0}
+                diffSellPrice={g.diffSellPrice ?? 0}
+                name={g.name ?? "---"}
+                details={queryStateUrls.details}
               />
             ))}
           </GroupCardsContainer>

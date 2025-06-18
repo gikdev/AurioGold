@@ -1,30 +1,27 @@
 import styled from "@master/styled.react"
-import type { CustomerGroupDto } from "@repo/api-client/client"
+import type { CustomerGroupDto, CustomerGroupIntDto } from "@repo/api-client/client"
 import { Btn } from "@repo/shared/components"
 import { formatPersianPrice } from "@repo/shared/utils"
 import { Link } from "react-router"
-import { queryStateUrls } from "."
 
 export const GroupCardsContainer = styled.div`
-  grid auto-rows-fr gap-4
-  grid-cols-[repeat(auto-fit,minmax(150px,1fr))]
+  flex flex-wrap gap-4
 `
 
 interface GroupCardProps {
-  id: CustomerGroupDto["id"]
-  name: CustomerGroupDto["name"]
-  diffBuyPrice: CustomerGroupDto["diffBuyPrice"]
-  diffSellPrice: CustomerGroupDto["diffSellPrice"]
+  id: NonNullable<CustomerGroupDto["id"]> & NonNullable<CustomerGroupIntDto["id"]>
+  name: string
+  diffBuyPrice: number
+  diffSellPrice: number
+  details(id: number): string
 }
 
-export function GroupCard({ diffBuyPrice, diffSellPrice, id, name }: GroupCardProps) {
+export function GroupCard({ diffBuyPrice, diffSellPrice, id, name, details }: GroupCardProps) {
   return (
     <Btn
       as={Link}
-      to={queryStateUrls.details(id)}
-      type="button"
-      data-testid="view-group-btn"
-      className="flex p-2 min-w-max items-center gap-3 text-slate-11 h-auto"
+      to={details(id)}
+      className="flex flex-1 flex-wrap p-2 flex-col items-center text-center gap-3 text-slate-11 h-auto min-w-24"
     >
       <p className="flex-1 text-slate-12 font-bold">{name}</p>
 

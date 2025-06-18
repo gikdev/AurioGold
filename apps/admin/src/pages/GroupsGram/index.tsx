@@ -12,9 +12,12 @@ export const queryStateKeys = {
 
 export const queryStateUrls = {
   createNew: () => `${routes.groupsGram}?${queryStateKeys.createNew}=true`,
-  edit: (id: CustomerGroupDto["id"]) => `${routes.groupsGram}?${queryStateKeys.edit}=${id}`,
-  delete: (id: CustomerGroupDto["id"]) => `${routes.groupsGram}?${queryStateKeys.delete}=${id}`,
-  details: (id: CustomerGroupDto["id"]) => `${routes.groupsGram}?${queryStateKeys.details}=${id}`,
+  edit: (id: NonNullable<CustomerGroupDto["id"]>) =>
+    `${routes.groupsGram}?${queryStateKeys.edit}=${id}`,
+  delete: (id: NonNullable<CustomerGroupDto["id"]>) =>
+    `${routes.groupsGram}?${queryStateKeys.delete}=${id}`,
+  details: (id: NonNullable<CustomerGroupDto["id"]>) =>
+    `${routes.groupsGram}?${queryStateKeys.details}=${id}`,
 }
 
 export default function GroupsGram() {
