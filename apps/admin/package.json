@@ -6,7 +6,8 @@
   "scripts": {
     "scan": "react-scan localhost:8888",
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "raw:build": "tsc -b && vite build",
+    "build": "bun ./scripts/build.ts",
     "preview": "vite preview"
   },
   "dependencies": {
