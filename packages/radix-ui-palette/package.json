@@ -2,9 +2,7 @@
   "name": "@repo/radix-ui-palette",
   "version": "0.0.0",
   "private": true,
-  "files": [
-    "src"
-  ],
+  "files": ["src"],
   "exports": {
     ".": "./src/index.ts"
   }

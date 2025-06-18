@@ -32,7 +32,7 @@ test.describe("Customer page", () => {
     await expect(createCustomerForm).toBeVisible()
   })
 
-  test.fixme("should have at least one customer", async ({page})=>{
+  test.fixme("should have at least one customer", async ({ page }) => {
     const firstViewCustomerBtn = page.getByTestId("view-customer-btn").nth(0)
     await expect(firstViewCustomerBtn).toBeVisible()
   })

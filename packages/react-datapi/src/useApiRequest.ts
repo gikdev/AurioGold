@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
+import { useDatapiConfigContext } from "./context"
 import { apiRequest } from "./request"
 import type { ApiHookOptions, ApiResponse } from "./types"
-import { useDatapiConfigContext } from "./context"
 
 export function useApiRequest<TOutput = unknown, TRaw = unknown>(
   optionsFn: () => ApiHookOptions<TOutput, TRaw>,

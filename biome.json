@@ -59,7 +59,11 @@
     }
   },
   "json": {
+    "linter": {
+      "enabled": false
+    },
     "formatter": {
+      "enabled": false,
       "trailingCommas": "none"
     }
   }

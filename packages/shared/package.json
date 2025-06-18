@@ -2,9 +2,7 @@
   "name": "@repo/shared",
   "version": "0.0.0",
   "private": true,
-  "files": [
-    "src"
-  ],
+  "files": ["src"],
   "exports": {
     "./components": "./src/components/index.ts",
     "./helpers": "./src/helpers/index.tsx",
