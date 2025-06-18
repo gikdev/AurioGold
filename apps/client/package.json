@@ -53,6 +53,7 @@
     "tailwind-styled-components": "^2.2.0",
     "twin.macro": "^3.4.1",
     "typescript": "~5.8.3",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vite-tsconfig-paths": "^5.1.4"
   }
 }

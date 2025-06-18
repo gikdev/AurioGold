@@ -14,8 +14,8 @@ import genDatApiConfig from "#/shared/datapi-config"
 import routes from "../routes"
 
 const { fields, labels } = createFieldsWithLabels({
-  username: "نام کاربری",
-  password: "گذرواژه",
+  username: "نام کاربری *",
+  password: "گذرواژه *",
 })
 
 const loginSchema = z.object({

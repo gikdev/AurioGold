@@ -1,4 +1,4 @@
-import { colorSchemeDarkBlue, themeMaterial, themeQuartz } from "ag-grid-community"
+import { colorSchemeDarkBlue, themeQuartz } from "ag-grid-community"
 import { AgGridReact } from "ag-grid-react"
 import { type ComponentProps, forwardRef } from "react"
 import { AG_GRID_LOCALE_IR } from "../constants"

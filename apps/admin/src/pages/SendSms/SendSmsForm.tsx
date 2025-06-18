@@ -32,9 +32,9 @@ const columnDefs: ColDef<CustomerDto>[] = [
 ]
 
 const { fields, labels } = createFieldsWithLabels({
-  message: "پیغام",
-  receivers: "گیرنده‌ها",
-  toAll: "ارسال به همه",
+  message: "پیغام *",
+  receivers: "گیرنده‌ها: ",
+  toAll: "ارسال به همه: ",
 })
 
 const SendSmsFormSchema = z

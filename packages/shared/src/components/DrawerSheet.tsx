@@ -1,10 +1,10 @@
 import { type Icon, XIcon } from "@phosphor-icons/react"
-import { Btn } from "@repo/shared/components"
-import { cn } from "@repo/shared/helpers"
-import { getIsMobile, useIsMobile } from "@repo/shared/hooks"
 import { AnimatePresence, motion } from "motion/react"
 import { parseAsBoolean, parseAsInteger, useQueryState } from "nuqs"
 import { type ReactNode, useEffect } from "react"
+import { Btn } from "#shared/components"
+import { cn } from "#shared/helpers"
+import { getIsMobile } from "#shared/hooks"
 
 interface DrawerSheetProps {
   open: boolean

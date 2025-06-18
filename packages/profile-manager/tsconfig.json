@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "lib": ["es2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "target": "esnext",
+    "outDir": "dist",
+    "skipLibCheck": true,
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "bundler",
+    "declaration": true,
+    "esModuleInterop": false,
+    "baseUrl": ".",
+    "rootDir": "src",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "paths": {
+      "#shared/*": ["src/*"]
+    }
+  },
+  "include": ["src/index.ts"],
+  "exclude": ["node_modules", "dist"]
+}

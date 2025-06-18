@@ -1,6 +1,6 @@
 import { type ColDef, type ColGroupDef, colorSchemeDarkBlue, themeQuartz } from "ag-grid-community"
 import { AgGridReact, type AgGridReactProps } from "ag-grid-react"
-import { forwardRef, useMemo } from "react"
+import { type Ref, forwardRef, useMemo } from "react"
 import { AG_GRID_LOCALE_IR } from "../constants"
 
 const selectedTheme = themeQuartz.withPart(colorSchemeDarkBlue)
@@ -28,7 +28,7 @@ function _TableFaInner<T>(
 
   return (
     <AgGridReact<T>
-      ref={ref}
+      ref={ref as Ref<AgGridReact<T>> | undefined}
       theme={selectedTheme}
       pagination
       paginationPageSize={50}

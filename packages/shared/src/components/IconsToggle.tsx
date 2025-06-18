@@ -1,8 +1,6 @@
 import { CardsIcon, type Icon, TableIcon } from "@phosphor-icons/react"
-import { cn } from "@repo/shared/helpers"
 import { useAtom, useAtomValue } from "jotai"
 import { atomWithStorage } from "jotai/utils"
-import { motion } from "motion/react"
 import { Btn } from "./Btn"
 
 type ViewMode = "cards" | "table"

@@ -1,7 +1,7 @@
 import type { Icon } from "@phosphor-icons/react"
 import type { ComponentProps, ReactNode } from "react"
 import { Link } from "react-router"
-import { getIsMobile, useIsMobile } from "#shared/hooks"
+import { useIsMobile } from "#shared/hooks"
 import { Btn } from "./Btn"
 
 interface FloatingActionBtnProps {

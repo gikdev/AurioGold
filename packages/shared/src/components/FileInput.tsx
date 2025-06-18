@@ -1,12 +1,5 @@
 import { FilePlusIcon, TrashIcon } from "@phosphor-icons/react"
-import {
-  type InputHTMLAttributes,
-  type ReactNode,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react"
+import { type InputHTMLAttributes, type ReactNode, useEffect, useRef, useState } from "react"
 import { notifManager } from "#shared/adapters"
 import { cn } from "#shared/helpers"
 import { Btn } from "./Btn"

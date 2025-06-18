@@ -1,5 +1,5 @@
 import { type HTMLMotionProps, motion } from "motion/react"
-import type { ButtonHTMLAttributes, ElementType } from "react"
+import type { ElementType } from "react"
 import { cn } from "#shared/helpers"
 
 const styles = {

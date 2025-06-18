@@ -2,8 +2,18 @@
   "name": "@repo/profile-manager",
   "version": "0.0.0",
   "type": "module",
+  "main": "./dist/index.js",
   "exports": {
-    ".": "./index.ts"
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
-  "scripts": {}
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
 }

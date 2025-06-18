@@ -26,7 +26,7 @@ export function createSelectWithOptions<T>() {
         keys,
         ...rest
       }: SelectWithOptionsProps<T>,
-      ref: Ref<string>,
+      ref: Ref<HTMLSelectElement>,
     ) => (
       <Select {...rest} ref={ref} disabled={isLoading || rest.disabled}>
         <option value="" disabled>

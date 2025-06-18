@@ -2,8 +2,8 @@ export * from "./persianNumberFormatter"
 export * from "./types"
 
 export class Nothing {
-  /** Does NOTHING! (Not kidding, it's USEFUL!) */
-  public static dontDoAnything(...input: unknown[]) {
+  /** Does NOTHING! (I swear it's USEFUL...!) */
+  public static dontDoAnything(..._input: unknown[]) {
     // Do Nothing...
   }
 }

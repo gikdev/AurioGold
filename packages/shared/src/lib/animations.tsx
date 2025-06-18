@@ -1,5 +1,4 @@
-// motionPresets.ts
-import type { Transition, Variants } from "motion/react"
+import type { Variants } from "motion/react"
 
 export const motionPresets = {
   // 1. Fade

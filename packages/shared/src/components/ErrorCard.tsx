@@ -1,5 +1,5 @@
 import styled from "@master/styled.react"
-import type { PropsWithChildren, ReactNode } from "react"
+import type { PropsWithChildren } from "react"
 import { ErrorBoundary } from "react-error-boundary"
 import { Heading, Hr } from "#shared/components"
 

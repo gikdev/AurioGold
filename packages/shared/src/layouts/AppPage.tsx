@@ -1,7 +1,7 @@
-import { ErrorPageBoundary } from "@repo/shared/components"
-import { motionPresets } from "@repo/shared/lib"
 import { motion } from "motion/react"
 import type { PropsWithChildren } from "react"
+import { ErrorPageBoundary } from "#shared/components"
+import { motionPresets } from "#shared/lib"
 
 export default function AppPage({ children }: PropsWithChildren) {
   return (

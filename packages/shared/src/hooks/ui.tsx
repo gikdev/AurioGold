@@ -1,8 +1,8 @@
 import { CaretDownIcon, CaretUpIcon, EyeIcon, EyeSlashIcon } from "@phosphor-icons/react"
-import { Btn } from "@repo/shared/components"
 import { parseAsBoolean, useQueryState } from "nuqs"
 import { useCallback, useState } from "react"
 import { useWindowSize } from "react-haiku"
+import { Btn } from "#shared/components"
 import { cn } from "#shared/helpers"
 
 export function useIsMobile() {

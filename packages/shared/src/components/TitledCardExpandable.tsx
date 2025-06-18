@@ -1,7 +1,7 @@
-import { motionPresets } from "@repo/shared/lib"
 import { AnimatePresence, motion } from "motion/react"
 import { type ComponentProps, type ReactNode, useEffect } from "react"
 import { useToggleLessOrMoreBtn } from "#shared/hooks"
+import { motionPresets } from "#shared/lib"
 import { TitledCard } from "./TitledCard"
 
 type TitledCardProps = Omit<ComponentProps<typeof TitledCard>, "titleSlot">
