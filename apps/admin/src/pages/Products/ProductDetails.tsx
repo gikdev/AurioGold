@@ -10,10 +10,10 @@ import {
   useDrawerSheet,
   useDrawerSheetNumber,
 } from "@repo/shared/components"
+import { cellRenderers } from "@repo/shared/lib"
 import { useAtomValue } from "jotai"
 import { memo } from "react"
 import { Link } from "react-router"
-import { cellRenderers } from "#/shared/agGrid"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
 import { productsAtom } from "."
 import DetailsCardsSection from "./DetailsCardsSection"

@@ -10,10 +10,10 @@ import {
   useViewModes,
 } from "@repo/shared/components"
 import { getIsMobile } from "@repo/shared/hooks"
+import { cellRenderers } from "@repo/shared/lib"
 import type { ColDef } from "ag-grid-community"
 import { useSetAtom } from "jotai"
 import { Link } from "react-router"
-import { cellRenderers } from "#/shared/agGrid"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
 import { customersAtom } from "."
 import CreateCustomerDrawer from "./CreateCustomerDrawer"

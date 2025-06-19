@@ -1,10 +1,11 @@
 import JalaliUtils from "@date-io/jalaali"
 import { CopyIcon } from "@phosphor-icons/react"
-import { notifManager } from "@repo/shared/adapters"
-import { Btn, TextArea } from "@repo/shared/components"
-import { formatPersianPrice, formatPersianString } from "@repo/shared/utils"
+import type { OrderSide, OrderStatus } from "@repo/api-client/client"
 import type { RowSelectionOptions } from "ag-grid-community"
 import type { ReactNode } from "react"
+import { notifManager } from "#shared/adapters"
+import { Btn, TextArea } from "#shared/components"
+import { formatPersianPrice, formatPersianString } from "#shared/utils"
 
 export const cellRenderers = {
   Rtl: ({ value }: { value: ReactNode }) => (
@@ -128,6 +129,28 @@ export const cellRenderers = {
   LongText: ({ value }: { value: string }) => (
     <TextArea className="text-xs min-h-32" value={value} readOnly />
   ),
+  OrderStatus: ({ value }: { value: OrderStatus }) => {
+    const OrderStatus = {
+      Draft: 1,
+      Processing: 2,
+      Accepted: 3,
+      Rejected: 4,
+    } as const satisfies Record<string, OrderStatus>
+
+    const OrderStatusPersianText = {
+      [OrderStatus.Draft]: "پیش‌نویس",
+      [OrderStatus.Processing]: "در حال پردازش",
+      [OrderStatus.Accepted]: "تایید شده",
+      [OrderStatus.Rejected]: "رد شده",
+    }
+
+    return OrderStatusPersianText[value]
+  },
+  OrderSide: ({ value }: { value: OrderSide }) => {
+    if (value === 1) return "خرید"
+    if (value === 2) return "فروش"
+    return "---"
+  },
 }
 
 export const multiRowSelectionOptions: RowSelectionOptions = {
