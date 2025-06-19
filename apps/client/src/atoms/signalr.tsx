@@ -1,17 +1,10 @@
 import * as signalR from "@microsoft/signalr"
 import { currentProfile } from "@repo/profile-manager"
 import { notifManager, storageManager } from "@repo/shared/adapters"
-import { useEffectButNotOnMount } from "@repo/shared/hooks"
-import { atom, useAtom } from "jotai"
+import { atom, useAtom, useSetAtom } from "jotai"
 import { useCallback, useEffect } from "react"
 import routes from "#/pages/routes"
 import { isAdminOnlineAtom } from "./adminConnectivity"
-
-const AdminStatus = {
-  Offline: 1,
-  Online: 2,
-  DISABLED: 3,
-}
 
 // Usage example is at the end of the file
 
@@ -36,7 +29,7 @@ export const connectionRefAtom = atom<signalR.HubConnection | null>(null)
 export function SignalRManager() {
   const [connectionState, setConnectionState] = useAtom(connectionStateAtom)
   const [connectionRef, setConnectionRef] = useAtom(connectionRefAtom)
-  const [isAdminOnline, setAdminOnline] = useAtom(isAdminOnlineAtom)
+  const setAdminOnline = useSetAtom(isAdminOnlineAtom)
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const stopConnection = useCallback(async () => {
@@ -81,19 +74,6 @@ export function SignalRManager() {
     startConnection()
     return () => void stopConnection()
   }, [startConnection, stopConnection])
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    const isOnline =
-      storageManager.get("status", "sessionStorage")?.toString() === AdminStatus.Online.toString()
-
-    setAdminOnline(isOnline)
-  }, [])
-
-  useEffectButNotOnMount(() => {
-    const val = isAdminOnline ? AdminStatus.Online : AdminStatus.Offline
-    storageManager.save("status", val.toString(), "sessionStorage")
-  }, [isAdminOnline])
 
   // Handle UI update when admin connectivity status changed on another instance of the app
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>

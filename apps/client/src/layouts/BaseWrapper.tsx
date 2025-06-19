@@ -1,50 +1,38 @@
 import { DatapiConfigProvider, apiRequest } from "@gikdev/react-datapi/src"
 import {
-  ChatTextIcon,
   CoinsIcon,
-  CubeIcon,
   GearIcon,
-  HouseLineIcon,
+  InfoIcon,
   ReceiptIcon,
-  TagIcon,
-  UserCircleGearIcon,
+  ScalesIcon,
+  StorefrontIcon,
   UserCircleIcon,
-  UsersFourIcon,
 } from "@phosphor-icons/react"
 import { ErrorCardBoundary } from "@repo/shared/components"
 import { Base, type SidebarItem } from "@repo/shared/layouts"
-import { useAtomValue, useSetAtom } from "jotai"
 import { useEffect, useMemo } from "react"
 import { Outlet } from "react-router"
-import { onlineUsersCountAtom } from "#/atoms"
-import { connectionRefAtom, connectionStateAtom } from "#/atoms/signalr"
 import { SignalRManager } from "#/atoms/signalr"
 import StatusBar from "#/layouts/StatusBar"
 import routes from "#/pages/routes"
 import genDatApiConfig from "#/shared/datapi-config"
 import { Nav } from "./Nav"
-import { useNotifyOrders } from "./useNotifyOrders"
 
 const SIDEBAR_ITEMS: SidebarItem[] = [
-  { id: 0, text: "خانه", icon: HouseLineIcon, url: routes.home },
-  { id: 1, text: "پروفایل", icon: UserCircleIcon, url: routes.profile },
-  { id: 2, text: "ارسال پیامک", icon: ChatTextIcon, url: routes.sendSms },
-  { id: 3, text: "مدیریت مشتریان", icon: UserCircleGearIcon, url: routes.customers },
-  { id: 4, text: "مدیریت گروه گرمی", icon: UsersFourIcon, url: routes.groupsGram },
-  { id: 5, text: "مدیریت گروه عددی", icon: UsersFourIcon, url: routes.groupsNumeric },
-  { id: 6, text: "کاربران آنلاین", icon: UsersFourIcon, url: routes.onlineUsers },
-  { id: 7, text: "مدیریت منابع قیمت", icon: TagIcon, url: routes.priceSources },
-  { id: 8, text: "مدیریت محصولات", icon: CubeIcon, url: routes.products },
-  { id: 9, text: "مدیریت سفارشات", icon: ReceiptIcon, url: routes.orders },
-  // { id: 10, text: "مدیریت حواله‌ها", icon: ScrollIcon, url: "/transfers" },
-  // { id: 11, text: "مدیریت سندها", icon: ScrollIcon, url: "/docs" },
-  { id: 13, text: "مانده حساب", icon: CoinsIcon, url: "/balance" },
-  { id: 14, text: "تنظیمات", icon: GearIcon, url: routes.settings },
+  // { id: 92837, text: "خانه", icon: HouseLineIcon, url: routes.home },
+  { id: 92834, text: "معاملات", icon: StorefrontIcon, url: routes.base },
+  { id: 90847, text: "پروفایل", icon: UserCircleIcon, url: routes.profile },
+  { id: 12369, text: "مشاهده سفارشات", icon: ReceiptIcon, url: routes.orders },
+  { id: 95487, text: "شرایط و قوانین", icon: ScalesIcon, url: routes.rules },
+  { id: 29837, text: "درباره ما", icon: InfoIcon, url: routes.about },
+  // { id: 10928, text: "ثبت سند", icon: PenNib, url: "/docs" },
+  // { id: 83748, text: "ثبت حواله", icon: PenNib, url: "/transfers" },
+  { id: 29374, text: "مانده حساب", icon: CoinsIcon, url: routes.balance },
+  { id: 73649, text: "تنظیمات", icon: GearIcon, url: routes.settings },
 ]
 
 export function BaseWrapper() {
   const config = useMemo(() => genDatApiConfig(), [])
-  useNotifyOrders()
 
   return (
     <ErrorCardBoundary>
@@ -60,10 +48,6 @@ export function BaseWrapper() {
 }
 
 function ConnectionHandler() {
-  const setOnlineUsersCount = useSetAtom(onlineUsersCountAtom)
-  const connectionState = useAtomValue(connectionStateAtom)
-  const connection = useAtomValue(connectionRefAtom)
-
   // Time fetch with proper cleanup
   useEffect(() => {
     apiRequest({
@@ -74,16 +58,6 @@ function ConnectionHandler() {
       },
     })
   }, [])
-
-  // Connection handler with proper dependencies
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    if (connectionState !== "connected" || !connection) return
-
-    connection.on("OnlineCount", (count: number) => setOnlineUsersCount(count))
-
-    return () => connection.off("OnlineCount")
-  }, [connectionState, connection])
 
   return null
 }

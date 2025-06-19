@@ -2,7 +2,7 @@ import { apiRequest } from "@gikdev/react-datapi/src"
 import { zodResolver } from "@hookform/resolvers/zod"
 import styled from "@master/styled.react"
 import { ArrowsClockwiseIcon, SignInIcon } from "@phosphor-icons/react"
-import type { MasterLoginModel } from "@repo/api-client/client"
+import type { CustomerLoginModel, MasterLoginModel } from "@repo/api-client/client"
 import { storageManager } from "@repo/shared/adapters"
 import { Btn, Heading, Hr, Input, Labeler } from "@repo/shared/components"
 import { createControlledAsyncToast, createFieldsWithLabels } from "@repo/shared/helpers"
@@ -14,12 +14,12 @@ import genDatApiConfig from "#/shared/datapi-config"
 import routes from "../routes"
 
 const { fields, labels } = createFieldsWithLabels({
-  username: "نام کاربری *",
+  phone: "شماره *",
   password: "گذرواژه *",
 })
 
 const loginSchema = z.object({
-  [fields.username]: z.string().trim().min(1, `${labels.username} باید وارد شود!`),
+  [fields.phone]: z.string().trim().min(1, `${labels.phone} باید وارد شود!`),
   [fields.password]: z.string().trim(),
 })
 type LoginFormValues = z.infer<typeof loginSchema>
@@ -43,11 +43,11 @@ export default function Login() {
     })
 
     const dataToSend = JSON.stringify({
-      un: data.username,
+      un: data.phone,
       pw: sha512(data.password ?? ""),
     })
 
-    await apiRequest<MasterLoginModel>({
+    await apiRequest<CustomerLoginModel>({
       options: {
         baseUrl: genDatApiConfig().baseUrl,
         url: "/Master/loginMaster",
@@ -58,7 +58,7 @@ export default function Login() {
           resolve()
 
           for (const key in data) {
-            storageManager.save(key, String(data[key as keyof MasterLoginModel]), "sessionStorage")
+            storageManager.save(key, String(data[key as keyof CustomerLoginModel]), "sessionStorage")
           }
 
           navigate(routes.home)
@@ -85,13 +85,13 @@ export default function Login() {
 
         <Hr />
 
-        <Labeler labelText={labels.username} errorMsg={errors.username?.message}>
+        <Labeler labelText={labels.phone} errorMsg={errors.phone?.message}>
           <Input
             data-testid="username"
             dir="ltr"
             type="text"
             autoFocus
-            {...register(fields.username)}
+            {...register(fields.phone)}
           />
         </Labeler>
 
