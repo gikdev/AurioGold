@@ -1,7 +1,7 @@
 import { useApiRequest } from "@gikdev/react-datapi/src"
 import type { CustomerLoginModel } from "@repo/api-client/client"
 import { useAtom, useSetAtom } from "jotai"
-import { atom } from "jotai"
+import { atomWithStorage } from "jotai/utils"
 import { useCallback, useRef } from "react"
 
 export const emptyProfile: Required<CustomerLoginModel> = {
@@ -25,7 +25,7 @@ export const emptyProfile: Required<CustomerLoginModel> = {
   isBlock: false,
   ttkk: null,
 }
-export const profileAtom = atom<Required<CustomerLoginModel>>(emptyProfile)
+export const profileAtom = atomWithStorage<Required<CustomerLoginModel>>("PROFILE", emptyProfile)
 export const useProfileAtom = () => useAtom(profileAtom)
 
 export function useGetProfileUpdater() {

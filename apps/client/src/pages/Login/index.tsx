@@ -11,7 +11,7 @@ import { sha512 } from "js-sha512"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
 import { z } from "zod"
-import { profileAtom } from "#/atoms"
+import { emptyProfile, profileAtom } from "#/atoms"
 import genDatApiConfig from "#/shared/datapi-config"
 import routes from "../routes"
 
@@ -50,17 +50,18 @@ export default function Login() {
       pw: sha512(data.password),
     } satisfies LoginModel)
 
-    await apiRequest<CustomerLoginModel>({
+    await apiRequest<Required<CustomerLoginModel>, CustomerLoginModel>({
       options: {
         baseUrl: genDatApiConfig().baseUrl,
         url: "/Customer/loginCustomer",
         method: "POST",
         body: dataToSend,
+        transformResponse: raw => ({ ...emptyProfile, ...raw }),
         onError: msg => reject(msg),
         onSuccess(data) {
           resolve()
 
-          setProfile(p => ({ ...p, data }))
+          setProfile(data)
           if (data.masterID)
             storageManager.save("masterID", data.masterID.toString(), "sessionStorage")
           if (data.ttkk) storageManager.save("ttkk", data.ttkk.toString(), "sessionStorage")
