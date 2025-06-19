@@ -8,10 +8,11 @@ import type { ColDef, RowClassParams, RowStyle } from "ag-grid-community"
 import type { CustomCellRendererProps } from "ag-grid-react"
 import { useAtomValue } from "jotai"
 import { useCallback, useEffect } from "react"
-import { Link } from "react-router"
-import { connectionRefAtom, logOut } from "#/atoms"
+import { Link, useNavigate } from "react-router"
+import { connectionRefAtom } from "#/atoms"
 import { cellRenderers } from "#/shared/agGrid"
 import genDatApiConfig from "#/shared/datapi-config"
+import routes from "../routes"
 import FilterDrawer from "./FilterDrawer"
 import { OrdersNavigation } from "./navigation"
 import { useDateFilter } from "./useDateFilter"
@@ -61,6 +62,7 @@ function signalrDecideOrder(
 function ManagementBtns({ data }: CustomCellRendererProps<OrderFm>) {
   const connection = useAtomValue(connectionRefAtom)
   const areDisabled = [3, 4].includes(data?.orderStatus || 0)
+  const navigate = useNavigate()
   const className = "min-h-8 py-1 px-2 text-xs flex items-center"
 
   const handleAccept = useCallback(() => {
@@ -69,7 +71,7 @@ function ManagementBtns({ data }: CustomCellRendererProps<OrderFm>) {
 
     if (!token) {
       notifManager.notify("خودتان معتبر نیستید!!! دوباره وارد شوید!", "toast", { status: "error" })
-      logOut()
+      navigate(routes.logout)
 
       return
     }
@@ -103,7 +105,7 @@ function ManagementBtns({ data }: CustomCellRendererProps<OrderFm>) {
     acceptOrRejectOrder(false, orderId, isAccepted, () => {
       signalrDecideOrder(connection, token, isAccepted, orderId, userID)
     })
-  }, [data, connection])
+  }, [data, connection, navigate])
 
   const handleReject = useCallback(() => {
     const isAccepted = false
@@ -111,6 +113,7 @@ function ManagementBtns({ data }: CustomCellRendererProps<OrderFm>) {
 
     if (!token) {
       notifManager.notify("خودتان معتبر نیستید!!! دوباره وارد شوید!", "toast", { status: "error" })
+      navigate(routes.logout)
 
       return
     }
@@ -144,7 +147,7 @@ function ManagementBtns({ data }: CustomCellRendererProps<OrderFm>) {
     acceptOrRejectOrder(false, orderId, isAccepted, () => {
       signalrDecideOrder(connection, token, isAccepted, orderId, userID)
     })
-  }, [data, connection])
+  }, [data, connection, navigate])
 
   return (
     <div className="flex gap-1 items-center pt-1">

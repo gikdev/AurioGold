@@ -58,7 +58,11 @@ export default function Login() {
           resolve()
 
           for (const key in data) {
-            storageManager.save(key, String(data[key as keyof CustomerLoginModel]), "sessionStorage")
+            storageManager.save(
+              key,
+              String(data[key as keyof CustomerLoginModel]),
+              "sessionStorage",
+            )
           }
 
           navigate(routes.home)

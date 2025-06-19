@@ -4,6 +4,7 @@ import { notifManager, storageManager } from "@repo/shared/adapters"
 import { useEffectButNotOnMount } from "@repo/shared/hooks"
 import { atom, useAtom } from "jotai"
 import { useCallback, useEffect } from "react"
+import { useNavigate } from "react-router"
 import routes from "#/pages/routes"
 import { isAdminOnlineAtom } from "./adminConnectivity"
 
@@ -23,9 +24,11 @@ function isLoggedInOrHasToken() {
   return !!storageManager.get("ttkk", "sessionStorage")
 }
 
-export function logOut() {
+export function logout() {
   storageManager.remove("ttkk", "sessionStorage")
-  location.href = routes.login
+  setTimeout(() => {
+    location.href = routes.login
+  }, 3000)
 }
 
 export type ConnectionState = "unknown" | "disconnected" | "connected" | "loading"
@@ -37,6 +40,7 @@ export function SignalRManager() {
   const [connectionState, setConnectionState] = useAtom(connectionStateAtom)
   const [connectionRef, setConnectionRef] = useAtom(connectionRefAtom)
   const [isAdminOnline, setAdminOnline] = useAtom(isAdminOnlineAtom)
+  const navigate = useNavigate()
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const stopConnection = useCallback(async () => {
@@ -58,7 +62,7 @@ export function SignalRManager() {
 
     connection.on("UserNotFound", () => {
       notifManager.notify("کاربر پیدا نشد. لطفا دوباره وارد شوید", "toast", { status: "warning" })
-      if (isLoggedInOrHasToken()) setTimeout(() => logOut(), 2000)
+      if (isLoggedInOrHasToken()) setTimeout(() => navigate(routes.logout), 2000)
     })
 
     connection.onreconnected(() => setConnectionState("connected"))
