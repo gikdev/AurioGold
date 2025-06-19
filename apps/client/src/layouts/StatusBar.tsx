@@ -60,7 +60,7 @@ function ServerConnectionStatus() {
   })
 
   return (
-    <abbr title="وضعیت اتصال به سرور" className="contents">
+    <abbr title={isConnected ? "به سرور متصل هستیم" : "به سرور متصل نیستیم"} className="contents">
       <StyledElement>
         <IconToRender
           size={20}
