@@ -8,6 +8,7 @@
     "e2e:ui": "cd ./packages/e2e && pnpm test:ui",
     "e2e:headed": "cd ./packages/e2e && pnpm test:headed",
     "build": "turbo run build",
+    "predev": "cp -r ./assets/shared ./apps/admin/public/shared && cp -r ./assets/shared ./apps/client/public/shared",
     "dev": "turbo run dev",
     "scan": "turbo run scan",
     "check:all": "biome check --write ./apps ./packages",

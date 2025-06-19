@@ -7,7 +7,7 @@ import { profileAtom } from "#/atoms"
 import routes from "../routes"
 import { Navigation } from "./navigation"
 
-const fallbackImageUrl = "https://placehold.co/400"
+const fallbackImageUrl = "/shared/fallback-400.jpg"
 
 function handleImageLoadError(e: SyntheticEvent<HTMLImageElement, Event>) {
   e.currentTarget.onerror = null

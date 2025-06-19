@@ -1,7 +1,7 @@
 import styled from "@master/styled.react"
 import type { ReactNode } from "react"
 import { ErrorCardBoundary, Heading } from "#shared/components"
-import AppPage from "./AppPage"
+import { AppPage } from "#shared/layouts"
 
 interface HeadingLineProps {
   title: string
