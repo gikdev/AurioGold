@@ -8,6 +8,7 @@ import type {
 import {
   BtnTemplates,
   DrawerSheet,
+  EntityNotFoundCard,
   Input,
   Labeler,
   LabelerLine,
@@ -22,7 +23,6 @@ import { useAtomValue } from "jotai"
 import { memo } from "react"
 import type { UseFormReturn } from "react-hook-form"
 import { z } from "zod"
-import { EntityNotFoundCard } from "#/components"
 import { useCustomForm } from "#/shared/customForm"
 import genDatApiConfig from "#/shared/datapi-config"
 import { customersAtom } from "."

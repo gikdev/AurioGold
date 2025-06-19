@@ -28,5 +28,5 @@
       "#/*": ["src/*"]
     }
   },
-  "include": ["src", "../../packages/unit-tests/tests/shared-utils.test.ts", "../../packages/shared/src/utils/persianNumberFormatter.ts"]
+  "include": ["src"]
 }

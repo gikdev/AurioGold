@@ -4,13 +4,15 @@ import type { StockPriceSourceResponse } from "@repo/api-client/client"
 import {
   BtnTemplates,
   DrawerSheet,
+  EntityNotFoundCard,
+  KeyValueDetail,
+  KeyValueDetailsContainer,
   useDrawerSheet,
   useDrawerSheetNumber,
 } from "@repo/shared/components"
 import { useAtomValue } from "jotai"
 import { memo } from "react"
 import { Link } from "react-router"
-import { EntityNotFoundCard, KeyValueDetail, KeyValueDetailsContainer } from "#/components"
 import { cellRenderers } from "#/shared/agGrid"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
 import { productsAtom } from "."

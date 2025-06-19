@@ -1,8 +1,14 @@
 import { InfoIcon } from "@phosphor-icons/react"
 import type { CustomerGroupDto } from "@repo/api-client/client"
-import { BtnTemplates, DrawerSheet, useDrawerSheetNumber } from "@repo/shared/components"
+import {
+  BtnTemplates,
+  DrawerSheet,
+  EntityNotFoundCard,
+  KeyValueDetail,
+  KeyValueDetailsContainer,
+  useDrawerSheetNumber,
+} from "@repo/shared/components"
 import { Link } from "react-router"
-import { EntityNotFoundCard, KeyValueDetail, KeyValueDetailsContainer } from "#/components"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
 import { queryStateKeys, queryStateUrls } from "."
 import { groupFormFields } from "./groupFormShared"

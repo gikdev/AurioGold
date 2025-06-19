@@ -3,13 +3,16 @@ import {
   Btn,
   BtnTemplates,
   DrawerSheet,
+  EntityNotFoundCard,
+  KeyValueDetail,
+  KeyValueDetailsContainer,
   useDrawerSheet,
   useDrawerSheetNumber,
 } from "@repo/shared/components"
 import { useAtomValue } from "jotai"
 import { memo } from "react"
 import { Link } from "react-router"
-import { EntityNotFoundCard, KeyValueDetail, KeyValueDetailsContainer } from "#/components"
+import {} from "#/components"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
 import { customersAtom } from "."
 import { customerFormFields } from "./customerFormShared"

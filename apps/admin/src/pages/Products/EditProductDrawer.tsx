@@ -10,13 +10,13 @@ import type {
 import {
   BtnTemplates,
   DrawerSheet,
+  EntityNotFoundCard,
   useDrawerSheet,
   useDrawerSheetNumber,
 } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { useAtomValue } from "jotai"
 import { memo, useEffect } from "react"
-import { EntityNotFoundCard } from "#/components"
 import { useCustomForm } from "#/shared/customForm"
 import genDatApiConfig from "#/shared/datapi-config"
 import { productsAtom } from "."

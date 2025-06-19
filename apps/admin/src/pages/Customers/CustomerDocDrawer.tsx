@@ -4,6 +4,7 @@ import type { CustomerDto, PostApiMasterAddAndAcceptDocsData } from "@repo/api-c
 import {
   BtnTemplates,
   DrawerSheet,
+  EntityNotFoundCard,
   FileInput,
   Input,
   Labeler,
@@ -18,7 +19,7 @@ import { useAtomValue } from "jotai"
 import { memo } from "react"
 import type { UseFormReturn } from "react-hook-form"
 import { z } from "zod"
-import { EntityNotFoundCard } from "#/components"
+import {} from "#/components"
 import { uploadFile, useCustomForm } from "#/shared/customForm"
 import genDatApiConfig from "#/shared/datapi-config"
 import { customersAtom } from "."

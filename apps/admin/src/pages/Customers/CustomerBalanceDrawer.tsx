@@ -7,10 +7,10 @@ import {
   useDrawerSheet,
   useDrawerSheetNumber,
 } from "@repo/shared/components"
+import { EntityNotFoundCard } from "@repo/shared/components"
 import { useAtomValue } from "jotai"
 import { memo } from "react"
 import { v4 as uuid } from "uuid"
-import { EntityNotFoundCard } from "#/components"
 import { customersAtom } from "."
 import BalanceCards from "./BalanceCards"
 import { QUERY_KEYS } from "./navigation"

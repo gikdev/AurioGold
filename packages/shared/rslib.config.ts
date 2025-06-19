@@ -19,4 +19,9 @@ export default defineConfig({
     sourceMap: true,
   },
   plugins: [pluginReact()],
+  resolve: {
+    alias: {
+      "#/*": ["./src/*"]
+    }
+  }
 })

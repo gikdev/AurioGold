@@ -1,10 +1,10 @@
-import styled from "@master/styled.react"
 import { CaretLeftIcon, CheckIcon, XIcon } from "@phosphor-icons/react"
-import type { ReactNode } from "react"
+import type { HTMLProps, ReactNode } from "react"
+import { cn } from "#shared/helpers"
 
-export const KeyValueDetailsContainer = styled.div`
-  flex flex-col gap-3
-`
+export function KeyValueDetailsContainer({ className, ...other }: HTMLProps<HTMLDivElement>) {
+  return <div className={cn("flex flex-col gap-3", className)} {...other} />
+}
 
 interface KeyValueDetailProps {
   title: string
