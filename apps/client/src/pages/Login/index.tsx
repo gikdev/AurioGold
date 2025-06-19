@@ -27,7 +27,7 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>
 
 const StyledForm = styled.form`
-  bg-slate-2 border-2 border-slate-6 w-full max-w-96 
+  bg-slate-2 border border-slate-6 w-full max-w-96 
   px-4 py-8 flex flex-col gap-5 text-center rounded-lg
 `
 
