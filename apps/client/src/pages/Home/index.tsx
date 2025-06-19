@@ -1,7 +1,5 @@
-// export interface HomeProps {}
+import { HeadingLine } from "@repo/shared/layouts"
 
-export default function Home(
-  // {}:HomeProps
-) {
-  return <div>{/* TODO */}</div>
+export default function Home() {
+  return <HeadingLine title="صفحه اصلی" />
 }

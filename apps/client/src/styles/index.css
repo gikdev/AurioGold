@@ -1,9 +1,51 @@
 @import "tailwindcss";
 @import "./theme/dark.css";
 @import "./theme/both.css";
+@import "./theme/brand-gold.css";
 @import "./fonts/Vazirmatn/font-face.css";
 @source "../../../../packages/shared";
 
 @theme {
   --font-main: "Vazirmatn", sans-serif;
+  --font-mono: "JetBrains Mono", monospace !important;
+
+  --animate-marquee-slow: marquee 10s linear infinite;
+  --animate-marquee-fast: marquee 5s linear infinite;
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(20%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+}
+
+[class^="ag-"],
+[className^="ag-"] {
+  font-family: "Vazirmatn", sans-serif !important;
+}
+
+[class^="language-"] {
+  font-family: "JetBrains Mono", monospace !important;
+}
+
+.ag-paging-panel {
+  overflow-x: auto;
+  max-width: 100%;
+  height: max-content;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 0;
+}
+
+.ag-paging-panel * {
+  min-width: max-content;
+}
+
+@media screen and (min-width: 55em) {
+  .ag-paging-panel {
+    flex-direction: row;
+  }
 }
