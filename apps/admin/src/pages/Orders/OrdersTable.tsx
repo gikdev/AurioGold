@@ -4,13 +4,13 @@ import { ArrowClockwiseIcon, CheckIcon, FunnelIcon, XIcon } from "@phosphor-icon
 import type { Gidto, OrderFm, OrdersByStuckDto, OrdersReturnFm } from "@repo/api-client/client"
 import { notifManager, storageManager } from "@repo/shared/adapters"
 import { Btn, createTypedTableFa } from "@repo/shared/components"
+import { cellRenderers } from "@repo/shared/lib"
 import type { ColDef, RowClassParams, RowStyle } from "ag-grid-community"
 import type { CustomCellRendererProps } from "ag-grid-react"
 import { useAtomValue } from "jotai"
 import { useCallback, useEffect } from "react"
 import { Link, useNavigate } from "react-router"
 import { connectionRefAtom } from "#/atoms"
-import { cellRenderers } from "#/shared/agGrid"
 import genDatApiConfig from "#/shared/datapi-config"
 import routes from "../routes"
 import FilterDrawer from "./FilterDrawer"
@@ -208,6 +208,7 @@ const ordersColDef: ColDef<OrderFm>[] = [
   {
     field: "side",
     headerName: "نوع سفارش",
+    cellRenderer: cellRenderers.OrderSide,
   },
   {
     field: "dlrCustomer",
@@ -221,6 +222,7 @@ const ordersColDef: ColDef<OrderFm>[] = [
   {
     field: "orderStatus",
     headerName: "وضعیت سفارش",
+    cellRenderer: cellRenderers.OrderStatus,
   },
   {
     field: "createDate",

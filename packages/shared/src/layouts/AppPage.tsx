@@ -1,12 +1,13 @@
-import { motion } from "motion/react"
-import type { PropsWithChildren } from "react"
+import { type HTMLMotionProps, motion } from "motion/react"
 import { ErrorPageBoundary } from "#shared/components"
 import { motionPresets } from "#shared/lib"
 
-export default function AppPage({ children }: PropsWithChildren) {
+export function AppPage({ children, ...others }: HTMLMotionProps<"div">) {
   return (
     <ErrorPageBoundary>
-      <motion.div {...motionPresets.slideUp}>{children}</motion.div>
+      <motion.div {...motionPresets.slideUp} {...others}>
+        {children}
+      </motion.div>
     </ErrorPageBoundary>
   )
 }

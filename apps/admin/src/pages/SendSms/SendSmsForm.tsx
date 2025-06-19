@@ -12,12 +12,12 @@ import {
   createTypedTableFa,
 } from "@repo/shared/components"
 import { createFieldsWithLabels } from "@repo/shared/helpers"
+import { multiRowSelectionOptions } from "@repo/shared/lib"
 import type { ColDef, GetRowIdFunc, SelectionChangedEvent } from "ag-grid-community"
 import type { AgGridReact } from "ag-grid-react"
 import { useCallback, useRef } from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { multiRowSelectionOptions } from "#/shared/agGrid"
 import genDatApiConfig from "#/shared/datapi-config"
 
 const columnDefs: ColDef<CustomerDto>[] = [

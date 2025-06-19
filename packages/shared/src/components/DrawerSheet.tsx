@@ -78,7 +78,10 @@ export function DrawerSheet({
               </div>
 
               {additionalBtns}
-              <Btn className="p-1 w-10 bg-transparent border-transparent" onClick={onClose}>
+              <Btn
+                className="w-10 p-1 flex md:hidden bg-transparent hover:bg-slate-3 border-transparent"
+                onClick={onClose}
+              >
                 <XIcon size={24} />
               </Btn>
             </div>

@@ -39,7 +39,7 @@ interface FileInputImagePreviewerProps {
 }
 
 function FileInputImagePreviewer({ file, className = "" }: FileInputImagePreviewerProps) {
-  const fallbackImageUrl = "https://placehold.co/400"
+  const fallbackImageUrl = "/shared/fallback-400.jpg"
   const [imageUrl, setImageUrl] = useState<string>(fallbackImageUrl)
 
   useEffect(() => {

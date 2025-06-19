@@ -65,7 +65,7 @@ function _ChangePasswordDrawer() {
     apiRequest({
       config: genDatApiConfig(),
       options: {
-        url: "/Master/resetPasswordMaster",
+        url: "/Customer/resetPassword",
         method: "PUT",
         body: JSON.stringify(mapToApiPayload(data)),
         onSuccess: () => {
@@ -147,9 +147,12 @@ function _ChangePasswordDrawer() {
 const ChangePasswordDrawer = memo(_ChangePasswordDrawer)
 export default ChangePasswordDrawer
 
-function mapToApiPayload(data: ChangePasswordFormValues): ChangePasswordDto {
+function mapToApiPayload({
+  newPassword,
+  oldPassword,
+}: ChangePasswordFormValues): ChangePasswordDto {
   return {
-    oldPassword: sha512(data.oldPassword),
-    newPassword: data.newPassword,
+    oldPassword: oldPassword ? sha512(oldPassword) : "",
+    newPassword,
   }
 }

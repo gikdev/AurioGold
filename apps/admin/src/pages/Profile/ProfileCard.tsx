@@ -7,7 +7,7 @@ import { Link } from "react-router"
 import routes from "../routes"
 import { Navigation } from "./navigation"
 
-const fallbackImageUrl = "https://placehold.co/400"
+const fallbackImageUrl = "/shared/fallback-400.jpg"
 
 function getProfileImageUrl() {
   let logoUrl = storageManager.get("logoUrl", "sessionStorage")

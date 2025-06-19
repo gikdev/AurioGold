@@ -1,11 +1,12 @@
 import { ArrowLeftIcon, CoinVerticalIcon, HouseIcon, NumberFourIcon } from "@phosphor-icons/react"
 import { Btn } from "@repo/shared/components"
+import { AppPage } from "@repo/shared/layouts"
 import { Link } from "react-router"
 import routes from "../routes"
 
 export default function NotFound() {
   return (
-    <div className="bg-slate-1 text-slate-11 flex flex-col items-center justify-center gap-5 text-center grow shrink">
+    <AppPage className="bg-slate-1 text-slate-11 flex flex-col items-center justify-center gap-5 text-center grow shrink">
       <div className="flex *:-mx-2">
         <NumberFourIcon size={64} className="text-amber-9" />
         <CoinVerticalIcon size={64} className="text-amber-9" />
@@ -25,6 +26,6 @@ export default function NotFound() {
         <span>بازگشت به خانه</span>
         <ArrowLeftIcon size={24} />
       </Btn>
-    </div>
+    </AppPage>
   )
 }

@@ -1,6 +1,6 @@
 import { createTypedTableFa } from "@repo/shared/components"
+import { cellRenderers } from "@repo/shared/lib"
 import type { ComponentProps } from "react"
-import { cellRenderers } from "#/shared/agGrid"
 import type { MasterPortfolioWithId } from "./ManageBalance"
 
 const Table = createTypedTableFa<MasterPortfolioWithId>()
