@@ -1,2 +1,4 @@
-export const version = 1
+import config from "./config.json"
+
+export const version = config.version
 export const getVersion = () => `v${version}`
