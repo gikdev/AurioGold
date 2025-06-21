@@ -56,19 +56,17 @@ function PortfolioCard({
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.95 }}
       className={cn(
-        "bg-slate-3 hover:bg-slate-4 border rounded-md p-2 flex flex-col gap-5 min-w-max cursor-pointer",
+        "bg-slate-3 hover:bg-slate-4 border rounded-md p-2 flex flex-col gap-5 min-w-40 cursor-pointer ",
         isSelected ? "border-brand-9 hover:border-brand-10" : "border-slate-7 hover:border-slate-8",
       )}
     >
       <p className="flex items-center gap-1">
         <PackageIcon size={20} />
         <span>{stockName}</span>
+      </p>
 
-        <Radio
-          className="ms-auto"
-          checked={isSelected}
-          onChange={() => setSelectedPortfolioId(id)}
-        />
+      <p dir="ltr" className="font-bold text-lg text-slate-12">
+        {formatPersianPrice(Math.abs(Number(volume.toFixed(3))))}
       </p>
 
       <p className="flex justify-between items-center flex-wrap">
@@ -76,9 +74,11 @@ function PortfolioCard({
           ({volume >= 0 ? "بستانکار" : "بدهکار"})
         </span>
 
-        <span dir="ltr" className="font-bold text-lg text-slate-12">
-          {formatPersianPrice(Math.abs(Number(volume.toFixed(3))))}
-        </span>
+        <Radio
+          className="ms-auto"
+          checked={isSelected}
+          onChange={() => setSelectedPortfolioId(id)}
+        />
       </p>
     </motion.label>
   )

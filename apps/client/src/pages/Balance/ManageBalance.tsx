@@ -1,34 +1,44 @@
 import { useApiRequest } from "@gikdev/react-datapi/src"
 import { CoinsIcon, CopyIcon } from "@phosphor-icons/react"
-import type { MasterPortfolioDto } from "@repo/api-client/client"
+import type { PortfolioDto } from "@repo/api-client/client"
 import { notifManager } from "@repo/shared/adapters"
-import { BtnTemplates, FloatingActionBtn, TitledCard, useViewModes } from "@repo/shared/components"
+import {
+  BtnTemplates,
+  FloatingActionBtn,
+  TitledCard,
+  ViewModesToggle,
+  useCurrentViewMode,
+} from "@repo/shared/components"
 import { useState } from "react"
 import { v4 as uuid } from "uuid"
 import BalanceTable from "./BalanceTable"
 import PortfolioCards from "./PortfolioCards"
 
-export interface MasterPortfolioWithId {
+export interface PortfolioWithId {
   id: string
-  tyStockID: number
+  stockId: number
   stockName: string
   volume: number
+  customerId: number
+  customerName: string
 }
 
-function mapSinglePortfolioItem(item: MasterPortfolioDto): MasterPortfolioWithId {
+function mapSinglePortfolioItem(item: PortfolioDto): PortfolioWithId {
   return {
     id: uuid(),
-    stockName: item.stockName ?? "---",
-    tyStockID: item.tyStockID ?? 0,
+    stockName: item.stockName || "---",
+    stockId: item.tyStockID ?? 0,
     volume: item.volume ?? 0,
+    customerId: item.customerID ?? 0,
+    customerName: item.customerName || "---",
   }
 }
 
 export default function ManageBalance() {
-  const { renderedIconsToggle, viewMode } = useViewModes()
-  const [selectedPortfolioId, setSelectedPortfolioId] = useState<MasterPortfolioWithId["id"]>()
-  const resBalance = useApiRequest<MasterPortfolioWithId[], MasterPortfolioDto[]>(() => ({
-    url: "/Master/GetMasterPortfolio",
+  const currentViewMode = useCurrentViewMode()
+  const [selectedPortfolioId, setSelectedPortfolioId] = useState<PortfolioWithId["id"]>()
+  const resBalance = useApiRequest<PortfolioWithId[], PortfolioDto[]>(() => ({
+    url: "/Customer/GetPortfoli",
     defaultValue: [],
     transformResponse: rawItems => rawItems.map(mapSinglePortfolioItem),
   }))
@@ -54,7 +64,7 @@ export default function ManageBalance() {
       )
   }
 
-  const fabCopyBtn = viewMode === "cards" && (
+  const fabCopyBtn = currentViewMode === "cards" && (
     <FloatingActionBtn
       icon={CopyIcon}
       title="کپی انتخاب شده"
@@ -76,7 +86,7 @@ export default function ManageBalance() {
 
       <BtnTemplates.IconReload onClick={() => resBalance.reload()} />
 
-      {renderedIconsToggle}
+      <ViewModesToggle />
     </div>
   )
 
@@ -84,7 +94,7 @@ export default function ManageBalance() {
     <TitledCard title="مدیریت مانده حساب" icon={CoinsIcon} titleSlot={titledCardActions}>
       {resBalance.loading && <div className="h-100 rounded-md animate-pulse bg-slate-4" />}
 
-      {resBalance.success && !resBalance.loading && viewMode === "cards" && (
+      {resBalance.success && !resBalance.loading && currentViewMode === "cards" && (
         <PortfolioCards
           portfolios={resBalance.data || []}
           selectedPortfolioId={selectedPortfolioId}
@@ -92,7 +102,7 @@ export default function ManageBalance() {
         />
       )}
 
-      {resBalance.success && !resBalance.loading && viewMode === "table" && (
+      {resBalance.success && !resBalance.loading && currentViewMode === "table" && (
         <BalanceTable portfolios={resBalance.data || []} />
       )}
     </TitledCard>

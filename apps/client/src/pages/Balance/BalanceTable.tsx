@@ -1,9 +1,9 @@
 import { createTypedTableFa } from "@repo/shared/components"
 import { cellRenderers } from "@repo/shared/lib"
 import type { ComponentProps } from "react"
-import type { MasterPortfolioWithId } from "./ManageBalance"
+import type { PortfolioWithId } from "./ManageBalance"
 
-const Table = createTypedTableFa<MasterPortfolioWithId>()
+const Table = createTypedTableFa<PortfolioWithId>()
 type TableProps = ComponentProps<typeof Table>
 
 const columnDefs: TableProps["columnDefs"] = [
