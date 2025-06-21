@@ -1,6 +1,8 @@
 const routes = {
   base: "/",
   home: "/",
+  trade: "/",
+  trade_productById: (id: number | string) => `/product/${id}`,
   login: "/login",
   logout: "/logout",
   profile: "/profile",

@@ -1,5 +1,5 @@
 import { CaretDownIcon, CaretUpIcon, EyeIcon, EyeSlashIcon } from "@phosphor-icons/react"
-import { parseAsBoolean, useQueryState } from "nuqs"
+import { parseAsBoolean, parseAsStringEnum, parseAsStringLiteral, useQueryState } from "nuqs"
 import { useCallback, useState } from "react"
 import { useWindowSize } from "react-haiku"
 import { Btn } from "#shared/components"
@@ -70,6 +70,19 @@ export function useBooleanishQueryState(id: string) {
   const [isOpen, setOpen] = useQueryState(
     id,
     parseAsBoolean.withDefault(false).withOptions({ history: "push" }),
+  )
+
+  return [isOpen, setOpen] as const
+}
+
+export function useLiteralQueryState<Literal extends string>(
+  id: string,
+  literals: readonly Literal[],
+  defaultValue = literals[0],
+) {
+  const [isOpen, setOpen] = useQueryState(
+    id,
+    parseAsStringLiteral(literals).withDefault(defaultValue).withOptions({ history: "push" }),
   )
 
   return [isOpen, setOpen] as const

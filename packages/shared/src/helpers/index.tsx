@@ -3,10 +3,11 @@ import { toast } from "react-toastify"
 import { twMerge } from "tailwind-merge"
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs))
+export const ccn = (...inputs: ClassValue[]) => ({ className: twMerge(clsx(inputs)) })
 
 type StrEnding = " *" | ": "
 
-export function createFieldsWithLabels<T extends Record<string, `${string}${StrEnding}`>>(
+export function createFieldsWithLabels<T extends Record<string, `${string}${StrEnding}` | null>>(
   labels: T,
 ) {
   const fields = Object.fromEntries(Object.entries(labels).map(([key, _]) => [key, key])) as {

@@ -25,7 +25,7 @@ export function KeyValueDetail({
     <div className="flex flex-col gap-2">
       <p className="flex items-center justify-between hover:bg-slate-2 p-2 rounded-md gap-2">
         <span className="inline-flex gap-1 items-center">
-          <CaretLeftIcon />
+          <CaretLeftIcon className="shrink-0" />
           <span>{key}:</span>
         </span>
 
@@ -37,6 +37,7 @@ export function KeyValueDetail({
           </span>
         )}
       </p>
+
       {bottomSlot}
     </div>
   )

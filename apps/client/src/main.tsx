@@ -16,6 +16,7 @@ ModuleRegistry.registerModules([AllCommunityModule])
 
 // const Home = lazy(() => import("./pages/Home"))
 const Trade = lazy(() => import("./pages/Trade"))
+const ProductById = lazy(() => import("./pages/Trade/ProductById"))
 const Login = lazy(() => import("./pages/Login"))
 const Logout = lazy(() => import("./pages/Logout"))
 const NotFound = lazy(() => import("./pages/NotFound"))
@@ -57,6 +58,10 @@ root.render(
                 <Route element={<Protected />}>
                   <Route element={<BaseWrapper />}>
                     <Route index element={<Trade />} />
+                    <Route
+                      path={routes.trade_productById(":productId")}
+                      element={<ProductById />}
+                    />
                     <Route path={routes.profile} element={<Profile />} />
                     <Route path={routes.balance} element={<Balance />} />
                     <Route path={routes.orders} element={<Orders />} />

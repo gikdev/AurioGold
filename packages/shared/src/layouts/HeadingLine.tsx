@@ -27,7 +27,7 @@ export function HeadingLine({ title, actions, className = "", children = null }:
         <Heading
           as="h1"
           size={3}
-          className="text-slate-12 mb-0 mt-6 text-center border-b max-w-max mx-auto pb-6 border-slate-6"
+          className="text-slate-12 mb-0 mt-6 text-center border-b max-w-max mx-auto pb-2 border-slate-6"
         >
           {title}
         </Heading>
