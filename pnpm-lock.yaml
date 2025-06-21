@@ -89,6 +89,9 @@ importers:
       js-sha512:
         specifier: ^0.9.0
         version: 0.9.0
+      markdown-to-jsx:
+        specifier: ^7.7.8
+        version: 7.7.8(react@19.1.0)
       moment-jalaali:
         specifier: ^0.10.4
         version: 0.10.4
@@ -231,6 +234,9 @@ importers:
       js-sha512:
         specifier: ^0.9.0
         version: 0.9.0
+      markdown-to-jsx:
+        specifier: ^7.7.8
+        version: 7.7.8(react@19.1.0)
       moment-jalaali:
         specifier: ^0.10.4
         version: 0.10.4
@@ -431,6 +437,9 @@ importers:
       js-cookie:
         specifier: ^3.0.5
         version: 3.0.5
+      markdown-to-jsx:
+        specifier: ^7.7.8
+        version: 7.7.8(react@19.1.0)
       moment-jalaali:
         specifier: ^0.10.4
         version: 0.10.4
@@ -3412,6 +3421,12 @@ packages:
 
   magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
+
+  markdown-to-jsx@7.7.8:
+    resolution: {integrity: sha512-e+5bQJ30iIyJUV4tH/3wuBjpE5muLXsuBBi30N9t3B9O+UomC1Ocdqu7uD3X4YqtPrNLz+6QwHJaD7CXURBi+w==}
+    engines: {node: '>= 10'}
+    peerDependencies:
+      react: '>= 0.14.0'
 
   mdast-util-from-markdown@1.3.1:
     resolution: {integrity: sha512-4xTO/M8c82qBcnQc1tgpNtubGUW/Y1tBQ1B0i5CtSoelOLKFYlElIr3bvgREYYO5iRqbMY1YuqZng0GVOI8Qww==}
@@ -8082,6 +8097,10 @@ snapshots:
   magic-string@0.30.17:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  markdown-to-jsx@7.7.8(react@19.1.0):
+    dependencies:
+      react: 19.1.0
 
   mdast-util-from-markdown@1.3.1:
     dependencies:

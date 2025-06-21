@@ -23,6 +23,7 @@ const Test = lazy(() => import("./pages/Test"))
 const Profile = lazy(() => import("./pages/Profile"))
 const Balance = lazy(() => import("./pages/Balance"))
 const Orders = lazy(() => import("./pages/Orders"))
+const About = lazy(() => import("./pages/About"))
 const Settings = lazy(() => import("./pages/Settings"))
 
 const container = document.querySelector("#root")
@@ -58,6 +59,7 @@ root.render(
                     <Route path={routes.profile} element={<Profile />} />
                     <Route path={routes.balance} element={<Balance />} />
                     <Route path={routes.orders} element={<Orders />} />
+                    <Route path={routes.about} element={<About />} />
                     <Route path={routes.settings} element={<Settings />} />
                     <Route path={routes.test} element={<Test />} />
                     <Route path="*" element={<NotFound />} />

@@ -27,6 +27,7 @@
     "jotai-immer": "^0.4.1",
     "js-cookie": "^3.0.5",
     "js-sha512": "^0.9.0",
+    "markdown-to-jsx": "^7.7.8",
     "moment-jalaali": "^0.10.4",
     "motion": "^12.16.0",
     "nuqs": "^2.4.3",

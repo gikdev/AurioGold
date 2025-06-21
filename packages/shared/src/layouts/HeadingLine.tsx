@@ -1,6 +1,6 @@
 import styled from "@master/styled.react"
 import type { ReactNode } from "react"
-import { ErrorCardBoundary, Heading } from "#shared/components"
+import { Heading } from "#shared/components"
 import { AppPage } from "#shared/layouts"
 
 interface HeadingLineProps {
@@ -33,9 +33,7 @@ export function HeadingLine({ title, actions, className = "", children = null }:
         </Heading>
       )}
 
-      <ErrorCardBoundary>
-        {actions ? children : <StyledSection>{children}</StyledSection>}
-      </ErrorCardBoundary>
+      {actions ? children : <StyledSection>{children}</StyledSection>}
     </AppPage>
   )
 }
