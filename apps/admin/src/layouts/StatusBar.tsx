@@ -26,14 +26,14 @@ export default function StatusBar() {
   const showOnlineUsers = useAtomValue(showOnlineUsersInStatusbarAtom)
 
   return (
-    <div className="w-full bg-slate-1 flex rounded-md h-8 gap-2 overflow-hidden">
+    <div className="w-full bg-slate-1 flex flex-row-reverse rounded-md h-8 gap-2 overflow-hidden">
       {showOnlineUsers ? <OnlineUsers /> : <div className="flex-1" />}
 
       <div className="flex items-center">
-        <ReloadStatusBtn />
-        <OnlinePeopleCount />
-        <ServerConnectionStatus />
         <ToggleAdminOnline />
+        <ServerConnectionStatus />
+        <OnlinePeopleCount />
+        <ReloadStatusBtn />
       </div>
     </div>
   )

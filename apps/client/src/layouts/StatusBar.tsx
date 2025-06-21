@@ -12,13 +12,13 @@ import { connectionStateAtom, isAdminOnlineAtom } from "#/atoms"
 
 export default function StatusBar() {
   return (
-    <div className="w-full bg-slate-1 flex rounded-md h-8 gap-2 overflow-hidden">
+    <div className="w-full bg-slate-1 flex flex-row-reverse rounded-md h-8 gap-2 overflow-hidden">
       <div className="flex-1" />
 
       <div className="flex items-center">
-        <ReloadStatusBtn />
-        <ServerConnectionStatus />
         <ShowShopStatus />
+        <ServerConnectionStatus />
+        <ReloadStatusBtn />
       </div>
     </div>
   )
