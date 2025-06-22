@@ -6,6 +6,7 @@ import { motion } from "motion/react"
 import { useEffect } from "react"
 import { selectedProductAtom } from "."
 import { useGetProductSideEnabled } from "../ProductShared"
+import { QUERY_KEYS } from "../navigation"
 
 function calcDefaultSide(
   isBuyingEnabled: boolean,
@@ -23,7 +24,7 @@ export default function BuyAndSellToggleBtn() {
   const { isBuyingEnabled, isSellingEnabled } = useGetProductSideEnabled(
     selectedProduct?.status ?? 0,
   )
-  const [side, setSide] = useLiteralQueryState("side", sides)
+  const [side, setSide] = useLiteralQueryState(QUERY_KEYS.side, sides)
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {

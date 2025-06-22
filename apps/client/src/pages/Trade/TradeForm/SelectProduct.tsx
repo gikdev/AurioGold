@@ -1,6 +1,6 @@
 import { useApiRequest } from "@gikdev/react-datapi/src"
 import type { StockDto } from "@repo/api-client/client"
-import { createSelectWithOptions } from "@repo/shared/components"
+import { Labeler, createSelectWithOptions } from "@repo/shared/components"
 import { useIntegerQueryState } from "@repo/shared/hooks"
 import { useAtomValue, useSetAtom } from "jotai"
 import type { ChangeEvent } from "react"
@@ -33,6 +33,7 @@ export default function SelectProduct() {
       setSelectedProduct(foundProduct ?? null)
     },
   }))
+  const errorMsg = productId == null ? "هیچ محصولی انتخاب نشده! لطفا انتخاب کنید." : ""
 
   const handleProductChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setProductId(parseStrToNullableNumber(e.target.value))
@@ -42,13 +43,16 @@ export default function SelectProduct() {
   }
 
   return (
-    <ProductSelect
-      options={resProducts.data ?? []}
-      isLoading={resProducts.loading}
-      keys={keysConfig}
-      value={productId ?? undefined}
-      onChange={handleProductChange}
-    />
+    <Labeler labelText="محصول:" errorMsg={errorMsg}>
+      <ProductSelect
+        options={resProducts.data ?? []}
+        isLoading={resProducts.loading}
+        keys={keysConfig}
+        value={productId ?? ""}
+        onChange={handleProductChange}
+        className={errorMsg ? "border-red-7" : ""}
+      />
+    </Labeler>
   )
 }
 

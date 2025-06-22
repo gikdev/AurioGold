@@ -4,10 +4,11 @@ import { useLiteralQueryState } from "@repo/shared/hooks"
 import { useAtomValue } from "jotai"
 import { selectedProductAtom } from "."
 import { useGetProductSideEnabled } from "../ProductShared"
+import { QUERY_KEYS } from "../navigation"
 import { sides } from "./BuyAndSellToggleBtn"
 
 export default function SubmitBtn() {
-  const [side] = useLiteralQueryState("side", sides)
+  const [side] = useLiteralQueryState(QUERY_KEYS.side, sides)
   const selectedProduct = useAtomValue(selectedProductAtom)
   const productName = selectedProduct?.name || "محصول"
   const { isDisabled } = useGetProductSideEnabled(selectedProduct?.status ?? 0)
