@@ -2,8 +2,9 @@ import { useApiRequest } from "@gikdev/react-datapi/src"
 import type { StockDto } from "@repo/api-client/client"
 import { createSelectWithOptions } from "@repo/shared/components"
 import { useIntegerQueryState } from "@repo/shared/hooks"
-import { useSetAtom } from "jotai"
+import { useAtomValue, useSetAtom } from "jotai"
 import type { ChangeEvent } from "react"
+import { isAdminOnlineAtom } from "#/atoms"
 import { transformStock } from "#/pages/Products/transformStock"
 import { selectedProductAtom } from "."
 import { ProductStatus } from "../ProductShared"
@@ -19,11 +20,12 @@ const keysConfig = {
 
 export default function SelectProduct() {
   const setSelectedProduct = useSetAtom(selectedProductAtom)
+  const isShopOnline = useAtomValue(isAdminOnlineAtom)
   const [productId, setProductId] = useIntegerQueryState(QUERY_KEYS.productId)
   const resProducts = useApiRequest<Required<StockDto>[] | null, StockDto[]>(() => ({
     url: "/TyStocks/ForCustommer",
     defaultValue: null,
-    dependencies: [productId],
+    dependencies: [productId, isShopOnline],
     transformResponse: rawItems =>
       rawItems.map(transformStock).filter(p => p.status !== ProductStatus.Disabled),
     onSuccess(products) {
