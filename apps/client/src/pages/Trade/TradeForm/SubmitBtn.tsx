@@ -16,7 +16,12 @@ export default function SubmitBtn() {
   const isBtnDisabled = isDisabled
 
   return (
-    <Btn theme={side === "buy" ? "success" : "error"} themeType="filled" disabled={isBtnDisabled}>
+    <Btn
+      type="submit"
+      theme={side === "buy" ? "success" : "error"}
+      themeType="filled"
+      disabled={isBtnDisabled}
+    >
       <CoinsIcon size={20} />
       <span>{`${verb} ${productName}`}</span>
     </Btn>
