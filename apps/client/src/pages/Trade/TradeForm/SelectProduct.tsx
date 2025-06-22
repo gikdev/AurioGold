@@ -43,7 +43,7 @@ export default function SelectProduct() {
   }
 
   return (
-    <Labeler labelText="محصول:" errorMsg={errorMsg}>
+    <Labeler labelText="" errorMsg={errorMsg}>
       <ProductSelect
         options={resProducts.data ?? []}
         isLoading={resProducts.loading}

@@ -10,7 +10,6 @@ import { sides } from "./BuyAndSellToggleBtn"
 export default function SubmitBtn() {
   const [side] = useLiteralQueryState(QUERY_KEYS.side, sides)
   const selectedProduct = useAtomValue(selectedProductAtom)
-  const productName = selectedProduct?.name || "محصول"
   const { isDisabled } = useGetProductSideEnabled(selectedProduct?.status ?? 0)
   const verb = side === "buy" ? "خرید" : "فروش"
 
@@ -23,8 +22,8 @@ export default function SubmitBtn() {
       themeType="filled"
       disabled={isBtnDisabled}
     >
-      <CoinsIcon size={20} />
-      <span>{`${verb} ${productName}`}</span>
+      <CoinsIcon size={20} weight="fill" />
+      <span>{verb}</span>
     </Btn>
   )
 }

@@ -4,6 +4,7 @@ import routes from "../routes"
 export const QUERY_KEYS = {
   productId: "product-id",
   side: "side",
+  rialMode: "rial-mode",
 } as const
 
 export type ProductId = NonNullable<StockDto["id"]>

@@ -32,16 +32,9 @@ export default function BuyAndSellToggleBtn() {
   }, [isBuyingEnabled, isSellingEnabled])
 
   return (
-    <div className="rounded-md flex items-center">
+    <div {...styles.container}>
       {isBuyingEnabled ? (
-        <motion.label
-          {...motionPresets.btn}
-          {...ccn(
-            "flex-1 flex p-2 text-center justify-center rounded-s-md",
-            "items-center cursor-pointer bg-slate-3",
-            { "bg-green-9 text-slate-12 font-bold": side === "buy" },
-          )}
-        >
+        <motion.label {...motionPresets.btn} {...styles.btn(side === "buy")}>
           <input
             checked={side === "buy"}
             className="hidden"
@@ -51,20 +44,11 @@ export default function BuyAndSellToggleBtn() {
           <span>خرید</span>
         </motion.label>
       ) : (
-        <div className="flex-1 flex p-2 justify-center bg-slate-5 text-slate-10 rounded-s-md">
-          خرید
-        </div>
+        <div {...styles.btnDisabled}>خرید</div>
       )}
 
       {isSellingEnabled ? (
-        <motion.label
-          {...motionPresets.btn}
-          {...ccn(
-            "flex-1 flex p-2 text-center justify-center rounded-e-md",
-            "items-center cursor-pointer bg-slate-3",
-            { "bg-red-9 text-slate-12 font-bold": side === "sell" },
-          )}
-        >
+        <motion.label {...motionPresets.btn} {...styles.btn(side === "sell")}>
           <input
             checked={side === "sell"}
             className="hidden"
@@ -74,10 +58,29 @@ export default function BuyAndSellToggleBtn() {
           <span>فروش</span>
         </motion.label>
       ) : (
-        <div className="flex-1 flex p-2 justify-center bg-slate-5 text-slate-10 rounded-e-md">
-          فروش
-        </div>
+        <div {...styles.btnDisabled}>فروش</div>
       )}
     </div>
   )
+}
+
+const styles = {
+  container: ccn(`
+    rounded-md flex flex-wrap items-center
+    border border-slate-7 p-1 gap-1
+  `),
+
+  btn: (isActive = false) =>
+    ccn(
+      `
+        flex-1 flex p-2 text-center justify-center rounded-md
+        items-center cursor-pointer bg-transparent min-w-20
+      `,
+      { "bg-brand-9 text-slate-1 font-bold": isActive },
+    ),
+
+  btnDisabled: ccn(`
+    flex-1 flex p-2 justify-center
+    bg-slate-5 text-slate-10 rounded-md
+  `),
 }
