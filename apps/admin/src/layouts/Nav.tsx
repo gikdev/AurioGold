@@ -11,7 +11,7 @@ const fallbackImageUrl = "/shared/fallback-400.jpg"
 const StyledAdminChip = styled(Link)`
   flex gap-1 items-center justify-center
   hover:bg-slate-3 cursor-pointer p-2
-  transition-colors rounded-md text-xs font-bold
+  transition-colors rounded-md font-bold
 `
 
 function getProfileImageUrl() {
