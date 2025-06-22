@@ -1,28 +1,27 @@
-import { CaretLeftIcon, PackageIcon } from "@phosphor-icons/react"
+import { CaretLeftIcon, ClockIcon, PackageIcon } from "@phosphor-icons/react"
 import type { StockDto, StockStatus, StockUnit } from "@repo/api-client/client"
 import { ccn } from "@repo/shared/helpers"
 import { motionPresets } from "@repo/shared/lib"
+import { cellRenderers } from "@repo/shared/lib"
 import { formatPersianPrice } from "@repo/shared/utils"
 import { motion } from "motion/react"
 import { useNavigate } from "react-router"
-import routes from "../routes"
-import { useFinalProductPrices, useGetProductSideEnabled } from "./ProductById/ProductShared"
+import { useFinalProductPrices, useGetProductSideEnabled } from "../Trade/ProductShared"
+import { TradeNavigation } from "../Trade/navigation"
 
 const styles = {
   container: ccn(`
     border-slate-7 bg-slate-3 hover:bg-slate-4
-    rounded-md p-2 sm:items-center cursor-pointer
-    flex gap-2 flex-col sm:flex-row border
+    rounded-md p-2 cursor-pointer flex-col
+    flex gap-2 border flex-1 min-w-40 min-w-max
   `),
 
   titleContainer: ccn(`
-    flex gap-1 items-center sm:me-auto
-    justify-between sm:justify-start
+    flex gap-1 items-center justify-between w-full
   `),
 
   priceContainer: ccn(`
-    flex items-center gap-2 justify-between
-    sm:justify-start
+    flex items-center gap-2 justify-between w-full
   `),
 }
 
@@ -34,6 +33,7 @@ interface ProductCardProps {
   basePrice: number
   unit: StockUnit
   status: StockStatus
+  updateDate: string
 }
 
 export default function ProductCard({
@@ -42,6 +42,7 @@ export default function ProductCard({
   productId,
   diffBuyPrice,
   basePrice,
+  updateDate,
   unit,
   status,
 }: ProductCardProps) {
@@ -55,7 +56,7 @@ export default function ProductCard({
   })
 
   const handleProductClick = () => {
-    navigate(routes.trade_productById(productId))
+    navigate(TradeNavigation.productId(productId))
   }
 
   if (isDisabled) return null
@@ -71,32 +72,35 @@ export default function ProductCard({
         <PackageIcon size={20} />
         <span>{name}</span>
 
-        <CaretLeftIcon size={20} className="inline-block sm:hidden ms-auto" />
+        <CaretLeftIcon size={20} className="inline-block ms-auto" />
       </p>
 
       <div {...styles.priceContainer}>
-        {isBuyingEnabled ? (
-          <p title="قیمت خرید (ریال)" className="text-green-10" dir="ltr">
-            {formatPersianPrice(totalBuyPrice)}
-          </p>
-        ) : (
-          <p title="قیمت خرید (ریال)" className="text-slate-10" dir="ltr">
-            -
-          </p>
-        )}
+        <p
+          dir="ltr"
+          title="قیمت خرید (ریال)"
+          className={isBuyingEnabled ? "text-green-10" : "text-slate-10"}
+        >
+          {isBuyingEnabled ? formatPersianPrice(totalBuyPrice) : "-"}
+        </p>
 
-        {isSellingEnabled ? (
-          <p title="قیمت فروش (ریال)" className="text-red-10" dir="ltr">
-            {formatPersianPrice(totalSellPrice)}
-          </p>
-        ) : (
-          <p title="قیمت فروش (ریال)" className="text-slate-10" dir="ltr">
-            -
-          </p>
-        )}
+        <p
+          dir="ltr"
+          title="قیمت فروش (ریال)"
+          className={isSellingEnabled ? "text-red-10" : "text-slate-10"}
+        >
+          {isSellingEnabled ? formatPersianPrice(totalSellPrice) : "-"}
+        </p>
       </div>
 
-      <CaretLeftIcon size={20} className="hidden sm:inline-block" />
+      <p
+        dir="ltr"
+        title="آخرین آپدیت"
+        className="text-slate-10 text-xs text-start flex items-center gap-0.5 w-full"
+      >
+        <ClockIcon />
+        <cellRenderers.DateAndTime value={updateDate} />
+      </p>
     </motion.button>
   )
 }
