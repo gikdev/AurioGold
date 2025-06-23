@@ -20,7 +20,7 @@ export default function TradeForm() {
 }
 const styles = {
   form: ccn(`
-    flex flex-col gap-5 p-5 bg-slate-2
+    flex flex-col gap-8 p-4 bg-slate-2
     rounded-md w-full max-w-120 mx-auto
   `),
 }

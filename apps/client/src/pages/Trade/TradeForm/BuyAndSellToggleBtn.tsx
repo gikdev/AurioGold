@@ -1,3 +1,4 @@
+import { CheckCircleIcon, CircleIcon } from "@phosphor-icons/react"
 import { ccn } from "@repo/shared/helpers"
 import { useLiteralQueryState } from "@repo/shared/hooks"
 import { motionPresets } from "@repo/shared/lib"
@@ -39,6 +40,7 @@ export default function BuyAndSellToggleBtn() {
             type="radio"
             onChange={() => setSide("buy")}
           />
+          {side === "buy" ? <CheckCircleIcon weight="fill" /> : <CircleIcon />}
           <span>خرید</span>
         </motion.label>
       ) : (
@@ -53,6 +55,7 @@ export default function BuyAndSellToggleBtn() {
             type="radio"
             onChange={() => setSide("sell")}
           />
+          {side === "sell" ? <CheckCircleIcon weight="fill" /> : <CircleIcon />}
           <span>فروش</span>
         </motion.label>
       ) : (
@@ -72,7 +75,7 @@ const styles = {
     ccn(
       `
         flex-1 flex p-2 text-center justify-center rounded-md
-        items-center cursor-pointer bg-transparent min-w-20
+        items-center cursor-pointer bg-transparent min-w-20 gap-1
       `,
       { "bg-brand-9 text-slate-1 font-bold": isActive },
     ),
