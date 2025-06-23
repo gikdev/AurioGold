@@ -72,10 +72,10 @@ export function useToggleLessOrMoreBtn(defaultValue = false) {
   return { ToggleLessOrMoreBtn, isOpen, setOpen }
 }
 
-export function useBooleanishQueryState(id: string) {
+export function useBooleanishQueryState(id: string, defaultValue = false) {
   const [isOpen, setOpen] = useQueryState(
     id,
-    parseAsBoolean.withDefault(false).withOptions({ history: "push" }),
+    parseAsBoolean.withDefault(defaultValue).withOptions({ history: "push" }),
   )
 
   return [isOpen, setOpen] as const
@@ -94,8 +94,11 @@ export function useLiteralQueryState<Literal extends string>(
   return [isOpen, setOpen] as const
 }
 
-export function useIntegerQueryState(id: string) {
-  const [num, setNum] = useQueryState(id, parseAsInteger.withOptions({ history: "push" }))
+export function useIntegerQueryState(id: string, defaultValue = 0) {
+  const [num, setNum] = useQueryState(
+    id,
+    parseAsInteger.withDefault(defaultValue).withOptions({ history: "push" }),
+  )
 
   return [num, setNum] as const
 }

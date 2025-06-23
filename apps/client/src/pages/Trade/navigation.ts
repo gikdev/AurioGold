@@ -5,6 +5,7 @@ export const QUERY_KEYS = {
   productId: "product-id",
   side: "side",
   rialMode: "rial-mode",
+  currentValue: "current-value",
 } as const
 
 export type ProductId = NonNullable<StockDto["id"]>
