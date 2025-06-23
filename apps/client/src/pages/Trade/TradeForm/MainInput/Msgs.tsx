@@ -7,14 +7,12 @@ import { selectedProductAtom } from "../shared"
 import { transactionMethods } from "./shared"
 
 export default function Msgs() {
+  const [errorMsg] = useState("")
   const [isRialMode] = useBooleanishQueryState(QUERY_KEYS.rialMode)
   const selectedProduct = useAtomValue(selectedProductAtom)
   const transactionMethod = transactionMethods[selectedProduct?.unit ?? 0]
   const noDecimalSituation = transactionMethod.name === "count" || isRialMode
   const maxDecimalsCount = noDecimalSituation ? 0 : (selectedProduct?.decimalNumber ?? 0)
-
-  const [errorMsg] = useState("")
-
   const noteDecimalCount = noDecimalSituation
     ? "اعداد اعشاری وارد نکنید"
     : `تا ${maxDecimalsCount} عدد اعشار میشود وارد کرد`

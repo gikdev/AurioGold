@@ -37,7 +37,7 @@ export default function PriceInput() {
     <input
       dir="ltr"
       type="number"
-      className="outline-none text-2xl text-slate-12 w-full"
+      className="outline-none text-2xl text-slate-12 w-full font-bold"
       min={0}
       step={step}
       value={innerValue}
