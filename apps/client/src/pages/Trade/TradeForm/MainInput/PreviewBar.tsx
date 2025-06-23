@@ -28,7 +28,7 @@ export default function PreviewBar() {
     productDiffSellPrice: selectedProduct?.diffSellPrice ?? 0,
   })
 
-  const currentUnit = isRialMode ? "ریال" : transactionMethod.title
+  const currentUnit = isRialMode ? "ریال" : transactionMethod.unitTitle
   const convertedUnit = isRialMode ? transactionMethod.unitTitle : "ریال"
   const convertedValue = isRialMode
     ? calcOutputWeight(value, basePrice, priceToUnitRatio, isRialMode ? 0 : maxDecimalsCount)
@@ -39,7 +39,9 @@ export default function PreviewBar() {
       <p>
         ≈ {formatPersianPrice(convertedValue)} {convertedUnit}
       </p>
-      <p>({currentUnit})</p>
+      <p>
+        ({formatPersianPrice(value)} {currentUnit})
+      </p>
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { useBooleanishQueryState, useIntegerQueryState } from "@repo/shared/hooks"
 import { useAtomValue } from "jotai"
-import { type ChangeEvent, useEffect, useState } from "react"
+import type { ChangeEvent } from "react"
 import { QUERY_KEYS } from "../../navigation"
 import { selectedProductAtom } from "../shared"
 import { transactionMethods } from "./shared"
@@ -13,22 +13,17 @@ export default function PriceInput() {
   const maxDecimalsCount = selectedProduct?.decimalNumber ?? 0
   const finalMaxDecimalsCount =
     isRialMode || transactionMethod.name === "count" ? 0 : maxDecimalsCount
-  const [innerValue, setInnerValue] = useState(value)
   const step = calcStep(finalMaxDecimalsCount)
-
-  useEffect(() => {
-    setInnerValue(value)
-  }, [value])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const trimmed = Number(e.target.value).toFixed(finalMaxDecimalsCount)
     const converted = Number(trimmed)
     const isNan = Number.isNaN(converted)
-    setInnerValue(isNan ? 0 : converted)
+    setValue(isNan ? 0 : converted)
   }
 
   const handleBlur = () => {
-    const converted = Number(innerValue)
+    const converted = value
     const isNan = Number.isNaN(converted)
     setValue(isNan ? 0 : converted)
   }
@@ -40,7 +35,7 @@ export default function PriceInput() {
       className="outline-none text-2xl text-slate-12 w-full font-bold"
       min={0}
       step={step}
-      value={innerValue}
+      value={value}
       onChange={handleChange}
       onBlur={handleBlur}
     />

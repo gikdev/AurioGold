@@ -15,7 +15,11 @@ export default function SubmitBtn() {
   const { isDisabled } = useGetProductSideEnabled(selectedProduct?.status ?? 0)
   const verb = side === "buy" ? "خرید" : "فروش"
 
-  const isBtnDisabled = isDisabled || value <= 0 || Object.values(notesStatus).includes("error")
+  const isBtnDisabled =
+    isDisabled ||
+    value <= 0 ||
+    Object.values(notesStatus).includes("error") ||
+    Object.values(notesStatus).includes("empty")
 
   return (
     <Btn

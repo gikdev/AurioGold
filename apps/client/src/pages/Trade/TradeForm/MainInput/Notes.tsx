@@ -8,7 +8,7 @@ import {
 } from "@repo/shared/hooks"
 import { formatPersianString } from "@repo/shared/utils"
 import { atom, useAtom, useAtomValue } from "jotai"
-import { useCallback, useEffect } from "react"
+import { useEffect } from "react"
 import { QUERY_KEYS } from "../../navigation"
 import { useFinalProductPrices } from "../../shared"
 import { selectedProductAtom, sides } from "../shared"
@@ -51,13 +51,13 @@ export default function Notes() {
     ? calcOutputWeight(value, basePrice, priceToUnitRatio, maxDecimalsCount)
     : calcOutputRial(value, side === "buy" ? totalBuyPrice : totalSellPrice, priceToUnitRatio)
 
-  const checkAll = useCallback(() => {
+  const checkAll = () => {
     checkForMaxDecimal()
     checkForMinVolume()
     checkForMaxVolume()
-  }, [])
+  }
 
-  const checkForMaxDecimal = useCallback(() => {
+  const checkForMaxDecimal = () => {
     let newStatus: RuleStatus = "empty"
 
     if (maxDecimalsCount <= 0) {
@@ -67,28 +67,28 @@ export default function Notes() {
     }
 
     setNotesStatus(p => ({ ...p, maxDecimal: newStatus }))
-  }, [maxDecimalsCount, value, setNotesStatus])
+  }
 
-  const checkForMinVolume = useCallback(() => {
+  const checkForMinVolume = () => {
     if (minVolume <= 0) return
     const weight = isRialMode ? convertedValue : value
 
     const newStatus = weight < minVolume ? "error" : "success"
     setNotesStatus(p => ({ ...p, minVolume: newStatus }))
-  }, [minVolume, convertedValue, value, isRialMode, setNotesStatus])
+  }
 
-  const checkForMaxVolume = useCallback(() => {
+  const checkForMaxVolume = () => {
     if (maxVolume <= 0) return
     const weight = isRialMode ? convertedValue : value
 
     const newStatus = weight > maxVolume ? "error" : "success"
     setNotesStatus(p => ({ ...p, maxVolume: newStatus }))
-  }, [maxVolume, convertedValue, value, isRialMode, setNotesStatus])
+  }
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     checkForMaxDecimal()
-  }, [maxDecimalsCount, value])
+  }, [maxDecimalsCount, value, isRialMode])
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
