@@ -6,9 +6,9 @@ import { useAtomValue, useSetAtom } from "jotai"
 import type { ChangeEvent } from "react"
 import { isAdminOnlineAtom } from "#/atoms"
 import { transformStock } from "#/pages/Products/transformStock"
-import { selectedProductAtom } from "."
-import { ProductStatus } from "../ProductShared"
 import { QUERY_KEYS } from "../navigation"
+import { ProductStatus } from "../shared"
+import { selectedProductAtom } from "./shared"
 
 const ProductSelect = createSelectWithOptions<Required<StockDto>>()
 

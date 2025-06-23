@@ -2,10 +2,9 @@ import { CoinsIcon } from "@phosphor-icons/react"
 import { Btn } from "@repo/shared/components"
 import { useLiteralQueryState } from "@repo/shared/hooks"
 import { useAtomValue } from "jotai"
-import { selectedProductAtom } from "."
-import { useGetProductSideEnabled } from "../ProductShared"
 import { QUERY_KEYS } from "../navigation"
-import { sides } from "./BuyAndSellToggleBtn"
+import { useGetProductSideEnabled } from "../shared"
+import { selectedProductAtom, sides } from "./shared"
 
 export default function SubmitBtn() {
   const [side] = useLiteralQueryState(QUERY_KEYS.side, sides)

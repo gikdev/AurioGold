@@ -1,10 +1,9 @@
 import { useLiteralQueryState } from "@repo/shared/hooks"
 import { formatPersianPrice } from "@repo/shared/utils"
 import { useAtomValue } from "jotai"
-import { selectedProductAtom } from "."
-import { useFinalProductPrices } from "../ProductShared"
 import { QUERY_KEYS } from "../navigation"
-import { sides } from "./BuyAndSellToggleBtn"
+import { useFinalProductPrices } from "../shared"
+import { selectedProductAtom, sides } from "./shared"
 
 export default function Price() {
   const [side] = useLiteralQueryState(QUERY_KEYS.side, sides)

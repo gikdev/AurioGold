@@ -1,13 +1,9 @@
-import type { StockDto } from "@repo/api-client/client"
 import { ccn } from "@repo/shared/helpers"
-import { atom } from "jotai"
 import BuyAndSellToggleBtn from "./BuyAndSellToggleBtn"
 import MainInput from "./MainInput"
 import Price from "./Price"
 import SelectProduct from "./SelectProduct"
 import SubmitBtn from "./SubmitBtn"
-
-export const selectedProductAtom = atom<Required<StockDto> | null>(null)
 
 export default function TradeForm() {
   const onSubmit = () => {}

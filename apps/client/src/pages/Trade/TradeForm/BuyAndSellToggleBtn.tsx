@@ -4,9 +4,9 @@ import { motionPresets } from "@repo/shared/lib"
 import { useAtomValue } from "jotai"
 import { motion } from "motion/react"
 import { useEffect } from "react"
-import { selectedProductAtom } from "."
-import { useGetProductSideEnabled } from "../ProductShared"
 import { QUERY_KEYS } from "../navigation"
+import { useGetProductSideEnabled } from "../shared"
+import { selectedProductAtom, sides } from "./shared"
 
 function calcDefaultSide(
   isBuyingEnabled: boolean,
@@ -16,8 +16,6 @@ function calcDefaultSide(
   if (!isBuyingEnabled && isSellingEnabled) return "sell"
   return undefined
 }
-
-export const sides = ["buy", "sell"] as const
 
 export default function BuyAndSellToggleBtn() {
   const selectedProduct = useAtomValue(selectedProductAtom)

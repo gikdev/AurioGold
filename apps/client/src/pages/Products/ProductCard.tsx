@@ -6,8 +6,8 @@ import { cellRenderers } from "@repo/shared/lib"
 import { formatPersianPrice } from "@repo/shared/utils"
 import { motion } from "motion/react"
 import { useNavigate } from "react-router"
-import { useFinalProductPrices, useGetProductSideEnabled } from "../Trade/ProductShared"
 import { TradeNavigation } from "../Trade/navigation"
+import { useFinalProductPrices, useGetProductSideEnabled } from "../Trade/shared"
 
 const styles = {
   container: ccn(`
