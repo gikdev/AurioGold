@@ -28,19 +28,21 @@ export default function PreviewBar() {
     productDiffSellPrice: selectedProduct?.diffSellPrice ?? 0,
   })
 
-  const currentUnit = isRialMode ? "ریال" : transactionMethod.unitTitle
   const convertedUnit = isRialMode ? transactionMethod.unitTitle : "ریال"
   const convertedValue = isRialMode
     ? calcOutputWeight(value, basePrice, priceToUnitRatio, isRialMode ? 0 : maxDecimalsCount)
     : calcOutputRial(value, side === "buy" ? totalBuyPrice : totalSellPrice, priceToUnitRatio)
 
   return (
-    <div className="text-xs flex justify-between">
-      <p>
-        ≈ {formatPersianPrice(convertedValue)} {convertedUnit}
-      </p>
-      <p>
-        ({formatPersianPrice(value)} {currentUnit})
+    <div className="flex justify-center items-center gap-2">
+      <p className="flex items-center gap-1">
+        <span>مساوی‌است با </span>
+        <span> </span>
+        <span className="text-2xl font-bold text-slate-12">
+          {formatPersianPrice(convertedValue)}
+        </span>
+        <span> </span>
+        <span>{convertedUnit}</span>
       </p>
     </div>
   )
