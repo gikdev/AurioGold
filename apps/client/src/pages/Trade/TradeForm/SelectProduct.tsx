@@ -2,7 +2,7 @@ import { useApiRequest } from "@gikdev/react-datapi/src"
 import { ArrowLeftIcon } from "@phosphor-icons/react"
 import type { StockDto } from "@repo/api-client/client"
 import { Labeler, createSelectWithOptions } from "@repo/shared/components"
-import { useIntegerQueryState } from "@repo/shared/hooks"
+import { useNullableIntegerQueryState } from "@repo/shared/hooks"
 import { useAtomValue, useSetAtom } from "jotai"
 import type { ChangeEvent } from "react"
 import { Link } from "react-router"
@@ -24,7 +24,7 @@ const keysConfig = {
 export default function SelectProduct() {
   const setSelectedProduct = useSetAtom(selectedProductAtom)
   const isShopOnline = useAtomValue(isAdminOnlineAtom)
-  const [productId, setProductId] = useIntegerQueryState(QUERY_KEYS.productId)
+  const [productId, setProductId] = useNullableIntegerQueryState(QUERY_KEYS.productId)
   const resProducts = useApiRequest<Required<StockDto>[] | null, StockDto[]>(() => ({
     url: "/TyStocks/ForCustommer",
     defaultValue: null,
@@ -36,7 +36,7 @@ export default function SelectProduct() {
       setSelectedProduct(foundProduct ?? null)
     },
   }))
-  const errorMsg = productId == null ? "هیچ محصولی انتخاب نشده! لطفا انتخاب کنید." : ""
+  const errorMsg = typeof productId !== "number" ? "هیچ محصولی انتخاب نشده! لطفا انتخاب کنید." : ""
 
   const handleProductChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setProductId(parseStrToNullableNumber(e.target.value))

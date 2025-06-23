@@ -11,10 +11,8 @@ const StyledForm = styled.form`
 `
 
 export default function TradeForm() {
-  const onSubmit = () => {}
-
   return (
-    <StyledForm onSubmit={onSubmit}>
+    <StyledForm onSubmit={e => e.preventDefault()}>
       <BuyAndSellToggleBtn />
       <SelectProduct />
       <MainInput />

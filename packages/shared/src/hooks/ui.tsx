@@ -94,6 +94,12 @@ export function useLiteralQueryState<Literal extends string>(
   return [isOpen, setOpen] as const
 }
 
+export function useNullableIntegerQueryState(id: string) {
+  const [num, setNum] = useQueryState(id, parseAsInteger.withOptions({ history: "push" }))
+
+  return [num, setNum] as const
+}
+
 export function useIntegerQueryState(id: string, defaultValue = 0) {
   const [num, setNum] = useQueryState(
     id,

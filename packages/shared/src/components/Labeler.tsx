@@ -30,7 +30,7 @@ function _Labeler<T extends ElementType = "label">({
   const Tag = as || "label"
   return (
     <Tag className={cn("flex flex-col gap-2", className)} {...others}>
-      <div className="flex gap-1 items-center">
+      <div className="flex gap-1 items-center flex-wrap">
         {labelText ? <span className={cn("", labelTextClassName)}>{labelText}</span> : null}
         {titleSlot}
       </div>

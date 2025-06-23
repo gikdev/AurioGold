@@ -1,5 +1,5 @@
 import styled from "@master/styled.react"
-import Msgs from "./Msgs"
+import Notes from "./Notes"
 import PreviewBar from "./PreviewBar"
 import PriceInput from "./PriceInput"
 import RialModeToggle from "./RialModeToggle"
@@ -20,7 +20,7 @@ export default function MainInput() {
 
       <PreviewBar />
 
-      <Msgs />
+      <Notes />
     </div>
   )
 }
