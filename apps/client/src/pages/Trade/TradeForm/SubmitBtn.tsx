@@ -9,12 +9,19 @@ import {
 } from "@repo/shared/hooks"
 import { useAtomValue } from "jotai"
 import { useState } from "react"
+import { useNavigate } from "react-router"
 import genDatApiConfig from "#/shared/datapi-config"
-import { QUERY_KEYS } from "../navigation"
+import { QUERY_KEYS, TradeNavigation } from "../navigation"
 import { useFinalProductPrices, useGetProductSideEnabled } from "../shared"
 import { notesStatusAtom } from "./MainInput/Notes"
 import { calcOutputRial, calcOutputWeight, transactionMethods } from "./MainInput/shared"
 import { selectedProductAtom, sides } from "./shared"
+
+const ProductAutoMode = {
+  Normal: 0,
+  AutoAccept: 1,
+  AutoReject: 2,
+} as const
 
 const ProductPurchaseModes = {
   Value: 1,
@@ -31,11 +38,14 @@ export default function SubmitBtn() {
   const [value, setValue] = useIntegerQueryState(QUERY_KEYS.currentValue, 0)
   const [side] = useLiteralQueryState(QUERY_KEYS.side, sides)
   const [isRialMode] = useBooleanishQueryState(QUERY_KEYS.rialMode)
+  const navigate = useNavigate()
   const notesStatus = useAtomValue(notesStatusAtom)
   const selectedProduct = useAtomValue(selectedProductAtom)
   const priceToUnitRatio = selectedProduct?.unitPriceRatio ?? 1
   const transactionMethod = transactionMethods[selectedProduct?.unit ?? 0]
   const noDecimalSituation = transactionMethod.name === "count" || isRialMode
+  const maxAutoTime = selectedProduct?.maxAutoMin ?? 0
+  const isAutoMode = selectedProduct?.mode !== ProductAutoMode.Normal && maxAutoTime !== 0
   const maxDecimalsCount = noDecimalSituation ? 0 : (selectedProduct?.decimalNumber ?? 0)
   const basePrice = selectedProduct?.price ?? 0
   const { isDisabled } = useGetProductSideEnabled(selectedProduct?.status ?? 0)
@@ -51,12 +61,10 @@ export default function SubmitBtn() {
 
   const verb = side === "buy" ? "خرید" : "فروش"
 
+  console.log(notesStatus)
+
   const isBtnDisabled =
-    isLoading ||
-    isDisabled ||
-    value <= 0 ||
-    Object.values(notesStatus).includes("error") ||
-    Object.values(notesStatus).includes("empty")
+    isLoading || isDisabled || value <= 0 || Object.values(notesStatus).includes("error")
 
   const handleSubmit = () => {
     if (!selectedProduct) return
@@ -79,8 +87,12 @@ export default function SubmitBtn() {
         url: "/Customer/ReqOrder",
         method: "POST",
         body: JSON.stringify(dataToSend),
-        onSuccess() {
+        onSuccess(data) {
           setValue(0)
+
+          if (data.id) {
+            navigate(TradeNavigation.openOrderModal(data.id, isAutoMode ? maxAutoTime : 0))
+          }
         },
         onFinally: () => setLoading(false),
       },

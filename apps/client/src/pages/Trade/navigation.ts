@@ -6,6 +6,8 @@ export const QUERY_KEYS = {
   side: "side",
   rialMode: "rial-mode",
   currentValue: "current-value",
+  currentOrderId: "current-order-id",
+  autoMinutes: "auto-minutes",
 } as const
 
 export type ProductId = NonNullable<StockDto["id"]>
@@ -26,6 +28,13 @@ export class TradeNavigation {
   static productId(productId: ProductId) {
     return TradeNavigation.build({
       [QUERY_KEYS.productId]: productId,
+    })
+  }
+
+  static openOrderModal(orderId: number, autoMinutes: number) {
+    return TradeNavigation.build({
+      [QUERY_KEYS.currentOrderId]: orderId,
+      [QUERY_KEYS.autoMinutes]: autoMinutes,
     })
   }
 }

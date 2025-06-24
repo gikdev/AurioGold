@@ -16,7 +16,7 @@ export function calcOutputRial(
   totalSidePrice: number,
   priceToUnitRatio: number,
 ): number {
-  return Math.round((weightValue * totalSidePrice) / priceToUnitRatio)
+  return Math.floor((weightValue * totalSidePrice) / priceToUnitRatio)
 }
 
 export const transactionMethods = [
