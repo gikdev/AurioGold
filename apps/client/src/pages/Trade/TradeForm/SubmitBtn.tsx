@@ -61,8 +61,6 @@ export default function SubmitBtn() {
 
   const verb = side === "buy" ? "خرید" : "فروش"
 
-  console.log(notesStatus)
-
   const isBtnDisabled =
     isLoading || isDisabled || value <= 0 || Object.values(notesStatus).includes("error")
 
