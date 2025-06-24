@@ -92,7 +92,7 @@ export default function DeletePriceSourceModal() {
           else setState("no-answer")
         },
         onError(err) {
-          notifManager.notify(String(err || "unknown error"), "console")
+          notifManager.notify(String(err || "unknown error"), "console", { status: "error" })
           setState("error")
         },
       },
