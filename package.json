@@ -8,7 +8,7 @@
     "e2e:ui": "cd ./packages/e2e && npm run test:ui",
     "e2e:headed": "cd ./packages/e2e && npm run test:headed",
     "build": "turbo run build",
-    "build:complete": "./scripts/build-all-apps.ts",
+    "build:complete": "bun ./scripts/build-all-apps.ts",
     "predev": "cp -r ./assets/shared ./apps/admin/public/shared && cp -r ./assets/shared ./apps/client/public/shared",
     "dev": "turbo run dev",
     "scan": "turbo run scan",
