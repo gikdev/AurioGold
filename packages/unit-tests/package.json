@@ -8,7 +8,7 @@
     "test:ui": "vitest --ui"
   },
   "devDependencies": {
-    "@repo/shared": "workspace:*",
+    "@repo/shared": "*",
     "@vitest/ui": "^3.2.3",
     "typescript": "~5.8.3",
     "vite": "^6.3.5",
