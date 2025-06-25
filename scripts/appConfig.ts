@@ -3,5 +3,10 @@ export interface Config {
 }
 
 export function defineConfig(input: Config) {
-  return input
+  return {
+    ...input,
+    get versionStr(): string {
+      return `v${input.version}`
+    } 
+  }
 }

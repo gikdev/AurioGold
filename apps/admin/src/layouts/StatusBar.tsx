@@ -9,6 +9,7 @@ import {
   UsersFourIcon,
 } from "@phosphor-icons/react"
 import { notifManager } from "@repo/shared/adapters"
+import { AppInfoBtn } from "@repo/shared/components"
 import { useAtomValue } from "jotai"
 import { useEffect, useState } from "react"
 import { Link } from "react-router"
@@ -21,6 +22,7 @@ import {
   useToggleAdminConnectivity,
 } from "#/atoms"
 import routes from "#/pages/routes"
+import appConfig from "../../config"
 
 export default function StatusBar() {
   const showOnlineUsers = useAtomValue(showOnlineUsersInStatusbarAtom)
@@ -30,6 +32,7 @@ export default function StatusBar() {
       {showOnlineUsers ? <OnlineUsers /> : <div className="flex-1" />}
 
       <div className="flex items-center">
+        <AppInfoBtn version={appConfig.versionStr} />
         <ToggleAdminOnline />
         <ServerConnectionStatus />
         <OnlinePeopleCount />

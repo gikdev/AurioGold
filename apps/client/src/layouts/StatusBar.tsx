@@ -7,8 +7,10 @@ import {
   QuestionIcon,
   StorefrontIcon,
 } from "@phosphor-icons/react"
+import { AppInfoBtn } from "@repo/shared/components"
 import { useAtomValue } from "jotai"
 import { connectionStateAtom, isAdminOnlineAtom } from "#/atoms"
+import appConfig from "../../config"
 
 export default function StatusBar() {
   return (
@@ -16,6 +18,7 @@ export default function StatusBar() {
       <div className="flex-1" />
 
       <div className="flex items-center">
+        <AppInfoBtn version={appConfig.versionStr} />
         <ShowShopStatus />
         <ServerConnectionStatus />
         <ReloadStatusBtn />
