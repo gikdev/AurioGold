@@ -1,16 +1,14 @@
 #!/usr/bin/env bun
 
+import { createWriteStream } from "node:fs"
 import { cp, exists, rm } from "node:fs/promises"
+import path from "node:path"
+import archiver from "archiver"
 import { $ } from "bun"
 import adminConfig from "../apps/admin/config"
 import clientConfig from "../apps/client/config"
-import { currentProfileKey, type ProfileKey } from "../packages/profile-manager/src"
-import path from "node:path"
-import archiver from "archiver"
-import { createWriteStream } from "node:fs"
-
-const apps = ["admin", "client"] as const
-type AppName = (typeof apps)[number]
+import { type ProfileKey, currentProfileKey } from "../packages/profile-manager/src"
+import { type AppName, apps, copyAssets, executeStep } from "./shared"
 
 interface BuildContext {
   profile: ProfileKey
@@ -65,15 +63,6 @@ async function copyAppDistribution(appName: AppName) {
   console.log(`✅ Copied ${appName} to ${targetFolderName}`)
 }
 
-async function executeStep<T>(stepName: string, stepFn: () => Promise<T>): Promise<T> {
-  try {
-    return await stepFn()
-  } catch (error) {
-    console.error(`❌ ${stepName} failed:`, error)
-    process.exit(1)
-  }
-}
-
 async function createZip(appName: AppName) {
   const folderName = generateAppReleaseName(
     appName,
@@ -100,6 +89,10 @@ async function main() {
   console.log(`Profile: ${buildContext.profile}`)
   console.log(`Versions: ${buildContext.appVersions}`)
   console.log("")
+
+  for (const appName of apps) {
+    await executeStep(`Copy ${appName} assets`, () => copyAssets(appName))
+  }
 
   await executeStep("Build", buildAllApps)
 

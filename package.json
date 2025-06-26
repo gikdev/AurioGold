@@ -12,7 +12,7 @@
     "predev": "bun ./scripts/before-dev.ts",
     "dev": "turbo run dev",
     "scan": "turbo run scan",
-    "check:all": "biome check --write ./apps ./packages",
+    "check:all": "biome check --write ./apps ./packages ./scripts",
     "check": "biome check --write ./apps/client/src ./apps/admin/src ./packages/shared/src ./packages/unit-tests/tests",
     "check-types": "turbo run check-types",
     "prepare": "husky",

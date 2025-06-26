@@ -7,6 +7,6 @@ export function defineConfig(input: Config) {
     ...input,
     get versionStr(): string {
       return `v${input.version}`
-    } 
+    },
   }
 }
