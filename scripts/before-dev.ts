@@ -10,32 +10,37 @@ type AppName = (typeof apps)[number]
 async function copyStuff(appName: AppName) {
   console.log(`📦 Copying ${appName} stuff...`)
 
-  const sourcePath1 = path.join(__dirname, "..", "assets", "profiles", currentProfileKey)
-  const targetPath1 = path.join(__dirname, "..", "apps", appName, "public", "profile")
-  const sourcePath2 = path.join(__dirname, "..", "assets", "shared")
-  const targetPath2 = path.join(__dirname, "..", "apps", appName, "public", "shared")
+  const stuff = [
+    {
+      source: path.join(__dirname, "..", "assets", "shared"),
+      target: path.join(__dirname, "..", "apps", appName, "public", "shared"),
+    },
+    {
+      source: path.join(__dirname, "..", "assets", "profiles", currentProfileKey, "shared"),
+      target: path.join(__dirname, "..", "apps", appName, "public", "profile", "shared"),
+    },
+    {
+      source: path.join(__dirname, "..", "assets", "profiles", currentProfileKey, appName),
+      target: path.join(__dirname, "..", "apps", appName, "public", "profile", "app"),
+    },
+  ]
 
-  if (!(await exists(sourcePath1))) {
-    throw new Error(`Source path 1 not found: ${sourcePath1}`)
+  for (const { source } of stuff) {
+    if (!(await exists(source))) {
+      throw new Error(`Source path not found: ${source}`)
+    }
   }
 
-  if (!(await exists(sourcePath2))) {
-    throw new Error(`Source path 2 not found: ${sourcePath2}`)
+  for (const { target } of stuff) {
+    if (await exists(target)) {
+      await rm(target, { recursive: true, force: true })
+    }
   }
 
-  if (await exists(targetPath1)) {
-    console.log("  Cleaning target 1...")
-    await rm(targetPath1, { recursive: true, force: true })
+  for (const { source, target } of stuff) {
+    await cp(source, target, { recursive: true })
   }
 
-  if (await exists(targetPath2)) {
-    console.log("  Cleaning target 2...")
-    await rm(targetPath2, { recursive: true, force: true })
-  }
-
-  // Copy stuff
-  await cp(sourcePath1, targetPath1, { recursive: true })
-  await cp(sourcePath2, targetPath2, { recursive: true })
   console.log("✅ Copied")
 }
 
@@ -49,7 +54,7 @@ async function executeStep<T>(stepName: string, stepFn: () => Promise<T>): Promi
 }
 
 async function main() {
-  console.log("🚀 Starting build process...")
+  console.log("🚀 Starting `before-dev` process...")
   console.log(`Profile: ${currentProfileKey}`)
   console.log("")
 
