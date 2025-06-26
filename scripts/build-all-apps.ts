@@ -7,7 +7,7 @@ import archiver from "archiver"
 import { $ } from "bun"
 import adminConfig from "../apps/admin/config"
 import clientConfig from "../apps/client/config"
-import { type ProfileKey, currentProfileKey } from "../packages/profile-manager/src"
+import { type ProfileKey, currentProfile, currentProfileKey } from "../packages/profile-manager/src"
 import { type AppName, apps, copyAssets, executeStep } from "./shared"
 
 interface BuildContext {
@@ -63,6 +63,27 @@ async function copyAppDistribution(appName: AppName) {
   console.log(`✅ Copied ${appName} to ${targetFolderName}`)
 }
 
+async function patchProfileStuff(appName: AppName, title: string) {
+  const folderNameApp = generateAppReleaseName(
+    appName,
+    buildContext.profile,
+    buildContext.appVersions[appName],
+  )
+  const distAppIndexHtmlFile = Bun.file(
+    path.join(__dirname, "..", "dist", folderNameApp, "index.html"),
+  )
+
+  let appIndexHtmlFileContents = await distAppIndexHtmlFile.text()
+  if (appIndexHtmlFileContents.includes("</title>")) {
+    appIndexHtmlFileContents = appIndexHtmlFileContents.replace(
+      /<title[^>]*>[\s\S]*?<\/title>/i,
+      `<title>${title}</title>`,
+    )
+  }
+
+  await Bun.write(distAppIndexHtmlFile, appIndexHtmlFileContents)
+}
+
 async function createZip(appName: AppName) {
   const folderName = generateAppReleaseName(
     appName,
@@ -97,7 +118,12 @@ async function main() {
   await executeStep("Build", buildAllApps)
 
   for (const appName of apps) {
+    let title = "UNDEFINED_TITLE"
+    if (appName === "admin") title = currentProfile.appTitleAdmin
+    if (appName === "client") title = currentProfile.appTitleClient
+
     await executeStep(`Copy ${appName}`, () => copyAppDistribution(appName))
+    await executeStep(`Patch stuff for ${appName}`, () => patchProfileStuff(appName, title))
     await executeStep(`Zip ${appName}`, () => createZip(appName))
   }
 

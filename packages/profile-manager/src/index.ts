@@ -4,9 +4,11 @@ export interface Profile {
   displayName: string
   appId: string
   apiBaseUrl: string
+  appTitleAdmin: string
+  appTitleClient: string
 }
 
-const profileKeys = ["deploy", "vahedi", "eimani", "asazar"] as const
+const profileKeys = ["deploy", "vahedi", "asazar"] as const
 
 export type ProfileKey = (typeof profileKeys)[number]
 
@@ -25,21 +27,22 @@ export const config: Config = {
       displayName: "اوریوگلد",
       appId: "ir.auriogold.auriogold_",
       apiBaseUrl: "https://dag.vahedigold.ir",
-    },
-    eimani: {
-      displayName: "ایمانی",
-      appId: "ir.eimani.auriogold_",
-      apiBaseUrl: "http://192.168.10.61:4567",
+      appTitleAdmin: "ادمین اوریوگلد",
+      appTitleClient: "اوریوگلد",
     },
     vahedi: {
       displayName: "واحدی",
       appId: "ir.vahedigold.auriogold_",
       apiBaseUrl: "https://tapi.vahedigold.ir",
+      appTitleAdmin: "ادمین واحدی",
+      appTitleClient: "طلای واحدی",
     },
     asazar: {
       displayName: "آسازر",
       appId: "ir.asazar.auriogold_",
       apiBaseUrl: "https://aapi.asazar.ir",
+      appTitleAdmin: "ادمین آسازر",
+      appTitleClient: "آسازر",
     },
   },
   currentProfileKey,
