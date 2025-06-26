@@ -1,6 +1,6 @@
 {
-  "name": "اوریوگلد",
-  "short_name": "اوریو",
+  "name": "آسازر",
+  "short_name": "آسازر",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -17,5 +17,11 @@
   ],
   "theme_color": "#18191B",
   "background_color": "#18191B",
-  "display": "standalone"
+  "display": "standalone",
+  "id": "ir.asazar.auriogold_client",
+  "start_url": "/",
+  "scope": ".",
+  "orientation": "portrait-primary",
+  "dir": "rtl",
+  "lang": "fa-IR"
 }

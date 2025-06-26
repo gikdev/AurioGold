@@ -17,5 +17,11 @@
   ],
   "theme_color": "#18191B",
   "background_color": "#18191B",
-  "display": "standalone"
+  "display": "standalone",
+  "id": "ir.auriogold.admin",
+  "start_url": "/",
+  "scope": ".",
+  "orientation": "portrait-primary",
+  "dir": "rtl",
+  "lang": "fa-IR"
 }

@@ -1,5 +1,5 @@
 {
-  "name": "ادمین اوریوگلد",
+  "name": "ادمین طلای واحدی",
   "short_name": "ادمین",
   "icons": [
     {
@@ -17,5 +17,11 @@
   ],
   "theme_color": "#18191B",
   "background_color": "#18191B",
-  "display": "standalone"
+  "display": "standalone",
+  "id": "ir.vahedi.auriogold_admin",
+  "start_url": "/",
+  "scope": ".",
+  "orientation": "portrait-primary",
+  "dir": "rtl",
+  "lang": "fa-IR"
 }
