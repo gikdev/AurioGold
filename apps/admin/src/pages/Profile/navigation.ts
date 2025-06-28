@@ -2,7 +2,7 @@ import routes from "../routes"
 
 export const QUERY_KEYS = {
   changePassword: "change-password",
-  changeProfile: "change-profile",
+  changeDisplayName: "change-display-name",
 } as const
 
 export class Navigation {
@@ -24,9 +24,9 @@ export class Navigation {
     })
   }
 
-  static changeProfile() {
+  static changeDisplayName() {
     return Navigation.build({
-      [QUERY_KEYS.changeProfile]: true,
+      [QUERY_KEYS.changeDisplayName]: true,
     })
   }
 }
