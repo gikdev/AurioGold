@@ -89,7 +89,7 @@ root.render(
 
 window.addEventListener("DOMContentLoaded", () => {
   if (!navigator) return
-  if (!('serviceWorker' in navigator)) return
+  if (!("serviceWorker" in navigator)) return
 
   navigator.serviceWorker.register("/shared/sw.js")
 })
