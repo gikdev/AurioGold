@@ -4,18 +4,20 @@ import { cn } from "#shared/helpers"
 
 const styles = {
   base: `
-    rounded min-h-10 px-4 active:scale-95 
-    flex items-center justify-center gap-1 disabled:bg-slate-3 
-    disabled:text-slate-11 disabled:opacity-50
-    disabled:active:scale-100 disabled:cursor-not-allowed
-    select-none cursor-pointer disabled:border-slate-6
+    rounded min-h-10 py-2 px-4 active:scale-95 
+    flex items-center justify-center gap-1
+    disabled:bg-slate-3 disabled:text-slate-11
+    disabled:opacity-50 disabled:active:scale-100
+    disabled:cursor-not-allowed select-none
+    cursor-pointer disabled:border-slate-6
+    *:shrink-0 *:break-all font-bold
   `,
   filled: {
-    success: "bg-jade-10 text-jade-1",
-    error: "bg-red-10 text-red-1",
-    warning: "bg-yellow-10 text-yellow-1",
-    info: "bg-blue-10 text-blue-1",
-    primary: "bg-amber-9 text-amber-1",
+    success: "bg-green-9 text-slate-12",
+    error: "bg-red-9 text-slate-12",
+    warning: "bg-yellow-9 text-slate-1",
+    info: "bg-blue-9 text-slate-12",
+    primary: "bg-brand-9 text-slate-1",
     neutral: "bg-slate-12 text-slate-1",
   },
   outline: {

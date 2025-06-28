@@ -76,4 +76,9 @@ export const motionPresets = {
     animate: { height: "auto", opacity: 1 },
     exit: { height: 0, opacity: 0 },
   },
+
+  btn: {
+    whileHover: { scale: 1.03 },
+    whileTap: { scale: 0.95 },
+  },
 } satisfies Record<string, Variants>

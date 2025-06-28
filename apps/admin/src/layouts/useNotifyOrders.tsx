@@ -11,6 +11,12 @@ import { connectionRefAtom, connectionStateAtom } from "#/atoms"
 import { acceptOrRejectOrder } from "#/pages/Orders/OrdersTable"
 import routes from "#/pages/routes"
 
+export const transactionMethods = [
+  { code: 0, title: "گرمی", unitTitle: "گرم", name: "gram" },
+  { code: 1, title: "تعدادی", unitTitle: "عدد", name: "count" },
+  { code: 2, title: "مثقالی", unitTitle: "مثقال", name: "mesghal" },
+] as const
+
 export function useNotifyOrders() {
   const connection = useAtomValue(connectionRefAtom)
   const connectionState = useAtomValue(connectionStateAtom)
@@ -86,6 +92,8 @@ export function useNotifyOrders() {
       })
     }
 
+    const transactionMethod = transactionMethods[orderDto.stockUnit]
+
     // if (Notification.permission === "granted") {
     //   new Notification("سفارش جدید", {
     //     badge: "/images/vgold-icon.png",
@@ -118,9 +126,15 @@ export function useNotifyOrders() {
               <strong className="text-amber-9">{orderDto.stockName} </strong>
               <span>به مقدار </span>
               <strong className="text-amber-9">
-                <NumberRepresentor num={orderDto.volume} />{" "}
+                <NumberRepresentor
+                  num={
+                    transactionMethod.name === "count"
+                      ? Number(orderDto.volume.toFixed(0))
+                      : orderDto.volume
+                  }
+                />{" "}
               </strong>
-              <strong className="text-amber-9">{orderDto.stockUnit === 1 ? "عدد" : "گرم"} </strong>
+              <strong className="text-amber-9">{transactionMethod.unitTitle} </strong>
               <span>با مظنه </span>
               <strong className="text-amber-9">
                 <NumberRepresentor num={orderDto.price} />{" "}

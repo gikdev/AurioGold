@@ -1,5 +1,11 @@
 import { CaretDownIcon, CaretUpIcon, EyeIcon, EyeSlashIcon } from "@phosphor-icons/react"
-import { parseAsBoolean, useQueryState } from "nuqs"
+import {
+  parseAsBoolean,
+  parseAsInteger,
+  parseAsStringEnum,
+  parseAsStringLiteral,
+  useQueryState,
+} from "nuqs"
 import { useCallback, useState } from "react"
 import { useWindowSize } from "react-haiku"
 import { Btn } from "#shared/components"
@@ -66,11 +72,39 @@ export function useToggleLessOrMoreBtn(defaultValue = false) {
   return { ToggleLessOrMoreBtn, isOpen, setOpen }
 }
 
-export function useBooleanishQueryState(id: string) {
+export function useBooleanishQueryState(id: string, defaultValue = false) {
   const [isOpen, setOpen] = useQueryState(
     id,
-    parseAsBoolean.withDefault(false).withOptions({ history: "push" }),
+    parseAsBoolean.withDefault(defaultValue).withOptions({ history: "push" }),
   )
 
   return [isOpen, setOpen] as const
+}
+
+export function useLiteralQueryState<Literal extends string>(
+  id: string,
+  literals: readonly Literal[],
+  defaultValue = literals[0],
+) {
+  const [isOpen, setOpen] = useQueryState(
+    id,
+    parseAsStringLiteral(literals).withDefault(defaultValue).withOptions({ history: "push" }),
+  )
+
+  return [isOpen, setOpen] as const
+}
+
+export function useNullableIntegerQueryState(id: string) {
+  const [num, setNum] = useQueryState(id, parseAsInteger.withOptions({ history: "push" }))
+
+  return [num, setNum] as const
+}
+
+export function useIntegerQueryState(id: string, defaultValue = 0) {
+  const [num, setNum] = useQueryState(
+    id,
+    parseAsInteger.withDefault(defaultValue).withOptions({ history: "push" }),
+  )
+
+  return [num, setNum] as const
 }

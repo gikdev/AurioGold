@@ -15,6 +15,7 @@ import { AnimatePresence } from "motion/react"
 ModuleRegistry.registerModules([AllCommunityModule])
 
 // const Home = lazy(() => import("./pages/Home"))
+const Products = lazy(() => import("./pages/Products"))
 const Trade = lazy(() => import("./pages/Trade"))
 const Login = lazy(() => import("./pages/Login"))
 const Logout = lazy(() => import("./pages/Logout"))
@@ -56,7 +57,8 @@ root.render(
                 <Route path={routes.logout} element={<Logout />} />
                 <Route element={<Protected />}>
                   <Route element={<BaseWrapper />}>
-                    <Route index element={<Trade />} />
+                    <Route index element={<Products />} />
+                    <Route path={routes.trade} element={<Trade />} />
                     <Route path={routes.profile} element={<Profile />} />
                     <Route path={routes.balance} element={<Balance />} />
                     <Route path={routes.orders} element={<Orders />} />

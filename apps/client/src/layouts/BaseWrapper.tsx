@@ -19,16 +19,17 @@ import genDatApiConfig from "#/shared/datapi-config"
 import { Nav } from "./Nav"
 
 const SIDEBAR_ITEMS: SidebarItem[] = [
-  // { id: 92837, text: "خانه", icon: HouseLineIcon, url: routes.home },
-  { id: 92834, text: "معاملات", icon: StorefrontIcon, url: routes.base },
-  { id: 90847, text: "پروفایل", icon: UserCircleIcon, url: routes.profile },
-  { id: 12369, text: "مشاهده سفارشات", icon: ReceiptIcon, url: routes.orders },
-  { id: 95487, text: "شرایط و قوانین", icon: ScalesIcon, url: routes.rules },
-  { id: 29837, text: "درباره ما", icon: InfoIcon, url: routes.about },
-  // { id: 10928, text: "ثبت سند", icon: PenNib, url: "/docs" },
-  // { id: 83748, text: "ثبت حواله", icon: PenNib, url: "/transfers" },
-  { id: 29374, text: "مانده حساب", icon: CoinsIcon, url: routes.balance },
-  { id: 73649, text: "تنظیمات", icon: GearIcon, url: routes.settings },
+  // { id: 0, text: "خانه", icon: HouseLineIcon, url: routes.home },
+  { id: 1, text: "محصولات", icon: StorefrontIcon, url: routes.base },
+  { id: 2, text: "معامله", icon: CoinsIcon, url: routes.trade },
+  { id: 3, text: "پروفایل", icon: UserCircleIcon, url: routes.profile },
+  { id: 4, text: "مشاهده سفارشات", icon: ReceiptIcon, url: routes.orders },
+  { id: 5, text: "شرایط و قوانین", icon: ScalesIcon, url: routes.rules },
+  { id: 6, text: "درباره ما", icon: InfoIcon, url: routes.about },
+  // { id: 7, text: "ثبت سند", icon: PenNib, url: "/docs" },
+  // { id: 8, text: "ثبت حواله", icon: PenNib, url: "/transfers" },
+  { id: 9, text: "مانده حساب", icon: CoinsIcon, url: routes.balance },
+  { id: 10, text: "تنظیمات", icon: GearIcon, url: routes.settings },
 ]
 
 export function BaseWrapper() {

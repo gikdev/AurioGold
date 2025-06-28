@@ -24,11 +24,12 @@ export function createSelectWithOptions<T>() {
         loadingLabel = "در حال بارگذاری...",
         isLoading = false,
         keys,
+        value = "",
         ...rest
       }: SelectWithOptionsProps<T>,
       ref: Ref<HTMLSelectElement>,
     ) => (
-      <Select {...rest} ref={ref} disabled={isLoading || rest.disabled}>
+      <Select {...rest} value={value} ref={ref} disabled={isLoading || rest.disabled}>
         <option value="" disabled>
           {isLoading ? loadingLabel : placeholder}
         </option>

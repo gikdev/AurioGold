@@ -8,11 +8,12 @@ interface ModalProps {
   isOpen: boolean
   onClose: () => void
   title: string
-  description: ReactNode
-  btns: ReactNode
+  description?: ReactNode
+  btns?: ReactNode
+  children?: ReactNode
 }
 
-export function Modal({ isOpen, onClose, title, description, btns }: ModalProps) {
+export function Modal({ isOpen, onClose, title, description, btns, children }: ModalProps) {
   useEffect(() => {
     const closeOnEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose()
@@ -37,9 +38,9 @@ export function Modal({ isOpen, onClose, title, description, btns }: ModalProps)
             exit={{ y: 100, opacity: 0 }}
             onClick={e => e.stopPropagation()}
             transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
-            className="bg-slate-1 text-slate-11 w-full sm:max-w-lg rounded-t-md sm:rounded-md shadow-xl p-4 sm:p-6 mx-auto"
+            className="bg-slate-1 text-slate-11 w-full sm:max-w-lg rounded-t-md sm:rounded-md shadow-xl p-4 sm:p-6 mx-auto gap-4 flex flex-col"
           >
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between">
               <h2 className="text-lg font-bold text-slate-12">{title}</h2>
 
               <Btn onClick={onClose} className="w-10 p-1 bg-transparent border-transparent">
@@ -47,9 +48,11 @@ export function Modal({ isOpen, onClose, title, description, btns }: ModalProps)
               </Btn>
             </div>
 
-            <div className="mb-6 text-sm">{description}</div>
+            {description && <div className="text-sm">{description}</div>}
 
-            <div className="flex gap-2 items-center">{btns}</div>
+            {children}
+
+            <div className="flex gap-2 items-center flex-wrap *:flex-1">{btns}</div>
           </motion.div>
         </motion.div>
       )}
