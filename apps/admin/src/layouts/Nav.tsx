@@ -33,7 +33,7 @@ export function Nav() {
         <img
           src={profileImageUrl}
           alt=""
-          className="size-6 object-cover rounded-full"
+          className="size-6 object-cover rounded-md"
           onError={e => {
             e.currentTarget.src = fallbackImageUrl
           }}

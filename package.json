@@ -2,16 +2,17 @@
   "name": "auriogold",
   "private": true,
   "scripts": {
-    "g": "scaffdog generate && pnpm run check",
-    "unit-test": "cd ./packages/unit-tests/ && pnpm test",
-    "e2e": "cd ./packages/e2e && pnpm test",
-    "e2e:ui": "cd ./packages/e2e && pnpm test:ui",
-    "e2e:headed": "cd ./packages/e2e && pnpm test:headed",
+    "g": "scaffdog generate && npm run check",
+    "unit-test": "cd ./packages/unit-tests/ && npm run test",
+    "e2e": "cd ./packages/e2e && npm run test",
+    "e2e:ui": "cd ./packages/e2e && npm run test:ui",
+    "e2e:headed": "cd ./packages/e2e && npm run test:headed",
     "build": "turbo run build",
-    "predev": "cp -r ./assets/shared ./apps/admin/public/shared && cp -r ./assets/shared ./apps/client/public/shared",
+    "build:complete": "bun ./scripts/build-all-apps.ts",
+    "predev": "bun ./scripts/before-dev.ts",
     "dev": "turbo run dev",
     "scan": "turbo run scan",
-    "check:all": "biome check --write ./apps ./packages",
+    "check:all": "biome check --write",
     "check": "biome check --write ./apps/client/src ./apps/admin/src ./packages/shared/src ./packages/unit-tests/tests",
     "check-types": "turbo run check-types",
     "prepare": "husky",
@@ -28,8 +29,12 @@
     "turbo": "^2.5.3",
     "typescript": "5.8.2"
   },
-  "packageManager": "pnpm@9.0.0",
+  "packageManager": "npm@11.3.0",
   "engines": {
     "node": ">=18"
-  }
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
 }

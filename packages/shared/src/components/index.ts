@@ -1,3 +1,4 @@
+export * from "./AppInfoBtn"
 export * from "./Badge"
 export * from "./Btn"
 export * from "./BtnTemplates"

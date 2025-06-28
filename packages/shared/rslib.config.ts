@@ -21,7 +21,7 @@ export default defineConfig({
   plugins: [pluginReact()],
   resolve: {
     alias: {
-      "#/*": ["./src/*"]
-    }
-  }
+      "#/*": ["./src/*"],
+    },
+  },
 })

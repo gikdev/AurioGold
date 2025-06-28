@@ -12,7 +12,7 @@
     "openapi-ts": "openapi-ts"
   },
   "dependencies": {
-    "@repo/profile-manager": "workspace:*",
+    "@repo/profile-manager": "*",
     "@hey-api/client-fetch": "^0.10.1"
   },
   "devDependencies": {

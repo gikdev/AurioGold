@@ -3,9 +3,11 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import styled from "@master/styled.react"
 import { ArrowClockwiseIcon, SignInIcon } from "@phosphor-icons/react"
 import type { CustomerLoginModel, LoginModel } from "@repo/api-client/client"
+import { currentProfile } from "@repo/profile-manager"
 import { storageManager } from "@repo/shared/adapters"
 import { Btn, Heading, Hr, Input, Labeler } from "@repo/shared/components"
 import { createControlledAsyncToast, createFieldsWithLabels } from "@repo/shared/helpers"
+import config from "config"
 import { useSetAtom } from "jotai"
 import { sha512 } from "js-sha512"
 import { useForm } from "react-hook-form"
@@ -77,8 +79,9 @@ export default function Login() {
     <div className="min-h-dvh flex justify-center items-center px-4 py-8 bg-slate-1 -m-2">
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <div className="flex items-center justify-between">
+          <img src="/profile/shared/web-app-manifest-192x192.png" className="w-12" />
           <Heading as="h2" size={2}>
-            ورود
+            ورود به {currentProfile.appTitleClient}
           </Heading>
 
           <Btn as="a" href={window.location.href} className="rounded-full w-10 p-1">
@@ -106,6 +109,10 @@ export default function Login() {
           <span>ورود</span>
           <SignInIcon mirrored size={24} />
         </Btn>
+
+        <p>
+          <code>{config.versionStr}</code>
+        </p>
       </StyledForm>
     </div>
   )
