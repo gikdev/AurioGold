@@ -11,8 +11,8 @@ import { useAtomValue } from "jotai"
 import { memo } from "react"
 import { Link } from "react-router"
 import { profileAtom } from "#/atoms"
+import { FileGuidLink } from "#/components"
 import routes from "../routes"
-import FileGuidLink from "./FileGuidLink"
 import { Navigation } from "./navigation"
 
 function _ProfileCard() {

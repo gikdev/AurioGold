@@ -5,11 +5,11 @@ interface FileGuidLink extends AnchorHTMLAttributes<HTMLAnchorElement> {
   guid?: string | null
 }
 
-export default function FileGuidLink({ guid, ...others }: FileGuidLink) {
+export function FileGuidLink({ guid, ...others }: FileGuidLink) {
   const isLink = !!guid
   const url = `${genDatApiConfig().baseUrl}/TyFiles/download/${guid}`
 
-  if (!isLink) return <span className={others.className}>ندارن</span>
+  if (!isLink) return <span className={others.className}>ندارند</span>
 
   return (
     <a

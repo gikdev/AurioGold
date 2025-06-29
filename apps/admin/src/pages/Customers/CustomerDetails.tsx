@@ -12,19 +12,15 @@ import {
 import { useAtomValue } from "jotai"
 import { memo } from "react"
 import { Link } from "react-router"
-import {} from "#/components"
+import { FileGuidLink } from "#/components"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
 import { customersAtom } from "."
 import { customerFormFields } from "./customerFormShared"
 import { CustomerNavigation, QUERY_KEYS } from "./navigation"
 
-// interface CustomerDetailsProps {}
-
 const getLabelProperty = generateLabelPropertyGetter(customerFormFields.labels)
 
-function _CustomerDetails(
-  // {}: CustomerDetailsProps
-) {
+function _CustomerDetails() {
   const customers = useAtomValue(customersAtom)
   const [customerId, setCustomerId] = useDrawerSheetNumber(QUERY_KEYS.customerId)
   const [showDetailsDrawer, setShowDetailsDrawer] = useDrawerSheet(QUERY_KEYS.details)
@@ -86,8 +82,14 @@ function _CustomerDetails(
           />
           <KeyValueDetail ltr title={getLabelProperty("isActive")} value={customer.isActive} />
           <KeyValueDetail ltr title={getLabelProperty("isBlocked")} value={customer.isBlocked} />
-          <KeyValueDetail title={getLabelProperty("businessLicense")} value={customer.kasbsID} />
-          <KeyValueDetail title={getLabelProperty("nationalCard")} value={customer.melliID} />
+          <KeyValueDetail
+            title={getLabelProperty("businessLicense")}
+            cellRendered={<FileGuidLink guid={customer.melliID} />}
+          />
+          <KeyValueDetail
+            title={getLabelProperty("nationalCard")}
+            cellRendered={<FileGuidLink guid={customer.kasbsID} />}
+          />
           <KeyValueDetail ltr title={getLabelProperty("phone")} value={customer.mobile} />
           <KeyValueDetail ltr title="مستر آی‌دی" value={customer.masterID} />
           <KeyValueDetail ltr title="آی‌دی" value={customer.id} />
