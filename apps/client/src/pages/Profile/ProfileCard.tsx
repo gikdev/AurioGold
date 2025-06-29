@@ -1,22 +1,22 @@
 import { PasswordIcon, SignOutIcon, UserCircleIcon } from "@phosphor-icons/react"
-import { Btn, BtnTemplates, TitledCard } from "@repo/shared/components"
+import {
+  Btn,
+  BtnTemplates,
+  KeyValueDetail,
+  KeyValueDetailsContainer,
+  TitledCard,
+} from "@repo/shared/components"
+import { formatPersianString } from "@repo/shared/utils"
 import { useAtomValue } from "jotai"
-import { type SyntheticEvent, memo } from "react"
+import { memo } from "react"
 import { Link } from "react-router"
 import { profileAtom } from "#/atoms"
 import routes from "../routes"
+import FileGuidLink from "./FileGuidLink"
 import { Navigation } from "./navigation"
-
-const fallbackImageUrl = "/shared/fallback-400.jpg"
-
-function handleImageLoadError(e: SyntheticEvent<HTMLImageElement, Event>) {
-  e.currentTarget.onerror = null
-  e.currentTarget.src = fallbackImageUrl
-}
 
 function _ProfileCard() {
   const profile = useAtomValue(profileAtom)
-  const name = profile.displayName || "---"
 
   return (
     <TitledCard
@@ -32,14 +32,21 @@ function _ProfileCard() {
     >
       <div className="flex flex-col gap-5">
         <div className="gap-3 flex flex-col items-center">
-          <img
-            src={fallbackImageUrl}
-            alt="عکس پروفایل"
-            className="w-full max-w-60 block rounded-full"
-            onError={handleImageLoadError}
-          />
-
-          <p className="text-3xl font-bold text-slate-12">{name}</p>
+          <KeyValueDetailsContainer className="w-full">
+            <KeyValueDetail title="نام" value={profile.displayName} />
+            <KeyValueDetail title="تلفن" value={formatPersianString(profile.mobile ?? "")} />
+            <KeyValueDetail title="کدملی" value={formatPersianString(profile.codeMelli ?? "")} />
+            <KeyValueDetail title="شهر" value={formatPersianString(profile.city ?? "")} />
+            <KeyValueDetail
+              title="کارت ملی"
+              cellRendered={<FileGuidLink guid={profile.melliID} />}
+            />
+            <KeyValueDetail
+              title="جواز کسب"
+              cellRendered={<FileGuidLink guid={profile.kasbsID} />}
+            />
+            <KeyValueDetail title="آدرس" value={formatPersianString(profile.address ?? "")} />
+          </KeyValueDetailsContainer>
         </div>
 
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
