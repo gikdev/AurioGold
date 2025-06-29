@@ -81,7 +81,7 @@ export default function Login() {
         <div className="flex items-center justify-between">
           <img src="/profile/shared/web-app-manifest-192x192.png" className="w-12" />
           <Heading as="h2" size={2}>
-            ورود به {currentProfile.appTitleClient}
+            {currentProfile.appTitleClient}
           </Heading>
 
           <Btn as="a" href={window.location.href} className="rounded-full w-10 p-1">

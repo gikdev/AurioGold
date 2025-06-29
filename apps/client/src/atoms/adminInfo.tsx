@@ -1,3 +1,4 @@
+import { atom } from "jotai"
 import { atomWithStorage } from "jotai/utils"
 
 export interface AdminInfo {
@@ -20,4 +21,19 @@ export const emptyAdminInfo: AdminInfo = {
   status: 0,
 }
 
-export const adminInfoAtom = atomWithStorage("ADMIN_INFO", {})
+export const adminInfoAtom = atomWithStorage<AdminInfo>("ADMIN_INFO", emptyAdminInfo)
+
+export const isAdminOnlineAtom = atom(
+  get => get(adminInfoAtom).status === AdminStatus.Online,
+  (get, set, newValue: boolean) =>
+    set(adminInfoAtom, {
+      ...get(adminInfoAtom),
+      status: newValue ? AdminStatus.Online : AdminStatus.Offline,
+    }),
+)
+
+export const AdminStatus = {
+  Offline: 1,
+  Online: 2,
+  Disabled: 3,
+} as const

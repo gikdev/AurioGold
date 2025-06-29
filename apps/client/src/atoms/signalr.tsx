@@ -5,7 +5,7 @@ import { atom, useAtom, useSetAtom } from "jotai"
 import { useCallback, useEffect } from "react"
 import { useNavigate } from "react-router"
 import routes from "#/pages/routes"
-import { isAdminOnlineAtom } from "./adminConnectivity"
+import { isAdminOnlineAtom } from "."
 
 // Usage example is at the end of the file
 

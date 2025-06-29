@@ -11,7 +11,7 @@ import { isAdminOnlineAtom } from "./adminConnectivity"
 const AdminStatus = {
   Offline: 1,
   Online: 2,
-  DISABLED: 3,
+  Disabled: 3,
 }
 
 // Usage example is at the end of the file
