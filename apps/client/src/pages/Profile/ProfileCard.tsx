@@ -24,8 +24,9 @@ function _ProfileCard() {
       icon={UserCircleIcon}
       titleSlot={
         <BtnTemplates.IconEdit
-          disabled
-          title="ویرایش پروفایل - به زودی..."
+          as={Link}
+          to={Navigation.changeProfile()}
+          title="ویرایش پروفایل"
           className="ms-auto w-10 p-1"
         />
       }

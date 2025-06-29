@@ -13,7 +13,14 @@ export function createFieldsWithLabels<T extends Record<string, `${string}${StrE
   const fields = Object.fromEntries(Object.entries(labels).map(([key, _]) => [key, key])) as {
     [K in keyof T]: K
   }
-  return { fields, labels }
+
+  const rawLabels = {} as Record<keyof T, string | null>
+
+  for (const key in labels) {
+    rawLabels[key] = labels[key]?.slice(0, -2) ?? null
+  }
+
+  return { fields, labels, rawLabels }
 }
 
 interface ControlledToastMessages {
