@@ -2,21 +2,22 @@ import { apiRequest } from "@gikdev/react-datapi/src"
 import { notifManager } from "@repo/shared/adapters"
 import { MAX_FILE_SIZE_FOR_UPLOAD } from "@repo/shared/lib"
 import { useCallback, useEffect, useRef, useState } from "react"
+import { useSetProfileImageUrl } from "#/atoms"
 import genDatApiConfig from "#/shared/datapi-config"
 import {
   allowedTypes,
   cleanupBlobUrl,
   createPreviewUrl,
-  getCurrentProfileImageUrl,
   objToKeyVal,
-  saveProfileImageUrl,
   uploadFile,
+  useCurrentProfileImageUrl,
 } from "./profileImageUtils"
 
 export function useProfileImageUpload() {
-  const initialImageUrl = getCurrentProfileImageUrl()
+  const initialImageUrl = useCurrentProfileImageUrl()
   const [imageUrl, setImageUrl] = useState(initialImageUrl)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const setProfileImageUrl = useSetProfileImageUrl()
 
   const revertToSavedImage = useCallback(() => {
     cleanupBlobUrl(imageUrl)
@@ -94,10 +95,7 @@ export function useProfileImageUpload() {
 
               onSuccess() {
                 cleanupBlobUrl(imageUrl)
-                saveProfileImageUrl(fileStr)
-
-                // TODO
-                location.reload()
+                setProfileImageUrl(fileStr)
               },
             },
           })
@@ -108,7 +106,7 @@ export function useProfileImageUpload() {
           notifManager.notify(errorMsg, "toast", { status: "error" })
         })
     },
-    [imageUrl, validateFile, handleUploadError, revertToSavedImage],
+    [imageUrl, validateFile, handleUploadError, revertToSavedImage, setProfileImageUrl],
   )
 
   useEffect(() => {

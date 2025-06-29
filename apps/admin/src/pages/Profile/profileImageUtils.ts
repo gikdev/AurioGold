@@ -1,8 +1,8 @@
 import type { Ufm } from "@repo/api-client/client"
 import { currentProfile } from "@repo/profile-manager"
-import { storageManager } from "@repo/shared/adapters"
 import type { UploadResult } from "@repo/shared/components"
 import type { SyntheticEvent } from "react"
+import { useProfileImageUrlValue } from "#/atoms"
 import genDatApiConfig from "#/shared/datapi-config"
 
 export const fallbackImageUrl = "/shared/fallback-400.jpg"
@@ -14,13 +14,9 @@ export function getImageUrl(imgUrl: string | null | undefined): string {
   return imgUrl
 }
 
-export function getCurrentProfileImageUrl(): string {
-  const profileImageUrl = storageManager.get("logoUrl", "sessionStorage")
-  return getImageUrl(profileImageUrl)
-}
-
-export function saveProfileImageUrl(imageUrl: string): void {
-  storageManager.save("logoUrl", imageUrl, "sessionStorage")
+export function useCurrentProfileImageUrl(): string {
+  const logoUrl = useProfileImageUrlValue()
+  return getImageUrl(logoUrl)
 }
 
 export function cleanupBlobUrl(url: string): void {

@@ -1,26 +1,20 @@
 import { PasswordIcon, SignOutIcon, UserCircleIcon } from "@phosphor-icons/react"
-import { storageManager } from "@repo/shared/adapters"
 import { Btn, TitledCard } from "@repo/shared/components"
 import { memo } from "react"
 import { Link } from "react-router"
 import routes from "../routes"
+import DisplayName from "./DisplayName"
 import ProfileImage from "./ProfileImage"
 import { Navigation } from "./navigation"
 
-function getName() {
-  return storageManager.get("name", "sessionStorage") || "---"
-}
-
 function _ProfileCard() {
-  const name = getName()
-
   return (
     <TitledCard title="پروفایل" icon={UserCircleIcon}>
       <div className="flex flex-col gap-5">
         <div className="gap-3 flex flex-col items-center">
           <ProfileImage />
 
-          <p className="text-3xl font-bold text-slate-12">{name}</p>
+          <DisplayName />
         </div>
 
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
