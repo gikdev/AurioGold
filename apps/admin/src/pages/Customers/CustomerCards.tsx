@@ -24,7 +24,6 @@ export function CustomerCard({ displayName, id, isActive, isBlocked }: CustomerC
       to={CustomerNavigation.details(id!)}
       type="button"
       className="flex flex-col w-32 bg-slate-3 p-2 items-center gap-2 text-slate-11 h-auto"
-      data-testid="view-customer-btn"
     >
       <UserCircleIcon size={32} />
       <p>{displayName}</p>

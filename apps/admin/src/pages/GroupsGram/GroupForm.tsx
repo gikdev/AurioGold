@@ -13,11 +13,7 @@ export default function GroupForm({ form }: GroupFormProps) {
   const { errors } = formState
 
   return (
-    <form
-      className="min-h-full flex flex-col py-4 gap-5"
-      autoComplete="off"
-      data-testid="create-group-form"
-    >
+    <form className="min-h-full flex flex-col py-4 gap-5" autoComplete="off">
       <Labeler labelText={labels.name} errorMsg={errors.name?.message}>
         <Input {...register(fields.name)} />
       </Labeler>

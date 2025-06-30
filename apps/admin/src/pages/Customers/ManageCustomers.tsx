@@ -94,7 +94,6 @@ function CreateCustomerFAB() {
       title="ایجاد مشتری جدید"
       icon={UserCirclePlusIcon}
       to={CustomerNavigation.createNew()}
-      data-testid="create-customer-btn"
       theme="success"
       fallback={
         <Btn
@@ -104,7 +103,6 @@ function CreateCustomerFAB() {
           title="ایجاد مشتری جدید"
           as={Link}
           to={CustomerNavigation.createNew()}
-          data-testid="create-customer-btn"
         >
           <UserCirclePlusIcon size={24} className="transition-all" />
         </Btn>

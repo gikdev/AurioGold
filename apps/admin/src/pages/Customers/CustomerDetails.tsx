@@ -56,10 +56,7 @@ function _CustomerDetails() {
       {customer === undefined && <EntityNotFoundCard entity="مشتری" />}
 
       {customer && (
-        <KeyValueDetailsContainer
-          className="flex flex-col gap-3"
-          data-testid="customer-details-section"
-        >
+        <KeyValueDetailsContainer className="flex flex-col gap-3">
           <KeyValueDetail
             ltr
             title={getLabelProperty("accountingId")}

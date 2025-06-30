@@ -43,7 +43,6 @@ export default function XyzForm({ form, isEditMode = false }: XyzFormProps) {
     <form
       className="min-h-full flex flex-col py-4 gap-5"
       autoComplete="off"
-      data-testid="xyz-form"
     >
       {/* Hidden inputs to prevent Chrome autofill */}
       <input type="text" name="fake-username" autoComplete="username" className="hidden" />
@@ -283,7 +282,6 @@ function convertPartialXyzDtoToFormValues(
 - [ ] Form reset after successful create
 
 ## 7. Testing Considerations
-- [ ] Add `data-testid` attributes
 - [ ] Test both create and edit modes
 - [ ] Test validation error states
 - [ ] Test API success/error scenarios

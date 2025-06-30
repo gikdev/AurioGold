@@ -85,7 +85,6 @@ function CreateGroupFAB() {
       title="ایجاد گروه جدید"
       icon={CirclesThreePlusIcon}
       to={queryStateUrls.createNew()}
-      data-testid="create-customer-btn"
       theme="success"
       fallback={
         <Btn
@@ -95,7 +94,6 @@ function CreateGroupFAB() {
           title="ایجاد گروه جدید"
           as={Link}
           to={queryStateUrls.createNew()}
-          data-testid="create-customer-btn"
         >
           <CirclesThreePlusIcon size={24} className="transition-all" />
         </Btn>

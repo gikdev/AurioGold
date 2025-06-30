@@ -92,15 +92,16 @@ export default function Login() {
         <Hr />
 
         <Labeler labelText={labels.phone} errorMsg={errors.phone?.message}>
-          <Input dir="ltr" type="text" autoFocus {...register(fields.phone)} />
+          <Input data-testid="phone" dir="ltr" type="text" autoFocus {...register(fields.phone)} />
         </Labeler>
 
         <Labeler labelText={labels.password} errorMsg={errors.password?.message}>
-          <Input dir="ltr" type="password" {...register(fields.password)} />
+          <Input data-testid="password" dir="ltr" type="password" {...register(fields.password)} />
         </Labeler>
 
         <Btn
           className="justify-between"
+          data-testid="submit"
           type="submit"
           themeType="filled"
           theme="primary"

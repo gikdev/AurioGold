@@ -23,7 +23,6 @@ export function PriceSourceCard({ id, name, price }: PriceSourceCardProps) {
       as={Link}
       to={queryStateUrls.details(id)}
       type="button"
-      data-testid="view-group-btn"
       className="flex flex-col p-2 min-w-max items-center gap-3 text-slate-11 h-auto"
     >
       <div className="flex justify-between flex-col w-full">

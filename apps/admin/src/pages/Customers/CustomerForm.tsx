@@ -47,11 +47,7 @@ export default function CustomerForm({ form, isEditMode = false }: CustomerFormP
   const SelectWithIntGroups = createSelectWithOptions<CustomerGroupIntDto>()
 
   return (
-    <form
-      className="min-h-full flex flex-col py-4 gap-5"
-      autoComplete="off"
-      data-testid="create-customer-form"
-    >
+    <form className="min-h-full flex flex-col py-4 gap-5" autoComplete="off">
       {/* Dummy hidden inputs to trick Chrome autofill behavior... */}
       <input type="text" name="fake-username" autoComplete="username" className="hidden" />
       <input type="password" name="fake-password" autoComplete="new-password" className="hidden" />

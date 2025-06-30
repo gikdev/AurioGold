@@ -86,7 +86,6 @@ function CreatePriceSourceFAB() {
       title="ایجاد منبع جدید"
       icon={CirclesThreePlusIcon}
       to={queryStateUrls.createNew()}
-      data-testid="create-price-source-btn"
       theme="success"
       fallback={
         <Btn
@@ -96,7 +95,6 @@ function CreatePriceSourceFAB() {
           title="ایجاد منبع جدید"
           as={Link}
           to={queryStateUrls.createNew()}
-          data-testid="create-price-source-btn"
         >
           <CirclesThreePlusIcon size={24} className="transition-all" />
         </Btn>

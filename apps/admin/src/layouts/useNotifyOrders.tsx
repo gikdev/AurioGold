@@ -154,6 +154,7 @@ export function useNotifyOrders() {
               <Btn
                 theme="success"
                 className="flex-1"
+                data-testid="accept-order-btn"
                 onClick={() => handleOrder(closeToast, orderDto.id, orderDto.userID ?? 0, true)}
               >
                 <CheckIcon size={24} />

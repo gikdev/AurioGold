@@ -38,6 +38,7 @@ export default function PriceInput() {
       value={value}
       onChange={handleChange}
       onBlur={handleBlur}
+      data-testid="price-input"
     />
   )
 }

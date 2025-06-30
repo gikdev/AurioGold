@@ -102,6 +102,7 @@ export default function SubmitBtn() {
       type="submit"
       theme={side === "buy" ? "success" : "error"}
       themeType="filled"
+      data-testid="trade-submit-btn"
       disabled={isBtnDisabled}
       onClick={handleSubmit}
     >

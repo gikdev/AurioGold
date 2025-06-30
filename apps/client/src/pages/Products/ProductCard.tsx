@@ -67,6 +67,7 @@ export default function ProductCard({
       {...motionPresets.btn}
       {...styles.container}
       onClick={handleProductClick}
+      data-testid="product-card"
     >
       <p {...styles.titleContainer}>
         <PackageIcon size={20} />
