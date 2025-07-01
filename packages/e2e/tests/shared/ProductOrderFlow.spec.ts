@@ -34,7 +34,7 @@ test.describe("Product Order Flow", () => {
 
     test(testName, async ({ browser }) => {
       // Create two isolated contexts
-      clientContext = await browser.newContext({ isMobile: true })
+      clientContext = await browser.newContext()
       adminContext = await browser.newContext()
 
       // Create pages (tabs)
