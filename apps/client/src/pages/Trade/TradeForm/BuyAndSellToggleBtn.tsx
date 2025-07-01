@@ -33,7 +33,11 @@ export default function BuyAndSellToggleBtn() {
   return (
     <div {...styles.container}>
       {isBuyingEnabled ? (
-        <motion.label {...motionPresets.btn} {...styles.btn(side === "buy")}>
+        <motion.label
+          {...motionPresets.btn}
+          {...styles.btn(side === "buy")}
+          data-testid="buy-sell-toggle-buy-toggle"
+        >
           <input
             checked={side === "buy"}
             className="hidden"
@@ -48,7 +52,11 @@ export default function BuyAndSellToggleBtn() {
       )}
 
       {isSellingEnabled ? (
-        <motion.label {...motionPresets.btn} {...styles.btn(side === "sell")}>
+        <motion.label
+          {...motionPresets.btn}
+          {...styles.btn(side === "sell")}
+          data-testid="buy-sell-toggle-sell-toggle"
+        >
           <input
             checked={side === "sell"}
             className="hidden"

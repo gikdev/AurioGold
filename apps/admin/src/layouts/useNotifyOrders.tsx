@@ -164,6 +164,7 @@ export function useNotifyOrders() {
               <Btn
                 theme="error"
                 className="flex-1"
+                data-testid="reject-order-btn"
                 onClick={() => handleOrder(closeToast, orderDto.id, orderDto.userID ?? 0, false)}
               >
                 <XIcon size={24} />
