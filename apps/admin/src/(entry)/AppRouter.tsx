@@ -1,7 +1,7 @@
+import { AnimatePresence } from "motion/react"
+import { NuqsAdapter } from "nuqs/adapters/react-router/v7"
 import { Suspense } from "react"
 import { BrowserRouter, Route, Routes } from "react-router"
-import { NuqsAdapter } from "nuqs/adapters/react-router/v7"
-import { AnimatePresence } from "motion/react"
 
 import { BaseWrapper } from "../layouts/BaseWrapper"
 import Protected from "../layouts/Protected"
@@ -18,12 +18,10 @@ export const AppRouter = () => (
             <Route element={<RootLayout />}>
               {/* Public routes */}
               {publicRoutes}
-              
+
               {/* Protected routes */}
               <Route element={<Protected />}>
-                <Route element={<BaseWrapper />}>
-                  {protectedRoutes}
-                </Route>
+                <Route element={<BaseWrapper />}>{protectedRoutes}</Route>
               </Route>
             </Route>
           </Routes>

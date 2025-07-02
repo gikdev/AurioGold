@@ -5,10 +5,10 @@ export const registerServiceWorker = () => {
   window.addEventListener("DOMContentLoaded", () => {
     navigator.serviceWorker
       .register("/shared/sw.js")
-      .then((registration) => {
+      .then(registration => {
         console.log("SW registered: ", registration)
       })
-      .catch((registrationError) => {
+      .catch(registrationError => {
         console.log("SW registration failed: ", registrationError)
       })
   })

@@ -19,5 +19,5 @@ root.render(
   <StrictMode>
     <ToastProvider />
     <AppRouter />
-  </StrictMode>
+  </StrictMode>,
 )
