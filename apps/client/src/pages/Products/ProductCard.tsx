@@ -71,7 +71,7 @@ export default function ProductCard({
     >
       <p {...styles.titleContainer}>
         <PackageIcon size={20} />
-        <span>{name}</span>
+        <span data-testid="product-card-title">{name}</span>
 
         <CaretLeftIcon size={20} className="inline-block ms-auto" />
       </p>

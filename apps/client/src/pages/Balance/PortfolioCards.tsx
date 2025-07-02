@@ -51,6 +51,7 @@ function PortfolioCard({
 
   return (
     <motion.label
+      data-testid="portfolio-card"
       initial={{ scale: 1 }}
       animate={{ scale: isSelected ? 1.02 : 1 }}
       whileHover={{ scale: 1.03 }}
@@ -65,12 +66,15 @@ function PortfolioCard({
         <span>{stockName}</span>
       </p>
 
-      <p dir="ltr" className="font-bold text-lg text-slate-12">
+      <p dir="ltr" className="font-bold text-lg text-slate-12" data-testid="portfolio-card-price">
         {formatPersianPrice(Math.abs(Number(volume.toFixed(3))))}
       </p>
 
       <p className="flex justify-between items-center flex-wrap">
-        <span className={cn("text-xs", volume >= 0 ? "text-green-10" : "text-red-10")}>
+        <span
+          className={cn("text-xs", volume >= 0 ? "text-green-10" : "text-red-10")}
+          data-testid="portfolio-card-debt-status"
+        >
           ({volume >= 0 ? "بستانکار" : "بدهکار"})
         </span>
 
