@@ -1,40 +1,72 @@
-import { useApiRequest } from "@gikdev/react-datapi/src"
 import { CoinsIcon, CopyIcon } from "@phosphor-icons/react"
-import type { MasterPortfolioDto } from "@repo/api-client/client"
 import { notifManager } from "@repo/shared/adapters"
-import { BtnTemplates, FloatingActionBtn, TitledCard, useViewModes } from "@repo/shared/components"
-import { useState } from "react"
-import { v4 as uuid } from "uuid"
+import {
+  Btn,
+  BtnTemplates,
+  FloatingActionBtn,
+  Heading,
+  Hr,
+  TitledCard,
+  useViewModes,
+} from "@repo/shared/components"
+import { useAtomValue } from "jotai"
 import BalanceTable from "./BalanceTable"
 import PortfolioCards from "./PortfolioCards"
-
-export interface MasterPortfolioWithId {
-  id: string
-  tyStockID: number
-  stockName: string
-  volume: number
-}
-
-function mapSinglePortfolioItem(item: MasterPortfolioDto): MasterPortfolioWithId {
-  return {
-    id: uuid(),
-    stockName: item.stockName ?? "---",
-    tyStockID: item.tyStockID ?? 0,
-    volume: item.volume ?? 0,
-  }
-}
+import {
+  type MasterPortfolioWithId,
+  selectedPortfolioIdAtom,
+  useGetMasterPortfolioQuery,
+} from "./shared"
 
 export default function ManageBalance() {
   const { renderedIconsToggle, viewMode } = useViewModes()
-  const [selectedPortfolioId, setSelectedPortfolioId] = useState<MasterPortfolioWithId["id"]>()
-  const resBalance = useApiRequest<MasterPortfolioWithId[], MasterPortfolioDto[]>(() => ({
-    url: "/Master/GetMasterPortfolio",
-    defaultValue: [],
-    transformResponse: rawItems => rawItems.map(mapSinglePortfolioItem),
-  }))
 
-  function handleCopyBtnClick() {
-    const portfolioById = resBalance.data?.find(p => p.id === selectedPortfolioId)
+  const { data: balance = [], status, refetch } = useGetMasterPortfolioQuery()
+
+  const titledCardActions = (
+    <div className="ms-auto flex items-center gap-2">
+      {viewMode === "cards" && <CopyBtn balance={balance} />}
+
+      <BtnTemplates.IconReload onClick={() => refetch()} />
+
+      {renderedIconsToggle}
+    </div>
+  )
+
+  return (
+    <TitledCard title="مدیریت مانده حساب" icon={CoinsIcon} titleSlot={titledCardActions}>
+      {status === "error" && (
+        <div className="bg-red-2 border-2 border-red-6 p-4 flex flex-col gap-4 text-red-11 rounded-lg max-w-72 text-center mx-auto my-2">
+          <Heading as="h2" size={2}>
+            خطا!
+          </Heading>
+          <Hr className="bg-red-6" />
+          <p>
+            یه مشکلی پیش اومده و به احتمال زیاد تقصیر ماست. لطفا دوباره امتحان کنید یا با مسئول
+            مربوطه تماس بگیرید.
+          </p>
+          <Btn onClick={() => refetch()}>دوباره امتحان کن</Btn>
+        </div>
+      )}
+
+      {status === "pending" && <div className="h-100 rounded-md animate-pulse bg-slate-4" />}
+
+      {status === "success" && viewMode === "cards" && <PortfolioCards portfolios={balance} />}
+
+      {status === "success" && viewMode === "table" && <BalanceTable portfolios={balance} />}
+    </TitledCard>
+  )
+}
+
+interface CopyBtnProps {
+  balance: MasterPortfolioWithId[]
+}
+
+function CopyBtn({ balance }: CopyBtnProps) {
+  const selectedPortfolioId = useAtomValue(selectedPortfolioIdAtom)
+
+  const handleCopyBtnClick = () => {
+    const portfolioById = balance.find(p => p.id === selectedPortfolioId)
     if (!portfolioById) return
 
     const valueToCopy = Math.abs(Number(portfolioById.volume.toFixed(3))).toString()
@@ -54,47 +86,19 @@ export default function ManageBalance() {
       )
   }
 
-  const fabCopyBtn = viewMode === "cards" && (
+  return (
     <FloatingActionBtn
       icon={CopyIcon}
       title="کپی انتخاب شده"
       onClick={handleCopyBtnClick}
-      disabled={!selectedPortfolioId}
+      disabled={typeof selectedPortfolioId !== "string"}
       fallback={
         <BtnTemplates.IconCopy
           onClick={handleCopyBtnClick}
-          disabled={!selectedPortfolioId}
+          disabled={typeof selectedPortfolioId !== "string"}
           title="کپی انتخاب شده"
         />
       }
     />
-  )
-
-  const titledCardActions = (
-    <div className="ms-auto flex items-center gap-2">
-      {fabCopyBtn}
-
-      <BtnTemplates.IconReload onClick={() => resBalance.reload()} />
-
-      {renderedIconsToggle}
-    </div>
-  )
-
-  return (
-    <TitledCard title="مدیریت مانده حساب" icon={CoinsIcon} titleSlot={titledCardActions}>
-      {resBalance.loading && <div className="h-100 rounded-md animate-pulse bg-slate-4" />}
-
-      {resBalance.success && !resBalance.loading && viewMode === "cards" && (
-        <PortfolioCards
-          portfolios={resBalance.data || []}
-          selectedPortfolioId={selectedPortfolioId}
-          setSelectedPortfolioId={setSelectedPortfolioId}
-        />
-      )}
-
-      {resBalance.success && !resBalance.loading && viewMode === "table" && (
-        <BalanceTable portfolios={resBalance.data || []} />
-      )}
-    </TitledCard>
   )
 }

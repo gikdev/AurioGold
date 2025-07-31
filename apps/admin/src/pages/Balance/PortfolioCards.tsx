@@ -2,31 +2,19 @@ import { PackageIcon } from "@phosphor-icons/react"
 import { Radio } from "@repo/shared/components"
 import { cn } from "@repo/shared/helpers"
 import { formatPersianPrice } from "@repo/shared/utils"
+import { useAtom } from "jotai"
 import { motion } from "motion/react"
-import type { MasterPortfolioWithId } from "./ManageBalance"
+import { type MasterPortfolioWithId, selectedPortfolioIdAtom } from "./shared"
 
 interface PortfolioCardsProps {
   portfolios: MasterPortfolioWithId[]
-  selectedPortfolioId: MasterPortfolioWithId["id"] | undefined
-  setSelectedPortfolioId: (val: MasterPortfolioWithId["id"] | undefined) => void
 }
 
-export default function PortfolioCards({
-  portfolios,
-  selectedPortfolioId,
-  setSelectedPortfolioId,
-}: PortfolioCardsProps) {
+export default function PortfolioCards({ portfolios }: PortfolioCardsProps) {
   return (
     <div className="grid auto-rows-fr gap-4 grid-cols-[repeat(auto-fit,minmax(240px,1fr))]">
       {portfolios.map(p => (
-        <PortfolioCard
-          key={p.id}
-          id={p.id}
-          selectedPortfolioId={selectedPortfolioId}
-          setSelectedPortfolioId={setSelectedPortfolioId}
-          stockName={p.stockName}
-          volume={p.volume}
-        />
+        <PortfolioCard key={p.id} id={p.id} stockName={p.stockName} volume={p.volume} />
       ))}
     </div>
   )
@@ -36,17 +24,10 @@ interface PortfolioCardProps {
   id: MasterPortfolioWithId["id"]
   stockName: MasterPortfolioWithId["stockName"]
   volume: MasterPortfolioWithId["volume"]
-  selectedPortfolioId: MasterPortfolioWithId["id"] | undefined
-  setSelectedPortfolioId: (val: MasterPortfolioWithId["id"]) => void
 }
 
-function PortfolioCard({
-  id,
-  stockName,
-  volume,
-  selectedPortfolioId,
-  setSelectedPortfolioId,
-}: PortfolioCardProps) {
+function PortfolioCard({ id, stockName, volume }: PortfolioCardProps) {
+  const [selectedPortfolioId, setSelectedPortfolioId] = useAtom(selectedPortfolioIdAtom)
   const isSelected = selectedPortfolioId === id
 
   return (
