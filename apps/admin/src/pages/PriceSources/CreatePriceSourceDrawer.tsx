@@ -1,10 +1,10 @@
-import { apiRequest } from "@gikdev/react-datapi/src"
 import { UserPlusIcon } from "@phosphor-icons/react"
-import type { StockPriceSourceAddRequest } from "@repo/api-client/client"
+import { postApiStockPriceSourceAddStockPriceSourceMutation } from "@repo/api-client/tanstack"
 import { BtnTemplates, DrawerSheet, useDrawerSheet } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
+import { useMutation } from "@tanstack/react-query"
 import { useCustomForm } from "#/shared/customForm"
-import genDatApiConfig from "#/shared/datapi-config"
+import { getHeaderTokenOnly } from "#/shared/react-query"
 import { queryStateKeys } from "."
 import PriceSourceForm from "./PriceSourceForm"
 import {
@@ -26,29 +26,29 @@ export default function CreatePriceSourceDrawer({
   const { formState, trigger, reset, handleSubmit } = form
   const { isSubmitting } = formState
 
-  const onSubmit = async (data: PriceSourceFormValues) => {
-    const dataToSend = convertFormValuesToApiPayload(data)
+  const { mutate: createPriceSource } = useMutation(
+    postApiStockPriceSourceAddStockPriceSourceMutation(),
+  )
 
+  const onSubmit = async (data: PriceSourceFormValues) => {
     const { reject, resolve } = createControlledAsyncToast({
       pending: "در حال ایجاد منبع قیمت...",
       success: "منبع قیمت با موفقیت ایجاد شد!",
+      error: "یه مشکلی پیش آمد...",
     })
 
-    await apiRequest({
-      config: genDatApiConfig(),
-      options: {
-        url: "/StockPriceSource/AddStockPriceSource",
-        method: "POST",
-        body: JSON.stringify(dataToSend),
-        onError: msg => reject(msg),
-        onSuccess: () => {
+    createPriceSource(
+      { ...getHeaderTokenOnly(), body: data, throwOnError: true },
+      {
+        onError: err => reject(err?.message || "یه مشکلی پیش آمده..."),
+        onSuccess() {
           resolve()
           reloadPriceSources()
           setOpen(false)
           reset()
         },
       },
-    })
+    )
   }
 
   const submitTheFormManually = async () => {
@@ -76,15 +76,4 @@ export default function CreatePriceSourceDrawer({
       <PriceSourceForm form={form} />
     </DrawerSheet>
   )
-}
-
-function convertFormValuesToApiPayload(
-  values: PriceSourceFormValues,
-): Required<StockPriceSourceAddRequest> {
-  return {
-    name: values.name,
-    code: values.code,
-    price: values.price ?? 0,
-    sourceUrl: values.sourceUrl,
-  }
 }

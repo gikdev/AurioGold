@@ -1,7 +1,10 @@
-import { apiRequest, useApiRequest } from "@gikdev/react-datapi/src"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ChatTextIcon } from "@phosphor-icons/react"
-import type { CustomerDto, SmsMsgDto } from "@repo/api-client/client"
+import type { CustomerDto } from "@repo/api-client/client"
+import {
+  getApiMasterGetCustomersOptions,
+  postApiMasterSmsBroadcastMutation,
+} from "@repo/api-client/tanstack"
 import { notifManager } from "@repo/shared/adapters"
 import {
   Btn,
@@ -13,12 +16,13 @@ import {
 } from "@repo/shared/components"
 import { createFieldsWithLabels } from "@repo/shared/helpers"
 import { multiRowSelectionOptions } from "@repo/shared/lib"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import type { ColDef, GetRowIdFunc, SelectionChangedEvent } from "ag-grid-community"
 import type { AgGridReact } from "ag-grid-react"
 import { useCallback, useRef } from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import genDatApiConfig from "#/shared/datapi-config"
+import { getHeaderTokenOnly } from "#/shared/react-query"
 
 const columnDefs: ColDef<CustomerDto>[] = [
   { field: "displayName", headerName: "نام" },
@@ -56,10 +60,9 @@ const Table = createTypedTableFa<CustomerDto>()
 
 export default function SendSmsForm() {
   const gridRef = useRef<AgGridReact<CustomerDto>>(null)
-  const customersRes = useApiRequest<CustomerDto[]>(() => ({
-    url: "/Master/GetCustomers",
-    defaultValue: [],
-  }))
+  const { data: customers = [], isPending } = useQuery(
+    getApiMasterGetCustomersOptions(getHeaderTokenOnly()),
+  )
 
   const { reset, handleSubmit, setValue, register, formState, watch } = useForm<SendSmsFormData>({
     resolver: zodResolver(SendSmsFormSchema),
@@ -79,25 +82,19 @@ export default function SendSmsForm() {
     [setValue],
   )
 
-  async function onSubmit(data: SendSmsFormData) {
-    const dataToSend: Required<SmsMsgDto> = {
-      toAll: data.toAll,
-      receivers: data.receivers || null,
-      message: data.message,
-    }
+  const { mutate: sendSms } = useMutation(postApiMasterSmsBroadcastMutation(getHeaderTokenOnly()))
 
-    await apiRequest({
-      config: genDatApiConfig(),
-      options: {
-        method: "POST",
-        url: "/Master/sms/broadcast",
-        body: JSON.stringify(dataToSend),
+  async function onSubmit(data: SendSmsFormData) {
+    sendSms(
+      { body: data },
+      {
+        onError: err => err.message || String(err),
         onSuccess: () => {
           notifManager.notify("با موفقیت انجام شد", "toast", { status: "success" })
           reset()
         },
       },
-    })
+    )
   }
 
   const selectAllSwitch = (
@@ -130,8 +127,8 @@ export default function SendSmsForm() {
             <Table
               rowSelection={multiRowSelectionOptions}
               onSelectionChanged={onSelectionChanged}
-              rowData={customersRes.data ?? []}
-              loading={!customersRes.data}
+              rowData={customers}
+              loading={isPending}
               columnDefs={columnDefs}
               getRowId={getRowId}
               ref={gridRef}

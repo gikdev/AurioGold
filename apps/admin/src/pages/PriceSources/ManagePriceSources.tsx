@@ -1,6 +1,6 @@
-import { useApiRequest } from "@gikdev/react-datapi/src"
 import { ArrowClockwiseIcon, CirclesThreePlusIcon, UsersThreeIcon } from "@phosphor-icons/react"
 import type { CustomerDto, StockPriceSourceResponse } from "@repo/api-client/client"
+import { getApiStockPriceSourceGetStockPriceSourcesOptions } from "@repo/api-client/tanstack"
 import {
   Btn,
   BtnTemplates,
@@ -11,9 +11,11 @@ import {
 } from "@repo/shared/components"
 import { getIsMobile } from "@repo/shared/hooks"
 import { cellRenderers } from "@repo/shared/lib"
+import { useQuery } from "@tanstack/react-query"
 import type { ColDef } from "ag-grid-community"
 import { Link } from "react-router"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
+import { getHeaderTokenOnly } from "#/shared/react-query"
 import { queryStateUrls } from "."
 import CreatePriceSourceDrawer from "./CreatePriceSourceDrawer"
 import DeletePriceSourceModal from "./DeletePriceSourceModal"
@@ -25,14 +27,16 @@ import { priceSourceFormFields } from "./priceSourceFormShared"
 export default function ManagePriceSources() {
   const isMobile = getIsMobile()
   const { renderedIconsToggle, viewMode } = useViewModes()
-  const sourcesRes = useApiRequest<StockPriceSourceResponse[]>(() => ({
-    url: "/StockPriceSource/GetStockPriceSources",
-    defaultValue: [],
-  }))
+  const {
+    data: sources = [],
+    refetch,
+    isPending,
+    isSuccess,
+  } = useQuery(getApiStockPriceSourceGetStockPriceSourcesOptions(getHeaderTokenOnly()))
 
   const titledCardActions = (
     <div className="ms-auto flex items-center gap-2">
-      <Btn className="h-10 w-10 p-1" onClick={() => sourcesRes.reload()}>
+      <Btn className="h-10 w-10 p-1" onClick={() => refetch()}>
         <ArrowClockwiseIcon size={24} />
       </Btn>
 
@@ -43,13 +47,10 @@ export default function ManagePriceSources() {
 
   return (
     <>
-      <DeletePriceSourceModal reloadPriceSources={() => sourcesRes.reload()} />
-      <CreatePriceSourceDrawer reloadPriceSources={() => sourcesRes.reload()} />
-      <EditPriceSourceDrawer
-        reloadPriceSources={() => sourcesRes.reload()}
-        priceSources={sourcesRes.data ?? []}
-      />
-      <PriceSourceDetails priceSources={sourcesRes.data ?? []} />
+      <DeletePriceSourceModal reloadPriceSources={() => refetch()} />
+      <CreatePriceSourceDrawer reloadPriceSources={() => refetch()} />
+      <EditPriceSourceDrawer reloadPriceSources={() => refetch()} priceSources={sources} />
+      <PriceSourceDetails priceSources={sources} />
 
       <TitledCard
         title="مدیریت منابع قیمت"
@@ -57,11 +58,11 @@ export default function ManagePriceSources() {
         titleSlot={titledCardActions}
         className={!isMobile && viewMode === "table" ? "max-w-240" : undefined}
       >
-        {sourcesRes.loading && <div className="h-100 rounded-md animate-pulse bg-slate-4" />}
+        {isPending && <div className="h-100 rounded-md animate-pulse bg-slate-4" />}
 
-        {sourcesRes.success && !sourcesRes.loading && viewMode === "cards" && (
+        {isSuccess && viewMode === "cards" && (
           <PriceSourceCardsContainer>
-            {(sourcesRes.data || []).map(s => (
+            {sources.map(s => (
               <PriceSourceCard
                 key={s.id}
                 id={s.id ?? 0}
@@ -72,9 +73,7 @@ export default function ManagePriceSources() {
           </PriceSourceCardsContainer>
         )}
 
-        {sourcesRes.success && !sourcesRes.loading && viewMode === "table" && (
-          <PriceSourcesTable priceSources={sourcesRes.data || []} />
-        )}
+        {isSuccess && viewMode === "table" && <PriceSourcesTable priceSources={sources} />}
       </TitledCard>
     </>
   )

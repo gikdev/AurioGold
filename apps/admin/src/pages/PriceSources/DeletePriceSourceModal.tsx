@@ -1,8 +1,8 @@
-import { apiRequest } from "@gikdev/react-datapi/src"
-import type { PostApiStockPriceSourceDeleteStockData } from "@repo/api-client/client"
+import { postApiStockPriceSourceDeleteStockMutation } from "@repo/api-client/tanstack"
 import { BtnTemplates, Modal, useDrawerSheetNumber } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
-import genDatApiConfig from "#/shared/datapi-config"
+import { useMutation } from "@tanstack/react-query"
+import { getHeaderTokenOnly } from "#/shared/react-query"
 import { queryStateKeys } from "."
 
 interface DeletePriceSourceModalProps {
@@ -14,6 +14,10 @@ export default function DeletePriceSourceModal({
 }: DeletePriceSourceModalProps) {
   const [priceSourceId, setPriceSourceId] = useDrawerSheetNumber(queryStateKeys.delete)
 
+  const { mutate: deleteSource } = useMutation(
+    postApiStockPriceSourceDeleteStockMutation(getHeaderTokenOnly()),
+  )
+
   const handleClose = () => setPriceSourceId(null)
 
   const handleDelete = async () => {
@@ -24,22 +28,17 @@ export default function DeletePriceSourceModal({
       success: "منبع قیمت با موفقیت حذف شد",
     })
 
-    const dataToSend = convertToApiPayload(priceSourceId)
-
-    await apiRequest({
-      config: genDatApiConfig(),
-      options: {
-        url: "/StockPriceSource/DeleteStock",
-        body: JSON.stringify(dataToSend),
-        method: "POST",
+    deleteSource(
+      { body: { id: priceSourceId } },
+      {
         onSuccess: () => resolve(),
-        onError: msg => reject(msg),
-        onFinally: () => {
+        onError: err => reject(err.message || String(err)),
+        onSettled() {
           handleClose()
           reloadPriceSources()
         },
       },
-    })
+    )
   }
 
   return (
@@ -56,12 +55,4 @@ export default function DeletePriceSourceModal({
       }
     />
   )
-}
-
-function convertToApiPayload(
-  priceSourceId: number,
-): NonNullable<Required<PostApiStockPriceSourceDeleteStockData["body"]>> {
-  return {
-    id: priceSourceId,
-  }
 }

@@ -1,6 +1,6 @@
-import { apiRequest } from "@gikdev/react-datapi/src"
 import { UserPlusIcon } from "@phosphor-icons/react"
 import type { StockPriceSourceEditRequest, StockPriceSourceResponse } from "@repo/api-client/client"
+import { postApiStockPriceSourceEditStockPriceSourceMutation } from "@repo/api-client/tanstack"
 import {
   BtnTemplates,
   DrawerSheet,
@@ -8,9 +8,10 @@ import {
   useDrawerSheetNumber,
 } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
+import { useMutation } from "@tanstack/react-query"
 import { useEffect } from "react"
 import { useCustomForm } from "#/shared/customForm"
-import genDatApiConfig from "#/shared/datapi-config"
+import { getHeaderTokenOnly } from "#/shared/react-query"
 import { queryStateKeys } from "."
 import PriceSourceForm from "./PriceSourceForm"
 import {
@@ -37,27 +38,27 @@ export default function EditPriceSourceDrawer({
   const { formState, trigger, reset, handleSubmit } = form
   const { isSubmitting } = formState
 
+  const { mutate: editSource } = useMutation(
+    postApiStockPriceSourceEditStockPriceSourceMutation(getHeaderTokenOnly()),
+  )
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     if (defaultValues) reset(defaultValues)
   }, [reset, priceSource])
 
-  const onSubmit = async (data: PriceSourceFormValues) => {
+  const onSubmit = (data: PriceSourceFormValues) => {
     if (priceSourceId == null) return
-    const dataToSend = convertFormValuesToApiPayload(data, priceSourceId)
 
     const { reject, resolve } = createControlledAsyncToast({
       pending: "در حال ویرایش منبع قیمت...",
       success: "منبع قیمت با موفقیت ویرایش شد!",
     })
 
-    await apiRequest({
-      config: genDatApiConfig(),
-      options: {
-        url: "/StockPriceSource/EditStockPriceSource",
-        method: "POST",
-        body: JSON.stringify(dataToSend),
-        onError: msg => reject(msg),
+    editSource(
+      { body: data },
+      {
+        onError: err => reject(err.message || String(err)),
         onSuccess: () => {
           resolve()
           reloadPriceSources()
@@ -65,7 +66,7 @@ export default function EditPriceSourceDrawer({
           reset()
         },
       },
-    })
+    )
   }
 
   const submitTheFormManually = async () => {
@@ -97,19 +98,6 @@ export default function EditPriceSourceDrawer({
       )}
     </DrawerSheet>
   )
-}
-
-function convertFormValuesToApiPayload(
-  values: PriceSourceFormValues,
-  priceSourceId: number,
-): Required<StockPriceSourceEditRequest> {
-  return {
-    id: priceSourceId,
-    name: values.name,
-    code: values.code,
-    price: values.price ?? 0,
-    sourceUrl: values.sourceUrl,
-  }
 }
 
 function convertPartialEditRequestToFormValues(

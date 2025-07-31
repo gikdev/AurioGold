@@ -1,10 +1,6 @@
 import { ArrowsLeftRightIcon } from "@phosphor-icons/react"
-import {
-  type CustomerDto,
-  type PostApiMasterAddAndAcceptDocsData,
-  postApiMasterAddAndAcceptDocs,
-  type ReqAcceptDocMasterDto,
-} from "@repo/api-client/client"
+import type { CustomerDto } from "@repo/api-client/client"
+import { postApiMasterAddAndAcceptDocsMutation } from "@repo/api-client/tanstack"
 import {
   BtnTemplates,
   DrawerSheet,
@@ -68,7 +64,9 @@ function _CustomerDocDrawer({ customers }: CustomerDocDrawerProps) {
   const { formState, trigger, reset, handleSubmit } = form
   const { isSubmitting } = formState
 
-  const { mutate: addAndAcceptDoc } = useAddAndAcceptDocMutation()
+  const { mutate: addAndAcceptDoc } = useMutation(
+    postApiMasterAddAndAcceptDocsMutation(getHeaderTokenOnly()),
+  )
 
   const handleClose = () => {
     setShowDocDrawer(false)
@@ -77,14 +75,31 @@ function _CustomerDocDrawer({ customers }: CustomerDocDrawerProps) {
 
   const onSubmit = async (data: CustomerDocFormValues) => {
     if (customerId == null) return
-    const dataToSend = convertFormValuesToApiPayload(data, customerId)
 
-    addAndAcceptDoc(dataToSend, {
-      onSuccess: () => {
-        handleClose()
-        reset()
-      },
+    const { reject, resolve } = createControlledAsyncToast({
+      pending: "در حال ثبت...",
+      success: "با موفقیت ثبت شد!",
     })
+
+    addAndAcceptDoc(
+      {
+        body: {
+          docId: data.docStr,
+          title: data.title,
+          tyCustomerID: customerId,
+          tyOrderID: null,
+          value: data.mode === "give" ? -data.amount : data.amount,
+        },
+      },
+      {
+        onError: err => reject(err.message || String(err)),
+        onSuccess: () => {
+          resolve()
+          handleClose()
+          reset()
+        },
+      },
+    )
   }
 
   const submitTheFormManually = async () => {
@@ -173,37 +188,4 @@ function CustomerDocForm({ form }: CustomerDocFormProps) {
       </Labeler>
     </form>
   )
-}
-
-function convertFormValuesToApiPayload(
-  values: CustomerDocFormValues,
-  customerId: NonNullable<CustomerDto["id"]>,
-): NonNullable<Required<PostApiMasterAddAndAcceptDocsData["body"]>> {
-  return {
-    docId: values.docStr,
-    title: values.title,
-    tyCustomerID: customerId,
-    tyOrderID: null,
-    value: values.mode === "give" ? -values.amount : values.amount,
-  }
-}
-
-function useAddAndAcceptDocMutation() {
-  return useMutation({
-    mutationFn: async (data: ReqAcceptDocMasterDto) => {
-      const { reject, resolve } = createControlledAsyncToast({
-        pending: "در حال ثبت...",
-        success: "با موفقیت ثبت شد!",
-      })
-
-      try {
-        await postApiMasterAddAndAcceptDocs({ ...getHeaderTokenOnly(), body: data })
-        resolve()
-      } catch (err) {
-        const msg = err instanceof Error ? err.message : "خطایی رخ داد"
-        reject(msg)
-        throw err // rethrow for TanStack Query's onError
-      }
-    },
-  })
 }

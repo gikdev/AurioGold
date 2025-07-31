@@ -1,5 +1,5 @@
 import { UserPlusIcon } from "@phosphor-icons/react"
-import { postApiMasterAddCustomer } from "@repo/api-client/client"
+import { postApiMasterAddCustomerMutation } from "@repo/api-client/tanstack"
 import { BtnTemplates, DrawerSheet, useDrawerSheet } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { useMutation } from "@tanstack/react-query"
@@ -14,26 +14,6 @@ import {
 } from "./customerFormShared"
 import { QUERY_KEYS } from "./navigation"
 
-function useCreateCustomerMutation() {
-  return useMutation({
-    mutationFn: async (data: CreateCustomerFormValues) => {
-      const { reject, resolve } = createControlledAsyncToast({
-        pending: "در حال ایجاد مشتری...",
-        success: "مشتری با موفقیت ایجاد شد!",
-      })
-
-      try {
-        await postApiMasterAddCustomer({ ...getHeaderTokenOnly(), body: data })
-        resolve()
-      } catch (err) {
-        const msg = err instanceof Error ? err.message : "خطایی رخ داد"
-        reject(msg)
-        throw err // rethrow for TanStack Query's onError
-      }
-    },
-  })
-}
-
 interface CreateCustomerFormProps {
   reloadCustomers: () => void
 }
@@ -45,16 +25,29 @@ function _CreateCustomerDrawer({ reloadCustomers }: CreateCustomerFormProps) {
   const { formState, trigger, reset, handleSubmit } = form
   const { isSubmitting } = formState
 
-  const { mutate: createCustomer } = useCreateCustomerMutation()
+  // const { mutate: createCustomer } = useCreateCustomerMutation()
+  const { mutate: createCustomer } = useMutation(
+    postApiMasterAddCustomerMutation(getHeaderTokenOnly()),
+  )
 
   const onSubmit = async (data: CreateCustomerFormValues) => {
-    createCustomer(data, {
-      onSuccess: () => {
-        reloadCustomers()
-        setShowCreateDrawer(false)
-        reset()
-      },
+    const { reject, resolve } = createControlledAsyncToast({
+      pending: "در حال ایجاد مشتری...",
+      success: "مشتری با موفقیت ایجاد شد!",
     })
+
+    createCustomer(
+      { body: data },
+      {
+        onError: err => reject(err.message || String(err)),
+        onSuccess: () => {
+          resolve()
+          reloadCustomers()
+          setShowCreateDrawer(false)
+          reset()
+        },
+      },
+    )
   }
 
   const submitTheFormManually = async () => {
