@@ -16,7 +16,7 @@ export const AppRouter = () => (
   <BrowserRouter>
     <NuqsAdapter>
       <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} position="right" />
+        <ReactQueryDevtools initialIsOpen={false} buttonPosition="top-left" />
 
         <AnimatePresence mode="wait">
           <Suspense fallback={<Loading />}>

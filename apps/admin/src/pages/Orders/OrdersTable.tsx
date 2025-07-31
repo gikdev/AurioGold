@@ -1,49 +1,29 @@
-import { apiRequest, useApiRequest } from "@gikdev/react-datapi/src"
 import type { HubConnection } from "@microsoft/signalr"
 import { ArrowClockwiseIcon, CheckIcon, FunnelIcon, XIcon } from "@phosphor-icons/react"
-import type { Gidto, OrderFm, OrdersByStuckDto, OrdersReturnFm } from "@repo/api-client/client"
+import {
+  postApiMasterAcceptOrders,
+  type Gidto,
+  type OrderFm,
+  type OrdersByStuckDto,
+  type OrdersReturnFm,
+  type PageDto,
+} from "@repo/api-client/client"
+import { postApiMasterGetOrdersOptions } from "@repo/api-client/tanstack"
 import { notifManager, storageManager } from "@repo/shared/adapters"
 import { Btn, createTypedTableFa } from "@repo/shared/components"
 import { cellRenderers } from "@repo/shared/lib"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import type { ColDef, RowClassParams, RowStyle } from "ag-grid-community"
 import type { CustomCellRendererProps } from "ag-grid-react"
 import { useAtomValue } from "jotai"
-import { useCallback, useEffect } from "react"
+import { useCallback, useEffect, useMemo } from "react"
 import { Link, useNavigate } from "react-router"
 import { connectionRefAtom } from "#/atoms"
-import genDatApiConfig from "#/shared/datapi-config"
+import { getHeaderTokenOnly } from "#/shared/react-query"
 import routes from "../routes"
 import FilterDrawer from "./FilterDrawer"
 import { OrdersNavigation } from "./navigation"
 import { useDateFilter } from "./useDateFilter"
-
-export function acceptOrRejectOrder(
-  isOrderNotif: boolean,
-  id: number,
-  isAccepted: boolean,
-  cb: () => void,
-) {
-  const dataToSend: Required<Gidto> = {
-    gid: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    id: Number(id),
-    str: "",
-    tf: isAccepted,
-  }
-
-  apiRequest({
-    config: genDatApiConfig(),
-    options: {
-      url: "/Master/AcceptOrders",
-      method: "POST",
-      body: JSON.stringify(dataToSend),
-      onSuccess() {
-        cb()
-        if (isOrderNotif) return
-        notifManager.notify("با موفقیت انجام شد", "toast", { status: "success" })
-      },
-    },
-  })
-}
 
 function signalrDecideOrder(
   connection: HubConnection,
@@ -59,104 +39,112 @@ function signalrDecideOrder(
     )
 }
 
+export function useAcceptOrRejectOrder({
+  onSuccess,
+  onError,
+}: {
+  onSuccess?: () => void
+  onError?: () => void
+} = {}) {
+  return useMutation({
+    mutationFn: async ({
+      id,
+      isAccepted,
+      skipNotif,
+    }: {
+      id: number
+      isAccepted: boolean
+      skipNotif: boolean
+    }) => {
+      const dataToSend: Required<Gidto> = {
+        gid: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        id: Number(id),
+        str: "",
+        tf: isAccepted,
+      }
+
+      await postApiMasterAcceptOrders({
+        ...getHeaderTokenOnly(),
+        body: dataToSend,
+      })
+
+      return { skipNotif }
+    },
+    onSuccess: ({ skipNotif }) => {
+      if (skipNotif) return
+      notifManager.notify("با موفقیت انجام شد", "toast", { status: "success" })
+      onSuccess?.()
+    },
+    onError: () => {
+      notifManager.notify("مشکل ناشناخته پیش آمده! (NotCaughtError)", "toast", {
+        status: "error",
+      })
+      onError?.()
+    },
+  })
+}
+
 function ManagementBtns({ data }: CustomCellRendererProps<OrderFm>) {
+  const { mutate: acceptOrReject } = useAcceptOrRejectOrder()
   const connection = useAtomValue(connectionRefAtom)
   const areDisabled = [3, 4].includes(data?.orderStatus || 0)
   const navigate = useNavigate()
   const className = "min-h-8 py-1 px-2 text-xs flex items-center"
 
-  const handleAccept = useCallback(() => {
-    const isAccepted = true
-    const token = storageManager.get("ttkk", "sessionStorage")
+  const handleDecision = useCallback(
+    (isAccepted: boolean) => {
+      const token = storageManager.get("ttkk", "sessionStorage")
+      const orderId = data?.id
+      const userId = data?.userID
 
-    if (!token) {
-      notifManager.notify("خودتان معتبر نیستید!!! دوباره وارد شوید!", "toast", { status: "error" })
-      navigate(routes.logout)
+      if (!token) {
+        notifManager.notify("خودتان معتبر نیستید!!! دوباره وارد شوید!", "toast", {
+          status: "error",
+        })
+        navigate(routes.logout)
+        return
+      }
 
-      return
-    }
+      if (!connection) {
+        notifManager.notify("وقتی متصل نیستیم، نمی‌توان سفارشی را رد یا تایید کرد...", "toast", {
+          status: "error",
+        })
+        return
+      }
 
-    if (!connection) {
-      notifManager.notify("وقتی متصل نیستیم، نمی‌توان سفارشی را رد یا تایید کرد...", "toast", {
-        status: "error",
-      })
+      if (typeof orderId !== "number" || typeof userId !== "number") {
+        notifManager.notify("آی‌دی سفارش یا مشتری معتبر نیست!", "toast", {
+          status: "error",
+        })
+        return
+      }
 
-      return
-    }
-
-    if (!data || typeof data.userID !== "number") {
-      notifManager.notify("آی‌دی مشتری مورد نظر معتبر نیست!", "toast", {
-        status: "error",
-      })
-
-      return
-    }
-
-    if (!data || typeof data.id !== "number") {
-      notifManager.notify("آی‌دی سفارش مورد نظر معتبر نیست!", "toast", {
-        status: "error",
-      })
-
-      return
-    }
-
-    const { id: orderId, userID } = data
-
-    acceptOrRejectOrder(false, orderId, isAccepted, () => {
-      signalrDecideOrder(connection, token, isAccepted, orderId, userID)
-    })
-  }, [data, connection, navigate])
-
-  const handleReject = useCallback(() => {
-    const isAccepted = false
-    const token = storageManager.get("ttkk", "sessionStorage")
-
-    if (!token) {
-      notifManager.notify("خودتان معتبر نیستید!!! دوباره وارد شوید!", "toast", { status: "error" })
-      navigate(routes.logout)
-
-      return
-    }
-
-    if (!connection) {
-      notifManager.notify("وقتی متصل نیستیم، نمی‌توان سفارشی را رد یا تایید کرد...", "toast", {
-        status: "error",
-      })
-
-      return
-    }
-
-    if (!data || typeof data.userID !== "number") {
-      notifManager.notify("آی‌دی مشتری مورد نظر معتبر نیست!", "toast", {
-        status: "error",
-      })
-
-      return
-    }
-
-    if (!data || typeof data.id !== "number") {
-      notifManager.notify("آی‌دی سفارش مورد نظر معتبر نیست!", "toast", {
-        status: "error",
-      })
-
-      return
-    }
-
-    const { id: orderId, userID } = data
-
-    acceptOrRejectOrder(false, orderId, isAccepted, () => {
-      signalrDecideOrder(connection, token, isAccepted, orderId, userID)
-    })
-  }, [data, connection, navigate])
+      acceptOrReject(
+        { id: orderId, isAccepted, skipNotif: false },
+        { onSuccess: () => signalrDecideOrder(connection, token, isAccepted, orderId, userId) },
+      )
+    },
+    [acceptOrReject, connection, data, navigate],
+  )
 
   return (
     <div className="flex gap-1 items-center pt-1">
-      <Btn className={className} theme="success" disabled={areDisabled} onClick={handleAccept}>
+      <Btn
+        className={className}
+        theme="success"
+        disabled={areDisabled}
+        onClick={() => handleDecision(true)}
+      >
         <CheckIcon size={16} />
         <span>تایید</span>
       </Btn>
 
-      <Btn className={className} theme="error" disabled={areDisabled} onClick={handleReject}>
+      <Btn
+        className={className}
+        theme="error"
+        disabled={areDisabled}
+        onClick={() => handleDecision(false)}
+      >
         <XIcon size={16} />
         <span>رد کردن</span>
       </Btn>
@@ -300,40 +288,43 @@ const stocksDefaultColDef: ColDef<OrdersByStuckDto> = {
   floatingFilter: false,
 }
 
+export const useOrdersQuery = (pageConfig: PageDto) =>
+  useQuery({
+    ...postApiMasterGetOrdersOptions({
+      ...getHeaderTokenOnly(),
+      body: pageConfig,
+    }),
+  })
+
 export default function OrdersTable() {
   const connection = useAtomValue(connectionRefAtom)
   const dateFilterState = useDateFilter()
-  const dataToSend = {
-    start: dateFilterState.fromDate.toISOString(),
-    end: dateFilterState.toDate.toISOString(),
-    countPerPage: 1000,
-    pageNumber: 1,
-  }
-  const resOrders = useApiRequest<OrdersReturnFm | null>(() => ({
-    url: "/Master/GetOrders",
-    method: "POST",
-    body: JSON.stringify(dataToSend),
-    defaultValue: emptyOrdersReturnFm,
-    dependencies: [dateFilterState.fromDate, dateFilterState.toDate],
-  }))
+  const pageConfig = useMemo<PageDto>(
+    () => ({
+      start: dateFilterState.fromDate,
+      end: dateFilterState.toDate,
+      countPerPage: 1000,
+      pageNumber: 1,
+    }),
+    [dateFilterState.fromDate, dateFilterState.toDate],
+  )
 
-  // Refetch stuff from API when something changed...
-  // I know it should be like I'd be modifying data myself...
-  // But it's what it is...
-  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
+  const { data: orders = emptyOrdersReturnFm satisfies OrdersReturnFm, refetch } =
+    useOrdersQuery(pageConfig)
+
   useEffect(() => {
     if (!connection) return undefined
 
-    connection.on("ReceiveOrder2", () => resOrders.reload())
-    connection.on("UpdateCOrder", () => resOrders.reload())
-    connection.on("Decided", () => resOrders.reload())
+    connection.on("ReceiveOrder2", refetch)
+    connection.on("UpdateCOrder", refetch)
+    connection.on("Decided", refetch)
 
     return () => {
       connection.off("ReceiveOrder2")
       connection.off("UpdateCOrder")
       connection.off("Decided")
     }
-  }, [connection])
+  }, [connection, refetch])
 
   return (
     <div className="flex flex-col gap-10">
@@ -347,7 +338,7 @@ export default function OrdersTable() {
 
           <button
             type="button"
-            onClick={() => resOrders.reload()}
+            onClick={() => refetch()}
             className="
               text-slate-11 bg-slate-3 transition-all
               hover:text-slate-12 hover:bg-slate-4
@@ -374,7 +365,7 @@ export default function OrdersTable() {
         </div>
 
         <TableOrders
-          rowData={resOrders.data?.orderFMs ?? []}
+          rowData={orders.orderFMs ?? []}
           columnDefs={ordersColDef}
           getRowStyle={getRowStyle}
         />
@@ -388,7 +379,7 @@ export default function OrdersTable() {
 
           <button
             type="button"
-            onClick={() => resOrders.reload()}
+            onClick={() => refetch()}
             className="
               text-slate-11 bg-slate-3 transition-all
               hover:text-slate-12 hover:bg-slate-4
@@ -415,7 +406,7 @@ export default function OrdersTable() {
         </div>
 
         <TableStocks
-          rowData={resOrders.data?.stucksFMs ?? []}
+          rowData={orders.stucksFMs ?? []}
           columnDefs={stocksColDef}
           defaultColDef={stocksDefaultColDef}
         />

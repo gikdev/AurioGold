@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef } from "react"
 import { toast } from "react-toastify"
 import notifSfx from "#/assets/notification.mp3"
 import { connectionRefAtom, connectionStateAtom } from "#/atoms"
-import { acceptOrRejectOrder } from "#/pages/Orders/OrdersTable"
+import { useAcceptOrRejectOrder } from "#/pages/Orders/OrdersTable"
 import routes from "#/pages/routes"
 
 export const transactionMethods = [
@@ -18,6 +18,7 @@ export const transactionMethods = [
 ] as const
 
 export function useNotifyOrders() {
+  const { mutate: acceptOrReject } = useAcceptOrRejectOrder()
   const connection = useAtomValue(connectionRefAtom)
   const connectionState = useAtomValue(connectionStateAtom)
   const notifIDs = useRef<Set<[closeToast: () => void, orderId: number]>>(new Set())
@@ -46,37 +47,42 @@ export function useNotifyOrders() {
   ) {
     closeToast()
 
-    acceptOrRejectOrder(true, orderId, isAccepted, () => {
-      if (!connection) {
-        notifManager.notify(
-          `وقتی که به سرور وصل نیستیم، نمیتوان سفارشی را ${isAccepted ? "تایید" : "رد"} کرد.`,
-          "toast",
-          { status: "warning" },
-        )
-        return
-      }
+    acceptOrReject(
+      { id: orderId, isAccepted, skipNotif: true },
+      {
+        onSuccess: () => {
+          if (!connection) {
+            notifManager.notify(
+              `وقتی که به سرور وصل نیستیم، نمیتوان سفارشی را ${isAccepted ? "تایید" : "رد"} کرد.`,
+              "toast",
+              { status: "warning" },
+            )
+            return
+          }
 
-      connection
-        .invoke(
-          "DecideOrder",
-          storageManager.get("ttkk", "sessionStorage"),
-          isAccepted,
-          orderId,
-          userId,
-        )
-        .then(() => {
-          notifManager.notify(isAccepted ? "سفارش تایید شد" : "سفارش رد شد", "toast", {
-            status: "info",
-          })
-        })
-        .catch(() => {
-          notifManager.notify(
-            `موقع ${isAccepted ? "تایید" : "رد"} کردن سفارش به مشکلی بر خوردیم`,
-            "toast",
-            { status: "error" },
-          )
-        })
-    })
+          connection
+            .invoke(
+              "DecideOrder",
+              storageManager.get("ttkk", "sessionStorage"),
+              isAccepted,
+              orderId,
+              userId,
+            )
+            .then(() => {
+              notifManager.notify(isAccepted ? "سفارش تایید شد" : "سفارش رد شد", "toast", {
+                status: "info",
+              })
+            })
+            .catch(() => {
+              notifManager.notify(
+                `موقع ${isAccepted ? "تایید" : "رد"} کردن سفارش به مشکلی بر خوردیم`,
+                "toast",
+                { status: "error" },
+              )
+            })
+        },
+      },
+    )
   }
 
   function showNewOrderNotification(
@@ -137,12 +143,12 @@ export function useNotifyOrders() {
               <strong className="text-amber-9">{transactionMethod.unitTitle} </strong>
               <span>با مظنه </span>
               <strong className="text-amber-9">
-                <NumberRepresentor num={orderDto.price} />{" "}
+                <NumberRepresentor num={Number(orderDto.price)} />{" "}
               </strong>
               <strong className="text-amber-9">ریال </strong>
               <span>و ارزش </span>
               <strong className="text-amber-9">
-                <NumberRepresentor num={orderDto.value} />{" "}
+                <NumberRepresentor num={Number(orderDto.value)} />{" "}
               </strong>
               <strong className="text-amber-9">ریال </strong>
               <span>توسط کاربر </span>

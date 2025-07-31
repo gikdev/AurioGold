@@ -3,7 +3,7 @@ import { getApiMasterGetMasterPortfolioOptions } from "@repo/api-client/tanstack
 import { useQuery } from "@tanstack/react-query"
 import { atom } from "jotai"
 import { v4 as uuid } from "uuid"
-import genDatApiConfig from "#/shared/datapi-config"
+import { getHeaderTokenOnly } from "#/shared/react-query"
 
 export const selectedPortfolioIdAtom = atom<MasterPortfolioWithId["id"]>()
 
@@ -23,18 +23,8 @@ function mapSinglePortfolioItem(item: MasterPortfolioDto): MasterPortfolioWithId
   }
 }
 
-const getBearer = () => ({
-  Authorization: `Bearer ${genDatApiConfig().token}`,
-})
-
-const getHeaderTokenOnly = () => ({
-  headers: { ...getBearer() },
-})
-
 export const useGetMasterPortfolioQuery = () =>
   useQuery({
-    ...getApiMasterGetMasterPortfolioOptions({
-      ...getHeaderTokenOnly(),
-    }),
+    ...getApiMasterGetMasterPortfolioOptions(getHeaderTokenOnly()),
     select: rawItems => rawItems.map(mapSinglePortfolioItem),
   })
