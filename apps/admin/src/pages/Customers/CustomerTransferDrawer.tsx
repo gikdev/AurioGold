@@ -1,9 +1,10 @@
-import { apiRequest } from "@gikdev/react-datapi/src"
 import { ArrowsLeftRightIcon } from "@phosphor-icons/react"
-import type {
-  CustomerDto,
-  PostApiMasterAddAndAcceptTransferData,
-  StockDto,
+import {
+  type CustomerDto,
+  type PostApiMasterAddAndAcceptTransferData,
+  postApiMasterAddAndAcceptTransfer,
+  type ReqAcceptTransMasterDto,
+  type StockDto,
 } from "@repo/api-client/client"
 import {
   BtnTemplates,
@@ -19,16 +20,13 @@ import {
   useDrawerSheetString,
 } from "@repo/shared/components"
 import { createControlledAsyncToast, createFieldsWithLabels } from "@repo/shared/helpers"
-import { useAtomValue } from "jotai"
+import { useMutation } from "@tanstack/react-query"
 import { memo } from "react"
 import type { UseFormReturn } from "react-hook-form"
 import { z } from "zod"
 import { useCustomForm } from "#/shared/customForm"
-import genDatApiConfig from "#/shared/datapi-config"
-import { customersAtom } from "."
+import { getHeaderTokenOnly } from "#/shared/react-query"
 import { QUERY_KEYS } from "./navigation"
-
-// import { useWriteJsonToastContent } from "./useJsonToast"
 
 const { fields, labels } = createFieldsWithLabels({
   mode: "حالت *",
@@ -54,8 +52,11 @@ const emptyCustomerTransferFormValues: CustomerTransferFormValues = {
   volume: 0,
 }
 
-function _CustomerTransferDrawer() {
-  const customers = useAtomValue(customersAtom)
+interface CustomerTransferDrawerProps {
+  customers: CustomerDto[]
+}
+
+function _CustomerTransferDrawer({ customers }: CustomerTransferDrawerProps) {
   const [customerId, setCustomerId] = useDrawerSheetNumber(QUERY_KEYS.customerId)
   const [showTransferDrawer, setShowTransferDrawer] = useDrawerSheet(QUERY_KEYS.transfer)
   const [defaultMobile, setDefaultMobile] = useDrawerSheetString(QUERY_KEYS.defaultMobile)
@@ -66,7 +67,7 @@ function _CustomerTransferDrawer() {
   const { formState, trigger, reset, handleSubmit } = form
   const { isSubmitting } = formState
 
-  // const writeJsonToast = useWriteJsonToastContent()
+  const { mutate: addAndAcceptTransfer } = useAddAndAcceptTransferMutation()
 
   const isOpen =
     defaultMobile !== null && customerId !== null && showTransferDrawer && stockId !== null
@@ -79,34 +80,16 @@ function _CustomerTransferDrawer() {
   }
 
   const onSubmit = async (data: CustomerTransferFormValues) => {
-    // writeJsonToast({ ...data, customerId })
-
     if (customerId == null) return
     if (stockId == null) return
     if (defaultMobile == null) return
 
     const dataToSend = convertFormValuesToApiPayload(data, customerId, stockId, defaultMobile)
 
-    // writeJsonToast(dataToSend)
-    // return
-
-    const { reject, resolve } = createControlledAsyncToast({
-      pending: "در حال ثبت...",
-      success: "با موفقیت ثبت شد!",
-    })
-
-    await apiRequest({
-      config: genDatApiConfig(),
-      options: {
-        url: "/Master/AddAndAcceptDocs",
-        method: "POST",
-        body: JSON.stringify(dataToSend),
-        onError: msg => reject(msg),
-        onSuccess: () => {
-          resolve()
-          handleClose()
-          reset()
-        },
+    addAndAcceptTransfer(dataToSend, {
+      onSuccess: () => {
+        handleClose()
+        reset()
       },
     })
   }
@@ -201,4 +184,24 @@ function convertFormValuesToApiPayload(
     description: values.description ?? null,
     mobile,
   }
+}
+
+function useAddAndAcceptTransferMutation() {
+  return useMutation({
+    mutationFn: async (data: ReqAcceptTransMasterDto) => {
+      const { reject, resolve } = createControlledAsyncToast({
+        pending: "در حال ثبت...",
+        success: "با موفقیت ثبت شد!",
+      })
+
+      try {
+        await postApiMasterAddAndAcceptTransfer({ ...getHeaderTokenOnly(), body: data })
+        resolve()
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : "خطایی رخ داد"
+        reject(msg)
+        throw err // rethrow for TanStack Query's onError
+      }
+    },
+  })
 }

@@ -1,6 +1,6 @@
-import { useApiRequest } from "@gikdev/react-datapi/src"
 import { CoinsIcon } from "@phosphor-icons/react"
-import type { PortfolioDto } from "@repo/api-client/client"
+import type { CustomerDto, PortfolioDto } from "@repo/api-client/client"
+import { getApiMasterUserPortfolioByCustomerIdOptions } from "@repo/api-client/tanstack"
 import {
   BtnTemplates,
   DrawerSheet,
@@ -8,10 +8,10 @@ import {
   useDrawerSheet,
   useDrawerSheetNumber,
 } from "@repo/shared/components"
-import { useAtomValue } from "jotai"
+import { useQuery } from "@tanstack/react-query"
 import { memo } from "react"
 import { v4 as uuid } from "uuid"
-import { customersAtom } from "."
+import { getHeaderTokenOnly } from "#/shared/react-query"
 import BalanceCards from "./BalanceCards"
 import { QUERY_KEYS } from "./navigation"
 
@@ -35,22 +35,25 @@ function convertPortfolioItemToBalanceItem(obj: PortfolioDto): UserBalanceItemWi
   }
 }
 
-// interface CustomerDetailsProps {}
+const useCustomerBalanceQuery = (customerId: number | null) =>
+  useQuery({
+    ...getApiMasterUserPortfolioByCustomerIdOptions({
+      ...getHeaderTokenOnly(),
+      path: { CustomerID: customerId || 0 },
+    }),
+    enabled: () => typeof customerId === "number",
+    select: rawItems => rawItems.map(convertPortfolioItemToBalanceItem),
+  })
 
-function _CustomerBalanceDrawer(
-  // {}: CustomerDetailsProps
-) {
-  const customers = useAtomValue(customersAtom)
+interface CustomerDetailsProps {
+  customers: CustomerDto[]
+}
+
+function _CustomerBalanceDrawer({ customers }: CustomerDetailsProps) {
   const [customerId, setCustomerId] = useDrawerSheetNumber(QUERY_KEYS.customerId)
   const [showBalanceDrawer, setShowBalanceDrawer] = useDrawerSheet(QUERY_KEYS.balance)
   const customer = customers.find(c => c.id === customerId)
-  const resBalance = useApiRequest<UserBalanceItemWithId[], PortfolioDto[]>(() => ({
-    url: `/Master/UserPortfolio/${customerId}`,
-    dependencies: [customerId],
-    defaultValue: [],
-    transformResponse: rawItems => rawItems.map(convertPortfolioItemToBalanceItem),
-    shouldRun: () => !!customerId,
-  }))
+  const { data: balance = [] } = useCustomerBalanceQuery(customerId)
 
   const handleClose = () => {
     setShowBalanceDrawer(false)
@@ -73,7 +76,7 @@ function _CustomerBalanceDrawer(
     >
       {customer === undefined && <EntityNotFoundCard entity="مشتری" />}
 
-      {customer && <BalanceCards balanceItems={resBalance.data ?? []} />}
+      {customer && <BalanceCards balanceItems={balance} />}
     </DrawerSheet>
   )
 }

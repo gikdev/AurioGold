@@ -1,6 +1,10 @@
-import { apiRequest } from "@gikdev/react-datapi/src"
 import { ArrowsLeftRightIcon } from "@phosphor-icons/react"
-import type { CustomerDto, PostApiMasterAddAndAcceptDocsData } from "@repo/api-client/client"
+import {
+  type CustomerDto,
+  type PostApiMasterAddAndAcceptDocsData,
+  postApiMasterAddAndAcceptDocs,
+  type ReqAcceptDocMasterDto,
+} from "@repo/api-client/client"
 import {
   BtnTemplates,
   DrawerSheet,
@@ -15,16 +19,13 @@ import {
 } from "@repo/shared/components"
 import { createControlledAsyncToast, createFieldsWithLabels } from "@repo/shared/helpers"
 import { MAX_FILE_SIZE_FOR_UPLOAD } from "@repo/shared/lib"
-import { useAtomValue } from "jotai"
+import { useMutation } from "@tanstack/react-query"
 import { memo } from "react"
 import type { UseFormReturn } from "react-hook-form"
 import { z } from "zod"
 import { uploadFile, useCustomForm } from "#/shared/customForm"
-import genDatApiConfig from "#/shared/datapi-config"
-import { customersAtom } from "."
+import { getHeaderTokenOnly } from "#/shared/react-query"
 import { QUERY_KEYS } from "./navigation"
-
-// import { useWriteJsonToastContent } from "./useJsonToast"
 
 const fileNotes = [
   FileInput.helpers.generateAllowedExtensionsNote(["png", "jpg", "jpeg", "pdf"]),
@@ -54,8 +55,11 @@ const emptyCustomerDocFormValues: CustomerDocFormValues = {
   amount: 0,
 }
 
-function _CustomerDocDrawer() {
-  const customers = useAtomValue(customersAtom)
+interface CustomerDocDrawerProps {
+  customers: CustomerDto[]
+}
+
+function _CustomerDocDrawer({ customers }: CustomerDocDrawerProps) {
   const [customerId, setCustomerId] = useDrawerSheetNumber(QUERY_KEYS.customerId)
   const [showDocDrawer, setShowDocDrawer] = useDrawerSheet(QUERY_KEYS.doc)
   const customer = customers.find(c => c.id === customerId)
@@ -64,7 +68,7 @@ function _CustomerDocDrawer() {
   const { formState, trigger, reset, handleSubmit } = form
   const { isSubmitting } = formState
 
-  // const writeJsonToast = useWriteJsonToastContent()
+  const { mutate: addAndAcceptDoc } = useAddAndAcceptDocMutation()
 
   const handleClose = () => {
     setShowDocDrawer(false)
@@ -72,31 +76,13 @@ function _CustomerDocDrawer() {
   }
 
   const onSubmit = async (data: CustomerDocFormValues) => {
-    // writeJsonToast({ ...data, customerId })
-
     if (customerId == null) return
     const dataToSend = convertFormValuesToApiPayload(data, customerId)
 
-    // writeJsonToast(dataToSend)
-    // return;
-
-    const { reject, resolve } = createControlledAsyncToast({
-      pending: "در حال ثبت...",
-      success: "با موفقیت ثبت شد!",
-    })
-
-    await apiRequest({
-      config: genDatApiConfig(),
-      options: {
-        url: "/Master/AddAndAcceptDocs",
-        method: "POST",
-        body: JSON.stringify(dataToSend),
-        onError: msg => reject(msg),
-        onSuccess: () => {
-          resolve()
-          handleClose()
-          reset()
-        },
+    addAndAcceptDoc(dataToSend, {
+      onSuccess: () => {
+        handleClose()
+        reset()
       },
     })
   }
@@ -200,4 +186,24 @@ function convertFormValuesToApiPayload(
     tyOrderID: null,
     value: values.mode === "give" ? -values.amount : values.amount,
   }
+}
+
+function useAddAndAcceptDocMutation() {
+  return useMutation({
+    mutationFn: async (data: ReqAcceptDocMasterDto) => {
+      const { reject, resolve } = createControlledAsyncToast({
+        pending: "در حال ثبت...",
+        success: "با موفقیت ثبت شد!",
+      })
+
+      try {
+        await postApiMasterAddAndAcceptDocs({ ...getHeaderTokenOnly(), body: data })
+        resolve()
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : "خطایی رخ داد"
+        reject(msg)
+        throw err // rethrow for TanStack Query's onError
+      }
+    },
+  })
 }

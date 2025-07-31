@@ -1,6 +1,6 @@
-import { useApiRequest } from "@gikdev/react-datapi/src"
 import { ArrowClockwiseIcon, UserCirclePlusIcon, UsersThreeIcon } from "@phosphor-icons/react"
 import type { CustomerDto } from "@repo/api-client/client"
+import { getApiMasterGetCustomersOptions } from "@repo/api-client/tanstack"
 import {
   Btn,
   BtnTemplates,
@@ -11,11 +11,11 @@ import {
 } from "@repo/shared/components"
 import { getIsMobile } from "@repo/shared/hooks"
 import { cellRenderers } from "@repo/shared/lib"
+import { useQuery } from "@tanstack/react-query"
 import type { ColDef } from "ag-grid-community"
-import { useSetAtom } from "jotai"
 import { Link } from "react-router"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
-import { customersAtom } from "."
+import { getHeaderTokenOnly } from "#/shared/react-query"
 import CreateCustomerDrawer from "./CreateCustomerDrawer"
 import CustomerBalanceDrawer from "./CustomerBalanceDrawer"
 import { CustomerCard, CustomerCardsContainer } from "./CustomerCards"
@@ -27,19 +27,17 @@ import DeleteCustomerModal from "./DeleteCustomerModal"
 import EditCustomerDrawer from "./EditCustomerDrawer"
 import { CustomerNavigation } from "./navigation"
 
+export const useCustomersQuery = () =>
+  useQuery(getApiMasterGetCustomersOptions(getHeaderTokenOnly()))
+
 export default function ManageCustomers() {
   const isMobile = getIsMobile()
   const { renderedIconsToggle, viewMode } = useViewModes()
-  const setCustomers = useSetAtom(customersAtom)
-  const customersRes = useApiRequest<CustomerDto[]>(() => ({
-    url: "/Master/GetCustomers",
-    defaultValue: [],
-    onSuccess: data => setCustomers(data),
-  }))
+  const { data: customers = [], refetch, isPending, isSuccess } = useCustomersQuery()
 
   const titledCardActions = (
     <div className="ms-auto flex items-center gap-2">
-      <Btn className="h-10 w-10 p-1" onClick={() => customersRes.reload()}>
+      <Btn className="h-10 w-10 p-1" onClick={() => refetch()}>
         <ArrowClockwiseIcon size={24} />
       </Btn>
 
@@ -50,13 +48,13 @@ export default function ManageCustomers() {
 
   return (
     <>
-      <DeleteCustomerModal reloadCustomers={() => customersRes.reload()} />
-      <CreateCustomerDrawer reloadCustomers={() => customersRes.reload()} />
-      <EditCustomerDrawer reloadCustomers={() => customersRes.reload()} />
-      <CustomerDetails />
-      <CustomerDocDrawer />
-      <CustomerTransferDrawer />
-      <CustomerBalanceDrawer />
+      <DeleteCustomerModal reloadCustomers={() => refetch()} />
+      <CreateCustomerDrawer reloadCustomers={() => refetch()} />
+      <EditCustomerDrawer customers={customers} reloadCustomers={() => refetch()} />
+      <CustomerDetails customers={customers} />
+      <CustomerDocDrawer customers={customers} />
+      <CustomerTransferDrawer customers={customers} />
+      <CustomerBalanceDrawer customers={customers} />
 
       <TitledCard
         title="مدیریت مشتریان"
@@ -64,11 +62,11 @@ export default function ManageCustomers() {
         titleSlot={titledCardActions}
         className={!isMobile && viewMode === "table" ? "max-w-240" : undefined}
       >
-        {customersRes.loading && <div className="h-100 rounded-md animate-pulse bg-slate-4" />}
+        {isPending && <div className="h-100 rounded-md animate-pulse bg-slate-4" />}
 
-        {customersRes.success && !customersRes.loading && viewMode === "cards" && (
+        {isSuccess && viewMode === "cards" && (
           <CustomerCardsContainer>
-            {(customersRes.data || []).map(c => (
+            {customers.map(c => (
               <CustomerCard
                 key={c.id}
                 displayName={c.displayName}
@@ -80,9 +78,7 @@ export default function ManageCustomers() {
           </CustomerCardsContainer>
         )}
 
-        {customersRes.success && !customersRes.loading && viewMode === "table" && (
-          <CustomersTable customers={customersRes.data || []} />
-        )}
+        {isSuccess && viewMode === "table" && <CustomersTable customers={customers} />}
       </TitledCard>
     </>
   )

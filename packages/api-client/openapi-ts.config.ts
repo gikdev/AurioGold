@@ -8,7 +8,7 @@ export default defineConfig({
     "@hey-api/typescript",
     "@hey-api/client-fetch",
     "@hey-api/schemas",
-    { dates: true, name: "@hey-api/transformers" },
+    { dates: true, name: "@hey-api/transformers", bigInt: false },
     { enums: "javascript", name: "@hey-api/typescript" },
     { name: "@hey-api/sdk", transformer: true },
     "@tanstack/react-query",

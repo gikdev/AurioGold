@@ -1,6 +1,10 @@
-import { apiRequest } from "@gikdev/react-datapi/src"
 import { UserPlusIcon } from "@phosphor-icons/react"
-import type { CustomerDto, PostApiMasterUpdateCustomerData } from "@repo/api-client/client"
+import {
+  type CustomerDto,
+  type PostApiMasterUpdateCustomerData,
+  postApiMasterUpdateCustomer,
+  type UpdateCustomerForMasterDto,
+} from "@repo/api-client/client"
 import { storageManager } from "@repo/shared/adapters"
 import {
   BtnTemplates,
@@ -10,11 +14,10 @@ import {
   useDrawerSheetNumber,
 } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
-import { useAtomValue } from "jotai"
+import { useMutation } from "@tanstack/react-query"
 import { memo, useEffect } from "react"
 import { useCustomForm } from "#/shared/customForm"
-import genDatApiConfig from "#/shared/datapi-config"
-import { customersAtom } from "."
+import { getHeaderTokenOnly } from "#/shared/react-query"
 import CustomerForm from "./CustomerForm"
 import {
   type EditCustomerFormValues,
@@ -23,12 +26,30 @@ import {
 } from "./customerFormShared"
 import { QUERY_KEYS } from "./navigation"
 
+function useEditCustomerMutation() {
+  return useMutation({
+    mutationFn: async (data: UpdateCustomerForMasterDto) => {
+      const { reject, resolve } = createControlledAsyncToast({
+        pending: "در حال ویرایش مشتری...",
+        success: "مشتری با موفقیت ویرایش شد!",
+      })
+
+      try {
+        await postApiMasterUpdateCustomer({ ...getHeaderTokenOnly(), body: data })
+        resolve()
+      } catch (err) {
+        reject(err instanceof Error ? err.message : String(err))
+      }
+    },
+  })
+}
+
 interface EditCustomerDrawerProps {
+  customers: CustomerDto[]
   reloadCustomers: () => void
 }
 
-function _EditCustomerDrawer({ reloadCustomers }: EditCustomerDrawerProps) {
-  const customers = useAtomValue(customersAtom)
+function _EditCustomerDrawer({ reloadCustomers, customers }: EditCustomerDrawerProps) {
   const [customerId, setCustomerId] = useDrawerSheetNumber(QUERY_KEYS.customerId)
   const [showEditDrawer, setShowEditDrawer] = useDrawerSheet(QUERY_KEYS.edit)
   const customer = customers.find(c => c.id === customerId)
@@ -44,6 +65,8 @@ function _EditCustomerDrawer({ reloadCustomers }: EditCustomerDrawerProps) {
   const { formState, trigger, reset, handleSubmit } = form
   const { isSubmitting } = formState
 
+  const { mutate: editCustomer } = useEditCustomerMutation()
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     if (defaultValues) reset(defaultValues)
@@ -51,26 +74,15 @@ function _EditCustomerDrawer({ reloadCustomers }: EditCustomerDrawerProps) {
 
   const onSubmit = async (data: EditCustomerFormValues) => {
     if (customerId == null) return
+
     const dataToSend = convertFormValuesToApiPayload(data, customerId)
+    if (!dataToSend) return
 
-    const { reject, resolve } = createControlledAsyncToast({
-      pending: "در حال ویرایش مشتری...",
-      success: "مشتری با موفقیت ویرایش شد!",
-    })
-
-    await apiRequest({
-      config: genDatApiConfig(),
-      options: {
-        url: "/Master/UpdateCustomer",
-        method: "POST",
-        body: JSON.stringify(dataToSend),
-        onError: msg => reject(msg),
-        onSuccess: () => {
-          resolve()
-          reloadCustomers()
-          handleClose()
-          reset()
-        },
+    editCustomer(dataToSend, {
+      onSuccess() {
+        reloadCustomers()
+        handleClose()
+        reset()
       },
     })
   }

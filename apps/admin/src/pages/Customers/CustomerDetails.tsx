@@ -1,4 +1,5 @@
 import { CoinsIcon, InfoIcon } from "@phosphor-icons/react"
+import type { CustomerDto } from "@repo/api-client/client"
 import {
   Btn,
   BtnTemplates,
@@ -9,19 +10,20 @@ import {
   useDrawerSheet,
   useDrawerSheetNumber,
 } from "@repo/shared/components"
-import { useAtomValue } from "jotai"
 import { memo } from "react"
 import { Link } from "react-router"
 import { FileGuidLink } from "#/components"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
-import { customersAtom } from "."
 import { customerFormFields } from "./customerFormShared"
 import { CustomerNavigation, QUERY_KEYS } from "./navigation"
 
 const getLabelProperty = generateLabelPropertyGetter(customerFormFields.labels)
 
-function _CustomerDetails() {
-  const customers = useAtomValue(customersAtom)
+interface CustomerDetailsProps {
+  customers: CustomerDto[]
+}
+
+function _CustomerDetails({ customers }: CustomerDetailsProps) {
   const [customerId, setCustomerId] = useDrawerSheetNumber(QUERY_KEYS.customerId)
   const [showDetailsDrawer, setShowDetailsDrawer] = useDrawerSheet(QUERY_KEYS.details)
   const customer = customers.find(c => c.id === customerId)
