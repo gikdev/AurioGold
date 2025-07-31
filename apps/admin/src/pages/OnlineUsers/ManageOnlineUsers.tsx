@@ -1,6 +1,6 @@
 import { ArrowClockwiseIcon, UsersFourIcon } from "@phosphor-icons/react"
 import { notifManager } from "@repo/shared/adapters"
-import { Btn, TitledCard, createTypedTableFa } from "@repo/shared/components"
+import { Btn, createTypedTableFa, TitledCard } from "@repo/shared/components"
 import type { ColDef } from "ag-grid-community"
 import { useAtomValue } from "jotai"
 import { useEffect, useState } from "react"
@@ -48,12 +48,12 @@ export default function ManageOnlineUsers() {
       })
   }
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     getOnlineUsers()
   }, [onlineUsersCount])
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     getOnlineUsers()
     connection?.on("OnlineCount", getOnlineUsers)

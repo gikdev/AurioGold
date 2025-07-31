@@ -33,8 +33,6 @@ function _DetailsCardsSection() {
 
   const areAllBtnsEnabled = !!connection
 
-  if (!product || !productId) return
-
   const invoke = useCallback(
     (newPrice: number, priceType: "price" | "diffBuyPrice" | "diffSellPrice") => {
       if (!connection) return
@@ -48,7 +46,7 @@ function _DetailsCardsSection() {
     [connection, productId],
   )
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   const handleAnyIncOrDec = useCallback(
     (priceType: "buy" | "sell" | "base", taskType: "inc" | "dec") =>
       setProducts(draft => {
@@ -80,6 +78,8 @@ function _DetailsCardsSection() {
       }),
     [],
   )
+
+  if (!product || !productId) return
 
   return (
     <div className="flex flex-col gap-2">

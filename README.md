@@ -10,7 +10,6 @@
 - [Playwright](https://playwright.dev/): E2E testing tool
 - [TailwindCSS](https://tailwindcss.com/): Styling option
 - [React Router](https://reactrouter.com/): Routing solution
-- [ScaffDog](https://scaff.dog): Scaffolding tool
 - [Phosphor Icons](https://phosphoricons.com/): Awesome icon library
 - [@master/styled.react](https://github.com/master-co/styled): Used to make TailwindCSS code cleaner
 - [Jotai](https://jotai.org/): Easy state management for React
@@ -23,7 +22,6 @@
 - [nuqs](https://nuqs.47ng.com/): *Type-safe search params state management for React*
 - [ahooks](https://ahooks.js.org/): *High-quality & reliable React Hooks library*
 - [concurrently](https://www.npmjs.com/package/concurrently): *Run multiple commands concurrently*
-- [husky](https://typicode.github.io/husky/) *Ultra-fast modern native git hooks*
 - [Zod](https://zod.dev/): *TypeScript-first schema validation with static type inference*
 - [React Hook Form](https://react-hook-form.com/): *Performant, flexible and extensible forms with easy-to-use validation.*
 - [Immer](https://immerjs.github.io/immer/): *work with immutable state in a more convenient way*
@@ -32,6 +30,8 @@
 - [React Error Boundary](https://www.npmjs.com/package/react-error-boundary): Error boundary component for React
 - [Motion](https://motion.dev/): Animation library
 - To be continued...
+<!-- - [ScaffDog](https://scaff.dog): Scaffolding tool -->
+<!-- - [husky](https://typicode.github.io/husky/) *Ultra-fast modern native git hooks* -->
 <!-- - [driver.js](https://driverjs.com): Visual tours -->
 <!-- - [TypeDoc](https://typedoc.org/): Docs based on code comments -->
 <!-- - [typedoc-material-theme](https://github.com/dmnsgn/typedoc-material-theme): Beautiful theme for TypeDoc -->

@@ -1,4 +1,4 @@
-import { type Ref, type SelectHTMLAttributes, forwardRef } from "react"
+import { forwardRef, type Ref, type SelectHTMLAttributes } from "react"
 import { Select } from "./Select"
 
 // --- Generic props with constraint

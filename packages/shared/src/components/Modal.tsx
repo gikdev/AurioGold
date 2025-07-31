@@ -1,7 +1,7 @@
 import { XIcon } from "@phosphor-icons/react"
 import { AnimatePresence, motion } from "motion/react"
-import { useEffect } from "react"
 import type { ReactNode } from "react"
+import { useEffect } from "react"
 import { Btn } from "./Btn"
 
 interface ModalProps {

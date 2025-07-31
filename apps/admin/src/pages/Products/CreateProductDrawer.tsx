@@ -6,11 +6,11 @@ import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { memo } from "react"
 import { useCustomForm } from "#/shared/customForm"
 import genDatApiConfig from "#/shared/datapi-config"
-import ProductForm from "./ProductForm"
 import { QUERY_KEYS } from "./navigation"
+import ProductForm from "./ProductForm"
 import {
-  type ProductFormValues,
   emptyProductFormValues,
+  type ProductFormValues,
   productFormSchema,
 } from "./productFormShared"
 

@@ -5,8 +5,8 @@ import {
   BtnTemplates,
   FloatingActionBtn,
   TitledCard,
-  ViewModesToggle,
   useCurrentViewMode,
+  ViewModesToggle,
 } from "@repo/shared/components"
 import { getIsMobile } from "@repo/shared/hooks"
 import { useAtomValue, useSetAtom } from "jotai"
@@ -17,10 +17,10 @@ import { productsAtom } from "."
 import CreateProductDrawer from "./CreateProductDrawer"
 import DeleteProductsModal from "./DeleteProductModal"
 import EditProductDrawer from "./EditProductDrawer"
+import { Navigation } from "./navigation"
 import { ProductCards } from "./ProductCards"
 import ProductDetails from "./ProductDetails"
 import ProductsTable from "./ProductsTable"
-import { Navigation } from "./navigation"
 
 export default function ManageProducts() {
   const connection = useAtomValue(connectionRefAtom)
@@ -34,19 +34,13 @@ export default function ManageProducts() {
     transformResponse: rawItems => rawItems.map(requiredify),
   }))
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     setProductsAtom(resProducts.data ?? [])
     previousResProductsRef.current = resProducts.data ?? []
   }, [resProducts.data])
 
-  useEffect(() => {
-    if (!connection) return
-    connection.on("ReceivePriceUpdate", handleReceivePriceUpdate)
-    return () => connection.off("ReceivePriceUpdate")
-  }, [connection])
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   const handleReceivePriceUpdate = useCallback(
     (
       productId: NonNullable<StockDtoForMaster["id"]>,
@@ -63,6 +57,12 @@ export default function ManageProducts() {
     },
     [],
   )
+
+  useEffect(() => {
+    if (!connection) return
+    connection.on("ReceivePriceUpdate", handleReceivePriceUpdate)
+    return () => connection.off("ReceivePriceUpdate")
+  }, [connection, handleReceivePriceUpdate])
 
   const titleSlot = (
     <div className="flex items-center ms-auto gap-2">

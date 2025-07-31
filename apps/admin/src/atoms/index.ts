@@ -3,8 +3,8 @@ import { atom, useAtomValue, useSetAtom } from "jotai"
 import { atomWithStorage } from "jotai/utils"
 import { useCallback } from "react"
 
-export * from "./signalr"
 export * from "./adminConnectivity"
+export * from "./signalr"
 
 export const showOnlineUsersInStatusbarAtom = atomWithStorage(
   "SHOW_ONLINE_USERS_IN_STATUSBAR",

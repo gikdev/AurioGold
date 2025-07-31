@@ -103,7 +103,7 @@ async function uploadFile(file: File): Promise<UploadResult> {
 
     const data = await response.json()
     return { success: true, fileStr: data.fileUrl }
-  } catch (error) {
+  } catch (_error) {
     return { success: false, errorMsg: "آپلود فایل ناموفق بود" }
   }
 }

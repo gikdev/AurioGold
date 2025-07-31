@@ -4,9 +4,9 @@ import type { CustomerDto } from "@repo/api-client/client"
 import {
   Btn,
   BtnTemplates,
+  createTypedTableFa,
   FloatingActionBtn,
   TitledCard,
-  createTypedTableFa,
   useViewModes,
 } from "@repo/shared/components"
 import { getIsMobile } from "@repo/shared/hooks"
@@ -22,9 +22,9 @@ import { CustomerCard, CustomerCardsContainer } from "./CustomerCards"
 import CustomerDetails from "./CustomerDetails"
 import CustomerDocDrawer from "./CustomerDocDrawer"
 import CustomerTransferDrawer from "./CustomerTransferDrawer"
+import { customerFormFields } from "./customerFormShared"
 import DeleteCustomerModal from "./DeleteCustomerModal"
 import EditCustomerDrawer from "./EditCustomerDrawer"
-import { customerFormFields } from "./customerFormShared"
 import { CustomerNavigation } from "./navigation"
 
 export default function ManageCustomers() {

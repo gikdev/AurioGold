@@ -1,7 +1,6 @@
 import { apiRequest } from "@gikdev/react-datapi/src"
 import type { PostApiMasterRemoveCustomerData } from "@repo/api-client/client"
-import { BtnTemplates, useDrawerSheet, useDrawerSheetNumber } from "@repo/shared/components"
-import { Modal } from "@repo/shared/components"
+import { BtnTemplates, Modal, useDrawerSheet, useDrawerSheetNumber } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { memo } from "react"
 import genDatApiConfig from "#/shared/datapi-config"

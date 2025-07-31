@@ -14,8 +14,8 @@ import genDatApiConfig from "#/shared/datapi-config"
 import { queryStateKeys } from "."
 import PriceSourceForm from "./PriceSourceForm"
 import {
-  type PriceSourceFormValues,
   emptyPriceSourceValues,
+  type PriceSourceFormValues,
   priceSourceSchema,
 } from "./priceSourceFormShared"
 
@@ -37,7 +37,7 @@ export default function EditPriceSourceDrawer({
   const { formState, trigger, reset, handleSubmit } = form
   const { isSubmitting } = formState
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     if (defaultValues) reset(defaultValues)
   }, [reset, priceSource])

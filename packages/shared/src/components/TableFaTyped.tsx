@@ -1,6 +1,6 @@
 import { type ColDef, type ColGroupDef, colorSchemeDarkBlue, themeQuartz } from "ag-grid-community"
 import { AgGridReact, type AgGridReactProps } from "ag-grid-react"
-import { type Ref, forwardRef, useMemo } from "react"
+import { forwardRef, type Ref, useMemo } from "react"
 import { AG_GRID_LOCALE_IR } from "../constants"
 
 const selectedTheme = themeQuartz.withPart(colorSchemeDarkBlue)

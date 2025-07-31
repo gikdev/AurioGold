@@ -25,7 +25,7 @@ export default function BuyAndSellToggleBtn() {
   )
   const [side, setSide] = useLiteralQueryState(QUERY_KEYS.side, sides)
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     setSide(calcDefaultSide(isBuyingEnabled, isSellingEnabled) ?? null)
   }, [isBuyingEnabled, isSellingEnabled])

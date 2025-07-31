@@ -41,7 +41,9 @@ export function saveKey(key: string, content: string, cb: () => void) {
 
 export const MemoizedAnimatedReloadBtn = memo(function ReloadBtn({
   onClick,
-}: { onClick: () => void }) {
+}: {
+  onClick: () => void
+}) {
   return (
     <AnimatePresence initial>
       <motion.div {...motionPresets.slideBehind}>

@@ -5,11 +5,11 @@ import type { CustomerDto, SmsMsgDto } from "@repo/api-client/client"
 import { notifManager } from "@repo/shared/adapters"
 import {
   Btn,
+  createTypedTableFa,
   ErrorCardBoundary,
   FormCard,
   Labeler,
   TextArea,
-  createTypedTableFa,
 } from "@repo/shared/components"
 import { createFieldsWithLabels } from "@repo/shared/helpers"
 import { multiRowSelectionOptions } from "@repo/shared/lib"

@@ -6,8 +6,8 @@ import { useAtomValue } from "jotai"
 import type { ComponentProps } from "react"
 import { Link } from "react-router"
 import { productsAtom } from "."
-import { calcA11yStuff } from "./ProductCards"
 import { Navigation } from "./navigation"
+import { calcA11yStuff } from "./ProductCards"
 
 type DataShape = Required<StockDtoForMaster>
 const Table = createTypedTableFa<DataShape>()

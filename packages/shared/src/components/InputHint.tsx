@@ -48,7 +48,7 @@ export function createHintsObj(rawObj: Record<string, HintWithoutId>): HintsObj 
   if (!objHasKeys(rawObj)) return final
 
   for (const key in rawObj) {
-    if (Object.prototype.hasOwnProperty.call(rawObj, key)) {
+    if (Object.hasOwn(rawObj, key)) {
       const item = rawObj[key]
       if (!item) continue
       final[key] = [createSingleHint(item)]

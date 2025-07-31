@@ -85,17 +85,17 @@ export default function Notes() {
     setNotesStatus(p => ({ ...p, maxVolume: newStatus }))
   }
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     checkForMaxDecimal()
   }, [maxDecimalsCount, value, isRialMode])
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     checkForMinVolume()
   }, [minVolume, convertedValue, value, isRialMode])
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     checkForMaxVolume()
   }, [maxVolume, convertedValue, value, isRialMode])

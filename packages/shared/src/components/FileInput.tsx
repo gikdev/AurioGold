@@ -224,7 +224,7 @@ function FileInput({
 }: FileInputProps) {
   const [file, setFile] = useState<File | null>(null)
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     if (!file) return
     let cancelled = false

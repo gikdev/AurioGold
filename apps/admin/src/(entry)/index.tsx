@@ -3,8 +3,8 @@ import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 
 import { AppRouter } from "./AppRouter"
-import { ToastProvider } from "./ToastProvider"
 import { registerServiceWorker } from "./serviceWorker"
+import { ToastProvider } from "./ToastProvider"
 import "../styles/index.css"
 
 ModuleRegistry.registerModules([AllCommunityModule])

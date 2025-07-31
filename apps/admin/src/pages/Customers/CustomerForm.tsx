@@ -1,20 +1,20 @@
 import { useApiRequest } from "@gikdev/react-datapi/src"
 import type { CustomerGroupDto, CustomerGroupIntDto } from "@repo/api-client/client"
 import {
+  createSelectWithOptions,
   FileInput,
   Input,
   Labeler,
   LabelerLine,
   Switch,
-  createSelectWithOptions,
 } from "@repo/shared/components"
 import { MAX_FILE_SIZE_FOR_UPLOAD } from "@repo/shared/lib"
 import type { UseFormReturn } from "react-hook-form"
 import { uploadFile } from "#/shared/customForm"
 import {
   type CreateCustomerFormValues,
-  type EditCustomerFormValues,
   customerFormFields,
+  type EditCustomerFormValues,
 } from "./customerFormShared"
 
 const imageNotes = [

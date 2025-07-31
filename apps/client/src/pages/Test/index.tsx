@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { GearSixIcon } from "@phosphor-icons/react"
-import { Input, Labeler, createSelectWithOptions } from "@repo/shared/components"
+import { createSelectWithOptions, Input, Labeler } from "@repo/shared/components"
 import { HeadingLine } from "@repo/shared/layouts"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"

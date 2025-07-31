@@ -14,6 +14,7 @@ export function AppInfoBtn({ version }: AppInfoBtnProps) {
   return (
     <>
       <button
+        type="button"
         onClick={() => setOpen(true)}
         className="hover:bg-blue-3 text-slate-11 hover:text-blue-12 px-2 h-full cursor-pointer flex items-center gap-1"
         aria-label="درباره برنامه"

@@ -1,4 +1,4 @@
-import { DatapiConfigProvider, apiRequest } from "@gikdev/react-datapi/src"
+import { apiRequest, DatapiConfigProvider } from "@gikdev/react-datapi/src"
 import {
   ChatTextIcon,
   CoinsIcon,
@@ -17,8 +17,7 @@ import { useAtomValue, useSetAtom } from "jotai"
 import { useEffect, useMemo } from "react"
 import { Outlet } from "react-router"
 import { onlineUsersCountAtom } from "#/atoms"
-import { connectionRefAtom, connectionStateAtom } from "#/atoms/signalr"
-import { SignalRManager } from "#/atoms/signalr"
+import { connectionRefAtom, connectionStateAtom, SignalRManager } from "#/atoms/signalr"
 import StatusBar from "#/layouts/StatusBar"
 import routes from "#/pages/routes"
 import genDatApiConfig from "#/shared/datapi-config"
@@ -76,7 +75,7 @@ function ConnectionHandler() {
   }, [])
 
   // Connection handler with proper dependencies
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     if (connectionState !== "connected" || !connection) return
 

@@ -1,6 +1,6 @@
 import { LayoutIcon } from "@phosphor-icons/react"
-import { type Theme, currentThemeAtom } from "@repo/shared/atoms"
-import { LabelerLine, Switch, TitledCard, createSelectWithOptions } from "@repo/shared/components"
+import { currentThemeAtom, type Theme } from "@repo/shared/atoms"
+import { createSelectWithOptions, LabelerLine, Switch, TitledCard } from "@repo/shared/components"
 import { useAtom } from "jotai"
 import { showOnlineUsersInStatusbarAtom } from "#/atoms"
 

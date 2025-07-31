@@ -3,7 +3,7 @@ import { Btn } from "@repo/shared/components"
 import { atom, useAtomValue, useSetAtom } from "jotai"
 import { useState } from "react"
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: false positive
 const jsonToastContentAtom = atom<any>()
 
 export const useWriteJsonToastContent = () => useSetAtom(jsonToastContentAtom)

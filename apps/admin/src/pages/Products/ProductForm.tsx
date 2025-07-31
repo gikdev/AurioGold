@@ -1,6 +1,6 @@
 import { useApiRequest } from "@gikdev/react-datapi/src"
 import type { StockPriceSourceResponse } from "@repo/api-client/client"
-import { Input, Labeler, TextArea, createSelectWithOptions } from "@repo/shared/components"
+import { createSelectWithOptions, Input, Labeler, TextArea } from "@repo/shared/components"
 import type { UseFormReturn } from "react-hook-form"
 import {
   type ProductFormValues,

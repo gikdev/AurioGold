@@ -4,9 +4,9 @@ import type { CustomerDto, CustomerGroupIntDto } from "@repo/api-client/client"
 import {
   Btn,
   BtnTemplates,
+  createTypedTableFa,
   FloatingActionBtn,
   TitledCard,
-  createTypedTableFa,
   useViewModes,
 } from "@repo/shared/components"
 import { getIsMobile } from "@repo/shared/hooks"
@@ -14,8 +14,8 @@ import { cellRenderers } from "@repo/shared/lib"
 import type { ColDef } from "ag-grid-community"
 import { Link } from "react-router"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
-import { queryStateUrls } from "."
 import { GroupCard, GroupCardsContainer } from "../GroupsGram/GroupCard"
+import { queryStateUrls } from "."
 import CreateGroupDrawer from "./CreateGroupDrawer"
 import DeleteGroupModal from "./DeleteGroupModal"
 import EditGroupDrawer from "./EditGroupDrawer"

@@ -4,9 +4,9 @@ import type { CustomerDto, CustomerGroupDto } from "@repo/api-client/client"
 import {
   Btn,
   BtnTemplates,
+  createTypedTableFa,
   FloatingActionBtn,
   TitledCard,
-  createTypedTableFa,
   useViewModes,
 } from "@repo/shared/components"
 import { getIsMobile } from "@repo/shared/hooks"

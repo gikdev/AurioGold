@@ -23,7 +23,7 @@ export function useNotifyOrders() {
   const notifIDs = useRef<Set<[closeToast: () => void, orderId: number]>>(new Set())
   const notifSound = useWithSound(notifSfx)
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     connection?.on("ReceiveOrder2", showNewOrderNotification)
     connection?.on("Decided", (_isAccepted, orderId: number) => {
@@ -86,7 +86,7 @@ export function useNotifyOrders() {
   ) {
     try {
       notifSound.play()
-    } catch (err) {
+    } catch (_err) {
       notifManager.notify("error when trying to play the order notif sound", "console", {
         status: "warning",
       })

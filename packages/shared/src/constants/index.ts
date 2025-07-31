@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noTemplateCurlyInString: COPIED FROM OUTSIDE! SHOULD NOT CHANGE! */
 export const AG_GRID_LOCALE_IR = {
   // Set Filter
   selectAll: "(انتخاب همه)",

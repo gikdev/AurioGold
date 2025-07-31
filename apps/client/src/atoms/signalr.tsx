@@ -35,16 +35,16 @@ export function SignalRManager() {
   const setAdminOnline = useSetAtom(isAdminOnlineAtom)
   const navigate = useNavigate()
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   const stopConnection = useCallback(async () => {
     try {
       await connectionRef?.stop()
-    } catch (err) {
+    } catch (_err) {
       notifManager.notify("Failed to stop the connection...", "console")
     }
   }, [])
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   const startConnection = useCallback(async () => {
     const isDev = import.meta.env.DEV
 
@@ -67,7 +67,7 @@ export function SignalRManager() {
       setConnectionState("connected")
       const token = storageManager.get("ttkk", "sessionStorage")
       await connection.invoke("InitializeConnection", token)
-    } catch (err) {
+    } catch (_err) {
       setConnectionState("disconnected")
     }
 
@@ -80,7 +80,7 @@ export function SignalRManager() {
   }, [startConnection, stopConnection])
 
   // Handle UI update when admin connectivity status changed on another instance of the app
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     if (!connectionRef) return
 

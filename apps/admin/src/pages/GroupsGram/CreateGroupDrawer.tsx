@@ -7,7 +7,7 @@ import { useCustomForm } from "#/shared/customForm"
 import genDatApiConfig from "#/shared/datapi-config"
 import { queryStateKeys } from "."
 import GroupForm from "./GroupForm"
-import { type GroupFormValues, emptyGroupValues, groupSchema } from "./groupFormShared"
+import { emptyGroupValues, type GroupFormValues, groupSchema } from "./groupFormShared"
 
 interface CreateGroupFormProps {
   reloadGroups: () => void

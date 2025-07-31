@@ -1,4 +1,4 @@
-import { DatapiConfigProvider, apiRequest } from "@gikdev/react-datapi/src"
+import { apiRequest, DatapiConfigProvider } from "@gikdev/react-datapi/src"
 import {
   CoinsIcon,
   GearIcon,

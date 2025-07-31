@@ -151,7 +151,7 @@ function OnlineUsers() {
       })
   }
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     getOnlineUsers()
     connection?.on("OnlineCount", getOnlineUsers)

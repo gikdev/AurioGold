@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 
-// biome-ignore lint/suspicious/noConfusingVoidType: <explanation>
+// biome-ignore lint/suspicious/noConfusingVoidType: false positive
 export function useEffectButNotOnMount(fn: () => void | (() => void), deps: unknown[]) {
   const timeRef = useRef(0)
 

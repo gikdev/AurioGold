@@ -20,11 +20,11 @@ import { memo, useEffect } from "react"
 import { useCustomForm } from "#/shared/customForm"
 import genDatApiConfig from "#/shared/datapi-config"
 import { productsAtom } from "."
-import ProductForm from "./ProductForm"
 import { QUERY_KEYS } from "./navigation"
+import ProductForm from "./ProductForm"
 import {
-  type ProductFormValues,
   emptyProductFormValues,
+  type ProductFormValues,
   productFormSchema,
   toSafeNumber,
 } from "./productFormShared"
@@ -50,7 +50,7 @@ function _EditProductDrawer({ reloadProducts }: EditProductDrawerProps) {
   const { formState, trigger, reset, handleSubmit } = form
   const { isSubmitting } = formState
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     if (defaultValues) reset(defaultValues)
   }, [reset, products])

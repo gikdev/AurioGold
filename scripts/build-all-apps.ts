@@ -7,7 +7,7 @@ import archiver from "archiver"
 import { $ } from "bun"
 import adminConfig from "../apps/admin/config"
 import clientConfig from "../apps/client/config"
-import { type ProfileKey, currentProfile, currentProfileKey } from "../packages/profile-manager/src"
+import { currentProfile, currentProfileKey, type ProfileKey } from "../packages/profile-manager/src"
 import { type AppName, apps, copyAssets, executeStep } from "./shared"
 
 interface BuildContext {

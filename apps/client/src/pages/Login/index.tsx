@@ -79,7 +79,7 @@ export default function Login() {
     <div className="min-h-dvh flex justify-center items-center px-4 py-8 bg-slate-1 -m-2">
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <div className="flex items-center justify-between">
-          <img src="/profile/shared/web-app-manifest-192x192.png" className="w-12" />
+          <img src="/profile/shared/web-app-manifest-192x192.png" className="w-12" alt="" />
           <Heading as="h2" size={2}>
             {currentProfile.appTitleClient}
           </Heading>

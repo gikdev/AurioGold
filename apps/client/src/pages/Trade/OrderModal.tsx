@@ -9,12 +9,11 @@ import {
 } from "@phosphor-icons/react"
 import type { OrderFm } from "@repo/api-client/client"
 import { notifManager, storageManager } from "@repo/shared/adapters"
-import { Btn, LoadingSpinner, useDrawerSheetNumber } from "@repo/shared/components"
-import { Modal } from "@repo/shared/components"
+import { Btn, LoadingSpinner, Modal, useDrawerSheetNumber } from "@repo/shared/components"
 import { ccn } from "@repo/shared/helpers"
 import { useIntegerQueryState } from "@repo/shared/hooks"
 import { atom, useAtom, useAtomValue } from "jotai"
-import { useEffect } from "react"
+import { useCallback, useEffect } from "react"
 import { Link } from "react-router"
 import { connectionRefAtom, connectionStateAtom } from "#/atoms"
 import genDatApiConfig from "#/shared/datapi-config"
@@ -49,34 +48,19 @@ export default function DeletePriceSourceModal() {
   const title = calcTitle(state)
   const isOpen = typeof currentOrderId === "number"
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     connection?.on("Decided", onDecided)
 
     return () => connection?.off("Decided")
   }, [connection, connectionState, currentOrderId])
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     setState(autoMin <= 0 ? "no-answer" : "waiting")
   }, [autoMin])
 
-  useEffect(() => {
-    const timeout = setTimeout(onTimerEnd, autoMin * 60 * 1000)
-    return () => clearTimeout(timeout)
-  }, [autoMin])
-
-  const onDecided = (isAccepted: boolean, orderId: number) => {
-    if (Number(currentOrderId) !== Number(orderId)) return
-    setState(isAccepted ? "agreed" : "disagreed")
-  }
-
-  function handleClose() {
-    if (state === "waiting" || state === "loading") return
-    setCurrentOrderId(null)
-  }
-
-  async function onTimerEnd() {
+  const onTimerEnd = useCallback(async () => {
     apiRequest<OrderFm>({
       config: genDatApiConfig(),
       options: {
@@ -97,6 +81,21 @@ export default function DeletePriceSourceModal() {
         },
       },
     })
+  }, [currentOrderId, connection, setState])
+
+  useEffect(() => {
+    const timeout = setTimeout(onTimerEnd, autoMin * 60 * 1000)
+    return () => clearTimeout(timeout)
+  }, [autoMin, onTimerEnd])
+
+  const onDecided = (isAccepted: boolean, orderId: number) => {
+    if (Number(currentOrderId) !== Number(orderId)) return
+    setState(isAccepted ? "agreed" : "disagreed")
+  }
+
+  function handleClose() {
+    if (state === "waiting" || state === "loading") return
+    setCurrentOrderId(null)
   }
 
   const btns = (

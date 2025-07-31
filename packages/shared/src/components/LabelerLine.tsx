@@ -23,6 +23,7 @@ export function LabelerLine({
   ...others
 }: LabelerLineProps) {
   return (
+    // biome-ignore lint/a11y/noLabelWithoutControl: false positive
     <label className={cn("flex flex-col gap-2", className)} {...others}>
       <div className="flex gap-1 items-center justify-between">
         <span className={cn("", labelTextClassName)}>{labelText}</span>

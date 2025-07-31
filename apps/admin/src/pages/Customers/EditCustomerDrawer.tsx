@@ -44,7 +44,7 @@ function _EditCustomerDrawer({ reloadCustomers }: EditCustomerDrawerProps) {
   const { formState, trigger, reset, handleSubmit } = form
   const { isSubmitting } = formState
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     if (defaultValues) reset(defaultValues)
   }, [reset, customer])

@@ -15,6 +15,7 @@ export const Checkbox = forwardRef<HTMLInputElement, React.ComponentPropsWithout
             strokeLinecap="round"
             strokeLinejoin="round"
           >
+            <title>Checkbox Icon</title>
             <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>

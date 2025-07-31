@@ -1,7 +1,7 @@
 import { useApiRequest } from "@gikdev/react-datapi/src"
 import { ArrowLeftIcon } from "@phosphor-icons/react"
 import type { StockDto } from "@repo/api-client/client"
-import { Labeler, createSelectWithOptions } from "@repo/shared/components"
+import { createSelectWithOptions, Labeler } from "@repo/shared/components"
 import { useNullableIntegerQueryState } from "@repo/shared/hooks"
 import { useAtomValue, useSetAtom } from "jotai"
 import type { ChangeEvent } from "react"

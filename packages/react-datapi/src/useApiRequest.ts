@@ -45,7 +45,7 @@ export function useApiRequest<TOutput = unknown, TRaw = unknown>(
       canRun = await optionsRef.current.shouldRun?.()
 
       if (optionsRef.current.shouldRun && canRun === false) return
-    } catch (err) {
+    } catch (_err) {
       handleErrorMsg("shouldRun FAILED!!!")
       console.error("shouldRun FAILED!!!")
       return

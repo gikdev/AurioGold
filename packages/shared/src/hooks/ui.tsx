@@ -1,11 +1,5 @@
 import { CaretDownIcon, CaretUpIcon, EyeIcon, EyeSlashIcon } from "@phosphor-icons/react"
-import {
-  parseAsBoolean,
-  parseAsInteger,
-  parseAsStringEnum,
-  parseAsStringLiteral,
-  useQueryState,
-} from "nuqs"
+import { parseAsBoolean, parseAsInteger, parseAsStringLiteral, useQueryState } from "nuqs"
 import { useCallback, useState } from "react"
 import { useWindowSize } from "react-haiku"
 import { Btn } from "#shared/components"

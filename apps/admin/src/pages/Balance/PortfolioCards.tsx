@@ -50,6 +50,7 @@ function PortfolioCard({
   const isSelected = selectedPortfolioId === id
 
   return (
+    // biome-ignore lint/a11y/noLabelWithoutControl: false positive
     <motion.label
       initial={{ scale: 1 }}
       animate={{ scale: isSelected ? 1.02 : 1 }}

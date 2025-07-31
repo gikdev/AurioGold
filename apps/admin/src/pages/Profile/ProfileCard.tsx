@@ -4,8 +4,8 @@ import { memo } from "react"
 import { Link } from "react-router"
 import routes from "../routes"
 import DisplayName from "./DisplayName"
-import ProfileImage from "./ProfileImage"
 import { Navigation } from "./navigation"
+import ProfileImage from "./ProfileImage"
 
 function _ProfileCard() {
   return (
