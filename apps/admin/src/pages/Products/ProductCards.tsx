@@ -29,7 +29,7 @@ export function ProductCards() {
 }
 
 interface ProductCardProps {
-  product: Required<StockDtoForMaster>
+  product: StockDtoForMaster
 }
 
 function ProductCard({ product: p }: ProductCardProps) {
@@ -67,7 +67,7 @@ function ProductCard({ product: p }: ProductCardProps) {
   )
 }
 
-export function calcA11yStuff(status: StockStatus) {
+export function calcA11yStuff(status: StockStatus | undefined) {
   switch (status) {
     case 0:
       return {

@@ -9,7 +9,7 @@ import { productsAtom } from "."
 import { Navigation } from "./navigation"
 import { calcA11yStuff } from "./ProductCards"
 
-type DataShape = Required<StockDtoForMaster>
+type DataShape = StockDtoForMaster
 const Table = createTypedTableFa<DataShape>()
 type TableProps = ComponentProps<typeof Table>
 

@@ -3,7 +3,7 @@ import { HeadingLine } from "@repo/shared/layouts"
 import { atomWithImmer } from "jotai-immer"
 import ManageProducts from "./ManageProducts"
 
-export const productsAtom = atomWithImmer<Required<StockDtoForMaster>[]>([])
+export const productsAtom = atomWithImmer<StockDtoForMaster[]>([])
 
 export default function Products() {
   return (

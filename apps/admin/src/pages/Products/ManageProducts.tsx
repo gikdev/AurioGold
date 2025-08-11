@@ -3,6 +3,7 @@ import { CirclesThreePlusIcon, PackageIcon } from "@phosphor-icons/react"
 import type { StockDtoForMaster } from "@repo/api-client/client"
 import {
   BtnTemplates,
+  ErrorCardBoundary,
   FloatingActionBtn,
   TitledCard,
   useCurrentViewMode,
@@ -77,7 +78,9 @@ export default function ManageProducts() {
       <CreateProductDrawer reloadProducts={() => resProducts.reload()} />
       <DeleteProductsModal reloadProducts={() => resProducts.reload()} />
       <EditProductDrawer reloadProducts={() => resProducts.reload()} />
-      <ProductDetails />
+      <ErrorCardBoundary>
+        <ProductDetails />
+      </ErrorCardBoundary>
 
       <TitledCard
         title="مدیریت محصولات"
