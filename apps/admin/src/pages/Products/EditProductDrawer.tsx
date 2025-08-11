@@ -124,7 +124,7 @@ function convertFormValuesToApiPayload(
     status: toSafeNumber(values.transactionStatus) as StockStatus,
     mode: toSafeNumber(values.transactionType) as AutoMode,
     maxAutoMin: values.maxAutoTime,
-    dateUpdate: new Date().toISOString(),
+    dateUpdate: new Date(),
     minValue: values.minProductValue,
     maxValue: values.maxProductValue,
     minVoume: values.minTransactionVolume,

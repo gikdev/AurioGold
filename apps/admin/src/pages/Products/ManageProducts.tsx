@@ -52,7 +52,7 @@ export default function ManageProducts() {
         const idx = draft.findIndex(p => p.id === productId)
         if (idx === -1) return
         draft[idx][priceType] = newPrice
-        draft[idx].dateUpdate = date
+        draft[idx].dateUpdate = new Date(date)
       })
     },
     [],
@@ -117,7 +117,7 @@ function requiredify(input: StockDtoForMaster): Required<StockDtoForMaster> {
     status: input.status ?? 0,
     mode: input.mode ?? 0,
     maxAutoMin: input.maxAutoMin ?? 0,
-    dateUpdate: input.dateUpdate ?? new Date(1).toISOString(),
+    dateUpdate: input.dateUpdate ?? new Date(1),
     minValue: input.minValue ?? 0,
     maxValue: input.maxValue ?? 0,
     minVoume: input.minVoume ?? 0,
