@@ -1,17 +1,42 @@
 import { storageManager } from "@repo/shared/adapters"
-import { atom, useAtomValue, useSetAtom } from "jotai"
+import { useAtomValue, useSetAtom } from "jotai"
 import { atomWithStorage } from "jotai/utils"
 import { useCallback } from "react"
+import { create } from "zustand"
+import { persist } from "zustand/middleware"
 
 export * from "./adminConnectivity"
 export * from "./signalr"
 
-export const showOnlineUsersInStatusbarAtom = atomWithStorage(
-  "SHOW_ONLINE_USERS_IN_STATUSBAR",
-  true,
+interface SettingsStore {
+  showOnlineUsers: boolean
+  setShowOnlineUsers: (showOnlineUsers: boolean) => void
+}
+
+export const useSettingsStore = create<SettingsStore>()(
+  persist(
+    set => ({
+      showOnlineUsers: false,
+      setShowOnlineUsers: showOnlineUsers => set({ showOnlineUsers }),
+    }),
+    {
+      name: "settings-storage",
+      partialize: state => ({
+        showOnlineUsers: state.showOnlineUsers,
+      }),
+    },
+  ),
 )
 
-export const onlineUsersCountAtom = atom<"؟" | number>("؟")
+interface OnlineUsersCountStore {
+  count: number | null
+  setCount: (count: number | null) => void
+}
+
+export const useOnlineUsersCountStore = create<OnlineUsersCountStore>()(set => ({
+  count: null,
+  setCount: count => set({ count }),
+}))
 
 const profileImageUrlAtom = atomWithStorage(
   "profileImageUrl",

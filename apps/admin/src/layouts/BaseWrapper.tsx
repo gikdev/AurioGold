@@ -13,10 +13,10 @@ import {
 } from "@phosphor-icons/react"
 import { ErrorCardBoundary } from "@repo/shared/components"
 import { Base, type SidebarItem } from "@repo/shared/layouts"
-import { useAtomValue, useSetAtom } from "jotai"
+import { useAtomValue } from "jotai"
 import { useEffect, useMemo } from "react"
 import { Outlet } from "react-router"
-import { onlineUsersCountAtom } from "#/atoms"
+import { useOnlineUsersCountStore } from "#/atoms"
 import { connectionRefAtom, connectionStateAtom, SignalRManager } from "#/atoms/signalr"
 import StatusBar from "#/layouts/StatusBar"
 import routes from "#/pages/routes"
@@ -59,7 +59,7 @@ export function BaseWrapper() {
 }
 
 function ConnectionHandler() {
-  const setOnlineUsersCount = useSetAtom(onlineUsersCountAtom)
+  const setCount = useOnlineUsersCountStore(s => s.setCount)
   const connectionState = useAtomValue(connectionStateAtom)
   const connection = useAtomValue(connectionRefAtom)
 
@@ -79,7 +79,7 @@ function ConnectionHandler() {
   useEffect(() => {
     if (connectionState !== "connected" || !connection) return
 
-    connection.on("OnlineCount", (count: number) => setOnlineUsersCount(count))
+    connection.on("OnlineCount", (count: number) => setCount(count))
 
     return () => connection.off("OnlineCount")
   }, [connectionState, connection])

@@ -2,7 +2,7 @@ import { LayoutIcon } from "@phosphor-icons/react"
 import { currentThemeAtom, type Theme } from "@repo/shared/atoms"
 import { createSelectWithOptions, LabelerLine, Switch, TitledCard } from "@repo/shared/components"
 import { useAtom } from "jotai"
-import { showOnlineUsersInStatusbarAtom } from "#/atoms"
+import { useOnlineUsersCountStore } from "#/atoms"
 
 const themeOptions = [
   { id: "dark", title: "تاریک" },
@@ -18,7 +18,8 @@ const keysConfig = {
 } as const
 
 export default function UiSettingsCard() {
-  const [showOnlineUsers, setShowOnlineUsers] = useAtom(showOnlineUsersInStatusbarAtom)
+  const showOnlineUsers = useOnlineUsersCountStore(s => s.count)
+  const setShowOnlineUsers = useOnlineUsersCountStore(s => s.setCount)
   const [theme, setTheme] = useAtom(currentThemeAtom)
 
   return (

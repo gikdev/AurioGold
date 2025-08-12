@@ -17,15 +17,14 @@ import {
   connectionRefAtom,
   connectionStateAtom,
   isAdminOnlineAtom,
-  onlineUsersCountAtom,
-  showOnlineUsersInStatusbarAtom,
+  useOnlineUsersCountStore,
   useToggleAdminConnectivity,
 } from "#/atoms"
 import routes from "#/pages/routes"
 import appConfig from "../../config"
 
 export default function StatusBar() {
-  const showOnlineUsers = useAtomValue(showOnlineUsersInStatusbarAtom)
+  const showOnlineUsers = useOnlineUsersCountStore(s => s.count)
 
   return (
     <div className="w-full bg-slate-1 flex flex-row-reverse rounded-md h-8 gap-2 overflow-hidden">
@@ -98,7 +97,7 @@ function ServerConnectionStatus() {
 }
 
 function OnlinePeopleCount() {
-  const onlineUsersCount = useAtomValue(onlineUsersCountAtom)
+  const onlineUsersCount = useOnlineUsersCountStore(s => s.count)
   const connectionState = useAtomValue(connectionStateAtom)
   const isLoading = connectionState === "loading"
   const IconToRender = isLoading ? CircleNotchIcon : UsersFourIcon

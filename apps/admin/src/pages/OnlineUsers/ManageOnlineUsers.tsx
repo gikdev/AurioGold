@@ -4,7 +4,7 @@ import { Btn, createTypedTableFa, TitledCard } from "@repo/shared/components"
 import type { ColDef } from "ag-grid-community"
 import { useAtomValue } from "jotai"
 import { useEffect, useState } from "react"
-import { connectionRefAtom, connectionStateAtom, onlineUsersCountAtom } from "#/atoms"
+import { connectionRefAtom, connectionStateAtom, useOnlineUsersCountStore } from "#/atoms"
 import OnlineNumberCard from "./OnlineNumberCard"
 
 const colDefs: ColDef<OnlineUser>[] = [
@@ -33,7 +33,7 @@ export default function ManageOnlineUsers() {
   const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>()
   const connection = useAtomValue(connectionRefAtom)
   const connectionState = useAtomValue(connectionStateAtom)
-  const onlineUsersCount = useAtomValue(onlineUsersCountAtom)
+  const onlineUsersCount = useOnlineUsersCountStore(s => s.count)
 
   const getOnlineUsers = () => {
     if (!connection || connectionState !== "connected") return
@@ -80,7 +80,7 @@ export default function ManageOnlineUsers() {
 
         <OnlineNumberCard
           isOnline={typeof onlineUsersCount === "number" && onlineUsersCount > 0}
-          num={onlineUsersCount}
+          num={onlineUsersCount ?? "؟"}
           description="کاربر آنلاین"
         />
 

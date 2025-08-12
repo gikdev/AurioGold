@@ -22,18 +22,15 @@ export function useViewModes() {
   return { renderedIconsToggle, viewMode }
 }
 
-export function useCurrentViewMode() {
-  const viewMode = useAtomValue(viewModeAtom)
+export const useCurrentViewMode = () => useAtomValue(viewModeAtom)
 
-  return viewMode
-}
+const modes: IconsToggleItem<ViewMode>[] = [
+  { id: "cards", icon: CardsIcon },
+  { id: "table", icon: TableIcon },
+]
 
 export const ViewModesToggle = () => {
   const [viewMode, setMode] = useAtom(viewModeAtom)
-  const modes: IconsToggleItem<ViewMode>[] = [
-    { id: "cards", icon: CardsIcon },
-    { id: "table", icon: TableIcon },
-  ]
 
   return <IconsToggle items={modes} activeItemId={viewMode} onChange={setMode} />
 }
