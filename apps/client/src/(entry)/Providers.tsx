@@ -6,21 +6,19 @@ export function Providers() {
   const theme = useAtomValue(currentThemeAtom)
 
   return (
-    <>
-      <ToastContainer
-        autoClose={5000}
-        closeOnClick={false}
-        draggable
-        hideProgressBar={false}
-        newestOnTop
-        pauseOnFocusLoss
-        pauseOnHover
-        position="bottom-right"
-        rtl
-        theme={theme}
-        toastStyle={{ fontFamily: "Vazirmatn" }}
-        transition={Bounce}
-      />
-    </>
+    <ToastContainer
+      autoClose={5000}
+      closeOnClick={false}
+      draggable
+      hideProgressBar={false}
+      newestOnTop
+      pauseOnFocusLoss
+      pauseOnHover
+      position="bottom-right"
+      rtl
+      theme={theme}
+      toastStyle={{ fontFamily: "Vazirmatn" }}
+      transition={Bounce}
+    />
   )
 }
