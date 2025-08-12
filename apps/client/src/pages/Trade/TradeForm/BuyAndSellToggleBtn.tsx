@@ -1,9 +1,7 @@
 import { CheckCircleIcon, CircleIcon } from "@phosphor-icons/react"
 import { ccn } from "@repo/shared/helpers"
 import { useLiteralQueryState } from "@repo/shared/hooks"
-import { motionPresets } from "@repo/shared/lib"
 import { useAtomValue } from "jotai"
-import { motion } from "motion/react"
 import { useEffect } from "react"
 import { QUERY_KEYS } from "../navigation"
 import { useGetProductSideEnabled } from "../shared"
@@ -33,11 +31,7 @@ export default function BuyAndSellToggleBtn() {
   return (
     <div {...styles.container}>
       {isBuyingEnabled ? (
-        <motion.label
-          {...motionPresets.btn}
-          {...styles.btn(side === "buy")}
-          data-testid="buy-sell-toggle-buy-toggle"
-        >
+        <label {...styles.btn(side === "buy")} data-testid="buy-sell-toggle-buy-toggle">
           <input
             checked={side === "buy"}
             className="hidden"
@@ -46,17 +40,13 @@ export default function BuyAndSellToggleBtn() {
           />
           {side === "buy" ? <CheckCircleIcon weight="fill" /> : <CircleIcon />}
           <span>خرید</span>
-        </motion.label>
+        </label>
       ) : (
         <div {...styles.btnDisabled}>خرید</div>
       )}
 
       {isSellingEnabled ? (
-        <motion.label
-          {...motionPresets.btn}
-          {...styles.btn(side === "sell")}
-          data-testid="buy-sell-toggle-sell-toggle"
-        >
+        <label {...styles.btn(side === "sell")} data-testid="buy-sell-toggle-sell-toggle">
           <input
             checked={side === "sell"}
             className="hidden"
@@ -65,7 +55,7 @@ export default function BuyAndSellToggleBtn() {
           />
           {side === "sell" ? <CheckCircleIcon weight="fill" /> : <CircleIcon />}
           <span>فروش</span>
-        </motion.label>
+        </label>
       ) : (
         <div {...styles.btnDisabled}>فروش</div>
       )}

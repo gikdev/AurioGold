@@ -2,8 +2,6 @@ import { apiRequest } from "@gikdev/react-datapi/src"
 import type { Ufm } from "@repo/api-client/client"
 import { notifManager } from "@repo/shared/adapters"
 import { BtnTemplates } from "@repo/shared/components"
-import { motionPresets } from "@repo/shared/lib"
-import { AnimatePresence, motion } from "motion/react"
 import { memo } from "react"
 import genDatApiConfig from "#/shared/datapi-config"
 
@@ -39,16 +37,12 @@ export function saveKey(key: string, content: string, cb: () => void) {
   })
 }
 
-export const MemoizedAnimatedReloadBtn = memo(function ReloadBtn({
-  onClick,
-}: {
-  onClick: () => void
-}) {
-  return (
-    <AnimatePresence initial>
-      <motion.div {...motionPresets.slideBehind}>
-        <BtnTemplates.IconReload onClick={onClick} />
-      </motion.div>
-    </AnimatePresence>
-  )
-})
+interface ReloadBtnProps {
+  onClick?: () => void
+}
+
+function ReloadBtn({ onClick }: ReloadBtnProps) {
+  return <BtnTemplates.IconReload onClick={onClick} />
+}
+
+export const MemoizedAnimatedReloadBtn = memo(ReloadBtn)

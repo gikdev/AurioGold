@@ -1,4 +1,3 @@
-import { AnimatePresence } from "motion/react"
 import { NuqsAdapter } from "nuqs/adapters/react-router/v7"
 import { Suspense } from "react"
 import { BrowserRouter, Route, Routes } from "react-router"
@@ -12,21 +11,19 @@ import { protectedRoutes, publicRoutes } from "./routes.config"
 export const AppRouter = () => (
   <BrowserRouter>
     <NuqsAdapter>
-      <AnimatePresence mode="wait">
-        <Suspense fallback={<Loading />}>
-          <Routes>
-            <Route element={<RootLayout />}>
-              {/* Public routes */}
-              {publicRoutes}
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route element={<RootLayout />}>
+            {/* Public routes */}
+            {publicRoutes}
 
-              {/* Protected routes */}
-              <Route element={<Protected />}>
-                <Route element={<BaseWrapper />}>{protectedRoutes}</Route>
-              </Route>
+            {/* Protected routes */}
+            <Route element={<Protected />}>
+              <Route element={<BaseWrapper />}>{protectedRoutes}</Route>
             </Route>
-          </Routes>
-        </Suspense>
-      </AnimatePresence>
+          </Route>
+        </Routes>
+      </Suspense>
     </NuqsAdapter>
   </BrowserRouter>
 )

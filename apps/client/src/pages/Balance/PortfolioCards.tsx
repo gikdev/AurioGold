@@ -2,7 +2,6 @@ import { PackageIcon } from "@phosphor-icons/react"
 import { Radio } from "@repo/shared/components"
 import { cn } from "@repo/shared/helpers"
 import { formatPersianPrice } from "@repo/shared/utils"
-import { motion } from "motion/react"
 import type { PortfolioWithId } from "./ManageBalance"
 
 interface PortfolioCardsProps {
@@ -51,12 +50,8 @@ function PortfolioCard({
 
   return (
     // biome-ignore lint/a11y/noLabelWithoutControl: false positive
-    <motion.label
+    <label
       data-testid="portfolio-card"
-      initial={{ scale: 1 }}
-      animate={{ scale: isSelected ? 1.02 : 1 }}
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.95 }}
       className={cn(
         "bg-slate-3 hover:bg-slate-4 border rounded-md p-2 flex flex-col gap-5 min-w-40 cursor-pointer ",
         isSelected ? "border-brand-9 hover:border-brand-10" : "border-slate-7 hover:border-slate-8",
@@ -85,6 +80,6 @@ function PortfolioCard({
           onChange={() => setSelectedPortfolioId(id)}
         />
       </p>
-    </motion.label>
+    </label>
   )
 }

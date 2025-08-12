@@ -1,7 +1,5 @@
-import { motion } from "motion/react"
 import { forwardRef } from "react"
 import { ccn, cn } from "#shared/helpers"
-import { motionPresets } from "#shared/lib"
 
 const centerStyles = ccn(`
   h-3 w-3 rounded-full
@@ -22,10 +20,10 @@ export const Radio = forwardRef<HTMLInputElement, React.ComponentPropsWithoutRef
     `)
 
     return (
-      <motion.label {...motionPresets.btn} className={stylesRing}>
+      <label className={stylesRing}>
         <input type="radio" className="sr-only peer" checked={checked} ref={ref} {...props} />
         <span {...centerStyles} />
-      </motion.label>
+      </label>
     )
   },
 )

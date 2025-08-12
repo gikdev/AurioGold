@@ -11,7 +11,6 @@ import {
 import type { StockDtoForMaster, StockStatus } from "@repo/api-client/client"
 import { formatPersianPrice } from "@repo/shared/utils"
 import { useAtomValue } from "jotai"
-import { motion } from "motion/react"
 import { Link } from "react-router"
 import { productsAtom } from "."
 import { Navigation } from "./navigation"
@@ -33,7 +32,7 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product: p }: ProductCardProps) {
-  const StyledMotionLink = styled(motion.create(Link))`
+  const StyledLink = styled(Link)`
     bg-slate-3 hover:bg-slate-4 border rounded-md
     p-2 flex flex-col gap-5 cursor-pointer
     border-slate-7 hover:border-slate-8
@@ -41,12 +40,7 @@ function ProductCard({ product: p }: ProductCardProps) {
   const a11yStuff = calcA11yStuff(p.status)
 
   return (
-    <StyledMotionLink
-      to={Navigation.details(p.id!)}
-      initial={{ scale: 1 }}
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.95 }}
-    >
+    <StyledLink to={Navigation.details(p.id!)}>
       <p className="flex items-center gap-1">
         <PackageIcon size={20} />
         <span>{p.name}</span>
@@ -63,7 +57,7 @@ function ProductCard({ product: p }: ProductCardProps) {
           {formatPersianPrice(p.price ?? 0)}
         </span>
       </p>
-    </StyledMotionLink>
+    </StyledLink>
   )
 }
 

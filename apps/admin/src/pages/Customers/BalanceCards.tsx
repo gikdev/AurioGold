@@ -1,7 +1,6 @@
 import { CaretLeftIcon, PackageIcon } from "@phosphor-icons/react"
 import { cn } from "@repo/shared/helpers"
 import { formatPersianPrice } from "@repo/shared/utils"
-import { motion } from "motion/react"
 import { Link } from "react-router"
 import type { UserBalanceItemWithId } from "./CustomerBalanceDrawer"
 import { CustomerNavigation } from "./navigation"
@@ -34,19 +33,14 @@ interface BalanceCardProps {
 }
 
 function BalanceCard({ stockName, volume, stockId, customerId }: BalanceCardProps) {
-  const MotionLink = motion.create(Link)
-
   const to =
     stockId === 0
       ? CustomerNavigation.doc(customerId)
       : CustomerNavigation.transfer(customerId, stockId, "0912912912912")
 
   return (
-    <MotionLink
+    <Link
       to={to}
-      initial={{ scale: 1 }}
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.95 }}
       className="bg-slate-3 hover:bg-slate-4 border rounded-md p-2 flex flex-col gap-5 min-w-max cursor-pointer border-slate-7 hover:border-slate-8"
     >
       <p className="flex items-center gap-1">
@@ -65,6 +59,6 @@ function BalanceCard({ stockName, volume, stockId, customerId }: BalanceCardProp
           {formatPersianPrice(Math.abs(Number(volume.toFixed(3))))}
         </span>
       </p>
-    </MotionLink>
+    </Link>
   )
 }

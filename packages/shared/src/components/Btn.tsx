@@ -1,5 +1,4 @@
-import { type HTMLMotionProps, motion } from "motion/react"
-import type { ElementType } from "react"
+import type { ComponentProps, ElementType } from "react"
 import { cn } from "#shared/helpers"
 
 const styles = {
@@ -30,7 +29,7 @@ const styles = {
   },
 }
 
-interface BtnProps extends HTMLMotionProps<"button"> {
+interface BtnProps extends ComponentProps<"button"> {
   as?: ElementType
   themeType?: Exclude<keyof typeof styles, "base">
   theme?: keyof (typeof styles)["filled"]
@@ -48,17 +47,9 @@ export function Btn({
 }: BtnProps) {
   const classes = cn(styles.base, styles[themeType][theme], className)
 
-  const MotionTag = motion.create(Tag)
-
   return (
-    <MotionTag
-      type="button"
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.95 }}
-      {...other}
-      className={classes}
-    >
+    <Tag type="button" {...other} className={classes}>
       {children}
-    </MotionTag>
+    </Tag>
   )
 }

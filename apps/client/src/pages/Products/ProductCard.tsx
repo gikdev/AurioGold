@@ -1,9 +1,8 @@
 import { CaretLeftIcon, ClockIcon, PackageIcon } from "@phosphor-icons/react"
 import type { StockDto, StockStatus, StockUnit } from "@repo/api-client/client"
 import { ccn } from "@repo/shared/helpers"
-import { cellRenderers, motionPresets } from "@repo/shared/lib"
+import { cellRenderers } from "@repo/shared/lib"
 import { formatPersianPrice } from "@repo/shared/utils"
-import { motion } from "motion/react"
 import { useNavigate } from "react-router"
 import { TradeNavigation } from "../Trade/navigation"
 import { useFinalProductPrices, useGetProductSideEnabled } from "../Trade/shared"
@@ -61,9 +60,8 @@ export default function ProductCard({
   if (isDisabled) return null
 
   return (
-    <motion.button
+    <button
       type="button"
-      {...motionPresets.btn}
       {...styles.container}
       onClick={handleProductClick}
       data-testid="product-card"
@@ -101,6 +99,6 @@ export default function ProductCard({
         <ClockIcon />
         <cellRenderers.DateAndTime value={updateDate} />
       </p>
-    </motion.button>
+    </button>
   )
 }

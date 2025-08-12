@@ -1,7 +1,5 @@
-import { AnimatePresence, motion } from "motion/react"
 import { type ComponentProps, type ReactNode, useEffect } from "react"
 import { useToggleLessOrMoreBtn } from "#shared/hooks"
-import { motionPresets } from "#shared/lib"
 import { TitledCard } from "./TitledCard"
 
 type TitledCardProps = Omit<ComponentProps<typeof TitledCard>, "titleSlot">
@@ -40,13 +38,7 @@ export function TitledCardExpandable({
       titleSlot={titleSlot}
       headerClassName={isOpen ? "" : "border-0 pb-0"}
     >
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div {...motionPresets.openCloseHeight} className="overflow-hidden">
-            {children}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {isOpen && <div className="overflow-hidden">{children}</div>}
     </TitledCard>
   )
 }
