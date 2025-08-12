@@ -24,7 +24,7 @@ const buildContext: BuildContext = {
 }
 
 function generateAppReleaseName(appName: AppName, currentProfileName: ProfileKey, version: number) {
-  return `${appName}-${currentProfileName}-v${version}`
+  return `v${version}-${currentProfileName}-${appName}`
 }
 
 async function buildAllApps() {
