@@ -40,7 +40,8 @@ export const config: Config = {
     asazar: {
       displayName: "آسازر",
       appId: "ir.asazar.auriogold_",
-      apiBaseUrl: "https://aapi.asazar.ir",
+      // apiBaseUrl: "https://aapi.asazar.ir",
+      apiBaseUrl: "http://hapi.hgoldzar.ir",
       appTitleAdmin: "ادمین آسازر",
       appTitleClient: "آسازر",
     },

@@ -72,7 +72,7 @@ function _ProductDetails() {
             <KeyValueDetailsContainer className="flex flex-col gap-3">
               <KeyValueDetail
                 title="آخرین آپدیت"
-                value={product.dateUpdate?.toISOString?.()}
+                value={product.dateUpdate}
                 cellRendered={
                   <cellRenderers.DateAndTime value={product.dateUpdate || new Date(0)} />
                 }
