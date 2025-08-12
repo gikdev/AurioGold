@@ -1,8 +1,8 @@
 import {
   type ColDef,
   type ColGroupDef,
-  colorSchemeDarkWarm,
-  colorSchemeLightWarm,
+  colorSchemeDark,
+  colorSchemeLight,
   themeQuartz,
 } from "ag-grid-community"
 import { AgGridReact, type AgGridReactProps } from "ag-grid-react"
@@ -11,8 +11,8 @@ import { forwardRef, type Ref, useMemo } from "react"
 import { currentThemeAtom } from "#shared/atoms"
 import { AG_GRID_LOCALE_IR } from "../constants"
 
-const selectedThemeDark = themeQuartz.withPart(colorSchemeDarkWarm)
-const selectedThemeLight = themeQuartz.withPart(colorSchemeLightWarm)
+const selectedThemeDark = themeQuartz.withPart(colorSchemeDark)
+const selectedThemeLight = themeQuartz.withPart(colorSchemeLight)
 
 type TableFaProps<T> = Omit<AgGridReactProps<T>, "columnDefs" | "rowData"> & {
   columnDefs?: (ColDef<T> | ColGroupDef<T>)[]
