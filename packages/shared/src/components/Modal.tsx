@@ -1,3 +1,6 @@
+// biome-ignore-all lint/a11y/noStaticElementInteractions: forced...
+// biome-ignore-all lint/a11y/useKeyWithClickEvents: forced...
+
 import { XIcon } from "@phosphor-icons/react"
 import type { ReactNode } from "react"
 import { useEffect } from "react"
@@ -24,13 +27,10 @@ export function Modal({ isOpen, onClose, title, description, btns, children }: M
   if (!isOpen) return null
 
   return (
-    <button
-      type="button"
+    <div
       className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/80 backdrop-blur"
       onClick={onClose}
     >
-      {/** biome-ignore lint/a11y/noStaticElementInteractions: element is not interactive... */}
-      {/** biome-ignore lint/a11y/useKeyWithClickEvents: no need for that */}
       <div
         onClick={e => e.stopPropagation()}
         className="bg-slate-1 text-slate-11 w-full sm:max-w-lg rounded-t-md sm:rounded-md shadow-xl p-4 sm:p-6 mx-auto gap-4 flex flex-col"
@@ -49,6 +49,6 @@ export function Modal({ isOpen, onClose, title, description, btns, children }: M
 
         <div className="flex gap-2 items-center flex-wrap *:flex-1">{btns}</div>
       </div>
-    </button>
+    </div>
   )
 }
