@@ -8,7 +8,7 @@ export interface Profile {
   appTitleClient: string
 }
 
-const profileKeys = ["deploy", "vahedi", "asazar"] as const
+const profileKeys = ["deploy", "vahedi", "asazar", "hgold"] as const
 
 export type ProfileKey = (typeof profileKeys)[number]
 
@@ -40,11 +40,17 @@ export const config: Config = {
     asazar: {
       displayName: "آسازر",
       appId: "ir.asazar.auriogold_",
-      // apiBaseUrl: "https://aapi.asazar.ir",
-      apiBaseUrl: "http://hapi.hgoldzar.ir",
+      apiBaseUrl: "https://aapi.asazar.ir",
       appTitleAdmin: "ادمین آسازر",
       appTitleClient: "آسازر",
     },
+    hgold: {
+      displayName: "ایچ‌گلد",
+      appId: "ir.hgoldzar.auriogold_",
+      apiBaseUrl: "http://hapi.hgoldzar.ir",
+      appTitleAdmin: "ادمین ایچ‌گلد",
+      appTitleClient: "ایچ‌گلد",
+    }
   },
   currentProfileKey,
 }
