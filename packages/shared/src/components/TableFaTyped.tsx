@@ -1,9 +1,18 @@
-import { type ColDef, type ColGroupDef, colorSchemeDarkBlue, themeQuartz } from "ag-grid-community"
+import {
+  type ColDef,
+  type ColGroupDef,
+  colorSchemeDarkWarm,
+  colorSchemeLightWarm,
+  themeQuartz,
+} from "ag-grid-community"
 import { AgGridReact, type AgGridReactProps } from "ag-grid-react"
+import { useAtomValue } from "jotai"
 import { forwardRef, type Ref, useMemo } from "react"
+import { currentThemeAtom } from "#shared/atoms"
 import { AG_GRID_LOCALE_IR } from "../constants"
 
-const selectedTheme = themeQuartz.withPart(colorSchemeDarkBlue)
+const selectedThemeDark = themeQuartz.withPart(colorSchemeDarkWarm)
+const selectedThemeLight = themeQuartz.withPart(colorSchemeLightWarm)
 
 type TableFaProps<T> = Omit<AgGridReactProps<T>, "columnDefs" | "rowData"> & {
   columnDefs?: (ColDef<T> | ColGroupDef<T>)[]
@@ -15,6 +24,10 @@ function _TableFaInner<T>(
   { className, columnDefs = [], rowData = [], ...other }: TableFaProps<T>,
   ref: React.Ref<AgGridReact<T>>,
 ) {
+  const currentTheme = useAtomValue(currentThemeAtom)
+
+  const selectedTheme = currentTheme === "dark" ? selectedThemeDark : selectedThemeLight
+
   const defaultColDef: ColDef<T> = useMemo(
     () => ({
       minWidth: 150,

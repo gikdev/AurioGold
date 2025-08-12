@@ -19,17 +19,20 @@ const getRowStyle: TableOrdersProps["getRowStyle"] = ({ data }) => {
 
   const { orderStatus, side } = data
 
-  // رد شده
-  // slate-3
-  if (orderStatus === 4) return { background: "#212225" }
+  // رد شده — slate-3 with 50% opacity
+  if (orderStatus === 4) {
+    return { background: "rgba(44, 47, 51, 0.5)" } // from #2c2f33
+  }
 
-  // خرید
-  // green-3
-  if (side === 1) return { background: "#0f2e22" }
+  // خرید — green-3 with 50% opacity
+  if (side === 1) {
+    return { background: "rgba(17, 102, 68, 0.5)" } // from #116644
+  }
 
-  // فروش
-  // red-3
-  if (side === 2) return { background: "#3b1219" }
+  // فروش — red-3 with 50% opacity
+  if (side === 2) {
+    return { background: "rgba(110, 27, 35, 0.5)" } // from #6e1b23
+  }
 
   return
 }

@@ -5,7 +5,6 @@ import { useAtom } from "jotai"
 import { showOnlineUsersInStatusbarAtom } from "#/atoms"
 
 const themeOptions = [
-  { id: "auto", title: "خودکار" },
   { id: "dark", title: "تاریک" },
   { id: "light", title: "روشن" },
 ]

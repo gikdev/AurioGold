@@ -4,7 +4,6 @@ import { createSelectWithOptions, LabelerLine, TitledCard } from "@repo/shared/c
 import { useAtom } from "jotai"
 
 const themeOptions = [
-  { id: "auto", title: "خودکار" },
   { id: "dark", title: "تاریک" },
   { id: "light", title: "روشن" },
 ]
