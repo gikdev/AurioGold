@@ -1,17 +1,24 @@
 import { useApiRequest } from "@gikdev/react-datapi/src"
-import { CirclesThreePlusIcon, PackageIcon } from "@phosphor-icons/react"
+import {
+  CardsIcon,
+  CardsThreeIcon,
+  CirclesThreePlusIcon,
+  PackageIcon,
+  TableIcon,
+} from "@phosphor-icons/react"
 import type { StockDtoForMaster } from "@repo/api-client/client"
 import {
   BtnTemplates,
   ErrorCardBoundary,
   FloatingActionBtn,
+  IconsToggle,
+  type IconsToggleItem,
   TitledCard,
-  useCurrentViewMode,
-  ViewModesToggle,
+  type ViewMode,
 } from "@repo/shared/components"
 import { getIsMobile } from "@repo/shared/hooks"
 import { useAtomValue, useSetAtom } from "jotai"
-import { useCallback, useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Link } from "react-router"
 import { connectionRefAtom } from "#/atoms"
 import { productsAtom } from "."
@@ -21,12 +28,21 @@ import EditProductDrawer from "./EditProductDrawer"
 import { Navigation } from "./navigation"
 import { ProductCards } from "./ProductCards"
 import ProductDetails from "./ProductDetails"
+import { ProductFullCards } from "./ProductFullCards"
 import ProductsTable from "./ProductsTable"
+
+type ProductsViewMode = ViewMode | "full-cards"
+
+const modes: IconsToggleItem<ProductsViewMode>[] = [
+  { id: "full-cards", icon: CardsThreeIcon },
+  { id: "cards", icon: CardsIcon },
+  { id: "table", icon: TableIcon },
+]
 
 export default function ManageProducts() {
   const connection = useAtomValue(connectionRefAtom)
   const isMobile = getIsMobile()
-  const viewMode = useCurrentViewMode()
+  const [viewMode, setViewMode] = useState<ProductsViewMode>("full-cards")
   const setProductsAtom = useSetAtom(productsAtom)
   const previousResProductsRef = useRef<Required<StockDtoForMaster>[]>([])
   const resProducts = useApiRequest<Required<StockDtoForMaster>[], StockDtoForMaster[]>(() => ({
@@ -69,15 +85,24 @@ export default function ManageProducts() {
     <div className="flex items-center ms-auto gap-2">
       <BtnTemplates.IconReload onClick={() => resProducts.reload()} />
       <CreateProductFAB />
-      <ViewModesToggle />
+      <IconsToggle activeItemId={viewMode} items={modes} onChange={setViewMode} />
     </div>
   )
 
   return (
     <>
-      <CreateProductDrawer reloadProducts={() => resProducts.reload()} />
-      <DeleteProductsModal reloadProducts={() => resProducts.reload()} />
-      <EditProductDrawer reloadProducts={() => resProducts.reload()} />
+      <ErrorCardBoundary>
+        <CreateProductDrawer reloadProducts={() => resProducts.reload()} />
+      </ErrorCardBoundary>
+
+      <ErrorCardBoundary>
+        <DeleteProductsModal reloadProducts={() => resProducts.reload()} />
+      </ErrorCardBoundary>
+
+      <ErrorCardBoundary>
+        <EditProductDrawer reloadProducts={() => resProducts.reload()} />
+      </ErrorCardBoundary>
+
       <ErrorCardBoundary>
         <ProductDetails />
       </ErrorCardBoundary>
@@ -86,8 +111,9 @@ export default function ManageProducts() {
         title="مدیریت محصولات"
         icon={PackageIcon}
         titleSlot={titleSlot}
-        className={!isMobile && viewMode === "table" ? "max-w-240" : undefined}
+        className={!isMobile && viewMode !== "cards" ? "max-w-240" : undefined}
       >
+        {viewMode === "full-cards" && <ProductFullCards />}
         {viewMode === "cards" && <ProductCards />}
         {viewMode === "table" && <ProductsTable />}
       </TitledCard>

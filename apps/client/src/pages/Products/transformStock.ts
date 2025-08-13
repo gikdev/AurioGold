@@ -16,7 +16,9 @@ export function transformStock(input: StockDto): Required<StockDto> {
     status: input.status ?? 0,
     mode: input.mode ?? 0,
     maxAutoMin: input.maxAutoMin ?? null,
-    dateUpdate: input.dateUpdate ? new Date(input.dateUpdate).toISOString() : new Date(0).toISOString(),
+    dateUpdate: input.dateUpdate
+      ? new Date(input.dateUpdate).toISOString()
+      : new Date(0).toISOString(),
     minValue: input.minValue ?? null,
     maxValue: input.maxValue ?? null,
     minVoume: input.minVoume ?? 0,

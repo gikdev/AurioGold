@@ -50,7 +50,7 @@ export const config: Config = {
       apiBaseUrl: "https://hapi.hgoldzar.ir",
       appTitleAdmin: "ادمین ایچ‌گلد",
       appTitleClient: "ایچ‌گلد",
-    }
+    },
   },
   currentProfileKey,
 }

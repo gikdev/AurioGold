@@ -3,7 +3,7 @@ import { useAtom, useAtomValue } from "jotai"
 import { atomWithStorage } from "jotai/utils"
 import { Btn } from "./Btn"
 
-type ViewMode = "cards" | "table"
+export type ViewMode = "cards" | "table"
 
 const viewModeAtom = atomWithStorage<ViewMode>("VIEW_MODE", "cards")
 
