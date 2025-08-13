@@ -47,7 +47,7 @@ export const config: Config = {
     hgold: {
       displayName: "ایچ‌گلد",
       appId: "ir.hgoldzar.auriogold_",
-      apiBaseUrl: "http://hapi.hgoldzar.ir",
+      apiBaseUrl: "https://hapi.hgoldzar.ir",
       appTitleAdmin: "ادمین ایچ‌گلد",
       appTitleClient: "ایچ‌گلد",
     }
