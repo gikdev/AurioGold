@@ -26,7 +26,7 @@ export const productFormFields = createFieldsWithLabels({
 
 const { fields } = productFormFields
 
-export const productFormSchema = z.object({
+export const ProductFormSchema = z.object({
   [fields.name]: z.string(commonErrors).min(1, { message: commonErrors.required_error }),
   [fields.description]: z.string().nullable().default(null),
   [fields.price]: z.coerce.number(commonErrors),
@@ -51,7 +51,7 @@ export const productFormSchema = z.object({
   [fields.accountingCode]: z.string().nullable().default(null),
 })
 
-export type ProductFormValues = z.input<typeof productFormSchema>
+export type ProductFormValues = z.input<typeof ProductFormSchema>
 
 export const emptyProductFormValues: ProductFormValues = {
   name: "",
@@ -78,12 +78,14 @@ export const transactionMethods = [
   { id: "1", name: "تعدادی" },
   { id: "2", name: "مثقالی" },
 ]
+export type TransactionMethods = "0" | "1" | "2"
 
 export const transactionTypes = [
   { id: "0", name: "عادی" },
   { id: "1", name: "تایید خودکار" },
   { id: "2", name: "رد خودکار" },
 ]
+export type TransactionType = "0" | "1" | "2"
 
 export const transactionStatuses = [
   { id: "0", name: "غیر فعال" },
@@ -91,6 +93,7 @@ export const transactionStatuses = [
   { id: "2", name: "قابل فروش توسط مشتری" },
   { id: "3", name: "قابل خرید و فروش" },
 ]
+export type TransactionStatuses = "0" | "1" | "2" | "3"
 
 export function toSafeNumber(input: string | null | undefined): number {
   if (!input) return 0

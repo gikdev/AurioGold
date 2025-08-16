@@ -2,12 +2,11 @@ import type { StockDtoForMaster } from "@repo/api-client/client"
 import { BtnTemplates, createTypedTableFa } from "@repo/shared/components"
 import { cellRenderers } from "@repo/shared/lib"
 import type { CustomCellRendererProps } from "ag-grid-react"
-import { useAtomValue } from "jotai"
 import type { ComponentProps } from "react"
 import { Link } from "react-router"
-import { productsAtom } from "."
 import { Navigation } from "./navigation"
 import { calcA11yStuff } from "./ProductCards"
+import { useStocksQuery } from "./shared"
 
 type DataShape = StockDtoForMaster
 const Table = createTypedTableFa<DataShape>()
@@ -41,11 +40,11 @@ const columnDefs: TableProps["columnDefs"] = [
 ]
 
 export default function ProductsTable() {
-  const products = useAtomValue(productsAtom)
+  const { data: stocks = [] } = useStocksQuery()
 
   return (
     <div className="h-160">
-      <Table rowData={products} columnDefs={columnDefs} />
+      <Table rowData={stocks} columnDefs={columnDefs} />
     </div>
   )
 }

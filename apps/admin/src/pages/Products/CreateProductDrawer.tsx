@@ -10,8 +10,8 @@ import { QUERY_KEYS } from "./navigation"
 import ProductForm from "./ProductForm"
 import {
   emptyProductFormValues,
+  ProductFormSchema,
   type ProductFormValues,
-  productFormSchema,
 } from "./productFormShared"
 
 interface CreateProductFormProps {
@@ -21,7 +21,7 @@ interface CreateProductFormProps {
 function _CreateProductDrawer({ reloadProducts }: CreateProductFormProps) {
   const [showCreateDrawer, setShowCreateDrawer] = useDrawerSheet(QUERY_KEYS.createNew)
 
-  const form = useCustomForm(productFormSchema, emptyProductFormValues)
+  const form = useCustomForm(ProductFormSchema, emptyProductFormValues)
   const { formState, trigger, reset, handleSubmit } = form
   const { isSubmitting } = formState
 

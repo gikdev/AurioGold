@@ -1,159 +1,160 @@
 import styled from "@master/styled.react"
+import type { HubConnection } from "@microsoft/signalr"
 import { CaretDownIcon, CaretUpIcon } from "@phosphor-icons/react"
-import { notifManager, storageManager } from "@repo/shared/adapters"
+import type { StockDtoForMaster } from "@repo/api-client/client"
+import { getApiTyStocksQueryKey } from "@repo/api-client/tanstack"
+import { notifManager } from "@repo/shared/adapters"
 import { Btn, useDrawerSheetNumber } from "@repo/shared/components"
 import { formatPersianPrice } from "@repo/shared/utils"
-import { useAtom, useAtomValue } from "jotai"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { produce } from "immer"
+import { useAtomValue } from "jotai"
 import { memo, useCallback } from "react"
 import tw from "tailwind-styled-components"
 import { connectionRefAtom } from "#/atoms"
-import { productsAtom } from "."
+import genDatApiConfig from "#/shared/datapi-config"
 import { QUERY_KEYS } from "./navigation"
+import { useStocksQuery } from "./shared"
 
 const CardContainer = styled.div`
   bg-slate-2 border border-slate-6
   rounded-md p-2 flex flex-col gap-5
 `
+const StyledIconBtn = tw(Btn)`min-h-8 w-8 p-1`
+const StyledPrice = styled.p`font-bold text-2xl text-slate-12`
 
-const StyledIconBtn = tw(Btn)`
-  min-h-8 w-8 p-1
-`
+interface PriceCardProps {
+  label: string
+  value: number | null | undefined
+  disabled?: boolean
+  onInc: () => void
+  onDec: () => void
+}
 
-const StyledPrice = styled.p`
-  font-bold text-2xl text-slate-12
-`
+function _PriceCard({ label, value, disabled, onInc, onDec }: PriceCardProps) {
+  return (
+    <CardContainer>
+      <div className="flex items-center gap-1">
+        <p className="me-auto">{label}</p>
 
-const adminToken = storageManager.get("ttkk", "sessionStorage") || ""
+        <StyledIconBtn disabled={!!disabled} theme="error" onClick={onDec}>
+          <CaretDownIcon size={20} />
+        </StyledIconBtn>
+
+        <StyledIconBtn disabled={!!disabled} theme="success" onClick={onInc}>
+          <CaretUpIcon size={20} />
+        </StyledIconBtn>
+      </div>
+
+      <StyledPrice dir="ltr">{formatPersianPrice(value ?? 0)}</StyledPrice>
+    </CardContainer>
+  )
+}
+
+const PriceCard = memo(_PriceCard)
+
+async function updatePrice(opts: {
+  connection: HubConnection | null
+  productId: NonNullable<StockDtoForMaster["id"]>
+  newPrice: number
+  priceType: "price" | "diffBuyPrice" | "diffSellPrice"
+}) {
+  const { connection, productId, newPrice, priceType } = opts
+
+  if (!connection || typeof connection.invoke !== "function") {
+    throw new Error("No connection")
+  }
+
+  const adminToken = genDatApiConfig().token
+  return connection.invoke("UpdatePrice", adminToken, productId, newPrice, priceType)
+}
 
 function _DetailsCardsSection() {
+  const queryClient = useQueryClient()
   const connection = useAtomValue(connectionRefAtom)
-  const [products, setProducts] = useAtom(productsAtom)
+  const { data: stocks = [] } = useStocksQuery()
   const [productId] = useDrawerSheetNumber(QUERY_KEYS.productId)
-  const product = products.find(p => p.id === productId)
+  const product = stocks.find(p => p.id === productId)
 
-  const areAllBtnsEnabled = !!connection
+  const areAllBtnsEnabled = !!connection && !!product
 
-  const invoke = useCallback(
-    (newPrice: number, priceType: "price" | "diffBuyPrice" | "diffSellPrice") => {
-      if (!connection) return
+  const stocksKey = getApiTyStocksQueryKey()
 
-      connection.invoke("UpdatePrice", adminToken, productId, newPrice, priceType).catch(err => {
-        notifManager.notify(`یه مشکلی پیش آمد (E-BIO9465): ${String(err)}`, "toast", {
-          status: "error",
-        })
+  const updatePriceMutation = useMutation({
+    mutationFn: updatePrice,
+
+    /**
+     * Pessimistic cache update
+     * - Wait for server to confirm success
+     * - Then update cache manually
+     */
+    onSuccess: (_data, vars) => {
+      queryClient.setQueryData<StockDtoForMaster[] | undefined>(stocksKey, old =>
+        produce(old, draft => {
+          if (!draft) return
+
+          const stock = draft.find(p => p.id === vars.productId)
+          if (stock) {
+            stock[vars.priceType] = vars.newPrice
+            stock.dateUpdate = new Date().toISOString()
+          }
+        }),
+      )
+    },
+
+    onError: err => {
+      notifManager.notify(`یه مشکلی پیش آمد (E-BIO9465): ${String(err)}`, "toast", {
+        status: "error",
       })
     },
-    [connection, productId],
+  })
+
+  const change = useCallback(
+    (field: "price" | "diffBuyPrice" | "diffSellPrice", dir: "inc" | "dec") => {
+      if (!product || productId == null) return
+
+      const isBase = field === "price"
+      const step = isBase ? (product.priceStep ?? 0) : (product.diffPriceStep ?? 0)
+      const current = (product as Record<typeof field, number | undefined>)[field] ?? 0
+      const newPrice = dir === "inc" ? current + step : current - step
+
+      updatePriceMutation.mutate({
+        connection,
+        productId: productId as NonNullable<StockDtoForMaster["id"]>,
+        newPrice,
+        priceType: field,
+      })
+    },
+    [connection, updatePriceMutation, product, productId],
   )
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
-  const handleAnyIncOrDec = useCallback(
-    (priceType: "buy" | "sell" | "base", taskType: "inc" | "dec") =>
-      setProducts(draft => {
-        const idx = draft.findIndex(p => p.id === productId)
-        if (idx === -1) return
-        if (typeof draft[idx].diffBuyPrice !== "number") return
-        if (typeof draft[idx].diffSellPrice !== "number") return
-        if (typeof draft[idx].diffPriceStep !== "number") return
-        if (typeof draft[idx].price !== "number") return
-        if (typeof draft[idx].priceStep !== "number") return
-
-        if (priceType === "base") {
-          if (taskType === "inc") draft[idx].price += draft[idx].priceStep
-          if (taskType === "dec") draft[idx].price -= draft[idx].priceStep
-          invoke(draft[idx].price, "price")
-        }
-
-        if (priceType === "buy") {
-          if (taskType === "inc") draft[idx].diffBuyPrice += draft[idx].diffPriceStep
-          if (taskType === "dec") draft[idx].diffBuyPrice -= draft[idx].diffPriceStep
-          invoke(draft[idx].diffBuyPrice, "diffBuyPrice")
-        }
-
-        if (priceType === "sell") {
-          if (taskType === "inc") draft[idx].diffSellPrice += draft[idx].diffPriceStep
-          if (taskType === "dec") draft[idx].diffSellPrice -= draft[idx].diffPriceStep
-          invoke(draft[idx].diffSellPrice, "diffSellPrice")
-        }
-      }),
-    [],
-  )
-
-  if (!product || !productId) return
+  if (!product || !productId) return null
 
   return (
     <div className="flex flex-col gap-2">
-      <CardContainer>
-        <div className="flex items-center gap-1">
-          <p className="me-auto">اختلاف خرید</p>
+      <PriceCard
+        label="اختلاف خرید"
+        value={product.diffBuyPrice}
+        disabled={!areAllBtnsEnabled || updatePriceMutation.isPending}
+        onInc={() => change("diffBuyPrice", "inc")}
+        onDec={() => change("diffBuyPrice", "dec")}
+      />
 
-          <StyledIconBtn
-            disabled={!areAllBtnsEnabled}
-            theme="error"
-            onClick={() => handleAnyIncOrDec("buy", "dec")}
-          >
-            <CaretDownIcon size={20} />
-          </StyledIconBtn>
+      <PriceCard
+        label="قیمت پایه"
+        value={product.price}
+        disabled={!areAllBtnsEnabled || updatePriceMutation.isPending}
+        onInc={() => change("price", "inc")}
+        onDec={() => change("price", "dec")}
+      />
 
-          <StyledIconBtn
-            disabled={!areAllBtnsEnabled}
-            theme="success"
-            onClick={() => handleAnyIncOrDec("buy", "inc")}
-          >
-            <CaretUpIcon size={20} />
-          </StyledIconBtn>
-        </div>
-
-        <StyledPrice dir="ltr">{formatPersianPrice(product.diffBuyPrice ?? 0)}</StyledPrice>
-      </CardContainer>
-
-      <CardContainer>
-        <div className="flex items-center gap-1">
-          <p className="me-auto">قیمت پایه</p>
-
-          <StyledIconBtn
-            disabled={!areAllBtnsEnabled}
-            theme="error"
-            onClick={() => handleAnyIncOrDec("base", "dec")}
-          >
-            <CaretDownIcon size={20} />
-          </StyledIconBtn>
-
-          <StyledIconBtn
-            disabled={!areAllBtnsEnabled}
-            theme="success"
-            onClick={() => handleAnyIncOrDec("base", "inc")}
-          >
-            <CaretUpIcon size={20} />
-          </StyledIconBtn>
-        </div>
-
-        <StyledPrice dir="ltr">{formatPersianPrice(product.price ?? 0)}</StyledPrice>
-      </CardContainer>
-
-      <CardContainer>
-        <div className="flex items-center gap-1">
-          <p className="me-auto">اختلاف فروش</p>
-
-          <StyledIconBtn
-            disabled={!areAllBtnsEnabled}
-            theme="error"
-            onClick={() => handleAnyIncOrDec("sell", "dec")}
-          >
-            <CaretDownIcon size={20} />
-          </StyledIconBtn>
-
-          <StyledIconBtn
-            disabled={!areAllBtnsEnabled}
-            theme="success"
-            onClick={() => handleAnyIncOrDec("sell", "inc")}
-          >
-            <CaretUpIcon size={20} />
-          </StyledIconBtn>
-        </div>
-
-        <StyledPrice dir="ltr">{formatPersianPrice(product.diffSellPrice ?? 0)}</StyledPrice>
-      </CardContainer>
+      <PriceCard
+        label="اختلاف فروش"
+        value={product.diffSellPrice}
+        disabled={!areAllBtnsEnabled || updatePriceMutation.isPending}
+        onInc={() => change("diffSellPrice", "inc")}
+        onDec={() => change("diffSellPrice", "dec")}
+      />
     </div>
   )
 }

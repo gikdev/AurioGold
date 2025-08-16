@@ -6,7 +6,8 @@
   "type": "module",
   "exports": {
     ".": "./client/index.ts",
-    "./client": "./generated-client/index.ts"
+    "./client": "./generated-client/index.ts",
+    "./tanstack": "./generated-client/@tanstack/react-query.gen.ts"
   },
   "scripts": {
     "openapi-ts": "openapi-ts"

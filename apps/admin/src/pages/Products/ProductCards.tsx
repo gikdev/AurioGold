@@ -10,18 +10,17 @@ import {
 } from "@phosphor-icons/react"
 import type { StockDtoForMaster, StockStatus } from "@repo/api-client/client"
 import { formatPersianPrice } from "@repo/shared/utils"
-import { useAtomValue } from "jotai"
 import { Link } from "react-router"
-import { productsAtom } from "."
 import { Navigation } from "./navigation"
+import { useStocksQuery } from "./shared"
 
 export function ProductCards() {
-  const products = useAtomValue(productsAtom)
+  const { data: stocks = [] } = useStocksQuery()
 
   return (
     <div className="grid auto-rows-fr gap-4 grid-cols-[repeat(auto-fit,minmax(200px,1fr))]">
-      {products.map(p => (
-        <ProductCard product={p} key={p.id} />
+      {stocks.map(s => (
+        <ProductCard product={s} key={s.id} />
       ))}
     </div>
   )

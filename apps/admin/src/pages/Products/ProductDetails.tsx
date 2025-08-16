@@ -12,11 +12,9 @@ import {
   useDrawerSheetNumber,
 } from "@repo/shared/components"
 import { cellRenderers } from "@repo/shared/lib"
-import { useAtomValue } from "jotai"
 import { memo } from "react"
 import { Link } from "react-router"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
-import { productsAtom } from "."
 import DetailsCardsSection from "./DetailsCardsSection"
 import { Navigation, QUERY_KEYS } from "./navigation"
 import {
@@ -25,14 +23,15 @@ import {
   transactionStatuses,
   transactionTypes,
 } from "./productFormShared"
+import { useStocksQuery } from "./shared"
 
 const getLabelProperty = generateLabelPropertyGetter(productFormFields.labels)
 
 function _ProductDetails() {
   const [showDetailsDrawer, setShowDetailsDrawer] = useDrawerSheet(QUERY_KEYS.details)
-  const products = useAtomValue(productsAtom)
+  const { data: stocks = [] } = useStocksQuery()
   const [productId, setProductId] = useDrawerSheetNumber(QUERY_KEYS.productId)
-  const product = products.find(p => p.id === productId)
+  const product = stocks.find(p => p.id === productId)
   const resPriceSources = useApiRequest<Required<StockPriceSourceResponse>[]>(() => ({
     url: "/StockPriceSource/GetStockPriceSources",
     defaultValue: [],

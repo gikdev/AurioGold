@@ -26,6 +26,7 @@ export function ProductFullCard({ product: p }: ProductFullCardProps) {
         diffBuyPrice={p.diffBuyPrice}
         diffSellPrice={p.diffSellPrice}
         price={p.price}
+        id={p.id}
       />
     </div>
   )

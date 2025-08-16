@@ -8,6 +8,7 @@ interface PriceControllerProps {
   price: string
   onUpBtnClick: () => void
   onDownBtnClick: () => void
+  areAllBtnsEnabled?: boolean
 }
 
 export function PriceController({
@@ -16,6 +17,7 @@ export function PriceController({
   price,
   priceNumberColor,
   title,
+  areAllBtnsEnabled = true,
 }: PriceControllerProps) {
   return (
     <div className="flex gap-1 w-full">
@@ -25,11 +27,21 @@ export function PriceController({
       </div>
 
       <div className="flex gap-1">
-        <Btn className="w-10 p-0" theme="error" onClick={onDownBtnClick}>
+        <Btn
+          className="w-10 p-0"
+          theme="error"
+          onClick={onDownBtnClick}
+          disabled={!areAllBtnsEnabled}
+        >
           <CaretDownIcon />
         </Btn>
 
-        <Btn className="w-10 p-0" theme="success" onClick={onUpBtnClick}>
+        <Btn
+          className="w-10 p-0"
+          theme="success"
+          onClick={onUpBtnClick}
+          disabled={!areAllBtnsEnabled}
+        >
           <CaretUpIcon />
         </Btn>
       </div>

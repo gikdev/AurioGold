@@ -1,4 +1,3 @@
-import { useApiRequest } from "@gikdev/react-datapi/src"
 import {
   CardsIcon,
   CardsThreeIcon,
@@ -6,7 +5,6 @@ import {
   PackageIcon,
   TableIcon,
 } from "@phosphor-icons/react"
-import type { StockDtoForMaster } from "@repo/api-client/client"
 import {
   BtnTemplates,
   ErrorCardBoundary,
@@ -17,19 +15,19 @@ import {
   type ViewMode,
 } from "@repo/shared/components"
 import { getIsMobile } from "@repo/shared/hooks"
-import { useAtomValue, useSetAtom } from "jotai"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useAtomValue } from "jotai"
+import { useEffect, useState } from "react"
 import { Link } from "react-router"
 import { connectionRefAtom } from "#/atoms"
-import { productsAtom } from "."
 import CreateProductDrawer from "./CreateProductDrawer"
 import DeleteProductsModal from "./DeleteProductModal"
-import EditProductDrawer from "./EditProductDrawer"
+import { EditProductDrawer } from "./EditProductDrawer"
 import { Navigation } from "./navigation"
 import { ProductCards } from "./ProductCards"
 import ProductDetails from "./ProductDetails"
 import { ProductFullCards } from "./ProductFullCards"
 import ProductsTable from "./ProductsTable"
+import { applyStockUpdate, refetchStocks } from "./shared"
 
 type ProductsViewMode = ViewMode | "full-cards"
 
@@ -43,47 +41,17 @@ export default function ManageProducts() {
   const connection = useAtomValue(connectionRefAtom)
   const isMobile = getIsMobile()
   const [viewMode, setViewMode] = useState<ProductsViewMode>("full-cards")
-  const setProductsAtom = useSetAtom(productsAtom)
-  const previousResProductsRef = useRef<Required<StockDtoForMaster>[]>([])
-  const resProducts = useApiRequest<Required<StockDtoForMaster>[], StockDtoForMaster[]>(() => ({
-    url: "/TyStocks",
-    defaultValue: [],
-    transformResponse: rawItems => rawItems.map(requiredify),
-  }))
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
-  useEffect(() => {
-    setProductsAtom(resProducts.data ?? [])
-    previousResProductsRef.current = resProducts.data ?? []
-  }, [resProducts.data])
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
-  const handleReceivePriceUpdate = useCallback(
-    (
-      productId: NonNullable<StockDtoForMaster["id"]>,
-      newPrice: number,
-      priceType: "price" | "diffSellPrice" | "diffBuyPrice",
-      date: string,
-    ) => {
-      setProductsAtom(draft => {
-        const idx = draft.findIndex(p => p.id === productId)
-        if (idx === -1) return
-        draft[idx][priceType] = newPrice
-        draft[idx].dateUpdate = new Date(date).toISOString()
-      })
-    },
-    [],
-  )
+  const [showEditDrawer] = EditProductDrawer.useShow()
 
   useEffect(() => {
     if (!connection) return
-    connection.on("ReceivePriceUpdate", handleReceivePriceUpdate)
+    connection.on("ReceivePriceUpdate", applyStockUpdate)
     return () => connection.off("ReceivePriceUpdate")
-  }, [connection, handleReceivePriceUpdate])
+  }, [connection])
 
   const titleSlot = (
     <div className="flex items-center ms-auto gap-2">
-      <BtnTemplates.IconReload onClick={() => resProducts.reload()} />
+      <BtnTemplates.IconReload onClick={refetchStocks} />
       <CreateProductFAB />
       <IconsToggle activeItemId={viewMode} items={modes} onChange={setViewMode} />
     </div>
@@ -92,16 +60,14 @@ export default function ManageProducts() {
   return (
     <>
       <ErrorCardBoundary>
-        <CreateProductDrawer reloadProducts={() => resProducts.reload()} />
+        <CreateProductDrawer reloadProducts={refetchStocks} />
       </ErrorCardBoundary>
 
       <ErrorCardBoundary>
-        <DeleteProductsModal reloadProducts={() => resProducts.reload()} />
+        <DeleteProductsModal reloadProducts={refetchStocks} />
       </ErrorCardBoundary>
 
-      <ErrorCardBoundary>
-        <EditProductDrawer reloadProducts={() => resProducts.reload()} />
-      </ErrorCardBoundary>
+      <ErrorCardBoundary>{showEditDrawer && <EditProductDrawer />}</ErrorCardBoundary>
 
       <ErrorCardBoundary>
         <ProductDetails />
@@ -132,31 +98,3 @@ const CreateProductFAB = () => (
     }
   />
 )
-
-function requiredify(input: StockDtoForMaster): Required<StockDtoForMaster> {
-  return {
-    id: input.id ?? 0,
-    name: input.name ?? "---",
-    description: input.description ?? null,
-    price: input.price ?? 0,
-    diffBuyPrice: input.diffBuyPrice ?? 0,
-    diffSellPrice: input.diffSellPrice ?? 0,
-    priceStep: input.priceStep ?? 0,
-    diffPriceStep: input.diffPriceStep ?? 0,
-    status: input.status ?? 0,
-    mode: input.mode ?? 0,
-    maxAutoMin: input.maxAutoMin ?? 0,
-    dateUpdate: input.dateUpdate ?? new Date(1).toISOString(),
-    minValue: input.minValue ?? 0,
-    maxValue: input.maxValue ?? 0,
-    minVoume: input.minVoume ?? 0,
-    maxVoume: input.maxVoume ?? 0,
-    isCountable: input.isCountable ?? false,
-    unitPriceRatio: input.unitPriceRatio ?? 0,
-    decimalNumber: input.decimalNumber ?? 0,
-    supply: input.supply ?? 0,
-    priceSourceID: input.priceSourceID ?? null,
-    accountCode: input.accountCode ?? null,
-    unit: input.unit ?? 0,
-  }
-}
