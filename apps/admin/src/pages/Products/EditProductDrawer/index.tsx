@@ -1,17 +1,8 @@
 import { PackageIcon } from "@phosphor-icons/react"
-import type {
-  AutoMode,
-  PutApiTyStocksByIdData,
-  StockDtoForMaster,
-  StockPriceSourceResponse,
-  StockStatus,
-  StockUnit,
-} from "@repo/api-client/client"
+import type { StockPriceSourceResponse } from "@repo/api-client/client"
 import {
   getApiStockPriceSourceGetStockPriceSourcesOptions,
   getApiTyStocksOptions,
-  getApiTyStocksQueryKey,
-  putApiTyStocksByIdMutation,
 } from "@repo/api-client/tanstack"
 import {
   BtnTemplates,
@@ -26,40 +17,29 @@ import {
 } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { useForm } from "@tanstack/react-form"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { QUERY_KEYS } from "../navigation"
 import {
   emptyProductFormValues,
   ProductFormSchema,
-  type ProductFormValues,
   productFormFields,
   type TransactionMethods,
   type TransactionStatuses,
   type TransactionType,
-  toSafeNumber,
   transactionMethods,
   transactionStatuses,
   transactionTypes,
 } from "../productFormShared"
 import { extractError, getHeaderTokenOnly } from "../shared"
+import {
+  convertFormValuesToApiPayload,
+  convertPartialCustomerDtoToFormValues,
+  useUpdateStockMutation,
+} from "./utils"
 
 const { labels } = productFormFields
 
 const keysConfig = { id: "id", text: "name", value: "id" } as const
-
-function useUpdateStockMutation() {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    ...putApiTyStocksByIdMutation(getHeaderTokenOnly()),
-    onSuccess: (_, { body, path: { id } }) => {
-      queryClient.setQueryData<StockDtoForMaster[]>(
-        getApiTyStocksQueryKey(getHeaderTokenOnly()),
-        old => old?.map(stock => (stock.id === id ? { ...stock, ...body } : stock)),
-      )
-    },
-  })
-}
 
 function useShow() {
   return useDrawerSheet(QUERY_KEYS.edit)
@@ -466,62 +446,3 @@ export function EditProductDrawer() {
   )
 }
 EditProductDrawer.useShow = useShow
-
-function convertFormValuesToApiPayload(
-  values: ProductFormValues,
-  productId: NonNullable<StockDtoForMaster["id"]>,
-): Required<PutApiTyStocksByIdData["body"]> {
-  return {
-    id: productId,
-    name: values.name,
-    description: values.description ?? null,
-    price: values.price,
-    diffBuyPrice: values.customerBuyingDiff,
-    diffSellPrice: values.customerSellingDiff,
-    priceStep: values.priceStep,
-    diffPriceStep: values.priceDiffStep,
-    status: toSafeNumber(values.transactionStatus) as StockStatus,
-    mode: toSafeNumber(values.transactionType) as AutoMode,
-    maxAutoMin: values.maxAutoTime,
-    dateUpdate: new Date().toISOString(),
-    minValue: values.minProductValue,
-    maxValue: values.maxProductValue,
-    minVoume: values.minTransactionVolume,
-    maxVoume: values.maxTransactionVolume,
-    isCountable: false,
-    unitPriceRatio: values.priceToGramRatio,
-    decimalNumber: values.numOfDecimals,
-    supply: 0,
-    priceSourceID: values.priceSource,
-    accountCode: values.accountingCode ?? null,
-    unit: toSafeNumber(values.transactionMethod) as StockUnit,
-  }
-}
-
-function convertPartialCustomerDtoToFormValues(dto: Partial<StockDtoForMaster>): ProductFormValues {
-  const obj: ProductFormValues = {
-    ...emptyProductFormValues,
-  }
-
-  if (dto?.accountCode) obj.accountingCode = dto.accountCode
-  if (dto?.name) obj.name = dto.name
-  if (dto?.decimalNumber) obj.numOfDecimals = dto.decimalNumber
-  if (dto?.description) obj.description = dto.description
-  if (dto?.diffBuyPrice) obj.customerBuyingDiff = dto.diffBuyPrice
-  if (dto?.diffPriceStep) obj.priceDiffStep = dto.diffPriceStep
-  if (dto?.diffSellPrice) obj.customerSellingDiff = dto.diffSellPrice
-  if (dto?.maxAutoMin) obj.maxAutoTime = dto.maxAutoMin
-  if (dto?.maxValue) obj.maxProductValue = dto.maxValue
-  if (dto?.maxVoume) obj.maxTransactionVolume = dto.maxVoume
-  if (dto?.minValue) obj.minProductValue = dto.minValue
-  if (dto?.minVoume) obj.minTransactionVolume = dto.minVoume
-  if (dto?.mode) obj.transactionType = dto.mode.toString() as "0" | "1" | "2"
-  if (dto?.price) obj.price = dto.price
-  if (dto?.priceSourceID) obj.priceSource = dto.priceSourceID
-  if (dto?.priceStep) obj.priceStep = dto.priceStep
-  if (dto?.status) obj.transactionStatus = dto.status.toString() as "0" | "1" | "2" | "3"
-  if (dto?.unit) obj.transactionMethod = dto.unit.toString() as "0" | "1" | "2"
-  if (dto?.unitPriceRatio) obj.priceToGramRatio = dto.unitPriceRatio
-
-  return obj
-}
