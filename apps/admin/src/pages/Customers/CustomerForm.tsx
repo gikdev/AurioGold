@@ -1,4 +1,3 @@
-import { useApiRequest } from "@gikdev/react-datapi/src"
 import type { CustomerGroupDto, CustomerGroupIntDto } from "@repo/api-client/client"
 import {
   createSelectWithOptions,
@@ -16,6 +15,12 @@ import {
   customerFormFields,
   type EditCustomerFormValues,
 } from "./customerFormShared"
+import { useQuery } from "@tanstack/react-query"
+import {
+  getApiTyCustomerGroupIntIntsOptions,
+  getApiTyCustomerGroupsOptions,
+} from "@repo/api-client/tanstack"
+import { getHeaderTokenOnly } from "../Products/shared"
 
 const imageNotes = [
   FileInput.helpers.generateAllowedExtensionsNote(["png", "jpg", "jpeg"]),
@@ -34,21 +39,15 @@ export default function CustomerForm({ form, isEditMode = false }: CustomerFormP
   const { setValue, formState, register } = form
   const { errors } = formState
 
-  const resGroup = useApiRequest<CustomerGroupDto[]>(() => ({
-    url: "/TyCustomerGroups",
-    defaultValue: [],
-  }))
+  const resGroup = useQuery(getApiTyCustomerGroupsOptions(getHeaderTokenOnly()))
   const SelectWithGroups = createSelectWithOptions<CustomerGroupDto>()
 
-  const resGroupInt = useApiRequest<CustomerGroupIntDto[]>(() => ({
-    url: "/TyCustomerGroupIntInts",
-    defaultValue: [],
-  }))
+  const resGroupInt = useQuery(getApiTyCustomerGroupIntIntsOptions(getHeaderTokenOnly()))
   const SelectWithIntGroups = createSelectWithOptions<CustomerGroupIntDto>()
 
   return (
     <form className="min-h-full flex flex-col py-4 gap-5" autoComplete="off">
-      {/* Dummy hidden inputs to trick Chrome autofill behavior... */}
+      {/* Dummy hidden inputs to trick Google Chrome's autofill behavior... */}
       <input type="text" name="fake-username" autoComplete="username" className="hidden" />
       <input type="password" name="fake-password" autoComplete="new-password" className="hidden" />
 
@@ -115,11 +114,11 @@ export default function CustomerForm({ form, isEditMode = false }: CustomerFormP
 
       <Labeler
         labelText={labels.groupId}
-        errorMsg={errors.groupId?.message || resGroup.error || ""}
+        errorMsg={errors.groupId?.message || resGroup?.error?.message || ""}
       >
         <SelectWithGroups
           {...register(fields.groupId, { valueAsNumber: true })}
-          isLoading={resGroup.loading}
+          isLoading={resGroup.status === "pending"}
           options={resGroup.data || []}
           keys={{
             id: "id",
@@ -131,12 +130,12 @@ export default function CustomerForm({ form, isEditMode = false }: CustomerFormP
 
       <Labeler
         labelText={labels.numericGroupId}
-        errorMsg={errors.numericGroupId?.message || resGroupInt.error || ""}
+        errorMsg={errors.numericGroupId?.message || resGroupInt?.error?.message || ""}
       >
         <SelectWithIntGroups
           {...register(fields.numericGroupId, { valueAsNumber: true })}
           options={resGroupInt.data || []}
-          isLoading={resGroupInt.loading}
+          isLoading={resGroupInt.status === "pending"}
           keys={{
             id: "id",
             text: "name",
