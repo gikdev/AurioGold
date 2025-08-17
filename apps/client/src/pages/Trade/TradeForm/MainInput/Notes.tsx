@@ -1,17 +1,16 @@
 import { CheckCircleIcon, CircleIcon, WarningCircleIcon, XCircleIcon } from "@phosphor-icons/react"
 import { BtnTemplates } from "@repo/shared/components"
 import { ccn } from "@repo/shared/helpers"
-import {
-  useBooleanishQueryState,
-  useIntegerQueryState,
-  useLiteralQueryState,
-} from "@repo/shared/hooks"
 import { formatPersianString } from "@repo/shared/utils"
-import { atom, useAtom, useAtomValue } from "jotai"
+import { atom, useAtom } from "jotai"
 import { useEffect } from "react"
-import { QUERY_KEYS } from "../../navigation"
-import { useFinalProductPrices } from "../../shared"
-import { selectedProductAtom, sides } from "../shared"
+import {
+  useFinalProductPrices,
+  useProductId,
+  useProductSide,
+  useStockByIdQuery,
+  useTradeFormStore,
+} from "../shared"
 import { calcOutputRial, calcOutputWeight, transactionMethods } from "./shared"
 
 type RuleStatus = "empty" | "success" | "error"
@@ -27,29 +26,29 @@ export const notesStatusAtom = atom<{
 })
 
 export default function Notes() {
-  const selectedProduct = useAtomValue(selectedProductAtom)
+  const [productId] = useProductId()
+  const { data: product } = useStockByIdQuery(productId)
   const [notesStatus, setNotesStatus] = useAtom(notesStatusAtom)
-  const [side] = useLiteralQueryState(QUERY_KEYS.side, sides)
-  const [value] = useIntegerQueryState(QUERY_KEYS.currentValue, 0)
-  const [isRialMode] = useBooleanishQueryState(QUERY_KEYS.rialMode)
-  const { totalBuyPrice, totalSellPrice } = useFinalProductPrices({
-    productUnit: selectedProduct?.unit ?? 0,
-    productBasePrice: selectedProduct?.price ?? 0,
-    productDiffBuyPrice: selectedProduct?.diffBuyPrice ?? 0,
-    productDiffSellPrice: selectedProduct?.diffSellPrice ?? 0,
-  })
+  const [side] = useProductSide()
+  const currentValue = useTradeFormStore(s => s.currentValue)
+  const isRialMode = useTradeFormStore(s => s.isRialMode)
+  const { totalBuyPrice, totalSellPrice } = useFinalProductPrices()
 
-  const transactionMethod = transactionMethods[selectedProduct?.unit ?? 0]
+  const transactionMethod = transactionMethods[product?.unit ?? 0]
   const noDecimalSituation = transactionMethod.name === "count" || isRialMode
-  const basePrice = selectedProduct?.price ?? 0
-  const priceToUnitRatio = selectedProduct?.unitPriceRatio ?? 1
-  const minVolume = selectedProduct?.minVoume ?? 0
-  const maxVolume = selectedProduct?.maxVoume ?? 0
-  const maxDecimalsCount = noDecimalSituation ? 0 : (selectedProduct?.decimalNumber ?? 0)
+  const basePrice = product?.price ?? 0
+  const priceToUnitRatio = product?.unitPriceRatio ?? 1
+  const minVolume = product?.minVoume ?? 0
+  const maxVolume = product?.maxVoume ?? 0
+  const maxDecimalsCount = noDecimalSituation ? 0 : (product?.decimalNumber ?? 0)
 
   const convertedValue = isRialMode
-    ? calcOutputWeight(value, basePrice, priceToUnitRatio, maxDecimalsCount)
-    : calcOutputRial(value, side === "buy" ? totalBuyPrice : totalSellPrice, priceToUnitRatio)
+    ? calcOutputWeight(currentValue, basePrice, priceToUnitRatio, maxDecimalsCount)
+    : calcOutputRial(
+        currentValue,
+        side === "buy" ? totalBuyPrice : totalSellPrice,
+        priceToUnitRatio,
+      )
 
   const checkAll = () => {
     checkForMaxDecimal()
@@ -61,9 +60,10 @@ export default function Notes() {
     let newStatus: RuleStatus = "empty"
 
     if (maxDecimalsCount <= 0) {
-      newStatus = value === Math.floor(value) ? "success" : "error"
+      newStatus = currentValue === Math.floor(currentValue) ? "success" : "error"
     } else {
-      newStatus = value.toString().split(".")?.[1]?.length > maxDecimalsCount ? "error" : "success"
+      newStatus =
+        currentValue.toString().split(".")?.[1]?.length > maxDecimalsCount ? "error" : "success"
     }
 
     setNotesStatus(p => ({ ...p, maxDecimal: newStatus }))
@@ -71,7 +71,7 @@ export default function Notes() {
 
   const checkForMinVolume = () => {
     if (minVolume <= 0) return
-    const weight = isRialMode ? convertedValue : value
+    const weight = isRialMode ? convertedValue : currentValue
 
     const newStatus = weight < minVolume ? "error" : "success"
     setNotesStatus(p => ({ ...p, minVolume: newStatus }))
@@ -79,7 +79,7 @@ export default function Notes() {
 
   const checkForMaxVolume = () => {
     if (maxVolume <= 0) return
-    const weight = isRialMode ? convertedValue : value
+    const weight = isRialMode ? convertedValue : currentValue
 
     const newStatus = weight > maxVolume ? "error" : "success"
     setNotesStatus(p => ({ ...p, maxVolume: newStatus }))
@@ -88,19 +88,19 @@ export default function Notes() {
   // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     checkForMaxDecimal()
-  }, [maxDecimalsCount, value, isRialMode])
+  }, [maxDecimalsCount, currentValue, isRialMode])
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     checkForMinVolume()
-  }, [minVolume, convertedValue, value, isRialMode])
+  }, [minVolume, convertedValue, currentValue, isRialMode])
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     checkForMaxVolume()
-  }, [maxVolume, convertedValue, value, isRialMode])
+  }, [maxVolume, convertedValue, currentValue, isRialMode])
 
-  if (!selectedProduct) return null
+  if (!product) return null
 
   return (
     <div className="bg-slate-3 border-s-2 border-slate-7 rounded-md p-2 flex flex-col gap-2 text-xs">

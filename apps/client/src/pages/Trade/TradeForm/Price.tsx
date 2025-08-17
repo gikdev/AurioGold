@@ -1,19 +1,9 @@
-import { useLiteralQueryState } from "@repo/shared/hooks"
 import { formatPersianPrice } from "@repo/shared/utils"
-import { useAtomValue } from "jotai"
-import { QUERY_KEYS } from "../navigation"
-import { useFinalProductPrices } from "../shared"
-import { selectedProductAtom, sides } from "./shared"
+import { useFinalProductPrices, useProductSide } from "./shared"
 
 export default function Price() {
-  const [side] = useLiteralQueryState(QUERY_KEYS.side, sides)
-  const selectedProduct = useAtomValue(selectedProductAtom)
-  const { totalBuyPrice, totalSellPrice } = useFinalProductPrices({
-    productUnit: selectedProduct?.unit ?? 0,
-    productBasePrice: selectedProduct?.price ?? 0,
-    productDiffBuyPrice: selectedProduct?.diffBuyPrice ?? 0,
-    productDiffSellPrice: selectedProduct?.diffSellPrice ?? 0,
-  })
+  const [side] = useProductSide()
+  const { totalBuyPrice, totalSellPrice } = useFinalProductPrices()
   const verb = side === "buy" ? "خرید" : "فروش"
   const priceToShow = side === "buy" ? totalBuyPrice : totalSellPrice
 

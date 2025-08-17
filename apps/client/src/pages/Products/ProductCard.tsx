@@ -1,11 +1,11 @@
 import { CaretLeftIcon, ClockIcon, PackageIcon } from "@phosphor-icons/react"
-import type { StockDto, StockStatus, StockUnit } from "@repo/api-client/client"
+import type { StockDto, StockStatus } from "@repo/api-client/client"
 import { ccn } from "@repo/shared/helpers"
 import { cellRenderers } from "@repo/shared/lib"
 import { formatPersianPrice } from "@repo/shared/utils"
 import { useNavigate } from "react-router"
 import { TradeNavigation } from "../Trade/navigation"
-import { useFinalProductPrices, useGetProductSideEnabled } from "../Trade/shared"
+import { useFinalProductPrices, useGetProductSideEnabled } from "../Trade/TradeForm/shared"
 
 const styles = {
   container: ccn(`
@@ -26,32 +26,14 @@ const styles = {
 interface ProductCardProps {
   productId: NonNullable<StockDto["id"]>
   name: string
-  diffBuyPrice: number
-  diffSellPrice: number
-  basePrice: number
-  unit: StockUnit
   status: StockStatus
   updateDate: string
 }
 
-export default function ProductCard({
-  diffSellPrice,
-  name,
-  productId,
-  diffBuyPrice,
-  basePrice,
-  updateDate,
-  unit,
-  status,
-}: ProductCardProps) {
+export default function ProductCard({ name, productId, updateDate, status }: ProductCardProps) {
   const navigate = useNavigate()
   const { isBuyingEnabled, isSellingEnabled, isDisabled } = useGetProductSideEnabled(status)
-  const { totalBuyPrice, totalSellPrice } = useFinalProductPrices({
-    productUnit: unit,
-    productBasePrice: basePrice ?? 0,
-    productDiffBuyPrice: diffBuyPrice ?? 0,
-    productDiffSellPrice: diffSellPrice ?? 0,
-  })
+  const { totalBuyPrice, totalSellPrice } = useFinalProductPrices()
 
   const handleProductClick = () => {
     navigate(TradeNavigation.productId(productId))

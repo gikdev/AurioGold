@@ -1,5 +1,9 @@
 import type { CustomerGroupDto, CustomerGroupIntDto } from "@repo/api-client/client"
 import {
+  getApiTyCustomerGroupIntIntsOptions,
+  getApiTyCustomerGroupsOptions,
+} from "@repo/api-client/tanstack"
+import {
   createSelectWithOptions,
   FileInput,
   Input,
@@ -8,19 +12,15 @@ import {
   Switch,
 } from "@repo/shared/components"
 import { MAX_FILE_SIZE_FOR_UPLOAD } from "@repo/shared/lib"
+import { useQuery } from "@tanstack/react-query"
 import type { UseFormReturn } from "react-hook-form"
 import { uploadFile } from "#/shared/customForm"
+import { getHeaderTokenOnly } from "../Products/shared"
 import {
   type CreateCustomerFormValues,
   customerFormFields,
   type EditCustomerFormValues,
 } from "./customerFormShared"
-import { useQuery } from "@tanstack/react-query"
-import {
-  getApiTyCustomerGroupIntIntsOptions,
-  getApiTyCustomerGroupsOptions,
-} from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "../Products/shared"
 
 const imageNotes = [
   FileInput.helpers.generateAllowedExtensionsNote(["png", "jpg", "jpeg"]),

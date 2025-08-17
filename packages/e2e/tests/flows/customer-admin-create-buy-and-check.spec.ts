@@ -55,17 +55,7 @@ function randomStupidProductName(): string {
     "اسپرسو",
   ]
 
-  const suffixes = [
-    "پلاس",
-    "پرو",
-    "ایکس",
-    "کلاسیک",
-    "طلایی",
-    "افسانه‌ای",
-    "فانتزی",
-    "ویژه",
-    "مخصوص",
-  ]
+  const suffixes = ["پلاس", "پرو", "ایکس", "کلاسیک", "طلایی", "افسانه‌ای", "فانتزی", "ویژه", "مخصوص"]
 
   const product = faker.helpers.arrayElement(funnyProducts)
   const suffix = faker.helpers.arrayElement(suffixes)

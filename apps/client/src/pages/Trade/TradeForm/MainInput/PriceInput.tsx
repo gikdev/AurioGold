@@ -1,16 +1,15 @@
-import { useBooleanishQueryState, useIntegerQueryState } from "@repo/shared/hooks"
-import { useAtomValue } from "jotai"
 import type { ChangeEvent } from "react"
-import { QUERY_KEYS } from "../../navigation"
-import { selectedProductAtom } from "../shared"
+import { useProductId, useStockByIdQuery, useTradeFormStore } from "../shared"
 import { transactionMethods } from "./shared"
 
 export default function PriceInput() {
-  const [isRialMode] = useBooleanishQueryState(QUERY_KEYS.rialMode)
-  const [value, setValue] = useIntegerQueryState(QUERY_KEYS.currentValue, 0)
-  const selectedProduct = useAtomValue(selectedProductAtom)
-  const transactionMethod = transactionMethods[selectedProduct?.unit ?? 0]
-  const maxDecimalsCount = selectedProduct?.decimalNumber ?? 0
+  const isRialMode = useTradeFormStore(s => s.isRialMode)
+  const currentValue = useTradeFormStore(s => s.currentValue)
+  const setCurrentValue = useTradeFormStore(s => s.setCurrentValue)
+  const [productId] = useProductId()
+  const { data: product } = useStockByIdQuery(productId)
+  const transactionMethod = transactionMethods[product?.unit ?? 0]
+  const maxDecimalsCount = product?.decimalNumber ?? 0
   const finalMaxDecimalsCount =
     isRialMode || transactionMethod.name === "count" ? 0 : maxDecimalsCount
   const step = calcStep(finalMaxDecimalsCount)
@@ -19,13 +18,13 @@ export default function PriceInput() {
     const trimmed = Number(e.target.value).toFixed(finalMaxDecimalsCount)
     const converted = Number(trimmed)
     const isNan = Number.isNaN(converted)
-    setValue(isNan ? 0 : converted)
+    setCurrentValue(isNan ? 0 : converted)
   }
 
   const handleBlur = () => {
-    const converted = value
+    const converted = currentValue
     const isNan = Number.isNaN(converted)
-    setValue(isNan ? 0 : converted)
+    setCurrentValue(isNan ? 0 : converted)
   }
 
   return (
@@ -35,7 +34,7 @@ export default function PriceInput() {
       className="outline-none text-2xl text-slate-12 w-full font-bold"
       min={0}
       step={step}
-      value={value}
+      value={currentValue}
       onChange={handleChange}
       onBlur={handleBlur}
       data-testid="price-input"

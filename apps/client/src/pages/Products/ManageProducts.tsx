@@ -24,13 +24,9 @@ export default function ManageProducts() {
           <ProductCard
             key={p.id}
             name={p.name ?? "---"}
-            diffSellPrice={p.diffBuyPrice ?? 0}
             updateDate={p.dateUpdate}
-            diffBuyPrice={p.diffSellPrice ?? 0}
             productId={p.id}
-            basePrice={p.price ?? 0}
             status={p.status}
-            unit={p.unit}
           />
         ))}
       </div>

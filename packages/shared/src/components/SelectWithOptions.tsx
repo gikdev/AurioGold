@@ -29,7 +29,7 @@ export function createSelectWithOptions<T>() {
       }: SelectWithOptionsProps<T>,
       ref: Ref<HTMLSelectElement>,
     ) => (
-      <Select  value={value} {...rest} ref={ref} disabled={isLoading || rest.disabled}>
+      <Select value={value} {...rest} ref={ref} disabled={isLoading || rest.disabled}>
         <option value="" disabled>
           {isLoading ? loadingLabel : placeholder}
         </option>

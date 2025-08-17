@@ -5,7 +5,7 @@ interface CountdownProps {
   minutes: number | null
 }
 
-export default function Countdown({ minutes }: CountdownProps) {
+export function Countdown({ minutes }: CountdownProps) {
   const isTimer = typeof minutes === "number" && minutes > 0
   const [sec, setSec] = useState(minutes ?? 0)
 

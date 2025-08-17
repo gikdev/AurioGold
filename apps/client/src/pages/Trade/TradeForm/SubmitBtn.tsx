@@ -1,21 +1,22 @@
-import { apiRequest } from "@gikdev/react-datapi/src"
 import { CoinsIcon } from "@phosphor-icons/react"
-import type { OrderFc, OrderSide, ReqOrderDto, RequestOrderMode } from "@repo/api-client/client"
+import type { OrderSide, RequestOrderMode } from "@repo/api-client/client"
+import { postApiCustomerReqOrderMutation } from "@repo/api-client/tanstack"
 import { Btn } from "@repo/shared/components"
-import {
-  useBooleanishQueryState,
-  useIntegerQueryState,
-  useLiteralQueryState,
-} from "@repo/shared/hooks"
+import { useMutation } from "@tanstack/react-query"
 import { useAtomValue } from "jotai"
-import { useState } from "react"
 import { useNavigate } from "react-router"
-import genDatApiConfig from "#/shared/datapi-config"
-import { QUERY_KEYS, TradeNavigation } from "../navigation"
-import { useFinalProductPrices, useGetProductSideEnabled } from "../shared"
+import { getHeaderTokenOnly } from "#/shared"
+import { TradeNavigation } from "../navigation"
 import { notesStatusAtom } from "./MainInput/Notes"
 import { calcOutputRial, calcOutputWeight, transactionMethods } from "./MainInput/shared"
-import { selectedProductAtom, sides } from "./shared"
+import {
+  useFinalProductPrices,
+  useGetProductSideEnabled,
+  useProductId,
+  useProductSide,
+  useStockByIdQuery,
+  useTradeFormStore,
+} from "./shared"
 
 const ProductAutoMode = {
   Normal: 0,
@@ -33,68 +34,72 @@ const OrderSides = {
   Sell: 2,
 } as const satisfies Record<string, OrderSide>
 
+const useSubmitOrderMutation = () =>
+  useMutation(postApiCustomerReqOrderMutation(getHeaderTokenOnly()))
+
 export default function SubmitBtn() {
-  const [isLoading, setLoading] = useState(false)
-  const [value, setValue] = useIntegerQueryState(QUERY_KEYS.currentValue, 0)
-  const [side] = useLiteralQueryState(QUERY_KEYS.side, sides)
-  const [isRialMode] = useBooleanishQueryState(QUERY_KEYS.rialMode)
+  const currentValue = useTradeFormStore(s => s.currentValue)
+  const setCurrentValue = useTradeFormStore(s => s.setCurrentValue)
+  const [side] = useProductSide()
+  const isRialMode = useTradeFormStore(s => s.isRialMode)
+  const [productId] = useProductId()
+  const { data: product } = useStockByIdQuery(productId)
   const navigate = useNavigate()
   const notesStatus = useAtomValue(notesStatusAtom)
-  const selectedProduct = useAtomValue(selectedProductAtom)
-  const priceToUnitRatio = selectedProduct?.unitPriceRatio ?? 1
-  const transactionMethod = transactionMethods[selectedProduct?.unit ?? 0]
+  const priceToUnitRatio = product?.unitPriceRatio ?? 1
+  const transactionMethod = transactionMethods[product?.unit ?? 0]
   const noDecimalSituation = transactionMethod.name === "count" || isRialMode
-  const maxAutoTime = selectedProduct?.maxAutoMin ?? 0
-  const isAutoMode = selectedProduct?.mode !== ProductAutoMode.Normal && maxAutoTime !== 0
-  const maxDecimalsCount = noDecimalSituation ? 0 : (selectedProduct?.decimalNumber ?? 0)
-  const basePrice = selectedProduct?.price ?? 0
-  const { isDisabled } = useGetProductSideEnabled(selectedProduct?.status ?? 0)
-  const { totalBuyPrice, totalSellPrice } = useFinalProductPrices({
-    productUnit: selectedProduct?.unit ?? 0,
-    productBasePrice: selectedProduct?.price ?? 0,
-    productDiffBuyPrice: selectedProduct?.diffBuyPrice ?? 0,
-    productDiffSellPrice: selectedProduct?.diffSellPrice ?? 0,
-  })
-  const convertedValue = isRialMode
-    ? calcOutputWeight(value, basePrice, priceToUnitRatio, isRialMode ? 0 : maxDecimalsCount)
-    : calcOutputRial(value, side === "buy" ? totalBuyPrice : totalSellPrice, priceToUnitRatio)
-
-  const verb = side === "buy" ? "خرید" : "فروش"
+  const maxAutoTime = product?.maxAutoMin ?? 0
+  const isAutoMode = product?.mode !== ProductAutoMode.Normal && maxAutoTime !== 0
+  const maxDecimalsCount = noDecimalSituation ? 0 : (product?.decimalNumber ?? 0)
+  const basePrice = product?.price ?? 0
+  const { isDisabled } = useGetProductSideEnabled(product?.status ?? 0)
+  const { totalBuyPrice, totalSellPrice } = useFinalProductPrices()
+  const reqOrderMutation = useSubmitOrderMutation()
 
   const isBtnDisabled =
-    isLoading || isDisabled || value <= 0 || Object.values(notesStatus).includes("error")
+    reqOrderMutation.isPending ||
+    isDisabled ||
+    product === null ||
+    currentValue <= 0 ||
+    Object.values(notesStatus).includes("error")
 
   const handleSubmit = () => {
-    if (!selectedProduct) return
+    if (!product) return
     if (isDisabled) return
 
-    setLoading(true)
+    const convertedValue = isRialMode
+      ? calcOutputWeight(
+          currentValue,
+          basePrice,
+          priceToUnitRatio,
+          isRialMode ? 0 : maxDecimalsCount,
+        )
+      : calcOutputRial(
+          currentValue,
+          side === "buy" ? totalBuyPrice : totalSellPrice,
+          priceToUnitRatio,
+        )
 
-    const dataToSend: Required<ReqOrderDto> = {
-      tyStockID: selectedProduct.id,
-      mode: isRialMode ? ProductPurchaseModes.Value : ProductPurchaseModes.Volume,
-      price: side === "buy" ? totalBuyPrice : totalSellPrice,
-      side: side === "buy" ? OrderSides.Buy : OrderSides.Sell,
-      value: isRialMode ? value : convertedValue,
-      volume: isRialMode ? convertedValue : value,
-    }
-
-    apiRequest<OrderFc>({
-      config: genDatApiConfig(),
-      options: {
-        url: "/Customer/ReqOrder",
-        method: "POST",
-        body: JSON.stringify(dataToSend),
-        onSuccess(data) {
-          setValue(0)
-
-          if (data.id) {
-            navigate(TradeNavigation.openOrderModal(data.id, isAutoMode ? maxAutoTime : 0))
-          }
+    reqOrderMutation.mutate(
+      {
+        body: {
+          tyStockID: product.id,
+          mode: isRialMode ? ProductPurchaseModes.Value : ProductPurchaseModes.Volume,
+          price: side === "buy" ? totalBuyPrice : totalSellPrice,
+          side: side === "buy" ? OrderSides.Buy : OrderSides.Sell,
+          value: isRialMode ? currentValue : convertedValue,
+          volume: isRialMode ? convertedValue : currentValue,
         },
-        onFinally: () => setLoading(false),
       },
-    })
+      {
+        onSuccess: data => {
+          setCurrentValue(0)
+          if (typeof data.id !== "number") return
+          navigate(TradeNavigation.openOrderModal(data.id, isAutoMode ? maxAutoTime : 0))
+        },
+      },
+    )
   }
 
   return (
@@ -107,7 +112,7 @@ export default function SubmitBtn() {
       onClick={handleSubmit}
     >
       <CoinsIcon size={20} weight="fill" />
-      <span>{verb}</span>
+      <span>{side === "buy" ? "خرید" : "فروش"}</span>
     </Btn>
   )
 }

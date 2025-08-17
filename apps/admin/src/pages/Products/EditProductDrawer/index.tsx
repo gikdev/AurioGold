@@ -1,5 +1,5 @@
 import { PackageIcon } from "@phosphor-icons/react"
-import type { StockPriceSourceResponse } from "@repo/api-client/client"
+import type { StockDtoForMaster, StockPriceSourceResponse } from "@repo/api-client/client"
 import {
   getApiStockPriceSourceGetStockPriceSourcesOptions,
   getApiTyStocksOptions,
@@ -18,6 +18,7 @@ import {
 import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { useForm } from "@tanstack/react-form"
 import { useQuery } from "@tanstack/react-query"
+import { useCallback } from "react"
 import { QUERY_KEYS } from "../navigation"
 import {
   emptyProductFormValues,
@@ -49,9 +50,13 @@ export function EditProductDrawer() {
   const [, setShowEditDrawer] = useShow()
   const [productId, setProductId] = useDrawerSheetNumber(QUERY_KEYS.productId)
   const updateStock = useUpdateStockMutation()
+  const select = useCallback(
+    (stocks: StockDtoForMaster[]) => stocks?.find(s => s.id === productId),
+    [productId],
+  )
   const { data: stock } = useQuery({
     ...getApiTyStocksOptions(getHeaderTokenOnly()),
-    select: stocks => stocks?.find(s => s.id === productId),
+    select,
   })
   const SelectWithTransactionStatus =
     createSelectWithOptions<(typeof transactionStatuses)[number]>()

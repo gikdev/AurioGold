@@ -2,40 +2,40 @@ import { ArrowsDownUpIcon } from "@phosphor-icons/react"
 import { Btn } from "@repo/shared/components"
 import { ccn } from "@repo/shared/helpers"
 import {
-  useBooleanishQueryState,
-  useIntegerQueryState,
-  useLiteralQueryState,
-} from "@repo/shared/hooks"
-import { useAtomValue } from "jotai"
-import { QUERY_KEYS } from "../../navigation"
-import { useFinalProductPrices } from "../../shared"
-import { selectedProductAtom, sides } from "../shared"
+  useFinalProductPrices,
+  useProductId,
+  useProductSide,
+  useStockByIdQuery,
+  useTradeFormStore,
+} from "../shared"
 import { calcOutputRial, calcOutputWeight } from "./shared"
 
 export default function RialModeToggle() {
-  const [isRialMode, setRialMode] = useBooleanishQueryState(QUERY_KEYS.rialMode)
-  const [value, setValue] = useIntegerQueryState(QUERY_KEYS.currentValue, 0)
-  const [side] = useLiteralQueryState(QUERY_KEYS.side, sides)
+  const [side] = useProductSide()
+  const isRialMode = useTradeFormStore(s => s.isRialMode)
+  const setRialMode = useTradeFormStore(s => s.setIsRialMode)
+  const currentValue = useTradeFormStore(s => s.currentValue)
+  const setCurrentValue = useTradeFormStore(s => s.setCurrentValue)
 
-  const selectedProduct = useAtomValue(selectedProductAtom)
-  const basePrice = selectedProduct?.price ?? 0
-  const maxDecimalsCount = selectedProduct?.decimalNumber ?? 0
-  const priceToUnitRatio = selectedProduct?.unitPriceRatio ?? 1
+  const [productId] = useProductId()
+  const { data: product } = useStockByIdQuery(productId)
+  const basePrice = product?.price ?? 0
+  const maxDecimalsCount = product?.decimalNumber ?? 0
+  const priceToUnitRatio = product?.unitPriceRatio ?? 1
 
-  const { totalBuyPrice, totalSellPrice } = useFinalProductPrices({
-    productUnit: selectedProduct?.unit ?? 0,
-    productBasePrice: selectedProduct?.price ?? 0,
-    productDiffBuyPrice: selectedProduct?.diffBuyPrice ?? 0,
-    productDiffSellPrice: selectedProduct?.diffSellPrice ?? 0,
-  })
+  const { totalBuyPrice, totalSellPrice } = useFinalProductPrices()
 
   const convertedValue = isRialMode
-    ? calcOutputWeight(value, basePrice, priceToUnitRatio, isRialMode ? 0 : maxDecimalsCount)
-    : calcOutputRial(value, side === "buy" ? totalBuyPrice : totalSellPrice, priceToUnitRatio)
+    ? calcOutputWeight(currentValue, basePrice, priceToUnitRatio, isRialMode ? 0 : maxDecimalsCount)
+    : calcOutputRial(
+        currentValue,
+        side === "buy" ? totalBuyPrice : totalSellPrice,
+        priceToUnitRatio,
+      )
 
   const handleToggleBtnClick = () => {
-    setValue(convertedValue)
-    setRialMode(r => !r)
+    setCurrentValue(convertedValue)
+    setRialMode(!isRialMode)
   }
 
   return (

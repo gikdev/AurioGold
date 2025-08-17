@@ -1,18 +1,12 @@
-import styled from "@master/styled.react"
-import BuyAndSellToggleBtn from "./BuyAndSellToggleBtn"
-import MainInput from "./MainInput"
+import { BuyAndSellToggleBtn } from "./BuyAndSellToggleBtn"
+import { MainInput } from "./MainInput"
 import Price from "./Price"
-import SelectProduct from "./SelectProduct"
+import { SelectProduct } from "./SelectProduct"
 import SubmitBtn from "./SubmitBtn"
 
-const StyledForm = styled.form`
-  flex flex-col gap-8 p-4 bg-slate-2
-  rounded-md w-full max-w-120 mx-auto
-`
-
-export default function TradeForm() {
+export function TradeForm() {
   return (
-    <StyledForm onSubmit={e => e.preventDefault()}>
+    <div className="flex flex-col gap-8 p-4 bg-slate-2 rounded-md w-full max-w-120 mx-auto">
       <BuyAndSellToggleBtn />
       <SelectProduct />
       <MainInput />
@@ -21,6 +15,6 @@ export default function TradeForm() {
         <Price />
         <SubmitBtn />
       </div>
-    </StyledForm>
+    </div>
   )
 }
