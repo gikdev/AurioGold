@@ -42,7 +42,7 @@ interface PortfolioCardProps {
 function PortfolioCard({
   id,
   stockName,
-  volume,
+  volume = 0,
   selectedPortfolioId,
   setSelectedPortfolioId,
 }: PortfolioCardProps) {

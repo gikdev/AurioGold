@@ -1,41 +1,39 @@
-import { useApiRequest } from "@gikdev/react-datapi/src"
 import { CoinsIcon, CopyIcon } from "@phosphor-icons/react"
 import type { MasterPortfolioDto } from "@repo/api-client/client"
+import { getApiMasterGetMasterPortfolioOptions } from "@repo/api-client/tanstack"
 import { notifManager } from "@repo/shared/adapters"
 import { BtnTemplates, FloatingActionBtn, TitledCard, useViewModes } from "@repo/shared/components"
+import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
 import { v4 as uuid } from "uuid"
+import { getHeaderTokenOnly } from "../Products/shared"
 import BalanceTable from "./BalanceTable"
 import PortfolioCards from "./PortfolioCards"
 
-export interface MasterPortfolioWithId {
+export interface MasterPortfolioWithId extends MasterPortfolioDto {
   id: string
-  tyStockID: number
-  stockName: string
-  volume: number
 }
 
-function mapSinglePortfolioItem(item: MasterPortfolioDto): MasterPortfolioWithId {
-  return {
-    id: uuid(),
-    stockName: item.stockName ?? "---",
-    tyStockID: item.tyStockID ?? 0,
-    volume: item.volume ?? 0,
-  }
+function addIds(items: MasterPortfolioDto[]): MasterPortfolioWithId[] {
+  return items.map(i => ({ ...i, id: uuid() }))
 }
+
+export const useMasterBalanceQuery = () =>
+  useQuery({
+    ...getApiMasterGetMasterPortfolioOptions(getHeaderTokenOnly()),
+    select: addIds,
+  })
 
 export default function ManageBalance() {
   const { renderedIconsToggle, viewMode } = useViewModes()
   const [selectedPortfolioId, setSelectedPortfolioId] = useState<MasterPortfolioWithId["id"]>()
-  const resBalance = useApiRequest<MasterPortfolioWithId[], MasterPortfolioDto[]>(() => ({
-    url: "/Master/GetMasterPortfolio",
-    defaultValue: [],
-    transformResponse: rawItems => rawItems.map(mapSinglePortfolioItem),
-  }))
+
+  const { data: balance = [], isPending, isSuccess, refetch } = useMasterBalanceQuery()
 
   function handleCopyBtnClick() {
-    const portfolioById = resBalance.data?.find(p => p.id === selectedPortfolioId)
+    const portfolioById = balance.find(p => p.id === selectedPortfolioId)
     if (!portfolioById) return
+    if (typeof portfolioById.volume !== "number") return
 
     const valueToCopy = Math.abs(Number(portfolioById.volume.toFixed(3))).toString()
 
@@ -74,7 +72,7 @@ export default function ManageBalance() {
     <div className="ms-auto flex items-center gap-2">
       {fabCopyBtn}
 
-      <BtnTemplates.IconReload onClick={() => resBalance.reload()} />
+      <BtnTemplates.IconReload onClick={() => refetch()} />
 
       {renderedIconsToggle}
     </div>
@@ -82,19 +80,17 @@ export default function ManageBalance() {
 
   return (
     <TitledCard title="مدیریت مانده حساب" icon={CoinsIcon} titleSlot={titledCardActions}>
-      {resBalance.loading && <div className="h-100 rounded-md animate-pulse bg-slate-4" />}
+      {isPending && <div className="h-100 rounded-md animate-pulse bg-slate-4" />}
 
-      {resBalance.success && !resBalance.loading && viewMode === "cards" && (
+      {isSuccess && viewMode === "cards" && (
         <PortfolioCards
-          portfolios={resBalance.data || []}
+          portfolios={balance}
           selectedPortfolioId={selectedPortfolioId}
           setSelectedPortfolioId={setSelectedPortfolioId}
         />
       )}
 
-      {resBalance.success && !resBalance.loading && viewMode === "table" && (
-        <BalanceTable portfolios={resBalance.data || []} />
-      )}
+      {isSuccess && viewMode === "table" && <BalanceTable portfolios={balance} />}
     </TitledCard>
   )
 }
