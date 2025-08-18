@@ -21,6 +21,7 @@ export default function PriceInput() {
     setCurrentValue(isNan ? 0 : converted)
   }
 
+  // prevent nan form being in the input... (I know it's rare, but for safety's sake, let's just have it...)
   const handleBlur = () => {
     const converted = currentValue
     const isNan = Number.isNaN(converted)

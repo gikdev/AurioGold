@@ -15,7 +15,6 @@ export default function PreviewBar() {
 
   const [productId] = useProductId()
   const { data: product } = useStockByIdQuery(productId)
-  const basePrice = product?.price ?? 0
   const transactionMethod = transactionMethods[product?.unit ?? 0]
   const maxDecimalsCount = product?.decimalNumber ?? 0
   const priceToUnitRatio = product?.unitPriceRatio ?? 1
@@ -24,7 +23,12 @@ export default function PreviewBar() {
 
   const convertedUnit = isRialMode ? transactionMethod.unitTitle : "ریال"
   const convertedValue = isRialMode
-    ? calcOutputWeight(currentValue, basePrice, priceToUnitRatio, isRialMode ? 0 : maxDecimalsCount)
+    ? calcOutputWeight(
+        currentValue,
+        side === "buy" ? totalBuyPrice : totalSellPrice,
+        priceToUnitRatio,
+        isRialMode ? 0 : maxDecimalsCount,
+      )
     : calcOutputRial(
         currentValue,
         side === "buy" ? totalBuyPrice : totalSellPrice,

@@ -1,10 +1,10 @@
 export function calcOutputWeight(
   rialValue: number,
-  basePrice: number,
+  totalSidePrice: number,
   priceToUnitRatio: number,
   maxDecimalCount: number,
 ) {
-  const base = (rialValue / basePrice) * priceToUnitRatio
+  const base = (rialValue / totalSidePrice) * priceToUnitRatio
   const fixed = base.toFixed(maxDecimalCount)
   const numbered = Number.parseFloat(fixed)
   const isNan = Number.isNaN(numbered)

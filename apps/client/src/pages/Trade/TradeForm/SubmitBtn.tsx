@@ -52,7 +52,6 @@ export default function SubmitBtn() {
   const maxAutoTime = product?.maxAutoMin ?? 0
   const isAutoMode = product?.mode !== ProductAutoMode.Normal && maxAutoTime !== 0
   const maxDecimalsCount = noDecimalSituation ? 0 : (product?.decimalNumber ?? 0)
-  const basePrice = product?.price ?? 0
   const { isDisabled } = useGetProductSideEnabled(product?.status ?? 0)
   const { totalBuyPrice, totalSellPrice } = useFinalProductPrices()
   const reqOrderMutation = useSubmitOrderMutation()
@@ -71,7 +70,7 @@ export default function SubmitBtn() {
     const convertedValue = isRialMode
       ? calcOutputWeight(
           currentValue,
-          basePrice,
+          side === "buy" ? totalBuyPrice : totalSellPrice,
           priceToUnitRatio,
           isRialMode ? 0 : maxDecimalsCount,
         )

@@ -36,14 +36,18 @@ export default function Notes() {
 
   const transactionMethod = transactionMethods[product?.unit ?? 0]
   const noDecimalSituation = transactionMethod.name === "count" || isRialMode
-  const basePrice = product?.price ?? 0
   const priceToUnitRatio = product?.unitPriceRatio ?? 1
   const minVolume = product?.minVoume ?? 0
   const maxVolume = product?.maxVoume ?? 0
   const maxDecimalsCount = noDecimalSituation ? 0 : (product?.decimalNumber ?? 0)
 
   const convertedValue = isRialMode
-    ? calcOutputWeight(currentValue, basePrice, priceToUnitRatio, maxDecimalsCount)
+    ? calcOutputWeight(
+        currentValue,
+        side === "buy" ? totalBuyPrice : totalSellPrice,
+        priceToUnitRatio,
+        maxDecimalsCount,
+      )
     : calcOutputRial(
         currentValue,
         side === "buy" ? totalBuyPrice : totalSellPrice,

@@ -19,14 +19,18 @@ export default function RialModeToggle() {
 
   const [productId] = useProductId()
   const { data: product } = useStockByIdQuery(productId)
-  const basePrice = product?.price ?? 0
   const maxDecimalsCount = product?.decimalNumber ?? 0
   const priceToUnitRatio = product?.unitPriceRatio ?? 1
 
   const { totalBuyPrice, totalSellPrice } = useFinalProductPrices()
 
   const convertedValue = isRialMode
-    ? calcOutputWeight(currentValue, basePrice, priceToUnitRatio, isRialMode ? 0 : maxDecimalsCount)
+    ? calcOutputWeight(
+        currentValue,
+        side === "buy" ? totalBuyPrice : totalSellPrice,
+        priceToUnitRatio,
+        maxDecimalsCount,
+      )
     : calcOutputRial(
         currentValue,
         side === "buy" ? totalBuyPrice : totalSellPrice,

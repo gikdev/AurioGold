@@ -6,6 +6,7 @@
   "scripts": {
     "scan": "react-scan localhost:4444",
     "dev": "vite",
+    "test": "vitest",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },
@@ -61,6 +62,7 @@
     "twin.macro": "^3.4.1",
     "typescript": "~5.8.3",
     "vite": "^6.3.5",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.4"
   }
 }
