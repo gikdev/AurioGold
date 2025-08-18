@@ -67,7 +67,7 @@ export const ProductStatusFa = {
   [ProductStatus.BuyAndSell]: "قابل خرید و فروش",
 }
 
-export function useGetProductSideEnabled(productStatus: StockStatus) {
+export function useGetProductSideEnabled(productStatus?: StockStatus) {
   const profile = useAtomValue(profileAtom)
   const connectionState = useAtomValue(connectionStateAtom)
 
