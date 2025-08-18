@@ -6,6 +6,7 @@ export const QUERY_KEYS = {
   delete: "delete",
   details: "details",
   productId: "product-id",
+  changeA11y: "change-a11y",
 } as const
 
 type ProductId = number
