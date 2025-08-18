@@ -1,6 +1,22 @@
 import { faker } from "@faker-js/faker"
 import { type BrowserContext, expect, type Page, test } from "@playwright/test"
 
+/** Converts a Persian number string to an English number */
+function persianToNumber(persianNumberString: string): number {
+  const persianDigits = "۰۱۲۳۴۵۶۷۸۹"
+  const englishDigits = "0123456789"
+
+  const englishNumberString = persianNumberString
+    .split("")
+    .map(ch => {
+      const index = persianDigits.indexOf(ch)
+      return index !== -1 ? englishDigits[index] : ch
+    })
+    .join("")
+
+  return Number(englishNumberString)
+}
+
 function fakeIranianishPhone() {
   return `09${faker.number.int({ min: 100000000, max: 999999999 })}`
 }
@@ -123,6 +139,7 @@ test.describe("Customer admin create and client login flow", () => {
     await admin.page.getByLabel(/گروه مشتری عددی/).selectOption("2")
 
     await admin.page.getByRole("button", { name: "ایجاد" }).click()
+    await admin.page.waitForTimeout(2000)
     await expect(admin.page.getByRole("link", { name: client.fullName })).toBeVisible()
 
     // --- Client login
@@ -147,24 +164,26 @@ test.describe("Customer admin create and client login flow", () => {
     await client.page.goto("http://localhost:4444/")
     await client.page.getByText(new RegExp(product.name)).click()
     await client.page.getByTestId("price-input").fill(product.purchaseAmount.toString())
-    // await client.page.getByRole("button", { name: "خرید", exact: true }).click()
-
-    await client.page.waitForTimeout(10000)
-    await admin.page.waitForTimeout(10000)
+    await client.page.getByRole("button", { name: "خرید", exact: true }).click()
 
     // --- Admin accepts the purchase
-    // const allBtns = await admin.page.getByRole("button", { name: "تایید" }).all()
-    // allBtns.forEach(async btn => await btn.click())
+    const allBtns = await admin.page.getByRole("button", { name: "تایید" }).all()
+    allBtns.forEach(async btn => await btn.click())
+    allBtns.forEach(async btn => await btn.click())
 
     // --- Client sees accepted
-    // await expect(client.page.getByText(/سفارش شما تایید شد/)).toBeVisible()
+    await expect(client.page.getByText(/تایید شد/)).toBeVisible()
 
     // --- Client checks to see if remaining is correct or not
-    // await client.page.getByRole("link", {name:"مانده حساب"}).click()
-    // const card = client.page.locator('label[data-testid="portfolio-card"]', {
-    //   has: client.page.locator(`span:text-is("${product.name}")`),
-    // });
-    // const priceLocator = card.locator('[data-testid="portfolio-card-price"]');
-    // const priceText = await priceLocator.textContent();
+    await client.page.goto("http://localhost:4444/balance")
+    const card = client.page.locator('label[data-testid="portfolio-card"]', {
+      has: client.page.locator(`span:text-is("${product.name}")`),
+    })
+    const priceLocator = card.locator('[data-testid="portfolio-card-price"]')
+    const priceText = await priceLocator.textContent()
+    if (!priceText) throw new Error("price text is null!")
+    const price = persianToNumber(priceText)
+    
+    expect(price).toBe(product.purchaseAmount)
   })
 })
