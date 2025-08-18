@@ -121,7 +121,7 @@ export function PriceControllersContainer({
   )
 
   return (
-    <div className="flex flex-col items-center gap-2 p-2 xl:flex-row xl:*:flex-1 xl:gap-4">
+    <div className="flex flex-col items-center gap-2 p-2 xl:flex-row xl:gap-4">
       <PriceController
         onUpBtnClick={() => change("price", "inc")}
         onDownBtnClick={() => change("price", "dec")}
@@ -131,7 +131,7 @@ export function PriceControllersContainer({
         title="قیمت (ریال)"
       />
 
-      <PriceHr hideOnLargeScreens />
+      <PriceHr hasVertical />
 
       <PriceController
         onUpBtnClick={() => change("diffSellPrice", "inc")}
@@ -142,7 +142,7 @@ export function PriceControllersContainer({
         title="اختلاف فروش"
       />
 
-      <PriceHr hideOnLargeScreens />
+      <PriceHr hasVertical />
 
       <PriceController
         onUpBtnClick={() => change("diffBuyPrice", "inc")}

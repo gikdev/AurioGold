@@ -20,10 +20,10 @@ export function PriceController({
   areAllBtnsEnabled = true,
 }: PriceControllerProps) {
   return (
-    <div className="flex gap-1 w-full">
+    <div className="flex gap-2 w-full xl:flex-row-reverse xl:justify-center">
       <div className="flex flex-col items-start justify-center gap-1 flex-1">
         <p className="text-xs">{title}</p>
-        <p dir="ltr" className={cx("font-bold text-lg", priceNumberColor)}>
+        <p dir="ltr" className={cx("font-bold text-lg text-start w-full", priceNumberColor)}>
           {price}
         </p>
       </div>

@@ -6,6 +6,7 @@ import type { MasterLoginModel } from "@repo/api-client/client"
 import { storageManager } from "@repo/shared/adapters"
 import { Btn, Heading, Hr, Input, Labeler } from "@repo/shared/components"
 import { createControlledAsyncToast, createFieldsWithLabels } from "@repo/shared/helpers"
+import config from "config"
 import { sha512 } from "js-sha512"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router"
@@ -109,6 +110,10 @@ export default function Login() {
           <SignInIcon size={24} />
           <span>ورود</span>
         </Btn>
+
+        <p>
+          <code>{config.versionStr}</code>
+        </p>
       </StyledForm>
     </div>
   )
