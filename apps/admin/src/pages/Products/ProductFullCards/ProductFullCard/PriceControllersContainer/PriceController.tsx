@@ -23,7 +23,9 @@ export function PriceController({
     <div className="flex gap-1 w-full">
       <div className="flex flex-col items-start justify-center gap-1 flex-1">
         <p className="text-xs">{title}</p>
-        <p className={cx("font-bold text-lg", priceNumberColor)}>{price}</p>
+        <p dir="ltr" className={cx("font-bold text-lg", priceNumberColor)}>
+          {price}
+        </p>
       </div>
 
       <div className="flex gap-1">
