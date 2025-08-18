@@ -58,7 +58,7 @@ const baseCustomerSchema = z.object({
       invalid_type_error: "این گزینه باید انتخاب شده باشد",
     })
     .positive("این گزینه باید انتخاب شده باشد"),
-  [fields.maxAllowedDevices]: z.coerce.number(commonErrors),
+  [fields.maxAllowedDevices]: z.coerce.number(commonErrors).positive("عدد باید مثبت باشد!"),
   [fields.address]: z.string().nullable().default(null),
   [fields.city]: z.string().nullable().default(null),
 })
