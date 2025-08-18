@@ -75,9 +75,9 @@ function randomStupidProductName(): string {
 
   const product = faker.helpers.arrayElement(funnyProducts)
   const suffix = faker.helpers.arrayElement(suffixes)
-  const number = faker.datatype.boolean() ? ` ${faker.number.int({ min: 1, max: 99 })}` : ""
+  const number = faker.number.int({ min: 1, max: 99 })
 
-  return `${product} ${suffix}${number}`
+  return `${product} ${suffix} ${number}`
 }
 
 const client = {
@@ -183,7 +183,7 @@ test.describe("Customer admin create and client login flow", () => {
     const priceText = await priceLocator.textContent()
     if (!priceText) throw new Error("price text is null!")
     const price = persianToNumber(priceText)
-    
+
     expect(price).toBe(product.purchaseAmount)
   })
 })
