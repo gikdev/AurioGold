@@ -1,8 +1,8 @@
 import { apiRequest } from "@gikdev/react-datapi/src"
 import { zodResolver } from "@hookform/resolvers/zod"
-import styled from "@master/styled.react"
-import { ArrowsClockwiseIcon, SignInIcon } from "@phosphor-icons/react"
+import { ArrowClockwiseIcon, SignInIcon } from "@phosphor-icons/react"
 import type { MasterLoginModel } from "@repo/api-client/client"
+import { currentProfile } from "@repo/profile-manager"
 import { storageManager } from "@repo/shared/adapters"
 import { Btn, Heading, Hr, Input, Labeler } from "@repo/shared/components"
 import { createControlledAsyncToast, createFieldsWithLabels } from "@repo/shared/helpers"
@@ -24,11 +24,6 @@ const loginSchema = z.object({
   [fields.password]: z.string().trim(),
 })
 type LoginFormValues = z.infer<typeof loginSchema>
-
-const StyledForm = styled.form`
-  bg-slate-2 border-2 border-slate-6 w-full max-w-96 
-  px-4 py-8 flex flex-col gap-4 text-center rounded-lg
-`
 
 export default function Login() {
   const { register, handleSubmit, formState } = useForm<LoginFormValues>({
@@ -70,19 +65,11 @@ export default function Login() {
 
   return (
     <div className="min-h-dvh flex justify-center items-center px-4 py-8 bg-slate-1 -m-2">
-      <StyledForm onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex items-center justify-between">
-          <Heading as="h2" size={2}>
-            ورود
-          </Heading>
-
-          <a
-            href={window.location.href}
-            className="p-2 hover:bg-slate-3 rounded-full active:scale-90 inline-block"
-          >
-            <ArrowsClockwiseIcon size={20} />
-          </a>
-        </div>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="bg-slate-2 border-2 border-slate-6 w-full max-w-96 px-4 py-8 flex flex-col gap-4 text-center rounded-lg"
+      >
+        <Header />
 
         <Hr />
 
@@ -101,20 +88,34 @@ export default function Login() {
         </Labeler>
 
         <Btn
+          className="justify-between"
           data-testid="submit"
-          type="submit"
-          themeType="filled"
-          theme="primary"
           disabled={isSubmitting}
+          theme="primary"
+          themeType="filled"
+          type="submit"
         >
-          <SignInIcon size={24} />
           <span>ورود</span>
+          <SignInIcon mirrored size={24} />
         </Btn>
 
         <p>
           <code>{config.versionStr}</code>
         </p>
-      </StyledForm>
+      </form>
     </div>
   )
 }
+
+const Header = () => (
+  <div className="flex items-center justify-between flex-wrap">
+    <img src="/profile/shared/web-app-manifest-192x192.png" className="w-12" alt="" />
+    <Heading as="h2" size={1}>
+      {currentProfile.appTitleClient} (ادمین)
+    </Heading>
+
+    <Btn as="a" href={window.location.href} className="rounded-full w-10 p-1">
+      <ArrowClockwiseIcon size={20} />
+    </Btn>
+  </div>
+)
