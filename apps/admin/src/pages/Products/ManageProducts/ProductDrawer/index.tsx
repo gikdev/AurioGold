@@ -16,22 +16,22 @@ import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { useForm } from "@tanstack/react-form"
 import { useQuery } from "@tanstack/react-query"
 import { useCallback, useEffect } from "react"
+import { extractError, getHeaderTokenOnly } from "#/shared/forms"
 import {
-  emptyProductFormValues,
-  ProductFormSchema,
-  productFormFields,
   TransactionMethod,
   type TransactionStatus,
   type TransactionType,
   transactionMethods,
   transactionStatuses,
   transactionTypes,
-} from "../productFormShared"
-import { extractError, getHeaderTokenOnly } from "../shared"
+} from "../shared"
 import type { ProductId } from "../store"
 import {
   convertFormValuesToApiPayload,
   convertPartialCustomerDtoToFormValues,
+  emptyProductFormValues,
+  ProductFormSchema,
+  productFormFields,
   useCreateStockMutation,
   useUpdateStockMutation,
 } from "./utils"

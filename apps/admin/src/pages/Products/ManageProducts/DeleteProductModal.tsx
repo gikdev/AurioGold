@@ -1,7 +1,8 @@
-import { apiRequest } from "@gikdev/react-datapi/src"
+import { deleteApiTyStocksByIdMutation } from "@repo/api-client/tanstack"
 import { BtnTemplates, Modal } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
-import genDatApiConfig from "#/shared/datapi-config"
+import { useMutation } from "@tanstack/react-query"
+import { getHeaderTokenOnly } from "#/shared/forms"
 import type { ProductId } from "./store"
 
 interface DeleteProductModalProps {
@@ -10,24 +11,22 @@ interface DeleteProductModalProps {
 }
 
 export function DeleteProductModal({ onClose, productId }: DeleteProductModalProps) {
+  const { mutate: deleteStock } = useMutation(deleteApiTyStocksByIdMutation(getHeaderTokenOnly()))
+
   const handleDelete = async () => {
     const { reject, resolve } = createControlledAsyncToast({
       pending: "در حال حذف محصول...",
       success: "محصول با موفقیت حذف شد",
     })
 
-    await apiRequest({
-      config: genDatApiConfig(),
-      options: {
-        url: `/TyStocks/${productId}`,
-        method: "DELETE",
+    deleteStock(
+      { path: { id: productId } },
+      {
         onSuccess: () => resolve(),
-        onError: msg => reject(msg),
-        onFinally: () => {
-          onClose()
-        },
+        onError: err => reject(err),
+        onSettled: () => onClose(),
       },
-    })
+    )
   }
 
   return (

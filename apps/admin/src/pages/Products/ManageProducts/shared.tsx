@@ -3,15 +3,7 @@ import { getApiTyStocksOptions, getApiTyStocksQueryKey } from "@repo/api-client/
 import { useQuery } from "@tanstack/react-query"
 import { produce } from "immer"
 import { queryClient } from "#/shared"
-import genDatApiConfig from "#/shared/datapi-config"
-
-const getBearer = () => ({
-  Authorization: `Bearer ${genDatApiConfig().token}`,
-})
-
-export const getHeaderTokenOnly = () => ({
-  headers: { ...getBearer() },
-})
+import { getHeaderTokenOnly } from "#/shared/forms"
 
 export const useStocksQuery = () =>
   useQuery({
@@ -42,14 +34,36 @@ export function applyStockUpdate(
   )
 }
 
-interface Field {
-  state: {
-    meta: {
-      isValid: boolean
-      errors?: Array<{ message?: string } | undefined>
-    }
-  }
+export const transactionMethods = [
+  { id: "0", name: "گرمی" },
+  { id: "1", name: "تعدادی" },
+  { id: "2", name: "مثقالی" },
+]
+export const TransactionMethod = {
+  gram: "0",
+  count: "1",
+  mithqal: "2",
 }
+export type TransactionMethod = "0" | "1" | "2"
 
-export const extractError = (field: Field) =>
-  field.state.meta.isValid ? undefined : field.state.meta.errors?.map(e => e?.message)?.join("، ")
+export const transactionTypes = [
+  { id: "0", name: "عادی" },
+  { id: "1", name: "تایید خودکار" },
+  { id: "2", name: "رد خودکار" },
+]
+export type TransactionType = "0" | "1" | "2"
+
+export const transactionStatuses = [
+  { id: "0", name: "غیر فعال" },
+  { id: "1", name: "قابل خرید توسط مشتری" },
+  { id: "2", name: "قابل فروش توسط مشتری" },
+  { id: "3", name: "قابل خرید و فروش" },
+]
+export type TransactionStatus = "0" | "1" | "2" | "3"
+
+export function toSafeNumber(input: string | null | undefined): number {
+  if (!input) return 0
+  const convertedInput = Number(input)
+  if (Number.isNaN(convertedInput)) return 0
+  return convertedInput
+}

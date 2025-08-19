@@ -6,7 +6,7 @@ import { BtnTemplates, FloatingActionBtn, TitledCard, useViewModes } from "@repo
 import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
 import { v4 as uuid } from "uuid"
-import { getHeaderTokenOnly } from "../Products/shared"
+import { getHeaderTokenOnly } from "#/shared/forms"
 import BalanceTable from "./BalanceTable"
 import PortfolioCards from "./PortfolioCards"
 

@@ -10,13 +10,14 @@ import {
 import { cellRenderers } from "@repo/shared/lib"
 import { useQuery } from "@tanstack/react-query"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
+import { getHeaderTokenOnly } from "#/shared/forms"
+import { productFormFields } from "../ProductDrawer/utils"
 import {
-  productFormFields,
   transactionMethods,
   transactionStatuses,
   transactionTypes,
-} from "../productFormShared"
-import { getHeaderTokenOnly, useStocksQuery } from "../shared"
+  useStocksQuery,
+} from "../shared"
 import { type ProductId, useProductsStore } from "../store"
 import { DetailsCardsSection } from "./DetailsCardsSection"
 

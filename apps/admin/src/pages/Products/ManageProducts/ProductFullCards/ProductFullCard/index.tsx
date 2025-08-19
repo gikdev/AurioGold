@@ -15,7 +15,7 @@ export function ProductFullCard({ product: p }: ProductFullCardProps) {
       <CardHeader productId={p.id ?? 0} name={p.name ?? ""} />
 
       <div className="text-xs flex justify-between items-center flex-wrap">
-        <A11yBtn status={p.status} productId={p.id} />
+        <A11yBtn status={p.status} productId={p.id ?? 0} />
 
         <UpdateDate dateUpdate={p.dateUpdate} />
       </div>

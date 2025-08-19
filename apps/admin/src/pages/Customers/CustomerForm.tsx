@@ -15,7 +15,7 @@ import { MAX_FILE_SIZE_FOR_UPLOAD } from "@repo/shared/lib"
 import { useQuery } from "@tanstack/react-query"
 import type { UseFormReturn } from "react-hook-form"
 import { uploadFile } from "#/shared/customForm"
-import { getHeaderTokenOnly } from "../Products/shared"
+import { getHeaderTokenOnly } from "#/shared/forms"
 import {
   type CreateCustomerFormValues,
   customerFormFields,

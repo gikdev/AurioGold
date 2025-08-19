@@ -5,7 +5,7 @@ import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { useMutation } from "@tanstack/react-query"
 import { useState } from "react"
 import { queryClient } from "#/shared"
-import { getHeaderTokenOnly } from "../../../shared"
+import { getHeaderTokenOnly } from "#/shared/forms"
 import { calcA11yStuff } from "./calcA11yStuff"
 
 const productStatuses: StockStatus[] = [0, 1, 2, 3]
