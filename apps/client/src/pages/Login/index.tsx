@@ -99,9 +99,7 @@ export default function Login() {
           <SignInIcon mirrored size={24} />
         </Btn>
 
-        <p>
-          <code>{config.versionStr}</code>
-        </p>
+        <AppVersion />
       </form>
     </div>
   )
@@ -118,4 +116,10 @@ const Header = () => (
       <ArrowClockwiseIcon size={20} />
     </Btn>
   </div>
+)
+
+const AppVersion = () => (
+  <p>
+    <code>{config.versionStr}</code>
+  </p>
 )
