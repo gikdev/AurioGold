@@ -48,6 +48,13 @@ export const commonErrors = {
   invalid_type_error: "مقدار واردشده معتبر نیست",
 }
 
+export const formErrors = {
+  requiredField: "این ورودی باید پر شود",
+  invalidInputType: "مقدار واردشده معتبر نیست",
+  nonNegative: "عدد غیر منفی (۰ و بیشتر) وارد کنید",
+  positive: "عدد مثبت وارد کنید (بیشتر از ۰)",
+}
+
 export const convertPersianToEnglish = (str: string) => {
   const persianDigits = "۰۱۲۳۴۵۶۷۸۹"
   const englishDigits = "0123456789"

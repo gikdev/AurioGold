@@ -13,8 +13,9 @@ import {
 import { createFieldsWithLabels } from "@repo/shared/helpers"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import z from "zod"
-import { commonErrors } from "#/shared/customForm"
+import { commonErrors, formErrors } from "#/shared/customForm"
 import { getHeaderTokenOnly } from "#/shared/forms"
+import type { Assignable, Expect } from "#/shared/types"
 import { toSafeNumber } from "../shared"
 
 export const productFormFields = createFieldsWithLabels({
@@ -42,31 +43,44 @@ export const productFormFields = createFieldsWithLabels({
 const { fields } = productFormFields
 
 export const ProductFormSchema = z.object({
-  [fields.name]: z.string(commonErrors).min(1, { message: commonErrors.required_error }),
+  [fields.name]: z.string(commonErrors).min(1, { message: formErrors.requiredField }),
   [fields.description]: z.string().nullable().default(null),
-  [fields.price]: z.coerce.number(commonErrors),
-  [fields.priceStep]: z.coerce.number(commonErrors),
-  [fields.priceDiffStep]: z.coerce.number(commonErrors),
+  [fields.price]: z.coerce.number(commonErrors).nonnegative(formErrors.nonNegative),
+  [fields.priceStep]: z.coerce.number(commonErrors).nonnegative(formErrors.nonNegative),
+  [fields.priceDiffStep]: z.coerce.number(commonErrors).nonnegative(formErrors.nonNegative),
   [fields.customerBuyingDiff]: z.coerce.number(commonErrors),
   [fields.customerSellingDiff]: z.coerce.number(commonErrors),
-  [fields.minTransactionVolume]: z.coerce.number(commonErrors),
-  [fields.maxTransactionVolume]: z.coerce.number(commonErrors),
-  [fields.transactionStatus]: z.enum(["0", "1", "2", "3"], commonErrors),
-  [fields.transactionMethod]: z.enum(["0", "1", "2"], commonErrors),
+  [fields.minTransactionVolume]: z.coerce.number(commonErrors).positive(formErrors.positive),
+  [fields.maxTransactionVolume]: z.coerce.number(commonErrors).positive(formErrors.positive),
+  [fields.transactionStatus]: z.enum(["0", "1", "2", "3"], {
+    required_error: "این گزینه باید انتخاب شده باشد",
+    invalid_type_error: "این گزینه درست انتخاب نشده",
+    message: "این گزینه باید انتخاب شده باشد",
+  }),
+  [fields.transactionMethod]: z.enum(["0", "1", "2"], {
+    required_error: "این گزینه باید انتخاب شده باشد",
+    invalid_type_error: "این گزینه درست انتخاب نشده",
+    message: "این گزینه باید انتخاب شده باشد",
+  }),
   [fields.priceSource]: z.coerce.number({
     required_error: "این گزینه باید انتخاب شده باشد",
-    invalid_type_error: "این گزینه باید انتخاب شده باشد",
+    invalid_type_error: "این گزینه درست انتخاب نشده",
+    message: "این گزینه باید انتخاب شده باشد",
   }),
-  [fields.minProductValue]: z.coerce.number(commonErrors),
-  [fields.maxProductValue]: z.coerce.number(commonErrors),
+  [fields.minProductValue]: z.coerce.number(commonErrors).positive(formErrors.positive),
+  [fields.maxProductValue]: z.coerce.number(commonErrors).positive(formErrors.positive),
   [fields.transactionType]: z.enum(["0", "1", "2"], commonErrors),
-  [fields.priceToGramRatio]: z.coerce.number(commonErrors),
-  [fields.numOfDecimals]: z.coerce.number(commonErrors),
-  [fields.maxAutoTime]: z.coerce.number(commonErrors),
+  [fields.priceToGramRatio]: z.coerce.number(commonErrors).positive(formErrors.positive),
+  [fields.numOfDecimals]: z.coerce.number(commonErrors).nonnegative(formErrors.nonNegative),
+  [fields.maxAutoTime]: z.coerce.number(commonErrors).nonnegative(formErrors.nonNegative),
   [fields.accountingCode]: z.string().nullable().default(null),
 })
 
 type ProductFormValues = z.input<typeof ProductFormSchema>
+
+type _Test_FormValuesMatchApi = Expect<Assignable<ProductFormValues, StockDtoForMaster>>
+// @ts-ignore
+const _test_formValuesMatchApi: _Test_FormValuesMatchApi = true
 
 export const emptyProductFormValues: ProductFormValues = {
   name: "",
