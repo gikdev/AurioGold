@@ -75,7 +75,13 @@ export function createControlledAsyncToast<T = void>(
     },
     error: {
       render({ data }) {
-        return typeof data === "string" ? data : (initialMessages.error ?? "خطایی رخ داد!")
+        if (typeof data === "string") return data
+        if (typeof data === "object" && data !== null) {
+          if ("msg" in data && typeof data.msg === "string") return data.msg
+          if ("message" in data && typeof data.message === "string") return data.message
+          if ("name" in data && typeof data.name === "string") return data.name
+        }
+        return initialMessages.error ?? "خطایی رخ داد!"
       },
     },
   })

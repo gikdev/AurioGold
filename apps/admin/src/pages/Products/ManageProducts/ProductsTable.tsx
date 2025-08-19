@@ -3,10 +3,9 @@ import { BtnTemplates, createTypedTableFa } from "@repo/shared/components"
 import { cellRenderers } from "@repo/shared/lib"
 import type { CustomCellRendererProps } from "ag-grid-react"
 import type { ComponentProps } from "react"
-import { Link } from "react-router"
-import { Navigation } from "./navigation"
 import { calcA11yStuff } from "./ProductCards"
 import { useStocksQuery } from "./shared"
+import { useProductsStore } from "./store"
 
 type DataShape = StockDtoForMaster
 const Table = createTypedTableFa<DataShape>()
@@ -56,9 +55,18 @@ function ManagementBtns({ data }: CustomCellRendererProps<DataShape>) {
 
   return (
     <div className="flex items-center gap-1 py-1">
-      <BtnTemplates.IconInfo as={Link} to={Navigation.details(id!)} className="min-h-8 w-8 p-1" />
-      <BtnTemplates.IconEdit as={Link} to={Navigation.edit(id!)} className="min-h-8 w-8 p-1" />
-      <BtnTemplates.IconDelete as={Link} to={Navigation.delete(id!)} className="min-h-8 w-8 p-1" />
+      <BtnTemplates.IconInfo
+        onClick={() => useProductsStore.getState().details(id)}
+        className="min-h-8 w-8 p-1"
+      />
+      <BtnTemplates.IconEdit
+        onClick={() => useProductsStore.getState().edit(id)}
+        className="min-h-8 w-8 p-1"
+      />
+      <BtnTemplates.IconDelete
+        onClick={() => useProductsStore.getState().delete(id)}
+        className="min-h-8 w-8 p-1"
+      />
     </div>
   )
 }

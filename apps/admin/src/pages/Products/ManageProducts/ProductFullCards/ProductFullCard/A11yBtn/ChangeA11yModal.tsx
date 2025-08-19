@@ -4,8 +4,8 @@ import { BtnTemplates, Modal, Radio } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { useMutation } from "@tanstack/react-query"
 import { useState } from "react"
-import { getHeaderTokenOnly } from "#/pages/Products/shared"
 import { queryClient } from "#/shared"
+import { getHeaderTokenOnly } from "../../../shared"
 import { calcA11yStuff } from "./calcA11yStuff"
 
 const productStatuses: StockStatus[] = [0, 1, 2, 3]
@@ -26,7 +26,6 @@ export function ChangeA11yModal({
 }: ChangeA11yModalProps) {
   const [status, setStatus] = useState<StockStatus | undefined>(initialStatus)
   const updateStockMutation = useUpdateStockMutation()
-  console.log(initialStatus)
 
   const handleChange = async () => {
     if (typeof status !== "number") return

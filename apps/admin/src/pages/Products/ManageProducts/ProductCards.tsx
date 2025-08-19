@@ -1,4 +1,3 @@
-import styled from "@master/styled.react"
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -10,9 +9,8 @@ import {
 } from "@phosphor-icons/react"
 import type { StockDtoForMaster, StockStatus } from "@repo/api-client/client"
 import { formatPersianPrice } from "@repo/shared/utils"
-import { Link } from "react-router"
-import { Navigation } from "./navigation"
 import { useStocksQuery } from "./shared"
+import { useProductsStore } from "./store"
 
 export function ProductCards() {
   const { data: stocks = [] } = useStocksQuery()
@@ -31,15 +29,19 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product: p }: ProductCardProps) {
-  const StyledLink = styled(Link)`
-    bg-slate-3 hover:bg-slate-4 border rounded-md
-    p-2 flex flex-col gap-5 cursor-pointer
-    border-slate-7 hover:border-slate-8
-  `
   const a11yStuff = calcA11yStuff(p.status)
 
+  function handleClick() {
+    if (typeof p.id !== "number") return
+    useProductsStore.getState().details(p.id)
+  }
+
   return (
-    <StyledLink to={Navigation.details(p.id!)}>
+    <button
+      type="button"
+      onClick={handleClick}
+      className="bg-slate-3 hover:bg-slate-4 border rounded-md p-2 flex flex-col gap-5 cursor-pointer border-slate-7 hover:border-slate-8"
+    >
       <p className="flex items-center gap-1">
         <PackageIcon size={20} />
         <span>{p.name}</span>
@@ -56,7 +58,7 @@ function ProductCard({ product: p }: ProductCardProps) {
           {formatPersianPrice(p.price ?? 0)}
         </span>
       </p>
-    </StyledLink>
+    </button>
   )
 }
 

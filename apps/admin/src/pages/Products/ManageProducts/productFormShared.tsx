@@ -68,7 +68,7 @@ export const emptyProductFormValues: ProductFormValues = {
   minProductValue: 0,
   maxProductValue: 0,
   transactionType: "0",
-  priceToGramRatio: 0,
+  priceToGramRatio: 1,
   numOfDecimals: 0,
   maxAutoTime: 0,
 }
@@ -78,7 +78,12 @@ export const transactionMethods = [
   { id: "1", name: "تعدادی" },
   { id: "2", name: "مثقالی" },
 ]
-export type TransactionMethods = "0" | "1" | "2"
+export const TransactionMethod = {
+  gram: "0",
+  count: "1",
+  mithqal: "2",
+}
+export type TransactionMethod = "0" | "1" | "2"
 
 export const transactionTypes = [
   { id: "0", name: "عادی" },
@@ -93,7 +98,7 @@ export const transactionStatuses = [
   { id: "2", name: "قابل فروش توسط مشتری" },
   { id: "3", name: "قابل خرید و فروش" },
 ]
-export type TransactionStatuses = "0" | "1" | "2" | "3"
+export type TransactionStatus = "0" | "1" | "2" | "3"
 
 export function toSafeNumber(input: string | null | undefined): number {
   if (!input) return 0

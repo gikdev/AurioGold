@@ -1,23 +1,15 @@
 import { apiRequest } from "@gikdev/react-datapi/src"
-import { BtnTemplates, Modal, useDrawerSheet, useDrawerSheetNumber } from "@repo/shared/components"
+import { BtnTemplates, Modal } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
-import { memo } from "react"
 import genDatApiConfig from "#/shared/datapi-config"
-import { QUERY_KEYS } from "./navigation"
+import type { ProductId } from "./store"
 
 interface DeleteProductModalProps {
-  reloadProducts: () => void
+  onClose: () => void
+  productId: ProductId
 }
 
-function _DeleteProductModal({ reloadProducts }: DeleteProductModalProps) {
-  const [productId, setCustomerId] = useDrawerSheetNumber(QUERY_KEYS.productId)
-  const [showDeleteModal, setShowDeleteModal] = useDrawerSheet(QUERY_KEYS.delete)
-
-  const handleClose = () => {
-    setCustomerId(null)
-    setShowDeleteModal(false)
-  }
-
+export function DeleteProductModal({ onClose, productId }: DeleteProductModalProps) {
   const handleDelete = async () => {
     const { reject, resolve } = createControlledAsyncToast({
       pending: "در حال حذف محصول...",
@@ -32,8 +24,7 @@ function _DeleteProductModal({ reloadProducts }: DeleteProductModalProps) {
         onSuccess: () => resolve(),
         onError: msg => reject(msg),
         onFinally: () => {
-          handleClose()
-          reloadProducts()
+          onClose()
         },
       },
     })
@@ -41,19 +32,16 @@ function _DeleteProductModal({ reloadProducts }: DeleteProductModalProps) {
 
   return (
     <Modal
-      isOpen={productId != null && showDeleteModal}
+      isOpen
       title="حذف محصول"
       description="آیا از حذف این محصول مطمئن هستید؟"
-      onClose={handleClose}
+      onClose={onClose}
       btns={
         <>
-          <BtnTemplates.Cancel onClick={handleClose} />
+          <BtnTemplates.Cancel onClick={onClose} />
           <BtnTemplates.Delete themeType="filled" onClick={handleDelete} />
         </>
       }
     />
   )
 }
-
-const DeleteProductsModal = memo(_DeleteProductModal)
-export default DeleteProductsModal

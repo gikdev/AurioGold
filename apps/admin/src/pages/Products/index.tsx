@@ -1,5 +1,5 @@
 import { HeadingLine } from "@repo/shared/layouts"
-import ManageProducts from "./ManageProducts"
+import { ManageProducts } from "./ManageProducts"
 
 export default function Products() {
   return (

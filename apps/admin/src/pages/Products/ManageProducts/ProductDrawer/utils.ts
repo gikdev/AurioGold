@@ -5,10 +5,30 @@ import type {
   StockStatus,
   StockUnit,
 } from "@repo/api-client/client"
-import { getApiTyStocksQueryKey, putApiTyStocksByIdMutation } from "@repo/api-client/tanstack"
+import {
+  getApiTyStocksQueryKey,
+  postApiTyStocksMutation,
+  putApiTyStocksByIdMutation,
+} from "@repo/api-client/tanstack"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { emptyProductFormValues, type ProductFormValues, toSafeNumber } from "../productFormShared"
 import { getHeaderTokenOnly } from "../shared"
+
+export function useCreateStockMutation() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    ...postApiTyStocksMutation(getHeaderTokenOnly()),
+    onSuccess: (_, { body }) => {
+      if (!body) return
+
+      queryClient.setQueryData<StockDtoForMaster[]>(
+        getApiTyStocksQueryKey(getHeaderTokenOnly()),
+        old => [...(old ?? []), body],
+      )
+    },
+  })
+}
 
 export function useUpdateStockMutation() {
   const queryClient = useQueryClient()
@@ -26,10 +46,10 @@ export function useUpdateStockMutation() {
 
 export function convertFormValuesToApiPayload(
   values: ProductFormValues,
-  productId: NonNullable<StockDtoForMaster["id"]>,
+  productId: StockDtoForMaster["id"],
 ): Required<PutApiTyStocksByIdData["body"]> {
   return {
-    id: productId,
+    id: productId ?? 0,
     name: values.name,
     description: values.description ?? null,
     price: values.price,

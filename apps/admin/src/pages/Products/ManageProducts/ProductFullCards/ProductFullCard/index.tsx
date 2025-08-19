@@ -12,7 +12,7 @@ interface ProductFullCardProps {
 export function ProductFullCard({ product: p }: ProductFullCardProps) {
   return (
     <div className="bg-slate-3 border rounded-md flex flex-col border-slate-7 overflow-hidden">
-      <CardHeader id={p.id ?? 0} name={p.name ?? ""} />
+      <CardHeader productId={p.id ?? 0} name={p.name ?? ""} />
 
       <div className="text-xs flex justify-between items-center flex-wrap">
         <A11yBtn status={p.status} productId={p.id} />
