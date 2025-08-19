@@ -7,7 +7,7 @@ import { type ChangeEvent, memo } from "react"
 import { Link } from "react-router"
 import routes from "#/pages/routes"
 import { getHeaderTokenOnly } from "#/shared"
-import { ProductStatus, useProductId } from "./shared"
+import { ProductStatus, useProductId, useTradeFormStore } from "./shared"
 
 const ProductSelect = createSelectWithOptions<StockDto>()
 
@@ -30,6 +30,7 @@ function _SelectProduct() {
 
   const handleProductChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setProductId(parseStrToNullableNumber(e.target.value))
+    useTradeFormStore.getState().resetCurrentValue()
   }
 
   return (

@@ -91,15 +91,19 @@ export function useGetProductSideEnabled(productStatus?: StockStatus) {
 interface TradeFormStore {
   currentValue: number
   setCurrentValue: (currentValue: number) => void
+  resetCurrentValue: () => void
 
   isRialMode: boolean
   setIsRialMode: (isRialMode: boolean) => void
+  // resetRialMode: () => void
 }
 
 export const useTradeFormStore = create<TradeFormStore>(set => ({
   currentValue: 0,
   setCurrentValue: currentValue => set({ currentValue }),
+  resetCurrentValue: () => set({ currentValue: 0 }),
 
   isRialMode: false,
   setIsRialMode: isRialMode => set({ isRialMode }),
+  // resetRialMode: () => set({ isRialMode: false }),
 }))
