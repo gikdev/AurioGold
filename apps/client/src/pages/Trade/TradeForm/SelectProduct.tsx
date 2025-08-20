@@ -1,12 +1,20 @@
 import { ArrowLeftIcon } from "@phosphor-icons/react"
 import type { StockDto } from "@repo/api-client/client"
-import { getApiTyStocksForCustommerOptions } from "@repo/api-client/tanstack"
+import {
+  getApiTyStocksForCustommerByIdQueryKey,
+  getApiTyStocksForCustommerOptions,
+  getApiTyStocksForCustommerQueryKey,
+} from "@repo/api-client/tanstack"
 import { createSelectWithOptions, Labeler } from "@repo/shared/components"
 import { useQuery } from "@tanstack/react-query"
-import { type ChangeEvent, memo } from "react"
+import { produce } from "immer"
+import { useAtomValue } from "jotai"
+import { type ChangeEvent, memo, useCallback, useEffect } from "react"
 import { Link } from "react-router"
+import { connectionRefAtom } from "#/atoms"
 import routes from "#/pages/routes"
-import { getHeaderTokenOnly } from "#/shared"
+import { getHeaderTokenOnly, queryClient } from "#/shared"
+import type { ProductId } from "../navigation"
 import { ProductStatus, useProductId, useTradeFormStore } from "./shared"
 
 const ProductSelect = createSelectWithOptions<StockDto>()
@@ -25,6 +33,8 @@ function _SelectProduct() {
     ...getApiTyStocksForCustommerOptions(getHeaderTokenOnly()),
     select,
   })
+
+  useHandlePriceUpdate(productId)
 
   const errorMsg = typeof productId !== "number" ? "هیچ محصولی انتخاب نشده! لطفا انتخاب کنید." : ""
 
@@ -65,4 +75,55 @@ function parseStrToNullableNumber(input: string | undefined | null | number): nu
   const converted = Number(input)
   const isNan = Number.isNaN(converted)
   return isNan ? null : converted
+}
+
+function useHandlePriceUpdate(productId: ProductId | null) {
+  const connection = useAtomValue(connectionRefAtom)
+
+  const handlePriceUpdate = useCallback(
+    (
+      id: ProductId,
+      newPrice: number,
+      priceType: "price" | "diffSellPrice" | "diffBuyPrice",
+      date: string,
+    ) => {
+      if (typeof productId !== "number") return
+      if (id !== productId) return
+
+      const byIdQueryKey = getApiTyStocksForCustommerByIdQueryKey({
+        ...getHeaderTokenOnly(),
+        path: { id: productId },
+      })
+
+      // update the single product
+      queryClient.setQueryData<StockDto>(byIdQueryKey, old =>
+        old
+          ? produce(old, draft => {
+              draft[priceType] = newPrice
+              draft.dateUpdate = date
+            })
+          : old,
+      )
+
+      // update the same product in the "all products" cache
+      queryClient.setQueryData<StockDto[] | undefined>(
+        getApiTyStocksForCustommerQueryKey(getHeaderTokenOnly()),
+        oldData =>
+          produce(oldData, draft => {
+            if (!draft) return
+            const stock = draft.find(p => p.id === productId)
+            if (stock) {
+              stock[priceType] = newPrice
+              stock.dateUpdate = new Date(date).toISOString()
+            }
+          }),
+      )
+    },
+    [productId],
+  )
+
+  useEffect(() => {
+    connection?.on("ReceivePriceUpdate", handlePriceUpdate)
+    return () => connection?.off("ReceivePriceUpdate", handlePriceUpdate)
+  }, [connection, handlePriceUpdate])
 }

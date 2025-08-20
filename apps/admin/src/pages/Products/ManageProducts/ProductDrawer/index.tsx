@@ -91,7 +91,7 @@ export function ProductDrawer({ mode, onClose, productId }: ProductDrawerProps) 
       }
 
       if (mode === "edit" && typeof productId === "number") {
-        updateStockMutation.mutate({ path: { id: productId } }, { onError, onSuccess })
+        updateStockMutation.mutate({ path: { id: productId }, body }, { onError, onSuccess })
       } else {
         createStockMutation.mutate({ body }, { onError, onSuccess })
       }
