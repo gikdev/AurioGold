@@ -5,9 +5,12 @@ import { produce } from "immer"
 import { queryClient } from "#/shared"
 import { getHeaderTokenOnly } from "#/shared/forms"
 
+const minutes = (n: number) => n * 60 * 1000
+
 export const useStocksQuery = () =>
   useQuery({
     ...getApiTyStocksOptions(getHeaderTokenOnly()),
+    staleTime: minutes(1),
   })
 
 export function refetchStocks() {
@@ -35,9 +38,9 @@ export function applyStockUpdate(
 }
 
 export const transactionMethods = [
-  { id: "0", name: "گرمی" },
-  { id: "1", name: "تعدادی" },
-  { id: "2", name: "مثقالی" },
+  { id: "0", text: "گرمی", value: "0" },
+  { id: "1", text: "تعدادی", value: "1" },
+  { id: "2", text: "مثقالی", value: "2" },
 ]
 export const TransactionMethod = {
   gram: "0",
@@ -47,17 +50,17 @@ export const TransactionMethod = {
 export type TransactionMethod = "0" | "1" | "2"
 
 export const transactionTypes = [
-  { id: "0", name: "عادی" },
-  { id: "1", name: "تایید خودکار" },
-  { id: "2", name: "رد خودکار" },
+  { id: "0", text: "عادی", value: "0" },
+  { id: "1", text: "تایید خودکار", value: "1" },
+  { id: "2", text: "رد خودکار", value: "2" },
 ]
 export type TransactionType = "0" | "1" | "2"
 
 export const transactionStatuses = [
-  { id: "0", name: "غیر فعال" },
-  { id: "1", name: "قابل خرید توسط مشتری" },
-  { id: "2", name: "قابل فروش توسط مشتری" },
-  { id: "3", name: "قابل خرید و فروش" },
+  { id: "0", text: "غیر فعال", value: "0" },
+  { id: "1", text: "قابل خرید توسط مشتری", value: "1" },
+  { id: "2", text: "قابل فروش توسط مشتری", value: "2" },
+  { id: "3", text: "قابل خرید و فروش", value: "3" },
 ]
 export type TransactionStatus = "0" | "1" | "2" | "3"
 

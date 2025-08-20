@@ -4,7 +4,6 @@ import { cellRenderers } from "@repo/shared/lib"
 import type { CustomCellRendererProps } from "ag-grid-react"
 import type { ComponentProps } from "react"
 import { calcA11yStuff } from "./ProductCards"
-import { useStocksQuery } from "./shared"
 import { useProductsStore } from "./store"
 
 type DataShape = StockDtoForMaster
@@ -38,9 +37,11 @@ const columnDefs: TableProps["columnDefs"] = [
   },
 ]
 
-export default function ProductsTable() {
-  const { data: stocks = [] } = useStocksQuery()
+interface ProductsTableProps {
+  stocks: StockDtoForMaster[]
+}
 
+export function ProductsTable({ stocks }: ProductsTableProps) {
   return (
     <div className="h-160">
       <Table rowData={stocks} columnDefs={columnDefs} />

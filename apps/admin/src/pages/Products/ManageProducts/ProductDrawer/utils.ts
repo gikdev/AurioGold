@@ -52,24 +52,37 @@ export const ProductFormSchema = z.object({
   [fields.customerSellingDiff]: z.coerce.number(commonErrors),
   [fields.minTransactionVolume]: z.coerce.number(commonErrors).positive(formErrors.positive),
   [fields.maxTransactionVolume]: z.coerce.number(commonErrors).positive(formErrors.positive),
-  [fields.transactionStatus]: z.enum(["0", "1", "2", "3"], {
-    required_error: "این گزینه باید انتخاب شده باشد",
-    invalid_type_error: "این گزینه درست انتخاب نشده",
-    message: "این گزینه باید انتخاب شده باشد",
-  }),
-  [fields.transactionMethod]: z.enum(["0", "1", "2"], {
-    required_error: "این گزینه باید انتخاب شده باشد",
-    invalid_type_error: "این گزینه درست انتخاب نشده",
-    message: "این گزینه باید انتخاب شده باشد",
-  }),
-  [fields.priceSource]: z.coerce.number({
-    required_error: "این گزینه باید انتخاب شده باشد",
-    invalid_type_error: "این گزینه درست انتخاب نشده",
-    message: "این گزینه باید انتخاب شده باشد",
-  }),
+  [fields.transactionStatus]: z
+    .enum(["", "0", "1", "2", "3"], {
+      required_error: "این گزینه باید انتخاب شده باشد",
+      invalid_type_error: "این گزینه درست انتخاب نشده",
+      message: "این گزینه باید انتخاب شده باشد",
+    })
+    .refine(v => v !== "", "این گزینه باید انتخاب شده باشد!"),
+  [fields.transactionMethod]: z
+    .enum(["", "0", "1", "2"], {
+      required_error: "این گزینه باید انتخاب شده باشد",
+      invalid_type_error: "این گزینه درست انتخاب نشده",
+      message: "این گزینه باید انتخاب شده باشد",
+    })
+
+    .refine(v => v !== "", "این گزینه باید انتخاب شده باشد!"),
+  [fields.priceSource]: z.coerce
+    .string({
+      required_error: "این گزینه باید انتخاب شده باشد",
+      invalid_type_error: "این گزینه درست انتخاب نشده",
+      message: "این گزینه باید انتخاب شده باشد",
+    })
+    .refine(v => v !== "", "این گزینه باید انتخاب شده باشد!"),
   [fields.minProductValue]: z.coerce.number(commonErrors).positive(formErrors.positive),
   [fields.maxProductValue]: z.coerce.number(commonErrors).positive(formErrors.positive),
-  [fields.transactionType]: z.enum(["0", "1", "2"], commonErrors),
+  [fields.transactionType]: z
+    .enum(["", "0", "1", "2"], {
+      required_error: "این گزینه باید انتخاب شده باشد",
+      invalid_type_error: "این گزینه درست انتخاب نشده",
+      message: "این گزینه باید انتخاب شده باشد",
+    })
+    .refine(v => v !== "", "این گزینه باید انتخاب شده باشد!"),
   [fields.priceToGramRatio]: z.coerce.number(commonErrors).positive(formErrors.positive),
   [fields.numOfDecimals]: z.coerce.number(commonErrors).nonnegative(formErrors.nonNegative),
   [fields.maxAutoTime]: z.coerce.number(commonErrors).nonnegative(formErrors.nonNegative),
@@ -91,12 +104,12 @@ export const emptyProductFormValues: ProductFormValues = {
   customerSellingDiff: 0,
   minTransactionVolume: 1,
   maxTransactionVolume: 10,
-  transactionStatus: "0",
-  transactionMethod: "0",
-  priceSource: 0,
+  transactionStatus: "",
+  transactionMethod: "",
+  priceSource: "",
   minProductValue: 1,
   maxProductValue: 10,
-  transactionType: "0",
+  transactionType: "",
   priceToGramRatio: 1,
   numOfDecimals: 0,
   maxAutoTime: 0,
@@ -157,7 +170,7 @@ export function convertFormValuesToApiPayload(
     unitPriceRatio: values.priceToGramRatio,
     decimalNumber: values.numOfDecimals,
     supply: 0,
-    priceSourceID: values.priceSource,
+    priceSourceID: toSafeNumber(values.priceSource),
     accountCode: values.accountingCode ?? null,
     unit: toSafeNumber(values.transactionMethod) as StockUnit,
   }
@@ -184,7 +197,7 @@ export function convertPartialCustomerDtoToFormValues(
   if (dto?.minVoume) obj.minTransactionVolume = dto.minVoume
   if (dto?.mode) obj.transactionType = dto.mode.toString() as "0" | "1" | "2"
   if (dto?.price) obj.price = dto.price
-  if (dto?.priceSourceID) obj.priceSource = dto.priceSourceID
+  if (dto?.priceSourceID) obj.priceSource = dto.priceSourceID.toString()
   if (dto?.priceStep) obj.priceStep = dto.priceStep
   if (dto?.status) obj.transactionStatus = dto.status.toString() as "0" | "1" | "2" | "3"
   if (dto?.unit) obj.transactionMethod = dto.unit.toString() as "0" | "1" | "2"

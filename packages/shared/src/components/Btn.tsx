@@ -9,7 +9,8 @@ const styles = {
     disabled:opacity-50 disabled:active:scale-100
     disabled:cursor-not-allowed select-none
     cursor-pointer disabled:border-slate-6
-    *:shrink-0 *:break-all font-bold
+    *:shrink-0 *:break-words
+    [&_svg]:text-[1.5em] 
   `,
   filled: {
     success: "bg-green-9 text-slate-12",

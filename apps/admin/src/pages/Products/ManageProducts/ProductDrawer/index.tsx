@@ -1,26 +1,17 @@
-import { PackageIcon } from "@phosphor-icons/react"
-import type { StockDtoForMaster, StockPriceSourceResponse } from "@repo/api-client/client"
+import { PackageIcon, PencilSimpleIcon, PlusIcon } from "@phosphor-icons/react"
+import type { StockDtoForMaster } from "@repo/api-client/client"
 import {
   getApiStockPriceSourceGetStockPriceSourcesOptions,
   getApiTyStocksOptions,
 } from "@repo/api-client/tanstack"
-import {
-  BtnTemplates,
-  createSelectWithOptions,
-  DrawerSheet,
-  Input,
-  Labeler,
-  TextArea,
-} from "@repo/shared/components"
+import { DrawerSheet } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
-import { useForm } from "@tanstack/react-form"
 import { useQuery } from "@tanstack/react-query"
-import { useCallback, useEffect } from "react"
-import { extractError, getHeaderTokenOnly } from "#/shared/forms"
+import { useCallback, useEffect, useMemo } from "react"
+import { getHeaderTokenOnly, useAppForm } from "#/shared/forms"
+import { skins } from "#/shared/forms/skins"
 import {
   TransactionMethod,
-  type TransactionStatus,
-  type TransactionType,
   transactionMethods,
   transactionStatuses,
   transactionTypes,
@@ -38,8 +29,6 @@ import {
 
 const { labels } = productFormFields
 
-const keysConfig = { id: "id", text: "name", value: "id" } as const
-
 interface ProductDrawerProps {
   onClose: () => void
   mode: "create" | "edit"
@@ -47,7 +36,8 @@ interface ProductDrawerProps {
 }
 
 export function ProductDrawer({ mode, onClose, productId }: ProductDrawerProps) {
-  const SubmitBtn = mode === "create" ? BtnTemplates.Create : BtnTemplates.Edit
+  const isCreateMode = mode === "create"
+  const isEditMode = mode === "edit"
 
   const createStockMutation = useCreateStockMutation()
   const updateStockMutation = useUpdateStockMutation()
@@ -59,23 +49,27 @@ export function ProductDrawer({ mode, onClose, productId }: ProductDrawerProps) 
   const { data: stock } = useQuery({
     ...getApiTyStocksOptions(getHeaderTokenOnly()),
     select,
-    enabled: mode === "edit" && typeof productId === "number",
+    enabled: isEditMode && typeof productId === "number",
   })
 
-  const SelectWithTransactionStatus =
-    createSelectWithOptions<(typeof transactionStatuses)[number]>()
-  const SelectWithTransactionMethod = createSelectWithOptions<(typeof transactionMethods)[number]>()
-  const SelectWithTransactionType = createSelectWithOptions<(typeof transactionTypes)[number]>()
-
-  const SelectWithPriceSources = createSelectWithOptions<StockPriceSourceResponse>()
-  const resSources = useQuery(
+  const { data: sources = [], isPending: areSourcesLoading } = useQuery(
     getApiStockPriceSourceGetStockPriceSourcesOptions(getHeaderTokenOnly()),
   )
 
-  const defaultValues =
-    mode === "edit" && stock ? convertPartialCustomerDtoToFormValues(stock) : emptyProductFormValues
+  const sourcesOptions = useMemo(
+    () =>
+      sources.map(s => ({
+        id: s.id ? s.id.toString() : "0",
+        text: s.name ?? "---",
+        value: s.id ? s.id.toString() : "0",
+      })),
+    [sources],
+  )
 
-  const form = useForm({
+  const defaultValues =
+    isEditMode && stock ? convertPartialCustomerDtoToFormValues(stock) : emptyProductFormValues
+
+  const form = useAppForm({
     defaultValues,
     validators: {
       onChange: ProductFormSchema,
@@ -85,8 +79,8 @@ export function ProductDrawer({ mode, onClose, productId }: ProductDrawerProps) 
       const body = convertFormValuesToApiPayload(value, productId)
 
       const { reject, resolve } = createControlledAsyncToast({
-        pending: mode === "create" ? "در حال ایجاد محصول..." : "در حال ویرایش محصول...",
-        success: mode === "edit" ? "محصول با موفقیت ایجاد شد!" : "محصول با موفقیت ویرایش شد!",
+        pending: isCreateMode ? "در حال ایجاد محصول..." : "در حال ویرایش محصول...",
+        success: isEditMode ? "محصول با موفقیت ایجاد شد!" : "محصول با موفقیت ویرایش شد!",
       })
 
       const onError = reject
@@ -105,195 +99,75 @@ export function ProductDrawer({ mode, onClose, productId }: ProductDrawerProps) 
   })
 
   useEffect(() => {
-    if (mode === "edit" && typeof productId !== "number") {
+    if (isEditMode && typeof productId !== "number") {
       console.warn("Provided productId is not NUMBER!")
     }
-  }, [mode, productId])
+  }, [isEditMode, productId])
 
   return (
     <DrawerSheet
       open
-      title={mode === "create" ? "ایجاد محصول" : "ویرایش محصول"}
+      title={isCreateMode ? "ایجاد محصول" : "ویرایش محصول"}
       icon={PackageIcon}
       onClose={onClose}
       btns={
-        <form.Subscribe selector={s => [s.canSubmit, s.isSubmitting]}>
-          {([canSubmit, isSubmitting]) => (
-            <SubmitBtn
-              disabled={!canSubmit || isSubmitting}
-              onClick={form.handleSubmit}
-              themeType="filled"
-            />
-          )}
-        </form.Subscribe>
+        <form.AppForm>
+          <form.Btn
+            Icon={isCreateMode ? PlusIcon : PencilSimpleIcon}
+            title={isCreateMode ? "ایجاد محصول" : "ویرایش محصول"}
+            className={skins.btn({
+              intent: isCreateMode ? "success" : "warning",
+              style: "filled",
+              className: "col-span-2",
+            })}
+          />
+        </form.AppForm>
       }
     >
       <form className="min-h-full flex flex-col py-4 gap-5" autoComplete="off">
-        <form.Field name="name">
-          {field => (
-            <Labeler labelText={labels.name} errorMsg={extractError(field)}>
-              <Input
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={e => field.handleChange(e.target.value)}
-              />
-            </Labeler>
-          )}
-        </form.Field>
+        <form.AppField name="name">
+          {field => <field.SimpleText label={labels.name} />}
+        </form.AppField>
 
-        <form.Field name="description">
-          {field => (
-            <Labeler labelText={labels.description} errorMsg={extractError(field)}>
-              <TextArea
-                value={field.state.value ?? ""}
-                onBlur={field.handleBlur}
-                onChange={e => field.handleChange(e.target.value)}
-              />
-            </Labeler>
-          )}
-        </form.Field>
+        <form.AppField name="description">
+          {field => <field.MultilineText label={labels.description} />}
+        </form.AppField>
 
-        <form.Field name="price">
-          {field => (
-            <Labeler labelText={labels.price} errorMsg={extractError(field)}>
-              <Input
-                type="number"
-                dir="ltr"
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={e =>
-                  field.handleChange(
-                    Number.isNaN(e.target.valueAsNumber) ? 0 : e.target.valueAsNumber,
-                  )
-                }
-              />
-            </Labeler>
-          )}
-        </form.Field>
+        <form.AppField name="price">
+          {field => <field.SimpleNumber label={labels.price} />}
+        </form.AppField>
 
-        <form.Field name="priceStep">
-          {field => (
-            <Labeler labelText={labels.priceStep} errorMsg={extractError(field)}>
-              <Input
-                type="number"
-                dir="ltr"
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={e =>
-                  field.handleChange(
-                    Number.isNaN(e.target.valueAsNumber) ? 0 : e.target.valueAsNumber,
-                  )
-                }
-              />
-            </Labeler>
-          )}
-        </form.Field>
+        <form.AppField name="priceStep">
+          {field => <field.SimpleNumber label={labels.priceStep} />}
+        </form.AppField>
 
-        <form.Field name="priceDiffStep">
-          {field => (
-            <Labeler labelText={labels.priceDiffStep} errorMsg={extractError(field)}>
-              <Input
-                type="number"
-                dir="ltr"
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={e =>
-                  field.handleChange(
-                    Number.isNaN(e.target.valueAsNumber) ? 0 : e.target.valueAsNumber,
-                  )
-                }
-              />
-            </Labeler>
-          )}
-        </form.Field>
+        <form.AppField name="priceDiffStep">
+          {field => <field.SimpleNumber label={labels.priceDiffStep} />}
+        </form.AppField>
 
-        <form.Field name="customerBuyingDiff">
-          {field => (
-            <Labeler labelText={labels.customerBuyingDiff} errorMsg={extractError(field)}>
-              <Input
-                type="number"
-                dir="ltr"
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={e =>
-                  field.handleChange(
-                    Number.isNaN(e.target.valueAsNumber) ? 0 : e.target.valueAsNumber,
-                  )
-                }
-              />
-            </Labeler>
-          )}
-        </form.Field>
+        <form.AppField name="customerBuyingDiff">
+          {field => <field.SimpleNumber label={labels.customerBuyingDiff} />}
+        </form.AppField>
 
-        <form.Field name="customerSellingDiff">
-          {field => (
-            <Labeler labelText={labels.customerSellingDiff} errorMsg={extractError(field)}>
-              <Input
-                type="number"
-                dir="ltr"
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={e =>
-                  field.handleChange(
-                    Number.isNaN(e.target.valueAsNumber) ? 0 : e.target.valueAsNumber,
-                  )
-                }
-              />
-            </Labeler>
-          )}
-        </form.Field>
+        <form.AppField name="customerSellingDiff">
+          {field => <field.SimpleNumber label={labels.customerSellingDiff} />}
+        </form.AppField>
 
-        <form.Field name="minTransactionVolume">
-          {field => (
-            <Labeler labelText={labels.minTransactionVolume} errorMsg={extractError(field)}>
-              <Input
-                type="number"
-                dir="ltr"
-                value={field.state.value ?? 0}
-                onBlur={field.handleBlur}
-                onChange={e =>
-                  field.handleChange(
-                    Number.isNaN(e.target.valueAsNumber) ? 0 : e.target.valueAsNumber,
-                  )
-                }
-              />
-            </Labeler>
-          )}
-        </form.Field>
+        <form.AppField name="minTransactionVolume">
+          {field => <field.SimpleNumber label={labels.minTransactionVolume} />}
+        </form.AppField>
 
-        <form.Field name="maxTransactionVolume">
-          {field => (
-            <Labeler labelText={labels.maxTransactionVolume} errorMsg={extractError(field)}>
-              <Input
-                type="number"
-                dir="ltr"
-                value={field.state.value ?? 0}
-                onBlur={field.handleBlur}
-                onChange={e =>
-                  field.handleChange(
-                    Number.isNaN(e.target.valueAsNumber) ? 0 : e.target.valueAsNumber,
-                  )
-                }
-              />
-            </Labeler>
-          )}
-        </form.Field>
+        <form.AppField name="maxTransactionVolume">
+          {field => <field.SimpleNumber label={labels.maxTransactionVolume} />}
+        </form.AppField>
 
-        <form.Field name="transactionStatus">
+        <form.AppField name="transactionStatus">
           {field => (
-            <Labeler labelText={labels.transactionStatus} errorMsg={extractError(field)}>
-              <SelectWithTransactionStatus
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={e => field.handleChange(e.target.value as TransactionStatus)}
-                options={transactionStatuses}
-                keys={keysConfig}
-              />
-            </Labeler>
+            <field.SimpleSelect label={labels.transactionStatus} options={transactionStatuses} />
           )}
-        </form.Field>
+        </form.AppField>
 
-        <form.Field
+        <form.AppField
           name="transactionMethod"
           listeners={{
             onChange: ({ value: method }) => {
@@ -306,146 +180,49 @@ export function ProductDrawer({ mode, onClose, productId }: ProductDrawerProps) 
           }}
         >
           {field => (
-            <Labeler labelText={labels.transactionMethod} errorMsg={extractError(field)}>
-              <SelectWithTransactionMethod
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={e => field.handleChange(e.target.value as TransactionMethod)}
-                options={transactionMethods}
-                keys={keysConfig}
-              />
-            </Labeler>
+            <field.SimpleSelect label={labels.transactionMethod} options={transactionMethods} />
           )}
-        </form.Field>
+        </form.AppField>
 
-        <form.Field name="priceSource">
+        <form.AppField name="priceSource">
           {field => (
-            <Labeler
-              labelText={labels.priceSource}
-              errorMsg={extractError(field) || resSources.error?.message || ""}
-            >
-              <SelectWithPriceSources
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={e =>
-                  field.handleChange(
-                    Number.isNaN(Number(e.target.value)) ? 0 : Number(e.target.value),
-                  )
-                }
-                isLoading={resSources.isLoading}
-                options={resSources.data || []}
-                keys={keysConfig}
-              />
-            </Labeler>
+            <field.SimpleSelect
+              label={labels.priceSource}
+              options={sourcesOptions}
+              isLoading={areSourcesLoading}
+            />
           )}
-        </form.Field>
+        </form.AppField>
 
-        <form.Field name="minProductValue">
-          {field => (
-            <Labeler labelText={labels.minProductValue} errorMsg={extractError(field)}>
-              <Input
-                type="number"
-                dir="ltr"
-                value={field.state.value ?? 0}
-                onBlur={field.handleBlur}
-                onChange={e =>
-                  field.handleChange(
-                    Number.isNaN(e.target.valueAsNumber) ? 0 : e.target.valueAsNumber,
-                  )
-                }
-              />
-            </Labeler>
-          )}
-        </form.Field>
+        <form.AppField name="minProductValue">
+          {field => <field.SimpleNumber label={labels.minProductValue} />}
+        </form.AppField>
 
-        <form.Field name="maxProductValue">
-          {field => (
-            <Labeler labelText={labels.maxProductValue} errorMsg={extractError(field)}>
-              <Input
-                type="number"
-                dir="ltr"
-                value={field.state.value ?? 0}
-                onBlur={field.handleBlur}
-                onChange={e =>
-                  field.handleChange(
-                    Number.isNaN(e.target.valueAsNumber) ? 0 : e.target.valueAsNumber,
-                  )
-                }
-              />
-            </Labeler>
-          )}
-        </form.Field>
+        <form.AppField name="maxProductValue">
+          {field => <field.SimpleNumber label={labels.maxProductValue} />}
+        </form.AppField>
 
-        <form.Field name="transactionType">
+        <form.AppField name="transactionType">
           {field => (
-            <Labeler labelText={labels.transactionType} errorMsg={extractError(field)}>
-              <SelectWithTransactionType
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={e => field.handleChange(e.target.value as TransactionType)}
-                options={transactionTypes}
-                keys={keysConfig}
-              />
-            </Labeler>
+            <field.SimpleSelect label={labels.transactionType} options={transactionTypes} />
           )}
-        </form.Field>
+        </form.AppField>
 
-        <form.Field name="priceToGramRatio">
-          {field => (
-            <Labeler labelText={labels.priceToGramRatio} errorMsg={extractError(field)}>
-              <Input type="number" dir="ltr" readOnly value={field.state.value} />
-            </Labeler>
-          )}
-        </form.Field>
+        <form.AppField name="priceToGramRatio">
+          {field => <field.SimpleNumber label={labels.priceToGramRatio} readOnly />}
+        </form.AppField>
 
-        <form.Field name="numOfDecimals">
-          {field => (
-            <Labeler labelText={labels.numOfDecimals} errorMsg={extractError(field)}>
-              <Input
-                type="number"
-                dir="ltr"
-                value={field.state.value ?? 0}
-                onBlur={field.handleBlur}
-                onChange={e =>
-                  field.handleChange(
-                    Number.isNaN(e.target.valueAsNumber) ? 0 : e.target.valueAsNumber,
-                  )
-                }
-              />
-            </Labeler>
-          )}
-        </form.Field>
+        <form.AppField name="numOfDecimals">
+          {field => <field.SimpleNumber label={labels.numOfDecimals} />}
+        </form.AppField>
 
-        <form.Field name="maxAutoTime">
-          {field => (
-            <Labeler labelText={labels.maxAutoTime} errorMsg={extractError(field)}>
-              <Input
-                type="number"
-                dir="ltr"
-                value={field.state.value ?? 0}
-                onBlur={field.handleBlur}
-                onChange={e =>
-                  field.handleChange(
-                    Number.isNaN(e.target.valueAsNumber) ? 0 : e.target.valueAsNumber,
-                  )
-                }
-              />
-            </Labeler>
-          )}
-        </form.Field>
+        <form.AppField name="maxAutoTime">
+          {field => <field.SimpleNumber label={labels.maxAutoTime} />}
+        </form.AppField>
 
-        <form.Field name="accountingCode">
-          {field => (
-            <Labeler labelText={labels.accountingCode} errorMsg={extractError(field)}>
-              <Input
-                dir="auto"
-                value={field.state.value ?? ""}
-                onBlur={field.handleBlur}
-                onChange={e => field.handleChange(e.target.value)}
-              />
-            </Labeler>
-          )}
-        </form.Field>
+        <form.AppField name="accountingCode">
+          {field => <field.SimpleText label={labels.accountingCode} />}
+        </form.AppField>
       </form>
     </DrawerSheet>
   )

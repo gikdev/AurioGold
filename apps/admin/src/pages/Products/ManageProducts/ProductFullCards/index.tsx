@@ -1,9 +1,11 @@
-import { useStocksQuery } from "../shared"
+import type { StockDtoForMaster } from "@repo/api-client/client"
 import { ProductFullCard } from "./ProductFullCard"
 
-export function ProductFullCards() {
-  const { data: stocks = [] } = useStocksQuery()
+interface ProductFullCardsProps {
+  stocks: StockDtoForMaster[]
+}
 
+export function ProductFullCards({ stocks }: ProductFullCardsProps) {
   return (
     <div className="gap-4 flex flex-col">
       {stocks.map(p => (

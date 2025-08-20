@@ -9,12 +9,13 @@ import {
 } from "@phosphor-icons/react"
 import type { StockDtoForMaster, StockStatus } from "@repo/api-client/client"
 import { formatPersianPrice } from "@repo/shared/utils"
-import { useStocksQuery } from "./shared"
 import { useProductsStore } from "./store"
 
-export function ProductCards() {
-  const { data: stocks = [] } = useStocksQuery()
+interface ProductCardsProps {
+  stocks: StockDtoForMaster[]
+}
 
+export function ProductCards({ stocks }: ProductCardsProps) {
   return (
     <div className="grid auto-rows-fr gap-4 grid-cols-[repeat(auto-fit,minmax(200px,1fr))]">
       {stocks.map(s => (

@@ -11,6 +11,7 @@ import {
   FloatingActionBtn,
   IconsToggle,
   type IconsToggleItem,
+  LoadingSpinner,
   TitledCard,
   type ViewMode,
 } from "@repo/shared/components"
@@ -23,8 +24,8 @@ import { ProductCards } from "./ProductCards"
 import { ProductDetails } from "./ProductDetails"
 import { ProductDrawer } from "./ProductDrawer"
 import { ProductFullCards } from "./ProductFullCards"
-import ProductsTable from "./ProductsTable"
-import { applyStockUpdate, refetchStocks } from "./shared"
+import { ProductsTable } from "./ProductsTable"
+import { applyStockUpdate, refetchStocks, useStocksQuery } from "./shared"
 import { useProductsStore } from "./store"
 
 export function ManageProducts() {
@@ -130,6 +131,7 @@ const modes: IconsToggleItem<ProductsViewMode>[] = [
 function ManageStuff() {
   const isMobile = getIsMobile()
   const [viewMode, setViewMode] = useState<ProductsViewMode>("full-cards")
+  const { data: stocks = [], isPending, isSuccess } = useStocksQuery()
 
   const titleSlot = (
     <div className="flex items-center ms-auto gap-2">
@@ -147,9 +149,10 @@ function ManageStuff() {
         titleSlot={titleSlot}
         className={!isMobile && viewMode !== "cards" ? "max-w-240" : undefined}
       >
-        {viewMode === "full-cards" && <ProductFullCards />}
-        {viewMode === "cards" && <ProductCards />}
-        {viewMode === "table" && <ProductsTable />}
+        {isPending && <LoadingSpinner />}
+        {viewMode === "full-cards" && isSuccess && <ProductFullCards stocks={stocks} />}
+        {viewMode === "cards" && isSuccess && <ProductCards stocks={stocks} />}
+        {viewMode === "table" && isSuccess && <ProductsTable stocks={stocks} />}
       </TitledCard>
     </ErrorCardBoundary>
   )
