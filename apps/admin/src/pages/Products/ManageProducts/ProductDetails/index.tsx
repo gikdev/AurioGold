@@ -136,15 +136,15 @@ export function ProductDetails({ onClose, productId }: ProductDetailsProps) {
             />
             <KeyValueDetail
               title={getLabelProperty("transactionMethod")}
-              value={product.unit ? transactionMethods?.[product.unit]?.name : "-"}
+              value={product.unit ? transactionMethods?.[product.unit]?.text : "-"}
             />
             <KeyValueDetail
               title={getLabelProperty("transactionStatus")}
-              value={product.status ? transactionStatuses?.[product.status]?.name : "-"}
+              value={product.status ? transactionStatuses?.[product.status]?.text : "-"}
             />
             <KeyValueDetail
               title={getLabelProperty("transactionType")}
-              value={product.mode ? transactionTypes?.[product.mode]?.name : "-"}
+              value={product.mode ? transactionTypes?.[product.mode]?.text : "-"}
             />
             <KeyValueDetail
               title="آی‌دی"
