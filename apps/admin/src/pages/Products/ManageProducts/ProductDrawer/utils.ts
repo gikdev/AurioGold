@@ -10,7 +10,7 @@ import {
   postApiTyStocksMutation,
   putApiTyStocksByIdMutation,
 } from "@repo/api-client/tanstack"
-import { createFieldsWithLabels } from "@repo/shared/helpers"
+import { createFieldsWithLabels, isUndefinedOrNull } from "@repo/shared/helpers"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import z from "zod"
 import { commonErrors, formErrors } from "#/shared/customForm"
@@ -183,25 +183,26 @@ export function convertPartialCustomerDtoToFormValues(
     ...emptyProductFormValues,
   }
 
-  if (dto?.accountCode) obj.accountingCode = dto.accountCode
-  if (dto?.name) obj.name = dto.name
-  if (dto?.decimalNumber) obj.numOfDecimals = dto.decimalNumber
-  if (dto?.description) obj.description = dto.description
-  if (dto?.diffBuyPrice) obj.customerBuyingDiff = dto.diffBuyPrice
-  if (dto?.diffPriceStep) obj.priceDiffStep = dto.diffPriceStep
-  if (dto?.diffSellPrice) obj.customerSellingDiff = dto.diffSellPrice
-  if (dto?.maxAutoMin) obj.maxAutoTime = dto.maxAutoMin
-  if (dto?.maxValue) obj.maxProductValue = dto.maxValue
-  if (dto?.maxVoume) obj.maxTransactionVolume = dto.maxVoume
-  if (dto?.minValue) obj.minProductValue = dto.minValue
-  if (dto?.minVoume) obj.minTransactionVolume = dto.minVoume
-  if (dto?.mode) obj.transactionType = dto.mode.toString() as "0" | "1" | "2"
-  if (dto?.price) obj.price = dto.price
-  if (dto?.priceSourceID) obj.priceSource = dto.priceSourceID.toString()
-  if (dto?.priceStep) obj.priceStep = dto.priceStep
-  if (dto?.status) obj.transactionStatus = dto.status.toString() as "0" | "1" | "2" | "3"
-  if (dto?.unit) obj.transactionMethod = dto.unit.toString() as "0" | "1" | "2"
-  if (dto?.unitPriceRatio) obj.priceToGramRatio = dto.unitPriceRatio
+  if (!isUndefinedOrNull(dto.accountCode)) obj.accountingCode = dto.accountCode
+  if (!isUndefinedOrNull(dto.name)) obj.name = dto.name
+  if (!isUndefinedOrNull(dto.decimalNumber)) obj.numOfDecimals = dto.decimalNumber
+  if (!isUndefinedOrNull(dto.description)) obj.description = dto.description
+  if (!isUndefinedOrNull(dto.diffBuyPrice)) obj.customerBuyingDiff = dto.diffBuyPrice
+  if (!isUndefinedOrNull(dto.diffPriceStep)) obj.priceDiffStep = dto.diffPriceStep
+  if (!isUndefinedOrNull(dto.diffSellPrice)) obj.customerSellingDiff = dto.diffSellPrice
+  if (!isUndefinedOrNull(dto.maxAutoMin)) obj.maxAutoTime = dto.maxAutoMin
+  if (!isUndefinedOrNull(dto.maxValue)) obj.maxProductValue = dto.maxValue
+  if (!isUndefinedOrNull(dto.maxVoume)) obj.maxTransactionVolume = dto.maxVoume
+  if (!isUndefinedOrNull(dto.minValue)) obj.minProductValue = dto.minValue
+  if (!isUndefinedOrNull(dto.minVoume)) obj.minTransactionVolume = dto.minVoume
+  if (!isUndefinedOrNull(dto.mode)) obj.transactionType = dto.mode.toString() as "0" | "1" | "2"
+  if (!isUndefinedOrNull(dto.price)) obj.price = dto.price
+  if (!isUndefinedOrNull(dto.priceSourceID)) obj.priceSource = dto.priceSourceID.toString()
+  if (!isUndefinedOrNull(dto.priceStep)) obj.priceStep = dto.priceStep
+  if (!isUndefinedOrNull(dto.status))
+    obj.transactionStatus = dto.status.toString() as "0" | "1" | "2" | "3"
+  if (!isUndefinedOrNull(dto.unit)) obj.transactionMethod = dto.unit.toString() as "0" | "1" | "2"
+  if (!isUndefinedOrNull(dto.unitPriceRatio)) obj.priceToGramRatio = dto.unitPriceRatio
 
   return obj
 }

@@ -95,3 +95,5 @@ export function parseError(data: unknown, msg?: string) {
   }
   return msg || "خطایی رخ داد!"
 }
+
+export const isUndefinedOrNull = (sth: unknown) => typeof sth === "undefined" || sth === null

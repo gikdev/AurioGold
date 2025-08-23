@@ -73,6 +73,7 @@ export function ProductDrawer({ mode, onClose, productId }: ProductDrawerProps) 
     defaultValues,
     validators: {
       onChange: ProductFormSchema,
+      onBlur: ProductFormSchema,
     },
 
     onSubmit({ value, formApi }) {
@@ -113,6 +114,7 @@ export function ProductDrawer({ mode, onClose, productId }: ProductDrawerProps) 
       btns={
         <form.AppForm>
           <form.Btn
+            testId="product-drawer-submit-btn"
             Icon={isCreateMode ? PlusIcon : PencilSimpleIcon}
             title={isCreateMode ? "ایجاد محصول" : "ویرایش محصول"}
             className={skins.btn({

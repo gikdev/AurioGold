@@ -156,9 +156,11 @@ test.describe("Customer admin create and client login flow", () => {
     await admin.page.getByLabel(/قیمت/).nth(0).fill(product.price.toString())
     await admin.page.getByLabel("حداکثر حجم معامله (گرم) *").fill(product.purchaseAmount.toString())
     await admin.page.getByLabel("وضعیت خرید و فروش *").selectOption(product.buyAndSellStatus)
+    await admin.page.getByLabel("نحوه معامله *").selectOption("تعدادی")
     await admin.page.getByLabel("منبع قیمت:").selectOption({ label: product.priceSource })
+    await admin.page.getByLabel("نوع معامله *").selectOption("عادی")
 
-    await admin.page.getByRole("button", { name: "ایجاد" }).click()
+    await admin.page.getByTestId("product-drawer-submit-btn").click()
 
     // --- Client purchase the new product
     await client.page.goto("http://localhost:4444/")

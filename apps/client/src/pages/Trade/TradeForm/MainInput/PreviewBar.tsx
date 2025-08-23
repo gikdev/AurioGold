@@ -27,7 +27,8 @@ export default function PreviewBar() {
         currentValue,
         side === "buy" ? totalBuyPrice : totalSellPrice,
         priceToUnitRatio,
-        isRialMode ? 0 : maxDecimalsCount,
+        0,
+        // maxDecimalsCount,
       )
     : calcOutputRial(
         currentValue,

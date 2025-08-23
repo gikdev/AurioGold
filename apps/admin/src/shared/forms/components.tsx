@@ -1,4 +1,5 @@
 import { CircleNotchIcon, type Icon, PencilSimpleIcon } from "@phosphor-icons/react"
+import { parseError } from "@repo/shared/helpers"
 import { type AnyFieldApi, createFormHook, createFormHookContexts } from "@tanstack/react-form"
 import type { ComponentProps } from "react"
 import { skins } from "./skins"
@@ -118,6 +119,7 @@ interface BtnProps {
   className?: string
   onClick?: () => void
   btnType?: ComponentProps<"button">["type"]
+  testId?: string
 }
 function Btn({
   title = "ثبت",
@@ -128,6 +130,7 @@ function Btn({
   loadingTitle = "در حال بارگذاری...",
   btnType = "button",
   onClick,
+  testId,
 }: BtnProps) {
   const defaultClassName = skins.btn({
     intent: "success",
@@ -146,6 +149,7 @@ function Btn({
 
         return (
           <button
+            data-testid={testId}
             type={btnType}
             onClick={finalClickHandler}
             disabled={!canSubmit || isSubmitting}
@@ -239,21 +243,11 @@ function TypedSelect<T extends string = string>({
   )
 }
 
-function convertErrorsToString(err: unknown) {
-  if (typeof err === "string") return err
-  if (typeof err === "object" && err != null) {
-    if ("msg" in err && typeof err.msg === "string") return err.msg
-    if ("message" in err && typeof err.message === "string") return err.message
-  }
-
-  return "یه مشکلی پیش اومده"
-}
-
 function FieldInfo({ field }: { field: AnyFieldApi }) {
-  const { isTouched, isValid, isValidating } = field.state.meta
-  const showError = !isValid && isTouched
+  const { isValid, isValidating } = field.state.meta
+  const showError = !isValid
 
-  const errorMsg = field.state.meta.errors.map(convertErrorsToString).join(",")
+  const errorMsg = field.state.meta.errors.map(e => parseError(e, "یه مشکلی پیش اومده")).join("، ")
 
   return (
     <>

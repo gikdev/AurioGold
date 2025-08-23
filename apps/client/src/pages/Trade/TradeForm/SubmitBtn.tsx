@@ -66,15 +66,31 @@ export default function SubmitBtn() {
     Object.values(notesStatus).includes("error")
 
   const handleSubmit = () => {
-    if (!product) return
-    if (isDisabled) return
+    if (!product) {
+      notifManager.notify(
+        "`product` is not defined, so I can't continue with form submission",
+        ["console", "toast"],
+        { status: "dev-only" },
+      )
+      return
+    }
+
+    if (isDisabled) {
+      notifManager.notify(
+        "Bro! The btn is disabled! How did u click it??? I'm sorry but I can't continue with form submission",
+        ["console", "toast"],
+        { status: "dev-only" },
+      )
+      return
+    }
 
     const convertedValue = isRialMode
       ? calcOutputWeight(
           currentValue,
           side === "buy" ? totalBuyPrice : totalSellPrice,
           priceToUnitRatio,
-          isRialMode ? 0 : maxDecimalsCount,
+          0,
+          // maxDecimalsCount,
         )
       : calcOutputRial(
           currentValue,
@@ -97,8 +113,9 @@ export default function SubmitBtn() {
         onError: err => notifManager.notify(parseError(err), "toast", { status: "error" }),
         onSuccess: data => {
           setCurrentValue(0)
-          if (typeof data.id !== "number") return
-          navigate(TradeNavigation.openOrderModal(data.id, isAutoMode ? maxAutoTime : 0))
+          const id = Number(data.id)
+          if (Number.isNaN(id)) return
+          navigate(TradeNavigation.openOrderModal(id, isAutoMode ? maxAutoTime : 0))
         },
       },
     )

@@ -7,6 +7,14 @@ import { Providers } from "./Providers"
 import { registerServiceWorker } from "./serviceWorker"
 import "../styles/index.css"
 
+declare global {
+  interface Window {
+    __IS_DEV_MODE: boolean
+  }
+}
+
+window.__IS_DEV_MODE = import.meta.env.DEV
+
 ModuleRegistry.registerModules([AllCommunityModule])
 
 registerServiceWorker()

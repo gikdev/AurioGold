@@ -1,6 +1,6 @@
 import { type ToastOptions, toast } from "react-toastify"
 
-type NotifStatus = "success" | "error" | "warning" | "default" | "info"
+type NotifStatus = "success" | "error" | "warning" | "default" | "info" | "dev-only"
 
 interface NotifOptions {
   status?: NotifStatus
@@ -13,10 +13,19 @@ interface NotifAdapter {
 
 type NotifKey = "toast" | "console"
 
+declare global {
+  interface Window {
+    __IS_DEV_MODE: boolean
+  }
+}
+
 const adapters: Record<NotifKey, NotifAdapter> = {
   console: {
     notify: (msg, options = { status: "default" }) => {
       switch (options.status) {
+        case "dev-only":
+          if (window?.__IS_DEV_MODE) console.log("DEV: ", msg)
+          break
         case "success":
           console.log("✅", msg)
           break
@@ -41,6 +50,9 @@ const adapters: Record<NotifKey, NotifAdapter> = {
       const { status = "default", toastOptions = {} } = options
 
       switch (status) {
+        case "dev-only":
+          if (window?.__IS_DEV_MODE) toast.info(msg, toastOptions)
+          break
         case "error":
           toast.error(msg, toastOptions)
           break
