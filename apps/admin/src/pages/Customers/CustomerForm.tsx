@@ -68,16 +68,11 @@ export default function CustomerForm({ form, isEditMode = false }: CustomerFormP
       </Labeler>
 
       <Labeler labelText={labels.password} errorMsg={errors.password?.message}>
-        <Input readOnly={isEditMode} dir="ltr" type="password" {...register(fields.password)} />
+        <Input dir="ltr" type="password" {...register(fields.password)} />
       </Labeler>
 
       <Labeler labelText={labels.passwordRepeat} errorMsg={errors.passwordRepeat?.message}>
-        <Input
-          readOnly={isEditMode}
-          dir="ltr"
-          type="password"
-          {...register(fields.passwordRepeat)}
-        />
+        <Input dir="ltr" type="password" {...register(fields.passwordRepeat)} />
       </Labeler>
 
       <LabelerLine labelText={labels.isBlocked} errorMsg={errors.isBlocked?.message}>

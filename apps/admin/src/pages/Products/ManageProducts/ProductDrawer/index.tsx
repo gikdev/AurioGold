@@ -80,7 +80,7 @@ export function ProductDrawer({ mode, onClose, productId }: ProductDrawerProps) 
 
       const { reject, resolve } = createControlledAsyncToast({
         pending: isCreateMode ? "در حال ایجاد محصول..." : "در حال ویرایش محصول...",
-        success: isEditMode ? "محصول با موفقیت ایجاد شد!" : "محصول با موفقیت ویرایش شد!",
+        success: isCreateMode ? "محصول با موفقیت ایجاد شد!" : "محصول با موفقیت ویرایش شد!",
       })
 
       const onError = reject

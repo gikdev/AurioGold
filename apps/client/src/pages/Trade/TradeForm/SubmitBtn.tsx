@@ -1,7 +1,9 @@
 import { CoinsIcon } from "@phosphor-icons/react"
 import type { OrderSide, RequestOrderMode } from "@repo/api-client/client"
 import { postApiCustomerReqOrderMutation } from "@repo/api-client/tanstack"
+import { notifManager } from "@repo/shared/adapters"
 import { Btn } from "@repo/shared/components"
+import { parseError } from "@repo/shared/helpers"
 import { useMutation } from "@tanstack/react-query"
 import { useAtomValue } from "jotai"
 import { useNavigate } from "react-router"
@@ -92,6 +94,7 @@ export default function SubmitBtn() {
         },
       },
       {
+        onError: err => notifManager.notify(parseError(err), "toast", { status: "error" }),
         onSuccess: data => {
           setCurrentValue(0)
           if (typeof data.id !== "number") return

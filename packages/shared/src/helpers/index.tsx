@@ -75,13 +75,7 @@ export function createControlledAsyncToast<T = void>(
     },
     error: {
       render({ data }) {
-        if (typeof data === "string") return data
-        if (typeof data === "object" && data !== null) {
-          if ("msg" in data && typeof data.msg === "string") return data.msg
-          if ("message" in data && typeof data.message === "string") return data.message
-          if ("name" in data && typeof data.name === "string") return data.name
-        }
-        return initialMessages.error ?? "خطایی رخ داد!"
+        return parseError(data, initialMessages.error)
       },
     },
   })
@@ -90,4 +84,14 @@ export function createControlledAsyncToast<T = void>(
     resolve: (data?: T | string) => resolve(data as T),
     reject: (err?: unknown) => reject(err),
   }
+}
+
+export function parseError(data: unknown, msg?: string) {
+  if (typeof data === "string") return data
+  if (typeof data === "object" && data !== null) {
+    if ("msg" in data && typeof data.msg === "string") return data.msg
+    if ("message" in data && typeof data.message === "string") return data.message
+    if ("name" in data && typeof data.name === "string") return data.name
+  }
+  return msg || "خطایی رخ داد!"
 }
