@@ -16,6 +16,13 @@ function useShouldBeOpen() {
   return typeof currentOrderId === "number"
 }
 
+export function useOpenOrderModal() {
+  const [, setCurrentOrderId] = useDrawerSheetNumber(QUERY_KEYS.currentOrderId)
+  const [, setAutoMin] = useIntegerQueryState(QUERY_KEYS.autoMinutes, 0)
+
+  return { setCurrentOrderId, setAutoMin }
+}
+
 export function OrderModal() {
   const [modalState] = useAtom(orderModalStateAtom)
   const [, setCurrentOrderId] = useDrawerSheetNumber(QUERY_KEYS.currentOrderId)

@@ -1,10 +1,17 @@
-import type { StockStatus } from "@repo/api-client/client"
+import type {
+  AutoMode,
+  CustomerLoginModel,
+  StockDto,
+  StockStatus,
+  StockUnit,
+} from "@repo/api-client/client"
 import { getApiTyStocksForCustommerByIdOptions } from "@repo/api-client/tanstack"
-import { useLiteralQueryState, useNullableIntegerQueryState } from "@repo/shared/hooks"
+import { useLiteralQueryState } from "@repo/shared/hooks"
 import { useQuery } from "@tanstack/react-query"
 import { useAtomValue } from "jotai"
+import { useParams } from "react-router"
 import { create } from "zustand"
-import { connectionStateAtom, profileAtom } from "#/atoms"
+import { profileAtom } from "#/atoms"
 import { getHeaderTokenOnly } from "#/shared"
 import { QUERY_KEYS } from "../navigation"
 
@@ -12,43 +19,83 @@ export const sides = ["buy", "sell"] as const
 export type Side = (typeof sides)[number]
 export const useProductSide = () => useLiteralQueryState(QUERY_KEYS.side, sides)
 
-// const minutes = (n: number) => n * 60 * 1000
+function toSafeDateStr(str: unknown, fallback = new Date().toISOString()): string {
+  if (typeof str === "string") {
+    const d = new Date(str)
+    if (!Number.isNaN(d.getTime())) return d.toISOString()
+  }
 
-export const useStockByIdQuery = (id: number | null) =>
+  return fallback
+}
+function toSafeNumber(n: unknown, fallback = 0) {
+  return typeof n === "number" && !Number.isNaN(n) ? n : fallback
+}
+function toNullableNumber(n: unknown) {
+  return typeof n === "number" && !Number.isNaN(n) ? n : null
+}
+
+const select = (stock: StockDto) =>
+  ({
+    id: 0,
+    name: stock.name || "---",
+    description: stock.description ?? null,
+    price: toSafeNumber(stock.price),
+    diffBuyPrice: toSafeNumber(stock.diffBuyPrice),
+    diffSellPrice: toSafeNumber(stock.diffSellPrice),
+    priceStep: toSafeNumber(stock.priceStep),
+    diffPriceStep: toSafeNumber(stock.diffPriceStep),
+    status: toSafeNumber(stock.status) as StockStatus,
+    mode: toSafeNumber(stock.mode) as AutoMode,
+    maxAutoMin: toSafeNumber(stock.maxAutoMin),
+    dateUpdate: toSafeDateStr(stock.dateUpdate),
+    minValue: toSafeNumber(stock.minValue),
+    maxValue: toSafeNumber(stock.maxValue),
+    minVoume: toSafeNumber(stock.minVoume),
+    maxVoume: toSafeNumber(stock.maxVoume),
+    isCountable: stock.isCountable ?? false,
+    unitPriceRatio: toSafeNumber(stock.unitPriceRatio, 1),
+    decimalNumber: toSafeNumber(stock.decimalNumber),
+    supply: toSafeNumber(stock.supply),
+    priceSourceID: toNullableNumber(stock.priceSourceID),
+    unit: toSafeNumber(stock.unit) as StockUnit,
+  }) satisfies Required<StockDto>
+
+export type SafeStock = ReturnType<typeof select>
+
+export const useStockByIdQuery = (id: number) =>
   useQuery({
     ...getApiTyStocksForCustommerByIdOptions({
       ...getHeaderTokenOnly(),
-      path: { id: id! },
+      path: { id },
     }),
-    // staleTime: minutes(1),
-    enabled: typeof id === "number",
+    select,
   })
 
-export const useProductId = () => useNullableIntegerQueryState(QUERY_KEYS.productId)
+export function useProductId() {
+  const { id } = useParams<{ id: string }>()
+  const productId = Number(id)
 
-export function useFinalProductPrices() {
-  const profile = useAtomValue(profileAtom)
-  const [productId] = useProductId()
-  const { data: product } = useStockByIdQuery(productId)
+  return productId
+}
 
-  const productBasePrice = product?.price ?? 0
-  const productDiffBuyPrice = product?.diffBuyPrice ?? 0
-  const productDiffSellPrice = product?.diffSellPrice ?? 0
-  const productUnit = product?.unit ?? 0
+export function calcFinalProductPrices({
+  product,
+  profile,
+}: {
+  product: SafeStock
+  profile: Required<CustomerLoginModel>
+}) {
+  const groupDiffBuyPrice = toSafeNumber(profile.diffBuyPrice)
+  const groupDiffSellPrice = toSafeNumber(profile.diffSellPrice)
+  const groupIntDiffBuyPrice = toSafeNumber(profile.diffBuyPriceInt)
+  const groupIntDiffSellPrice = toSafeNumber(profile.diffSellPriceInt)
 
-  const groupDiffBuyPrice = Number(profile.diffBuyPrice)
-  const groupDiffSellPrice = Number(profile.diffSellPrice)
-  const groupIntDiffBuyPrice = Number(profile.diffBuyPriceInt)
-  const groupIntDiffSellPrice = Number(profile.diffSellPriceInt)
-
-  const isGroupModeInt = productUnit === 1
+  const isGroupModeInt = product.unit === 1
   const selectedGroupDiffBuyPrice = isGroupModeInt ? groupIntDiffBuyPrice : groupDiffBuyPrice
   const selectedGroupDiffSellPrice = isGroupModeInt ? groupIntDiffSellPrice : groupDiffSellPrice
 
-  const totalBuyPrice =
-    (productBasePrice ?? 0) + selectedGroupDiffBuyPrice + (productDiffBuyPrice ?? 0)
-  const totalSellPrice =
-    (productBasePrice ?? 0) - selectedGroupDiffSellPrice - (productDiffSellPrice ?? 0)
+  const totalBuyPrice = product.price + selectedGroupDiffBuyPrice + product.diffBuyPrice
+  const totalSellPrice = product.price - selectedGroupDiffSellPrice - product.diffSellPrice
 
   return { totalBuyPrice, totalSellPrice }
 }
@@ -69,41 +116,36 @@ export const ProductStatusFa = {
 
 export function useGetProductSideEnabled(productStatus?: StockStatus) {
   const profile = useAtomValue(profileAtom)
-  const connectionState = useAtomValue(connectionStateAtom)
 
   const isDisabled = productStatus === ProductStatus.Disabled
 
   const isBuyingEnabled =
-    productStatus !== ProductStatus.Disabled &&
-    productStatus !== ProductStatus.SellOnly &&
-    connectionState === "connected" &&
-    !profile?.isBlock
+    productStatus !== ProductStatus.SellOnly && !isDisabled && !profile?.isBlock
 
   const isSellingEnabled =
-    productStatus !== ProductStatus.Disabled &&
-    productStatus !== ProductStatus.BuyOnly &&
-    connectionState === "connected" &&
-    !profile?.isBlock
+    productStatus !== ProductStatus.BuyOnly && !isDisabled && !profile?.isBlock
 
   return { isDisabled, isSellingEnabled, isBuyingEnabled }
 }
 
 interface TradeFormStore {
-  currentValue: number
-  setCurrentValue: (currentValue: number) => void
-  resetCurrentValue: () => void
+  mode: "rial" | "weight"
+  setMode: (mode: "rial" | "weight") => void
 
-  isRialMode: boolean
-  setIsRialMode: (isRialMode: boolean) => void
-  // resetRialMode: () => void
+  rial: number
+  setRial: (rial: number) => void
+
+  weight: number
+  setWeight: (weight: number) => void
 }
 
 export const useTradeFormStore = create<TradeFormStore>(set => ({
-  currentValue: 0,
-  setCurrentValue: currentValue => set({ currentValue }),
-  resetCurrentValue: () => set({ currentValue: 0 }),
+  mode: "weight",
+  setMode: mode => set({ mode }),
 
-  isRialMode: false,
-  setIsRialMode: isRialMode => set({ isRialMode }),
-  // resetRialMode: () => set({ isRialMode: false }),
+  rial: 0,
+  setRial: rial => set({ rial }),
+
+  weight: 0,
+  setWeight: weight => set({ weight }),
 }))

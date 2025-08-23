@@ -12,6 +12,7 @@ import {
   useTradeFormStore,
 } from "../shared"
 import { calcOutputRial, calcOutputWeight, transactionMethods } from "./shared"
+import { useProductContext } from "../ProductFetcher"
 
 type RuleStatus = "empty" | "success" | "error"
 
@@ -26,12 +27,11 @@ export const notesStatusAtom = atom<{
 })
 
 export default function Notes() {
-  const [productId] = useProductId()
-  const { data: product } = useStockByIdQuery(productId)
+  const product = useProductContext()
   const [notesStatus, setNotesStatus] = useAtom(notesStatusAtom)
   const [side] = useProductSide()
   const currentValue = useTradeFormStore(s => s.currentValue)
-  const isRialMode = useTradeFormStore(s => s.isRialMode)
+  const isRialMode = useTradeFormStore(s => s.rial)
   const { totalBuyPrice, totalSellPrice } = useFinalProductPrices()
 
   const transactionMethod = transactionMethods[product?.unit ?? 0]

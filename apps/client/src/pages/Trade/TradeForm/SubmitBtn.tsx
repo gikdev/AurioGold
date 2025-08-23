@@ -6,17 +6,15 @@ import { Btn } from "@repo/shared/components"
 import { parseError } from "@repo/shared/helpers"
 import { useMutation } from "@tanstack/react-query"
 import { useAtomValue } from "jotai"
-import { useNavigate } from "react-router"
+import { useProfileAtom } from "#/atoms"
 import { getHeaderTokenOnly } from "#/shared"
-import { TradeNavigation } from "../navigation"
+import { useOpenOrderModal } from "../OrderModal"
 import { notesStatusAtom } from "./MainInput/Notes"
-import { calcOutputRial, calcOutputWeight, transactionMethods } from "./MainInput/shared"
+import { useProductContext } from "./ProductFetcher"
 import {
-  useFinalProductPrices,
+  calcFinalProductPrices,
   useGetProductSideEnabled,
-  useProductId,
   useProductSide,
-  useStockByIdQuery,
   useTradeFormStore,
 } from "./shared"
 
@@ -41,27 +39,18 @@ const useSubmitOrderMutation = () =>
 
 export default function SubmitBtn() {
   const currentValue = useTradeFormStore(s => s.currentValue)
-  const setCurrentValue = useTradeFormStore(s => s.setCurrentValue)
   const [side] = useProductSide()
-  const isRialMode = useTradeFormStore(s => s.isRialMode)
-  const [productId] = useProductId()
-  const { data: product } = useStockByIdQuery(productId)
-  const navigate = useNavigate()
+  const product = useProductContext()
   const notesStatus = useAtomValue(notesStatusAtom)
-  const priceToUnitRatio = product?.unitPriceRatio ?? 1
-  const transactionMethod = transactionMethods[product?.unit ?? 0]
-  const noDecimalSituation = transactionMethod.name === "count" || isRialMode
-  const maxAutoTime = product?.maxAutoMin ?? 0
-  const isAutoMode = product?.mode !== ProductAutoMode.Normal && maxAutoTime !== 0
-  const maxDecimalsCount = noDecimalSituation ? 0 : (product?.decimalNumber ?? 0)
-  const { isDisabled } = useGetProductSideEnabled(product?.status ?? 0)
-  const { totalBuyPrice, totalSellPrice } = useFinalProductPrices()
+  const [profile] = useProfileAtom()
+
+  const { isDisabled } = useGetProductSideEnabled(product.status)
   const reqOrderMutation = useSubmitOrderMutation()
+  const { setAutoMin, setCurrentOrderId } = useOpenOrderModal()
 
   const isBtnDisabled =
     reqOrderMutation.isPending ||
     isDisabled ||
-    product === null ||
     currentValue <= 0 ||
     Object.values(notesStatus).includes("error")
 
@@ -84,38 +73,31 @@ export default function SubmitBtn() {
       return
     }
 
-    const convertedValue = isRialMode
-      ? calcOutputWeight(
-          currentValue,
-          side === "buy" ? totalBuyPrice : totalSellPrice,
-          priceToUnitRatio,
-          0,
-          // maxDecimalsCount,
-        )
-      : calcOutputRial(
-          currentValue,
-          side === "buy" ? totalBuyPrice : totalSellPrice,
-          priceToUnitRatio,
-        )
+    const mode = useTradeFormStore.getState().mode
+    const rial = useTradeFormStore.getState().rial
+    const weight = useTradeFormStore.getState().weight
+    const isAutoMode = product.mode !== ProductAutoMode.Normal && product.maxAutoMin !== 0
+    const { totalBuyPrice, totalSellPrice } = calcFinalProductPrices({ product, profile })
 
     reqOrderMutation.mutate(
       {
         body: {
           tyStockID: product.id,
-          mode: isRialMode ? ProductPurchaseModes.Value : ProductPurchaseModes.Volume,
+          mode: mode === "rial" ? ProductPurchaseModes.Value : ProductPurchaseModes.Volume,
           price: side === "buy" ? totalBuyPrice : totalSellPrice,
           side: side === "buy" ? OrderSides.Buy : OrderSides.Sell,
-          value: isRialMode ? currentValue : convertedValue,
-          volume: isRialMode ? convertedValue : currentValue,
+          value: mode === "rial" ? rial : weight,
+          volume: mode === "weight" ? weight : rial,
         },
       },
       {
         onError: err => notifManager.notify(parseError(err), "toast", { status: "error" }),
         onSuccess: data => {
-          setCurrentValue(0)
+          useTradeFormStore.getState().setCurrentValue(0)
           const id = Number(data.id)
           if (Number.isNaN(id)) return
-          navigate(TradeNavigation.openOrderModal(id, isAutoMode ? maxAutoTime : 0))
+          setCurrentOrderId(id)
+          setAutoMin(isAutoMode ? product.maxAutoMin : 0)
         },
       },
     )

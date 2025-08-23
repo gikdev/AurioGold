@@ -1,31 +1,61 @@
 import type { ChangeEvent } from "react"
-import { useProductId, useStockByIdQuery, useTradeFormStore } from "../shared"
-import { transactionMethods } from "./shared"
+import { useProductContext } from "../ProductFetcher"
+import {
+  calcFinalProductPrices,
+  type SafeStock,
+  useProductSide,
+  useTradeFormStore,
+} from "../shared"
+import { calcOutputRial, calcOutputWeight, transactionMethods } from "./shared"
+import { useProfileAtom } from "#/atoms"
 
 export default function PriceInput() {
-  const isRialMode = useTradeFormStore(s => s.isRialMode)
-  const currentValue = useTradeFormStore(s => s.currentValue)
-  const setCurrentValue = useTradeFormStore(s => s.setCurrentValue)
-  const [productId] = useProductId()
-  const { data: product } = useStockByIdQuery(productId)
-  const transactionMethod = transactionMethods[product?.unit ?? 0]
-  const maxDecimalsCount = product?.decimalNumber ?? 0
-  const finalMaxDecimalsCount =
-    isRialMode || transactionMethod.name === "count" ? 0 : maxDecimalsCount
-  const step = calcStep(finalMaxDecimalsCount)
+  const [side] = useProductSide()
+  const [profile] = useProfileAtom()
+  const mode = useTradeFormStore(s => s.mode)
+  const rial = useTradeFormStore(s => s.rial)
+  const weight = useTradeFormStore(s => s.weight)
+  const product = useProductContext()
+
+  const maxDecimals = calcMaxDecimals(product, mode === "rial")
+  const step = calcStep(maxDecimals)
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const trimmed = Number(e.target.value).toFixed(finalMaxDecimalsCount)
+    const trimmed = Number(e.target.value).toFixed(maxDecimals)
     const converted = Number(trimmed)
     const isNan = Number.isNaN(converted)
-    setCurrentValue(isNan ? 0 : converted)
-  }
 
-  // prevent nan form being in the input... (I know it's rare, but for safety's sake, let's just have it...)
-  const handleBlur = () => {
-    const converted = currentValue
-    const isNan = Number.isNaN(converted)
-    setCurrentValue(isNan ? 0 : converted)
+    const final = isNan ? 0 : converted
+
+    const { totalBuyPrice, totalSellPrice } = calcFinalProductPrices({ product, profile })
+    const totalSidePrice = side === "buy" ? totalBuyPrice : totalSellPrice
+
+    if (mode === "rial") {
+      useTradeFormStore.getState().setRial(final)
+
+      const shouldHaveDecimals = transactionMethods[product.unit].name !== "count"
+
+      const newWeight = calcOutputWeight(
+        rial,
+        totalSidePrice,
+        product.unitPriceRatio,
+        shouldHaveDecimals ? product.decimalNumber : 0,
+      )
+
+      useTradeFormStore.getState().setWeight(newWeight)
+
+      return
+    }
+
+    if (mode === "weight") {
+      useTradeFormStore.getState().setWeight(final)
+
+      const newRial = calcOutputRial(weight, totalSidePrice, product.unitPriceRatio)
+
+      useTradeFormStore.getState().setRial(newRial)
+
+      return
+    }
   }
 
   return (
@@ -35,18 +65,25 @@ export default function PriceInput() {
       className="outline-none text-2xl text-slate-12 w-full font-bold"
       min={0}
       step={step}
-      value={currentValue}
+      value={mode === "rial" ? rial : weight}
       onChange={handleChange}
-      onBlur={handleBlur}
       data-testid="price-input"
     />
   )
 }
 
-function calcStep(maxDecimalsCount: number) {
-  return maxDecimalsCount > 0
-    ? `0.${Array(maxDecimalsCount - 1)
+function calcStep(maxDecimals: number) {
+  return maxDecimals > 0
+    ? `0.${Array(maxDecimals - 1)
         .fill("0")
         .join("")}1`
     : "1"
+}
+
+function calcMaxDecimals(product: SafeStock, isRialMode: boolean) {
+  const transactionMethodName = transactionMethods[product.unit].name
+  const shouldHaveDecimals = !isRialMode && transactionMethodName !== "count"
+  const maxDecimals = shouldHaveDecimals ? product.decimalNumber : 0
+
+  return maxDecimals
 }

@@ -8,9 +8,11 @@ import {
   StorefrontIcon,
   UserCircleIcon,
 } from "@phosphor-icons/react"
+import { notifManager } from "@repo/shared/adapters"
 import { ErrorCardBoundary } from "@repo/shared/components"
+import { parseError } from "@repo/shared/helpers"
 import { Base, type SidebarItem } from "@repo/shared/layouts"
-import { useEffect, useMemo } from "react"
+import { useEffect } from "react"
 import { Outlet } from "react-router"
 import { SignalRManager } from "#/atoms/signalr"
 import StatusBar from "#/layouts/StatusBar"
@@ -21,20 +23,17 @@ import { Nav } from "./Nav"
 const SIDEBAR_ITEMS: SidebarItem[] = [
   // { id: 0, text: "خانه", icon: HouseLineIcon, url: routes.home },
   { id: 1, text: "محصولات", icon: StorefrontIcon, url: routes.base },
-  { id: 2, text: "معامله", icon: CoinsIcon, url: routes.trade },
-  { id: 3, text: "پروفایل", icon: UserCircleIcon, url: routes.profile },
-  { id: 4, text: "مشاهده سفارشات", icon: ReceiptIcon, url: routes.orders },
-  { id: 5, text: "شرایط و قوانین", icon: ScalesIcon, url: routes.rules },
-  { id: 6, text: "درباره ما", icon: InfoIcon, url: routes.about },
-  // { id: 7, text: "ثبت سند", icon: PenNib, url: "/docs" },
-  // { id: 8, text: "ثبت حواله", icon: PenNib, url: "/transfers" },
-  { id: 9, text: "مانده حساب", icon: CoinsIcon, url: routes.balance },
-  { id: 10, text: "تنظیمات", icon: GearIcon, url: routes.settings },
+  { id: 2, text: "پروفایل", icon: UserCircleIcon, url: routes.profile },
+  { id: 3, text: "مشاهده سفارشات", icon: ReceiptIcon, url: routes.orders },
+  { id: 4, text: "شرایط و قوانین", icon: ScalesIcon, url: routes.rules },
+  { id: 5, text: "درباره ما", icon: InfoIcon, url: routes.about },
+  { id: 6, text: "مانده حساب", icon: CoinsIcon, url: routes.balance },
+  { id: 7, text: "تنظیمات", icon: GearIcon, url: routes.settings },
 ]
 
-export function BaseWrapper() {
-  const config = useMemo(() => genDatApiConfig(), [])
+const config = genDatApiConfig()
 
+export function BaseWrapper() {
   return (
     <ErrorCardBoundary>
       <DatapiConfigProvider config={config}>
@@ -55,7 +54,8 @@ function ConnectionHandler() {
       config: genDatApiConfig(),
       options: {
         url: "/TyStocks/GetTime",
-        onError: console.error,
+        onError: err =>
+          notifManager.notify(parseError(err), ["console", "toast"], { status: "error" }),
       },
     })
   }, [])

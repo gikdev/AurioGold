@@ -4,8 +4,6 @@ import routes from "../routes"
 export const QUERY_KEYS = {
   productId: "product-id",
   side: "side",
-  rialMode: "rial-mode",
-  currentValue: "current-value",
   currentOrderId: "current-order-id",
   autoMinutes: "auto-minutes",
 } as const
@@ -13,7 +11,7 @@ export const QUERY_KEYS = {
 export type ProductId = NonNullable<StockDto["id"]>
 
 export class TradeNavigation {
-  private static readonly baseUrl = routes.trade
+  private static readonly baseUrl = ""
 
   private static build(params: Record<string, string | number | boolean>) {
     const searchParams = new URLSearchParams()
@@ -25,16 +23,16 @@ export class TradeNavigation {
     return `${TradeNavigation.baseUrl}?${searchParams.toString()}`
   }
 
-  static productId(productId: ProductId) {
-    return TradeNavigation.build({
-      [QUERY_KEYS.productId]: productId,
-    })
-  }
+  // static productId(productId: ProductId) {
+  //   return TradeNavigation.build({
+  //     [QUERY_KEYS.productId]: productId,
+  //   })
+  // }
 
-  static openOrderModal(orderId: number, autoMinutes: number) {
-    return TradeNavigation.build({
-      [QUERY_KEYS.currentOrderId]: orderId,
-      [QUERY_KEYS.autoMinutes]: autoMinutes,
-    })
-  }
+  // static openOrderModal(orderId: number, autoMinutes: number) {
+  //   return TradeNavigation.build({
+  //     [QUERY_KEYS.currentOrderId]: orderId,
+  //     [QUERY_KEYS.autoMinutes]: autoMinutes,
+  //   })
+  // }
 }

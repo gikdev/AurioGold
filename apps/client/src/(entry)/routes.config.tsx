@@ -1,25 +1,22 @@
-import { lazy } from "react"
 import { Route } from "react-router"
+import About from "../pages/About"
+import Balance from "../pages/Balance"
+import Login from "../pages/Login"
+import Logout from "../pages/Logout"
+import NotFound from "../pages/NotFound"
+import Orders from "../pages/Orders"
+import Products from "../pages/Products"
+import Profile from "../pages/Profile"
+import Rules from "../pages/Rules"
 import routes from "../pages/routes"
-
-// const Home = lazy(() => import("./pages/Home"))
-const About = lazy(() => import("../pages/About"))
-const Balance = lazy(() => import("../pages/Balance"))
-const Login = lazy(() => import("../pages/Login"))
-const Logout = lazy(() => import("../pages/Logout"))
-const NotFound = lazy(() => import("../pages/NotFound"))
-const Orders = lazy(() => import("../pages/Orders"))
-const Products = lazy(() => import("../pages/Products"))
-const Profile = lazy(() => import("../pages/Profile"))
-const Rules = lazy(() => import("../pages/Rules"))
-const Settings = lazy(() => import("../pages/Settings"))
-const Test = lazy(() => import("../pages/Test"))
-const Trade = lazy(() => import("../pages/Trade"))
+import Settings from "../pages/Settings"
+import Test from "../pages/Test"
+import Trade from "../pages/Trade"
 
 // Protected routes that require authentication
 export const protectedRoutes = [
   <Route key="home" index element={<Products />} />,
-  <Route key="trade" path={routes.trade} element={<Trade />} />,
+  <Route key="trade" path={routes.tradeById(":id")} element={<Trade />} />,
   <Route key="profile" path={routes.profile} element={<Profile />} />,
   <Route key="balance" path={routes.balance} element={<Balance />} />,
   <Route key="orders" path={routes.orders} element={<Orders />} />,

@@ -1,9 +1,14 @@
 import { formatPersianPrice } from "@repo/shared/utils"
-import { useFinalProductPrices, useProductSide } from "./shared"
+import { useProfileAtom } from "#/atoms"
+import { useProductContext } from "./ProductFetcher"
+import { calcFinalProductPrices, useProductSide } from "./shared"
 
 export default function Price() {
   const [side] = useProductSide()
-  const { totalBuyPrice, totalSellPrice } = useFinalProductPrices()
+  const product = useProductContext()
+  const [profile] = useProfileAtom()
+  const { totalBuyPrice, totalSellPrice } = calcFinalProductPrices({ product, profile })
+
   const verb = side === "buy" ? "خرید" : "فروش"
   const priceToShow = side === "buy" ? totalBuyPrice : totalSellPrice
 

@@ -6,7 +6,7 @@ import { useAtomValue } from "jotai"
 import { useNavigate } from "react-router"
 import { profileAtom } from "#/atoms"
 import { cx } from "#/shared/cva.config"
-import { TradeNavigation } from "../Trade/navigation"
+import routes from "../routes"
 import { useGetProductSideEnabled } from "../Trade/TradeForm/shared"
 
 const containerStyle = cx(`
@@ -31,7 +31,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   const handleProductClick = () => {
     if (typeof product.id !== "number") return
-    navigate(TradeNavigation.productId(product.id))
+    navigate(routes.tradeById(product.id))
   }
 
   if (isDisabled) return null
@@ -88,6 +88,7 @@ const LastUpdated = ({ dateUpdate }: { dateUpdate: StockDto["dateUpdate"] }) => 
   </p>
 )
 
+throw new Error("TODO! 👇🏻")
 function useCalcFinalProductPrices({
   diffBuyPrice,
   diffSellPrice,

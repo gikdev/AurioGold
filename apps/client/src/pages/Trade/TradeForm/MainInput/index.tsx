@@ -22,7 +22,9 @@ export function MainInput() {
 
       <PreviewBar />
 
-      <Notes />
+      {/* WHERE I LEFT OFF */}
+      {/* Go fix whatever red, and note that TradeFormStore has changed! */}
+      {/* <Notes /> */}
     </div>
   )
 }
