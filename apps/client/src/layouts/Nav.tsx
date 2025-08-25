@@ -1,13 +1,16 @@
-import { useApiRequest } from "@gikdev/react-datapi/src"
 import styled from "@master/styled.react"
 import { ListIcon } from "@phosphor-icons/react"
+import { getApiCustomerGetMasterOptions } from "@repo/api-client/tanstack"
 import { currentProfile } from "@repo/profile-manager"
 import { Btn } from "@repo/shared/components"
 import { useBooleanishQueryState } from "@repo/shared/hooks"
+import { useQuery } from "@tanstack/react-query"
 import { useSetAtom } from "jotai"
+import { useEffect, useMemo } from "react"
 import { Link } from "react-router"
 import { type AdminInfo, adminInfoAtom, emptyAdminInfo } from "#/atoms"
 import routes from "#/pages/routes"
+import { getHeaderTokenOnly } from "#/shared"
 
 const fallbackImageUrl = "/shared/fallback-400.jpg"
 const StyledAdminChip = styled(Link)`
@@ -25,14 +28,17 @@ function getProfileImageUrl(logoUrl: string | undefined | null) {
 
 export function Nav() {
   const setAdminInfo = useSetAtom(adminInfoAtom)
-  const masterInfo = useApiRequest<AdminInfo, { result: AdminInfo }>(() => ({
-    url: "/Customer/GetMaster",
-    defaultValue: emptyAdminInfo,
-    transformResponse: raw => raw.result,
-    onSuccess: data => setAdminInfo(data),
-  }))
+  const { data } = useQuery(getApiCustomerGetMasterOptions(getHeaderTokenOnly()))
+  const masterInfo = useMemo(
+    () => (data as { result: AdminInfo } | undefined)?.result || emptyAdminInfo,
+    [data],
+  )
   const [, setSidebarOpen] = useBooleanishQueryState("menu")
-  const profileImageUrl = getProfileImageUrl(masterInfo.data?.logoUrl)
+  const profileImageUrl = getProfileImageUrl(masterInfo.logoUrl)
+
+  useEffect(() => {
+    setAdminInfo(masterInfo)
+  }, [setAdminInfo, masterInfo])
 
   return (
     <nav className="flex items-center justify-between p-2 rounded-md bg-slate-1">
@@ -46,7 +52,7 @@ export function Nav() {
           }}
         />
 
-        <p>{masterInfo.data?.name || "---"}</p>
+        <p>{masterInfo.name}</p>
       </StyledAdminChip>
 
       <Btn

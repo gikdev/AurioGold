@@ -1,8 +1,8 @@
 import { ArrowClockwiseIcon } from "@phosphor-icons/react"
 import { skins } from "@repo/shared/forms"
 import { parseError } from "@repo/shared/helpers"
-import { createContext, type PropsWithChildren, use } from "react"
-import { type SafeStock, useProductId, useStockByIdQuery } from "./shared"
+import { createContext, type PropsWithChildren, use, useEffect } from "react"
+import { type SafeStock, useProductId, useStockByIdQuery, useTradeFormStore } from "./shared"
 import { useHandlePriceUpdate } from "./useHandlePriceUpdate"
 
 const ProductContext = createContext<SafeStock | null>(null)
@@ -15,9 +15,10 @@ export function useProductContext() {
 
 export function ProductFetcher({ children }: PropsWithChildren) {
   const productId = useProductId()
-  const { data, isPending, isSuccess, error, isError, refetch } = useStockByIdQuery(productId)
+  const { data, isPending, error, isError, refetch } = useStockByIdQuery(productId)
 
   useHandlePriceUpdate()
+  useResetProductStoreOnProductIdChange(productId)
 
   if (isError)
     return (
@@ -44,7 +45,12 @@ export function ProductFetcher({ children }: PropsWithChildren) {
       <div className="bg-slate-5 rounded-md w-full max-w-120 mx-auto h-80 animate-pulse flex flex-col items-center justify-center" />
     )
 
-  if (isSuccess) return <ProductContext value={data}>{children}</ProductContext>
+  return <ProductContext value={data}>{children}</ProductContext>
+}
 
-  return null
+function useResetProductStoreOnProductIdChange(productId: number) {
+  useEffect(() => {
+    productId // I don't need to use `productId`, but I need to know when it chages...
+    useTradeFormStore.getState().reset()
+  }, [productId])
 }

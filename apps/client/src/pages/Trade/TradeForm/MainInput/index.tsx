@@ -1,7 +1,8 @@
+import { skins } from "@repo/shared/forms"
+import { useAtomValue } from "jotai"
 import { cx } from "#/shared/cva.config"
-import Notes from "./Notes"
 import PreviewBar from "./PreviewBar"
-import PriceInput from "./PriceInput"
+import PriceInput, { priceInputErrorMsgAtom } from "./PriceInput"
 import RialModeToggle from "./RialModeToggle"
 import { ShowCurrentUnit } from "./ShowCurrentUnit"
 
@@ -18,13 +19,23 @@ export function MainInput() {
         <ShowCurrentUnit />
       </div>
 
+      <ErrorMsg />
+
       <RialModeToggle />
 
       <PreviewBar />
-
-      {/* WHERE I LEFT OFF */}
-      {/* Go fix whatever red, and note that TradeFormStore has changed! */}
-      {/* <Notes /> */}
     </div>
+  )
+}
+
+function ErrorMsg() {
+  const errorMsg = useAtomValue(priceInputErrorMsgAtom)
+
+  return (
+    errorMsg && (
+      <p dir="auto" className={skins.errorMsg({ className: "text-center" })}>
+        {errorMsg}
+      </p>
+    )
   )
 }

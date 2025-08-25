@@ -9,14 +9,9 @@ import { useAtomValue } from "jotai"
 import { useProfileAtom } from "#/atoms"
 import { getHeaderTokenOnly } from "#/shared"
 import { useOpenOrderModal } from "../OrderModal"
-import { notesStatusAtom } from "./MainInput/Notes"
+import { priceInputErrorMsgAtom } from "./MainInput/PriceInput"
 import { useProductContext } from "./ProductFetcher"
-import {
-  calcFinalProductPrices,
-  useGetProductSideEnabled,
-  useProductSide,
-  useTradeFormStore,
-} from "./shared"
+import { calcFinalProductPrices, useGetProductSideEnabled, useTradeFormStore } from "./shared"
 
 const ProductAutoMode = {
   Normal: 0,
@@ -38,21 +33,16 @@ const useSubmitOrderMutation = () =>
   useMutation(postApiCustomerReqOrderMutation(getHeaderTokenOnly()))
 
 export default function SubmitBtn() {
-  const currentValue = useTradeFormStore(s => s.currentValue)
-  const [side] = useProductSide()
-  const product = useProductContext()
-  const notesStatus = useAtomValue(notesStatusAtom)
+  const side = useTradeFormStore(s => s.side)
   const [profile] = useProfileAtom()
+  const product = useProductContext()
+  const priceInputerrorMsg = useAtomValue(priceInputErrorMsgAtom)
 
   const { isDisabled } = useGetProductSideEnabled(product.status)
-  const reqOrderMutation = useSubmitOrderMutation()
+  const { isPending, mutate: reqOrder } = useSubmitOrderMutation()
   const { setAutoMin, setCurrentOrderId } = useOpenOrderModal()
 
-  const isBtnDisabled =
-    reqOrderMutation.isPending ||
-    isDisabled ||
-    currentValue <= 0 ||
-    Object.values(notesStatus).includes("error")
+  const isBtnDisabled = isPending || isDisabled || priceInputerrorMsg !== ""
 
   const handleSubmit = () => {
     if (!product) {
@@ -79,21 +69,22 @@ export default function SubmitBtn() {
     const isAutoMode = product.mode !== ProductAutoMode.Normal && product.maxAutoMin !== 0
     const { totalBuyPrice, totalSellPrice } = calcFinalProductPrices({ product, profile })
 
-    reqOrderMutation.mutate(
+    reqOrder(
       {
         body: {
           tyStockID: product.id,
           mode: mode === "rial" ? ProductPurchaseModes.Value : ProductPurchaseModes.Volume,
           price: side === "buy" ? totalBuyPrice : totalSellPrice,
           side: side === "buy" ? OrderSides.Buy : OrderSides.Sell,
-          value: mode === "rial" ? rial : weight,
-          volume: mode === "weight" ? weight : rial,
+          value: rial,
+          volume: weight,
         },
       },
       {
         onError: err => notifManager.notify(parseError(err), "toast", { status: "error" }),
         onSuccess: data => {
-          useTradeFormStore.getState().setCurrentValue(0)
+          useTradeFormStore.getState().setWeight(0)
+          useTradeFormStore.getState().setRial(0)
           const id = Number(data.id)
           if (Number.isNaN(id)) return
           setCurrentOrderId(id)

@@ -11,6 +11,7 @@ interface A11yBtnProps {
 export function A11yBtn({ status, productId }: A11yBtnProps) {
   const { Icon, classes, name } = calcA11yStuff(status)
   const mode = useProductsStore(s => s.mode)
+  const storeProductId = useProductsStore(s => s.productId)
 
   return (
     <>
@@ -23,7 +24,7 @@ export function A11yBtn({ status, productId }: A11yBtnProps) {
         <span>{name}</span>
       </button>
 
-      {mode === "changeA11y" && typeof productId === "number" && (
+      {mode === "changeA11y" && typeof productId === "number" && storeProductId === productId && (
         <ChangeA11yModal
           initialStatus={status}
           productId={productId}

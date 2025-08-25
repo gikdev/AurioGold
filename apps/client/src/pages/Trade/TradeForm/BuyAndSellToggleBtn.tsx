@@ -2,14 +2,14 @@ import { CheckCircleIcon, CircleIcon } from "@phosphor-icons/react"
 import { useEffect } from "react"
 import { cx } from "#/shared/cva.config"
 import { useProductContext } from "./ProductFetcher"
-import { useGetProductSideEnabled, useProductSide } from "./shared"
+import { type Side, useGetProductSideEnabled, useTradeFormStore } from "./shared"
 
 export function BuyAndSellToggleBtn() {
   const product = useProductContext()
-  const [side, setSide] = useProductSide()
+  const side = useTradeFormStore(s => s.side)
   const { isBuyingEnabled, isSellingEnabled } = useGetProductSideEnabled(product.status)
 
-  useHandleInvalidSide(isBuyingEnabled, isSellingEnabled)
+  useHandleInvalidSide(side, isBuyingEnabled, isSellingEnabled)
 
   const containerStyles = cx(`
     rounded-md flex flex-wrap items-center
@@ -21,26 +21,24 @@ export function BuyAndSellToggleBtn() {
       <SideButton
         isSelected={side === "buy"}
         isEnabled={isBuyingEnabled}
-        onSelect={() => setSide("buy")}
+        onSelect={() => useTradeFormStore.getState().setSide("buy")}
         label="خرید"
       />
       <SideButton
         isSelected={side === "sell"}
         isEnabled={isSellingEnabled}
-        onSelect={() => setSide("sell")}
+        onSelect={() => useTradeFormStore.getState().setSide("sell")}
         label="فروش"
       />
     </div>
   )
 }
 
-function useHandleInvalidSide(isBuyingEnabled: boolean, isSellingEnabled: boolean) {
-  const [side, setSide] = useProductSide()
-
+function useHandleInvalidSide(side: Side, isBuyingEnabled: boolean, isSellingEnabled: boolean) {
   useEffect(() => {
     const defaultSide = calcDefaultSide(isBuyingEnabled, isSellingEnabled)
-    if (defaultSide && defaultSide !== side) setSide(defaultSide)
-  }, [side, setSide, isBuyingEnabled, isSellingEnabled])
+    if (defaultSide && defaultSide !== side) useTradeFormStore.getState().setSide(defaultSide)
+  }, [side, isBuyingEnabled, isSellingEnabled])
 }
 
 function calcDefaultSide(isBuyingEnabled: boolean, isSellingEnabled: boolean) {

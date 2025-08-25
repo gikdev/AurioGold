@@ -13,7 +13,7 @@ export interface AdminInfo {
 
 export const emptyAdminInfo: AdminInfo = {
   id: 0,
-  name: null,
+  name: "---",
   rulls: null,
   aboutUs: null,
   logoUrl: null,

@@ -6,18 +6,14 @@ import type {
   StockUnit,
 } from "@repo/api-client/client"
 import { getApiTyStocksForCustommerByIdOptions } from "@repo/api-client/tanstack"
-import { useLiteralQueryState } from "@repo/shared/hooks"
 import { useQuery } from "@tanstack/react-query"
 import { useAtomValue } from "jotai"
 import { useParams } from "react-router"
 import { create } from "zustand"
 import { profileAtom } from "#/atoms"
 import { getHeaderTokenOnly } from "#/shared"
-import { QUERY_KEYS } from "../navigation"
 
-export const sides = ["buy", "sell"] as const
-export type Side = (typeof sides)[number]
-export const useProductSide = () => useLiteralQueryState(QUERY_KEYS.side, sides)
+export type Side = "buy" | "sell"
 
 function toSafeDateStr(str: unknown, fallback = new Date().toISOString()): string {
   if (typeof str === "string") {
@@ -34,9 +30,9 @@ function toNullableNumber(n: unknown) {
   return typeof n === "number" && !Number.isNaN(n) ? n : null
 }
 
-const select = (stock: StockDto) =>
+export const makeSafeStock = (stock: StockDto) =>
   ({
-    id: 0,
+    id: toSafeNumber(stock.id),
     name: stock.name || "---",
     description: stock.description ?? null,
     price: toSafeNumber(stock.price),
@@ -60,7 +56,7 @@ const select = (stock: StockDto) =>
     unit: toSafeNumber(stock.unit) as StockUnit,
   }) satisfies Required<StockDto>
 
-export type SafeStock = ReturnType<typeof select>
+export type SafeStock = ReturnType<typeof makeSafeStock>
 
 export const useStockByIdQuery = (id: number) =>
   useQuery({
@@ -68,7 +64,7 @@ export const useStockByIdQuery = (id: number) =>
       ...getHeaderTokenOnly(),
       path: { id },
     }),
-    select,
+    select: makeSafeStock,
   })
 
 export function useProductId() {
@@ -132,20 +128,30 @@ interface TradeFormStore {
   mode: "rial" | "weight"
   setMode: (mode: "rial" | "weight") => void
 
+  side: Side
+  setSide: (side: Side) => void
+
   rial: number
   setRial: (rial: number) => void
 
   weight: number
   setWeight: (weight: number) => void
+
+  reset: () => void
 }
 
 export const useTradeFormStore = create<TradeFormStore>(set => ({
   mode: "weight",
   setMode: mode => set({ mode }),
 
+  side: "buy",
+  setSide: side => set({ side }),
+
   rial: 0,
   setRial: rial => set({ rial }),
 
   weight: 0,
   setWeight: weight => set({ weight }),
+
+  reset: () => set({ rial: 0, weight: 0 }),
 }))

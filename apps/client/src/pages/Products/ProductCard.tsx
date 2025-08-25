@@ -2,12 +2,15 @@ import { CaretLeftIcon, ClockIcon, PackageIcon } from "@phosphor-icons/react"
 import type { StockDto } from "@repo/api-client/client"
 import { cellRenderers } from "@repo/shared/lib"
 import { formatPersianPrice } from "@repo/shared/utils"
-import { useAtomValue } from "jotai"
 import { useNavigate } from "react-router"
-import { profileAtom } from "#/atoms"
+import { useProfileAtom } from "#/atoms"
 import { cx } from "#/shared/cva.config"
 import routes from "../routes"
-import { useGetProductSideEnabled } from "../Trade/TradeForm/shared"
+import {
+  calcFinalProductPrices,
+  makeSafeStock,
+  useGetProductSideEnabled,
+} from "../Trade/TradeForm/shared"
 
 const containerStyle = cx(`
   border-slate-7 bg-slate-3 hover:bg-slate-4
@@ -21,12 +24,11 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const navigate = useNavigate()
+  const [profile] = useProfileAtom()
   const { isBuyingEnabled, isSellingEnabled, isDisabled } = useGetProductSideEnabled(product.status)
-  const { totalBuyPrice, totalSellPrice } = useCalcFinalProductPrices({
-    diffBuyPrice: product.diffBuyPrice,
-    diffSellPrice: product.diffSellPrice,
-    unit: product.unit,
-    price: product.price,
+  const { totalBuyPrice, totalSellPrice } = calcFinalProductPrices({
+    product: makeSafeStock(product),
+    profile,
   })
 
   const handleProductClick = () => {
@@ -87,37 +89,3 @@ const LastUpdated = ({ dateUpdate }: { dateUpdate: StockDto["dateUpdate"] }) => 
     {dateUpdate ? <cellRenderers.DateAndTime value={dateUpdate} /> : <span>-</span>}
   </p>
 )
-
-throw new Error("TODO! 👇🏻")
-function useCalcFinalProductPrices({
-  diffBuyPrice,
-  diffSellPrice,
-  price,
-  unit,
-}: {
-  price: StockDto["price"]
-  diffBuyPrice: StockDto["diffBuyPrice"]
-  diffSellPrice: StockDto["diffSellPrice"]
-  unit: StockDto["unit"]
-}) {
-  price = typeof price === "number" ? price : 0
-  diffBuyPrice = typeof diffBuyPrice === "number" ? diffBuyPrice : 0
-  diffSellPrice = typeof diffSellPrice === "number" ? diffSellPrice : 0
-  unit = typeof unit === "number" ? unit : 0
-
-  const profile = useAtomValue(profileAtom)
-
-  const groupDiffBuyPrice = Number(profile.diffBuyPrice)
-  const groupDiffSellPrice = Number(profile.diffSellPrice)
-  const groupIntDiffBuyPrice = Number(profile.diffBuyPriceInt)
-  const groupIntDiffSellPrice = Number(profile.diffSellPriceInt)
-
-  const isGroupModeInt = unit === 1
-  const selectedGroupDiffBuyPrice = isGroupModeInt ? groupIntDiffBuyPrice : groupDiffBuyPrice
-  const selectedGroupDiffSellPrice = isGroupModeInt ? groupIntDiffSellPrice : groupDiffSellPrice
-
-  const totalBuyPrice = price + selectedGroupDiffBuyPrice + diffBuyPrice
-  const totalSellPrice = price - selectedGroupDiffSellPrice - diffSellPrice
-
-  return { totalBuyPrice, totalSellPrice }
-}
