@@ -11,6 +11,7 @@ import { useCallback, useEffect, useMemo } from "react"
 import { getHeaderTokenOnly, useAppForm } from "#/shared/forms"
 import { skins } from "#/shared/forms/skins"
 import {
+  refetchStocks,
   TransactionMethod,
   transactionMethods,
   transactionStatuses,
@@ -87,6 +88,7 @@ export function ProductDrawer({ mode, onClose, productId }: ProductDrawerProps) 
       const onError = reject
       const onSuccess = () => {
         resolve()
+        refetchStocks()
         formApi.reset(emptyProductFormValues)
         onClose()
       }

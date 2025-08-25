@@ -5,12 +5,20 @@ import { produce } from "immer"
 import { queryClient } from "#/shared"
 import { getHeaderTokenOnly } from "#/shared/forms"
 
-const minutes = (n: number) => n * 60 * 1000
+function toClock(n: number, unit: "h" | "m" | "s") {
+  if (unit === "h") return n * 60 * 60 * 1000
+  if (unit === "m") return n * 60 * 1000
+  if (unit === "s") return n * 1000
+  return n
+}
 
 export const useStocksQuery = () =>
   useQuery({
     ...getApiTyStocksOptions(getHeaderTokenOnly()),
-    staleTime: minutes(1),
+    staleTime: toClock(10, "s"),
+    refetchInterval: toClock(1, "m"),
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
   })
 
 export function refetchStocks() {
