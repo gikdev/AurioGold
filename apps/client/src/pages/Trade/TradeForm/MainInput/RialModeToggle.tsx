@@ -5,9 +5,10 @@ import { useTradeFormStore } from "../shared"
 
 export default function RialModeToggle() {
   const mode = useTradeFormStore(s => s.mode)
+  const setMode = useTradeFormStore(s => s.setMode)
 
   const handleToggleBtnClick = () => {
-    useTradeFormStore.getState().setMode(mode === "rial" ? "weight" : "rial")
+    setMode(mode === "rial" ? "weight" : "rial")
   }
 
   return (

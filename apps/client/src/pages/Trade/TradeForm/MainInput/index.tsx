@@ -1,4 +1,5 @@
 import { skins } from "@repo/shared/forms"
+import { formatPersianString } from "@repo/shared/utils"
 import { useAtomValue } from "jotai"
 import { cx } from "#/shared/cva.config"
 import PreviewBar from "./PreviewBar"
@@ -32,10 +33,8 @@ function ErrorMsg() {
   const errorMsg = useAtomValue(priceInputErrorMsgAtom)
 
   return (
-    errorMsg && (
-      <p dir="auto" className={skins.errorMsg({ className: "text-center" })}>
-        {errorMsg}
-      </p>
-    )
+    <p dir="auto" className={skins.errorMsg({ className: "text-center" })}>
+      {formatPersianString(errorMsg) || <>&nbsp;</>}
+    </p>
   )
 }

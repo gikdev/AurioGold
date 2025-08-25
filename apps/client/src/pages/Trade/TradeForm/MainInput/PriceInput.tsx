@@ -9,8 +9,8 @@ import { calcOutputRial, calcOutputWeight, transactionMethods } from "./shared"
 export const priceInputErrorMsgAtom = atom("")
 
 export default function PriceInput() {
-  const side = useTradeFormStore(s => s.side)
   const [profile] = useProfileAtom()
+  const side = useTradeFormStore(s => s.side)
   const mode = useTradeFormStore(s => s.mode)
   const rial = useTradeFormStore(s => s.rial)
   const weight = useTradeFormStore(s => s.weight)
@@ -108,7 +108,7 @@ function validateWeight(product: SafeStock, weight: number) {
   const result = WeightSchema.safeParse(weight)
 
   if (!result.success) {
-    return result.error.issues.map(issue => issue.message).join(", ")
+    return result.error.issues.map(issue => issue.message).join(" - ")
   }
 
   return ""
