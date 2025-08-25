@@ -1,7 +1,7 @@
 import { CircleNotchIcon, type Icon, PencilSimpleIcon } from "@phosphor-icons/react"
-import { parseError } from "@repo/shared/helpers"
 import { type AnyFieldApi, createFormHook, createFormHookContexts } from "@tanstack/react-form"
 import type { ComponentProps } from "react"
+import { parseError } from "../helpers"
 import { skins } from "./skins"
 
 export const extractError = (field: AnyFieldApi) =>

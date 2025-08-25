@@ -1,6 +1,7 @@
 import type { GlobalConfigOptions } from "@gikdev/react-datapi/src"
 import { currentProfile } from "@repo/profile-manager"
 import { notifManager, storageManager } from "@repo/shared/adapters"
+
 // import { logout } from "#/atoms"
 
 const genDatApiConfig: () => GlobalConfigOptions = () => ({
