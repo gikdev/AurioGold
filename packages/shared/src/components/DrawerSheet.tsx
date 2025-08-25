@@ -59,8 +59,8 @@ export function DrawerSheet({
         >
           {/* Header */}
           <div className="bg-slate-2 h-12 flex items-center px-2 rounded-t-md border-b border-slate-6">
-            <div className="text-slate-12 flex items-center gap-1 me-auto">
-              <IconToRender size={24} />
+            <div className="text-slate-12 flex items-center gap-1 me-auto [&_svg]:text-[1.5em]">
+              <IconToRender />
               <span className="font-bold">{title}</span>
             </div>
 
