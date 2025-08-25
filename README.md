@@ -24,6 +24,8 @@
 - [concurrently](https://www.npmjs.com/package/concurrently): *Run multiple commands concurrently*
 - [Zod](https://zod.dev/): *TypeScript-first schema validation with static type inference*
 - [React Hook Form](https://react-hook-form.com/): *Performant, flexible and extensible forms with easy-to-use validation.*
+- [TanStack Query](https://tanstack.com/query)
+- [TanStack Form](https://tanstack.com/form)
 - [Immer](https://immerjs.github.io/immer/): *work with immutable state in a more convenient way*
 - [React Haiku](https://www.reacthaiku.dev/): An awesome collection of React Hooks & Utilities!
 - [React Toastify](https://fkhadra.github.io/react-toastify): *Good* toasting library
