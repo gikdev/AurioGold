@@ -1,0 +1,58 @@
+import { ArrowClockwiseIcon, CirclesThreePlusIcon, UsersThreeIcon } from "@phosphor-icons/react"
+import { TitledCard, useCurrentViewMode, ViewModesToggle } from "@repo/shared/components"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { skins } from "#/shared/forms/skins"
+import { numericGroupsOptions, useNumericGroupsStore } from "../shared"
+import { GroupCards } from "./GroupCards"
+import { GroupsNumericTable } from "./NumericGroupsTable"
+
+export function ManagementCard() {
+  const viewMode = useCurrentViewMode()
+  const { data: groups = [], isPending, isSuccess } = useQuery(numericGroupsOptions)
+
+  return (
+    <TitledCard
+      title="مدیریت گروه عددی"
+      icon={UsersThreeIcon}
+      titleSlot={<TitledCardActions />}
+      className="md:max-w-240"
+    >
+      {isPending && <div className="h-100 rounded-md animate-pulse bg-slate-4" />}
+      {isSuccess && viewMode === "cards" && <GroupCards groups={groups} />}
+      {isSuccess && viewMode === "table" && <GroupsNumericTable groups={groups} />}
+    </TitledCard>
+  )
+}
+
+const TitledCardActions = () => (
+  <div className="ms-auto flex items-center gap-2">
+    <ReloadGramGroupsBtn />
+    <CreateGroupFAB />
+    <ViewModesToggle />
+  </div>
+)
+
+function ReloadGramGroupsBtn() {
+  const queryClient = useQueryClient()
+
+  return (
+    <button
+      type="button"
+      className={skins.btn({ isIcon: true })}
+      onClick={() => queryClient.refetchQueries(numericGroupsOptions)}
+    >
+      <ArrowClockwiseIcon />
+    </button>
+  )
+}
+
+const CreateGroupFAB = () => (
+  <button
+    type="button"
+    title="ایجاد گروه جدید"
+    className={skins.btn({ intent: "success", isIcon: true })}
+    onClick={() => useNumericGroupsStore.getState().createNew()}
+  >
+    <CirclesThreePlusIcon />
+  </button>
+)

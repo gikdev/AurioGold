@@ -92,8 +92,8 @@ export const ProductFormSchema = z.object({
 type ProductFormValues = z.input<typeof ProductFormSchema>
 
 type _Test_FormValuesMatchApi = Expect<Assignable<ProductFormValues, StockDtoForMaster>>
-// @ts-ignore
 const _test_formValuesMatchApi: _Test_FormValuesMatchApi = true
+_test_formValuesMatchApi
 
 export const emptyProductFormValues: ProductFormValues = {
   name: "",

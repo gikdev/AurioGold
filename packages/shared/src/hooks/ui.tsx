@@ -5,15 +5,15 @@ import { useWindowSize } from "react-haiku"
 import { Btn } from "#shared/components"
 import { cn } from "#shared/helpers"
 
+const TARGET_WIDTH = 768
+
 export function useIsMobile() {
-  const TARGET_WIDTH = 768
   const { width } = useWindowSize()
 
   return width < TARGET_WIDTH
 }
 
 export function getIsMobile() {
-  const TARGET_WIDTH = 768
   return window.innerWidth < TARGET_WIDTH
 }
 
