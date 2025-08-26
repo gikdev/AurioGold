@@ -10,7 +10,6 @@ import config from "config"
 import { useSetAtom } from "jotai"
 import { sha512 } from "js-sha512"
 import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router"
 import { z } from "zod"
 import { emptyProfile, profileAtom } from "#/atoms"
 import genDatApiConfig from "#/shared/datapi-config"
@@ -33,7 +32,6 @@ export default function Login() {
     resolver: zodResolver(loginSchema),
   })
   const { errors, isSubmitting } = formState
-  const navigate = useNavigate()
 
   async function onSubmit(data: LoginFormValues) {
     const { reject, resolve } = createControlledAsyncToast({
@@ -63,7 +61,7 @@ export default function Login() {
           if (data.ttkk) storageManager.save("ttkk", data.ttkk.toString(), "sessionStorage")
           if (data.userID) storageManager.save("userID", data.userID.toString(), "sessionStorage")
 
-          navigate(routes.home)
+          location.replace(routes.home)
         },
       },
     })
