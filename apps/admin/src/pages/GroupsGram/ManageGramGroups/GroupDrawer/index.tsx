@@ -1,4 +1,4 @@
-import { PencilSimpleIcon, PlusIcon, UserPlusIcon } from "@phosphor-icons/react"
+import { PencilSimpleIcon, PlusIcon } from "@phosphor-icons/react"
 import type { CustomerGroupDto } from "@repo/api-client/client"
 import { DrawerSheet } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
@@ -84,7 +84,7 @@ export function GroupDrawer({ mode, onClose, groupId }: GroupDrawerProps) {
     <DrawerSheet
       open
       title={isCreateMode ? "ایجاد گروه گرمی" : "ویرایش گروه گرمی"}
-      icon={UserPlusIcon}
+      icon={isCreateMode ? PlusIcon : PencilSimpleIcon}
       onClose={onClose}
       btns={
         <form.AppForm>
