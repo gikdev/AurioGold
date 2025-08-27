@@ -79,9 +79,11 @@ function ConnectionHandler() {
   useEffect(() => {
     if (connectionState !== "connected" || !connection) return
 
-    connection.on("OnlineCount", (count: number) => setCount(count))
+    const handleOnlineCount = (count: number) => setCount(count)
 
-    return () => connection.off("OnlineCount")
+    connection.on("OnlineCount", handleOnlineCount)
+
+    return () => connection.off("OnlineCount", handleOnlineCount)
   }, [connectionState, connection])
 
   return null

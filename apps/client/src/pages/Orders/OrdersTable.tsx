@@ -106,14 +106,16 @@ export default function OrdersTable() {
   useEffect(() => {
     if (!connection) return undefined
 
-    connection.on("ReceiveOrder2", () => resOrders.reload())
-    connection.on("UpdateCOrder", () => resOrders.reload())
-    connection.on("Decided", () => resOrders.reload())
+    const reload = () => resOrders.reload()
+
+    connection.on("ReceiveOrder2", reload)
+    connection.on("UpdateCOrder", reload)
+    connection.on("Decided", reload)
 
     return () => {
-      connection.off("ReceiveOrder2")
-      connection.off("UpdateCOrder")
-      connection.off("Decided")
+      connection.off("ReceiveOrder2", reload)
+      connection.off("UpdateCOrder", reload)
+      connection.off("Decided", reload)
     }
   }, [connection])
 

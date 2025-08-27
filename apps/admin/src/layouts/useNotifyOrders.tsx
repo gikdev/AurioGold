@@ -2,13 +2,14 @@ import { CheckIcon, XIcon } from "@phosphor-icons/react"
 import type { OrderFm } from "@repo/api-client/client"
 import { notifManager, storageManager } from "@repo/shared/adapters"
 import { Btn } from "@repo/shared/components"
+import { parseError } from "@repo/shared/helpers"
 import { formatPersianPrice } from "@repo/shared/utils"
 import { useAtomValue } from "jotai"
 import { useCallback, useEffect, useRef } from "react"
 import { toast } from "react-toastify"
 import notifSfx from "#/assets/notification.mp3"
 import { connectionRefAtom, connectionStateAtom } from "#/atoms"
-import { acceptOrRejectOrder } from "#/pages/Orders/OrdersTable"
+import { useAcceptOrder } from "#/pages/Orders/shared"
 import routes from "#/pages/routes"
 
 export const transactionMethods = [
@@ -22,19 +23,22 @@ export function useNotifyOrders() {
   const connectionState = useAtomValue(connectionStateAtom)
   const notifIDs = useRef<Set<[closeToast: () => void, orderId: number]>>(new Set())
   const notifSound = useWithSound(notifSfx)
+  const { mutate: acceptOrder } = useAcceptOrder()
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
-    connection?.on("ReceiveOrder2", showNewOrderNotification)
-    connection?.on("Decided", (_isAccepted, orderId: number) => {
+    const handleDecided = (_isAccepted: boolean, orderId: number) => {
       for (const [closeToast, notifOrderId] of notifIDs.current) {
         if (notifOrderId === orderId) closeToast()
       }
-    })
+    }
+
+    connection?.on("ReceiveOrder2", showNewOrderNotification)
+    connection?.on("Decided", handleDecided)
 
     return () => {
-      connection?.off("ReceiveOrder2")
-      connection?.off("Decided")
+      connection?.off("ReceiveOrder2", showNewOrderNotification)
+      connection?.off("Decided", handleDecided)
     }
   }, [connection, connectionState])
 
@@ -46,37 +50,50 @@ export function useNotifyOrders() {
   ) {
     closeToast()
 
-    acceptOrRejectOrder(true, orderId, isAccepted, () => {
-      if (!connection) {
-        notifManager.notify(
-          `وقتی که به سرور وصل نیستیم، نمیتوان سفارشی را ${isAccepted ? "تایید" : "رد"} کرد.`,
-          "toast",
-          { status: "warning" },
-        )
-        return
-      }
+    if (!connection) {
+      notifManager.notify(
+        `وقتی که به سرور وصل نیستیم، نمیتوان سفارشی را ${isAccepted ? "تایید" : "رد"} کرد.`,
+        "toast",
+        { status: "warning" },
+      )
+      return
+    }
 
-      connection
-        .invoke(
-          "DecideOrder",
-          storageManager.get("ttkk", "sessionStorage"),
-          isAccepted,
-          orderId,
-          userId,
-        )
-        .then(() => {
-          notifManager.notify(isAccepted ? "سفارش تایید شد" : "سفارش رد شد", "toast", {
-            status: "info",
-          })
-        })
-        .catch(() => {
-          notifManager.notify(
-            `موقع ${isAccepted ? "تایید" : "رد"} کردن سفارش به مشکلی بر خوردیم`,
-            "toast",
-            { status: "error" },
-          )
-        })
-    })
+    acceptOrder(
+      {
+        body: {
+          gid: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          id: Number(orderId),
+          str: "",
+          tf: isAccepted,
+        },
+      },
+      {
+        onError: err => notifManager.notify(parseError(err), "toast", { status: "error" }),
+        onSuccess: () => {
+          connection
+            .invoke(
+              "DecideOrder",
+              storageManager.get("ttkk", "sessionStorage"),
+              isAccepted,
+              orderId,
+              userId,
+            )
+            .then(() => {
+              notifManager.notify(isAccepted ? "سفارش تایید شد" : "سفارش رد شد", "toast", {
+                status: "info",
+              })
+            })
+            .catch(() => {
+              notifManager.notify(
+                `موقع ${isAccepted ? "تایید" : "رد"} کردن سفارش به مشکلی بر خوردیم`,
+                "toast",
+                { status: "error" },
+              )
+            })
+        },
+      },
+    )
   }
 
   function showNewOrderNotification(
@@ -188,8 +205,8 @@ function useWithSound(audioSource: string) {
 
   const play = useCallback(() => {
     soundRef.current?.play().catch(() => {
-      notifManager.notify("error when trying to play a sound", "console", {
-        status: "warning",
+      notifManager.notify("error when trying to play a sound", ["console", "toast"], {
+        status: "dev-only",
       })
     })
   }, [])

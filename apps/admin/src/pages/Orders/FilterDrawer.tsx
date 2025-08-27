@@ -1,70 +1,72 @@
-import { FunnelIcon } from "@phosphor-icons/react"
-import { BtnTemplates, DrawerSheet, Labeler, useDrawerSheet } from "@repo/shared/components"
-import { memo } from "react"
+import { FunnelIcon, TrashIcon } from "@phosphor-icons/react"
+import { DrawerSheet } from "@repo/shared/components"
 import persian from "react-date-object/calendars/persian"
 import persian_fa from "react-date-object/locales/persian_fa"
 import { Calendar } from "react-multi-date-picker"
-import { QUERY_KEYS } from "./navigation"
-import type { DateFilterReturn } from "./useDateFilter"
 import "react-multi-date-picker/styles/backgrounds/bg-dark.css"
 import "react-multi-date-picker/styles/colors/green.css"
+import { skins } from "#/shared/forms/skins"
+import { useDateFilterStore } from "./shared"
 
-interface FilterDrawerProps {
-  dateFilterState: DateFilterReturn
+export const FilterDrawer = () => (
+  <DrawerSheet open title="فیلتر" icon={FunnelIcon} btns={<DeleteBtn />} onClose={handleClose}>
+    <div className="min-h-full flex flex-col py-4 gap-5">
+      <FromDatePicker />
+      <ToDatePicker />
+    </div>
+  </DrawerSheet>
+)
+
+const DeleteBtn = () => (
+  <button type="button" className={skins.btn({ intent: "error" })} onClick={handleDelete}>
+    <TrashIcon />
+    <span>حذف</span>
+  </button>
+)
+
+function handleDelete() {
+  useDateFilterStore.getState().resetDate()
+  handleClose()
 }
 
-function _FilterDrawer({ dateFilterState }: FilterDrawerProps) {
-  const [showFilterDrawer, setShowFilterDrawer] = useDrawerSheet(QUERY_KEYS.filter)
-  const { fromDate, setFromDate, toDate, setToDate } = dateFilterState
+function handleClose() {
+  useDateFilterStore.getState().setOpen(false)
+}
 
-  const handleClose = () => setShowFilterDrawer(false)
-  const handleDelete = () => {
-    setFromDate(new Date())
-    setToDate(new Date())
-    handleClose()
-  }
-
-  const btns = (
-    <>
-      <BtnTemplates.Close onClick={handleClose} />
-      <BtnTemplates.Delete onClick={handleDelete} />
-    </>
-  )
+function FromDatePicker() {
+  const fromDate = useDateFilterStore(s => s.fromDate)
 
   return (
-    <DrawerSheet
-      onClose={handleClose}
-      open={showFilterDrawer}
-      title="فیلتر"
-      icon={FunnelIcon}
-      btns={btns}
-    >
-      <div className="min-h-full flex flex-col py-4 gap-5">
-        <Labeler labelText="از:" as="div">
-          <Calendar
-            className="bg-dark border-none"
-            shadow={false}
-            calendar={persian}
-            locale={persian_fa}
-            value={fromDate}
-            onChange={v => setFromDate(v?.toDate() ?? new Date())}
-          />
-        </Labeler>
+    <div className={skins.labelerContainer()}>
+      <p>از:</p>
 
-        <Labeler labelText="تا:" as="div">
-          <Calendar
-            className="green bg-dark"
-            shadow={false}
-            calendar={persian}
-            locale={persian_fa}
-            value={toDate}
-            onChange={v => setToDate(v?.toDate() ?? new Date())}
-          />
-        </Labeler>
-      </div>
-    </DrawerSheet>
+      <Calendar
+        className="bg-dark border-none"
+        shadow={false}
+        calendar={persian}
+        locale={persian_fa}
+        value={fromDate}
+        onChange={v => useDateFilterStore.getState().setFromDate(v?.toDate() ?? new Date())}
+      />
+    </div>
   )
 }
 
-const FilterDrawer = memo(_FilterDrawer)
-export default FilterDrawer
+function ToDatePicker() {
+  const toDate = useDateFilterStore(s => s.toDate)
+
+  return (
+    <div className={skins.labelerContainer()}>
+      <p>تا:</p>
+
+      <Calendar
+        className="green bg-dark"
+        shadow={false}
+        calendar={persian}
+        locale={persian_fa}
+        value={toDate}
+        onChange={v => useDateFilterStore.getState().setToDate(v?.toDate() ?? new Date())}
+      />
+    </div>
+  )
+}

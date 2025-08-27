@@ -84,13 +84,15 @@ export function SignalRManager() {
   useEffect(() => {
     if (!connectionRef) return
 
-    connectionRef.on("MasterStatusChange", (incomingMasterId, _isOnline) => {
+    const handleMasterStatusChange = (incomingMasterId: unknown, isOnline: boolean) => {
       const masterId = storageManager.get("masterID", "sessionStorage")
       if (Number(masterId) !== Number(incomingMasterId)) return
-      setAdminOnline(_isOnline)
-    })
+      setAdminOnline(isOnline)
+    }
 
-    return () => connectionRef.off("MasterStatusChange")
+    connectionRef.on("MasterStatusChange", handleMasterStatusChange)
+
+    return () => connectionRef.off("MasterStatusChange", handleMasterStatusChange)
   }, [connectionRef, connectionState])
 
   // Connect again if disconnected

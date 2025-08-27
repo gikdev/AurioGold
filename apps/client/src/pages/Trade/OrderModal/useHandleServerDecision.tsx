@@ -21,6 +21,6 @@ export function useHandleServerDecision() {
 
   useEffect(() => {
     connection?.on("Decided", onDecided)
-    return () => connection?.off("Decided")
+    return () => connection?.off("Decided", onDecided)
   }, [connection, onDecided])
 }

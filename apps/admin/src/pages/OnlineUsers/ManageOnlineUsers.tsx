@@ -58,7 +58,7 @@ export default function ManageOnlineUsers() {
     getOnlineUsers()
     connection?.on("OnlineCount", getOnlineUsers)
 
-    return () => connection?.off("OnlineCount")
+    return () => connection?.off("OnlineCount", getOnlineUsers)
   }, [connectionState, connection])
 
   const cardTitleSlot = (

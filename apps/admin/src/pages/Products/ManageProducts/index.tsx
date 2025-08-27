@@ -48,7 +48,7 @@ function PriceUpdateManager() {
   useEffect(() => {
     if (!connection) return
     connection.on("ReceivePriceUpdate", applyStockUpdate)
-    return () => connection.off("ReceivePriceUpdate")
+    return () => connection.off("ReceivePriceUpdate", applyStockUpdate)
   }, [connection])
 
   return null
