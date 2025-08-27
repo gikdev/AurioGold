@@ -9,7 +9,6 @@ import { createControlledAsyncToast, createFieldsWithLabels } from "@repo/shared
 import config from "config"
 import { sha512 } from "js-sha512"
 import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router"
 import { z } from "zod"
 import genDatApiConfig from "#/shared/datapi-config"
 import routes from "../routes"
@@ -30,7 +29,6 @@ export default function Login() {
     resolver: zodResolver(loginSchema),
   })
   const { errors, isSubmitting } = formState
-  const navigate = useNavigate()
 
   async function onSubmit(data: LoginFormValues) {
     const { reject, resolve } = createControlledAsyncToast({
@@ -57,7 +55,7 @@ export default function Login() {
             storageManager.save(key, String(data[key as keyof MasterLoginModel]), "sessionStorage")
           }
 
-          navigate(routes.home)
+          location.assign(routes.home)
         },
       },
     })
