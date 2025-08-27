@@ -1,7 +1,6 @@
-import { InfoIcon } from "@phosphor-icons/react"
+import { InfoIcon, PencilSimpleIcon, TrashIcon } from "@phosphor-icons/react"
 import { getApiStockPriceSourceGetStockPriceSourcesOptions } from "@repo/api-client/tanstack"
 import {
-  BtnTemplates,
   DrawerSheet,
   EntityNotFoundCard,
   KeyValueDetail,
@@ -11,6 +10,7 @@ import { cellRenderers } from "@repo/shared/lib"
 import { useQuery } from "@tanstack/react-query"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
 import { getHeaderTokenOnly } from "#/shared/forms"
+import { skins } from "#/shared/forms/skins"
 import { productFormFields } from "../ProductDrawer/utils"
 import {
   transactionMethods,
@@ -35,15 +35,14 @@ export function ProductDetails({ onClose, productId }: ProductDetailsProps) {
     getApiStockPriceSourceGetStockPriceSourcesOptions(getHeaderTokenOnly()),
   )
 
-  const btns = (
-    <>
-      <BtnTemplates.Edit onClick={() => useProductsStore.getState().edit(productId)} />
-      <BtnTemplates.Delete onClick={() => useProductsStore.getState().delete(productId)} />
-    </>
-  )
-
   return (
-    <DrawerSheet open onClose={onClose} title="مشخصات محصول" icon={InfoIcon} btns={btns}>
+    <DrawerSheet
+      open
+      onClose={onClose}
+      title="مشخصات محصول"
+      icon={InfoIcon}
+      btns={<Btns productId={productId} />}
+    >
       {product === undefined && <EntityNotFoundCard entity="محصول" />}
 
       {product && (
@@ -157,3 +156,25 @@ export function ProductDetails({ onClose, productId }: ProductDetailsProps) {
     </DrawerSheet>
   )
 }
+
+const Btns = ({ productId }: { productId: ProductId }) => (
+  <>
+    <button
+      type="button"
+      className={skins.btn({ intent: "warning" })}
+      onClick={() => useProductsStore.getState().edit(productId)}
+    >
+      <PencilSimpleIcon />
+      <span>ویرایش</span>
+    </button>
+
+    <button
+      type="button"
+      className={skins.btn({ intent: "error" })}
+      onClick={() => useProductsStore.getState().delete(productId)}
+    >
+      <TrashIcon />
+      <span>حذف</span>
+    </button>
+  </>
+)

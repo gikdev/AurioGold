@@ -5,7 +5,11 @@ import type { CustomerLoginModel, LoginModel } from "@repo/api-client/client"
 import { currentProfile } from "@repo/profile-manager"
 import { storageManager } from "@repo/shared/adapters"
 import { Btn, Heading, Hr, Input, Labeler } from "@repo/shared/components"
-import { createControlledAsyncToast, createFieldsWithLabels, parseError } from "@repo/shared/helpers"
+import {
+  createControlledAsyncToast,
+  createFieldsWithLabels,
+  parseError,
+} from "@repo/shared/helpers"
 import config from "config"
 import { useSetAtom } from "jotai"
 import { sha512 } from "js-sha512"
