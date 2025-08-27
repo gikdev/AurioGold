@@ -12,10 +12,11 @@ import {
   IconsToggle,
   type IconsToggleItem,
   LoadingSpinner,
+  SmallErrorWithRetryBtn,
   TitledCard,
   type ViewMode,
 } from "@repo/shared/components"
-import { getIsMobile } from "@repo/shared/hooks"
+import { parseError } from "@repo/shared/helpers"
 import { useAtomValue } from "jotai"
 import { useEffect, useState } from "react"
 import { connectionRefAtom } from "#/atoms"
@@ -129,9 +130,8 @@ const modes: IconsToggleItem<ProductsViewMode>[] = [
 ]
 
 function ManageStuff() {
-  const isMobile = getIsMobile()
   const [viewMode, setViewMode] = useState<ProductsViewMode>("full-cards")
-  const { data: stocks = [], isPending, isSuccess } = useStocksQuery()
+  const { data: stocks = [], isPending, isSuccess, isError, error, refetch } = useStocksQuery()
 
   const titleSlot = (
     <div className="flex items-center ms-auto gap-2">
@@ -147,12 +147,15 @@ function ManageStuff() {
         title="مدیریت محصولات"
         icon={PackageIcon}
         titleSlot={titleSlot}
-        className={!isMobile && viewMode !== "cards" ? "max-w-240" : undefined}
+        className="max-w-240"
       >
+        {isError && (
+          <SmallErrorWithRetryBtn details={parseError(error)} onClick={() => refetch()} />
+        )}
         {isPending && <LoadingSpinner />}
-        {viewMode === "full-cards" && isSuccess && <ProductFullCards stocks={stocks} />}
-        {viewMode === "cards" && isSuccess && <ProductCards stocks={stocks} />}
-        {viewMode === "table" && isSuccess && <ProductsTable stocks={stocks} />}
+        {isSuccess && viewMode === "full-cards" && <ProductFullCards stocks={stocks} />}
+        {isSuccess && viewMode === "cards" && <ProductCards stocks={stocks} />}
+        {isSuccess && viewMode === "table" && <ProductsTable stocks={stocks} />}
       </TitledCard>
     </ErrorCardBoundary>
   )
