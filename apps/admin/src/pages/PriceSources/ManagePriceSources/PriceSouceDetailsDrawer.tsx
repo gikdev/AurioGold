@@ -10,8 +10,8 @@ import { useQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
 import { skins } from "#/shared/forms/skins"
-import { type PriceSourceId, priceSourcesOptions, usePriceSourcesStore } from "./shared"
 import { priceSourceFormFields } from "./PriceSourceDrawer/stuff"
+import { type PriceSourceId, priceSourcesOptions, usePriceSourcesStore } from "./shared"
 
 interface PriceSourceDetailsProps {
   sourceId: PriceSourceId
