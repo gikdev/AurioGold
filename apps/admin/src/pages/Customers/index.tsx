@@ -1,5 +1,6 @@
 import { HeadingLine } from "@repo/shared/layouts"
 import { CustomerDetailsDrawer } from "./CustomerDetailsDrawer"
+import { DeleteCustomerModal } from "./DeleteCustomerModal"
 import { ManagementCard } from "./ManagementCard"
 import { useCustomersStore } from "./store"
 
@@ -9,7 +10,7 @@ export default function Customers() {
       <ManagementCard />
       <CreateCustomerDrawerWrapper />
       <EditCustomerDrawerWrapper />
-      <DeleteCustomerDrawerWrapper />
+      <DeleteCustomerModalWrapper />
       <CustomerDetailsDrawerWrapper />
       <CustomerDocDrawerWrapper />
       <CustomerTransferDrawerWrapper />
@@ -28,8 +29,13 @@ function EditCustomerDrawerWrapper() {
   return null
 }
 
-function DeleteCustomerDrawerWrapper() {
-  return null
+function DeleteCustomerModalWrapper() {
+  const mode = useCustomersStore(s => s.mode)
+  const customerId = useCustomersStore(s => s.customerId)
+
+  const isOpen = mode === "delete" && typeof customerId === "number"
+
+  return isOpen && <DeleteCustomerModal onClose={handleClose} customerId={customerId} />
 }
 
 function CustomerDetailsDrawerWrapper() {
