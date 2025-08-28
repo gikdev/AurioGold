@@ -1,6 +1,6 @@
 import { PlusIcon } from "@phosphor-icons/react"
+import { skins } from "@repo/shared/forms"
 import { HeadingLine } from "@repo/shared/layouts"
-import { btn } from "#/shared/forms/skins"
 
 const intents = ["success", "error", "warning", "info", "primary", "neutral"] as const
 const styles = ["filled", "outline"] as const
@@ -19,7 +19,7 @@ export default function Test() {
                   <button
                     key={`${intent}-${style}`}
                     type="button"
-                    className={btn({ intent, style, size, isIcon: false })}
+                    className={skins.btn({ intent, style, size, isIcon: false })}
                   >
                     <PlusIcon weight="bold" />
                     {intent} {style}
@@ -39,7 +39,7 @@ export default function Test() {
                   <button
                     key={`${intent}-${style}`}
                     type="button"
-                    className={btn({ intent, style, size, isIcon: true })}
+                    className={skins.btn({ intent, style, size, isIcon: true })}
                     title={`${intent} ${style}`}
                   >
                     <PlusIcon weight="bold" />

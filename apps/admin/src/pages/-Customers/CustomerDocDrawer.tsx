@@ -1,6 +1,7 @@
 import { apiRequest } from "@gikdev/react-datapi/src"
 import { ArrowsLeftRightIcon } from "@phosphor-icons/react"
 import type { CustomerDto, PostApiMasterAddAndAcceptDocsData } from "@repo/api-client/client"
+import { uploadFile } from "@repo/shared/api"
 import {
   BtnTemplates,
   DrawerSheet,
@@ -19,7 +20,7 @@ import { useAtomValue } from "jotai"
 import { memo } from "react"
 import type { UseFormReturn } from "react-hook-form"
 import { z } from "zod"
-import { uploadFile, useCustomForm } from "#/shared/customForm"
+import { useCustomForm } from "#/shared/customForm"
 import genDatApiConfig from "#/shared/datapi-config"
 import { customersAtom } from "."
 import { QUERY_KEYS } from "./navigation"

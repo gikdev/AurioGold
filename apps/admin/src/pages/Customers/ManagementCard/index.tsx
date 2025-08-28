@@ -1,16 +1,16 @@
 import { ArrowClockwiseIcon, UserCirclePlusIcon, UsersThreeIcon } from "@phosphor-icons/react"
 import { getApiMasterGetCustomersOptions } from "@repo/api-client/tanstack"
+import { getHeaderTokenOnly } from "@repo/shared/auth"
 import {
   SmallErrorWithRetryBtn,
   TitledCard,
   useCurrentViewMode,
   ViewModesToggle,
 } from "@repo/shared/components"
+import { skins } from "@repo/shared/forms"
 import { parseError } from "@repo/shared/helpers"
 import { useQuery } from "@tanstack/react-query"
 import { queryClient } from "#/shared"
-import { getHeaderTokenOnly } from "#/shared/forms"
-import { skins } from "#/shared/forms/skins"
 import { apiGetCustomersOptions } from "../shared"
 import { useCustomersStore } from "../store"
 import { CustomerCards } from "./CustomerCards"

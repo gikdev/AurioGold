@@ -3,11 +3,11 @@ import {
   postApiTyCustomerGroupsMutation,
   putApiTyCustomerGroupsByIdMutation,
 } from "@repo/api-client/tanstack"
+import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { createFieldsWithLabels, isUndefinedOrNull } from "@repo/shared/helpers"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import z from "zod/v4"
 import { formErrors } from "#/shared/customForm"
-import { getHeaderTokenOnly } from "#/shared/forms"
 import type { Assignable, Expect } from "#/shared/types"
 import { type GroupId, gramGroupsOptions } from "../shared"
 

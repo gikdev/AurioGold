@@ -5,7 +5,7 @@ import persian_fa from "react-date-object/locales/persian_fa"
 import { Calendar } from "react-multi-date-picker"
 import "react-multi-date-picker/styles/backgrounds/bg-dark.css"
 import "react-multi-date-picker/styles/colors/green.css"
-import { skins } from "#/shared/forms/skins"
+import { skins } from "@repo/shared/forms"
 import { useDateFilterStore } from "./shared"
 
 export const FilterDrawer = () => (

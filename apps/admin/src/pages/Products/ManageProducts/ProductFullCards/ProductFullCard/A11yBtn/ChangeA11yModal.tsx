@@ -1,11 +1,11 @@
 import type { StockStatus } from "@repo/api-client/client"
 import { getApiTyStocksOptions, putApiTyStocksByIdMutation } from "@repo/api-client/tanstack"
+import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { BtnTemplates, Modal, Radio } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { useMutation } from "@tanstack/react-query"
 import { useState } from "react"
 import { queryClient } from "#/shared"
-import { getHeaderTokenOnly } from "#/shared/forms"
 import { calcA11yStuff } from "./calcA11yStuff"
 
 const productStatuses: StockStatus[] = [0, 1, 2, 3]

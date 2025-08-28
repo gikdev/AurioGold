@@ -1,9 +1,9 @@
 import type { StockDtoForMaster } from "@repo/api-client/client"
 import { getApiTyStocksOptions, getApiTyStocksQueryKey } from "@repo/api-client/tanstack"
+import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { useQuery } from "@tanstack/react-query"
 import { produce } from "immer"
 import { queryClient } from "#/shared"
-import { getHeaderTokenOnly } from "#/shared/forms"
 
 function toClock(n: number, unit: "h" | "m" | "s") {
   if (unit === "h") return n * 60 * 60 * 1000

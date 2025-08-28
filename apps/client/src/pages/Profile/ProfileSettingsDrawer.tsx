@@ -135,7 +135,6 @@ function _ProfileSettingsDrawer() {
             dir="ltr"
           />
         </Labeler>
-
         <Labeler labelText={labels.city} errorMsg={errors.city?.message}>
           <Input
             {...register(fields.city)}
@@ -143,7 +142,6 @@ function _ProfileSettingsDrawer() {
             dir="ltr"
           />
         </Labeler>
-
         <Labeler labelText={labels.codeMelli} errorMsg={errors.codeMelli?.message}>
           <Input
             {...register(fields.codeMelli)}
@@ -151,7 +149,6 @@ function _ProfileSettingsDrawer() {
             dir="ltr"
           />
         </Labeler>
-
         <Labeler labelText={labels.address} errorMsg={errors.address?.message}>
           <TextArea
             {...register(fields.address)}
@@ -159,7 +156,7 @@ function _ProfileSettingsDrawer() {
             dir="ltr"
           />
         </Labeler>
-
+        uploadFile(
         {/* <FileInput
           errorMsg={errors.melliID?.message}
           label={labels.melliID}

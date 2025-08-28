@@ -1,11 +1,11 @@
 import type { OrdersByStuckDto, OrdersReturnFm } from "@repo/api-client/client"
 import { postApiMasterGetOrdersOptions } from "@repo/api-client/tanstack"
+import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { createTypedTableFa, SmallErrorWithRetryBtn } from "@repo/shared/components"
 import { parseError } from "@repo/shared/helpers"
 import { cellRenderers } from "@repo/shared/lib"
 import { useQuery } from "@tanstack/react-query"
 import type { ColDef } from "ag-grid-community"
-import { getHeaderTokenOnly } from "#/shared/forms"
 import { FilterDrawerTableWrapper } from "./FilterDrawerTableWrapper"
 import { usePageDto } from "./shared"
 

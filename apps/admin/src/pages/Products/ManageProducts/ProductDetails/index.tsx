@@ -1,16 +1,16 @@
 import { InfoIcon, PencilSimpleIcon, TrashIcon } from "@phosphor-icons/react"
 import { getApiStockPriceSourceGetStockPriceSourcesOptions } from "@repo/api-client/tanstack"
+import { getHeaderTokenOnly } from "@repo/shared/auth"
 import {
   DrawerSheet,
   EntityNotFoundCard,
   KeyValueDetail,
   KeyValueDetailsContainer,
 } from "@repo/shared/components"
+import { skins } from "@repo/shared/forms"
 import { cellRenderers } from "@repo/shared/lib"
 import { useQuery } from "@tanstack/react-query"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
-import { getHeaderTokenOnly } from "#/shared/forms"
-import { skins } from "#/shared/forms/skins"
 import { productFormFields } from "../ProductDrawer/utils"
 import {
   transactionMethods,

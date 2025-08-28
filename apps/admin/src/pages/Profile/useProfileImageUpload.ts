@@ -1,5 +1,6 @@
 import { apiRequest } from "@gikdev/react-datapi/src"
 import { notifManager } from "@repo/shared/adapters"
+import { uploadFile } from "@repo/shared/api"
 import { MAX_FILE_SIZE_FOR_UPLOAD } from "@repo/shared/lib"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useSetProfileImageUrl } from "#/atoms"
@@ -9,7 +10,6 @@ import {
   cleanupBlobUrl,
   createPreviewUrl,
   objToKeyVal,
-  uploadFile,
   useCurrentProfileImageUrl,
 } from "./profileImageUtils"
 
@@ -73,7 +73,7 @@ export function useProfileImageUpload() {
       setImageUrl(previewUrl)
 
       Promise.resolve()
-        .then(() => uploadFile(file))
+        .then(() => uploadFile(file, false))
         .then(result => {
           if (!result.success) {
             throw new Error(result.errorMsg)

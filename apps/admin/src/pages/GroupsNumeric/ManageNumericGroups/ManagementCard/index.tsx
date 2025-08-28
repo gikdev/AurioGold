@@ -5,9 +5,9 @@ import {
   useCurrentViewMode,
   ViewModesToggle,
 } from "@repo/shared/components"
+import { skins } from "@repo/shared/forms"
 import { parseError } from "@repo/shared/helpers"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { skins } from "#/shared/forms/skins"
 import { numericGroupsOptions, useNumericGroupsStore } from "../shared"
 import { GroupCards } from "./GroupCards"
 import { GroupsNumericTable } from "./NumericGroupsTable"

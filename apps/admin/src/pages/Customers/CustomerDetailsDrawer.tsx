@@ -6,11 +6,11 @@ import {
   KeyValueDetail,
   KeyValueDetailsContainer,
 } from "@repo/shared/components"
+import { skins } from "@repo/shared/forms"
 import { useQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 import { FileGuidLink } from "#/components"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
-import { skins } from "#/shared/forms/skins"
 import { customerFormFields } from "../-Customers/customerFormShared"
 import { apiGetCustomersOptions } from "./shared"
 import { type CustomerId, useCustomersStore } from "./store"

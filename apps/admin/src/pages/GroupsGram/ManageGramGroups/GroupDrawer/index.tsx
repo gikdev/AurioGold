@@ -1,11 +1,10 @@
 import { PencilSimpleIcon, PlusIcon } from "@phosphor-icons/react"
 import type { CustomerGroupDto } from "@repo/api-client/client"
 import { DrawerSheet } from "@repo/shared/components"
+import { skins, useAppForm } from "@repo/shared/forms"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { useQuery } from "@tanstack/react-query"
 import { useCallback, useEffect } from "react"
-import { useAppForm } from "#/shared/forms"
-import { skins } from "#/shared/forms/skins"
 import { type GroupId, gramGroupsOptions, refetchGramGroups } from "../shared"
 import {
   emptyGroupFormValues,

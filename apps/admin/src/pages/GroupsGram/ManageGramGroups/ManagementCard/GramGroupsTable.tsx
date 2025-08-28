@@ -1,10 +1,10 @@
 import { InfoIcon, PencilSimpleIcon, TrashIcon } from "@phosphor-icons/react"
 import type { CustomerDto, CustomerGroupDto } from "@repo/api-client/client"
 import { createTypedTableFa } from "@repo/shared/components"
+import { skins } from "@repo/shared/forms"
 import { cellRenderers } from "@repo/shared/lib"
 import type { ColDef } from "ag-grid-community"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
-import { skins } from "#/shared/forms/skins"
 import { groupFormFields } from "../GroupDrawer/stuff"
 import { useGramGroupsStore } from "../shared"
 

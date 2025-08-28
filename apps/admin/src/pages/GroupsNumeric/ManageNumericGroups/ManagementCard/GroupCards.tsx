@@ -1,8 +1,8 @@
 import styled from "@master/styled.react"
 import type { CustomerGroupIntDto } from "@repo/api-client/client"
 import { ErrorCardBoundary } from "@repo/shared/components"
+import { skins } from "@repo/shared/forms"
 import { formatPersianPrice } from "@repo/shared/utils"
-import { skins } from "#/shared/forms/skins"
 import { useNumericGroupsStore } from "../shared"
 
 interface GroupCardsProps {

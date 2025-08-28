@@ -1,9 +1,9 @@
 import type { StockDtoForMaster } from "@repo/api-client/client"
 import { deleteApiTyStocksByIdMutation, getApiTyStocksQueryKey } from "@repo/api-client/tanstack"
+import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { BtnTemplates, Modal } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { getHeaderTokenOnly } from "#/shared/forms"
 import type { ProductId } from "./store"
 
 interface DeleteProductModalProps {

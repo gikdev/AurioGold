@@ -1,7 +1,7 @@
 import type { StockPriceSourceResponse } from "@repo/api-client/client"
 import { getApiStockPriceSourceGetStockPriceSourcesOptions } from "@repo/api-client/tanstack"
+import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { create } from "zustand"
-import { getHeaderTokenOnly } from "#/shared/forms"
 
 export type PriceSourceId = NonNullable<StockPriceSourceResponse["id"]>
 export const priceSourcesOptions = getApiStockPriceSourceGetStockPriceSourcesOptions(

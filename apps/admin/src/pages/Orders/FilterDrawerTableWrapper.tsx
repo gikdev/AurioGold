@@ -1,6 +1,6 @@
 import { ArrowClockwiseIcon, FunnelIcon } from "@phosphor-icons/react"
+import { skins } from "@repo/shared/forms"
 import type { PropsWithChildren, ReactNode } from "react"
-import { skins } from "#/shared/forms/skins"
 import { useDateFilterStore } from "./shared"
 
 interface FilterDrawerTableWrapperProps {

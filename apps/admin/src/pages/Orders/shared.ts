@@ -5,6 +5,7 @@ import {
   postApiMasterGetOrdersOptions,
 } from "@repo/api-client/tanstack"
 import { notifManager } from "@repo/shared/adapters"
+import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { parseError } from "@repo/shared/helpers"
 import { useMutation } from "@tanstack/react-query"
 import type { RowClassParams, RowStyle } from "ag-grid-community"
@@ -13,7 +14,6 @@ import { useEffect, useMemo } from "react"
 import { create } from "zustand"
 import { connectionRefAtom } from "#/atoms"
 import { queryClient } from "#/shared"
-import { getHeaderTokenOnly } from "#/shared/forms"
 
 export function getRowStyle({ data }: RowClassParams<OrderFm>): RowStyle | undefined {
   if (!data) return

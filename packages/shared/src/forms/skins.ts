@@ -1,10 +1,10 @@
 import { cva } from "../lib/cva.config"
 
-export const labelerContainer = cva({ base: "flex flex-col gap-2" })
+const labelerContainer = cva({ base: "flex flex-col gap-2" })
 
-export const labelerLabelsContainer = cva({ base: "flex gap-1 items-center flex-wrap" })
+const labelerLabelsContainer = cva({ base: "flex gap-1 items-center flex-wrap" })
 
-export const input = cva({
+const input = cva({
   base: `
     w-full
     px-4 py-2
@@ -24,7 +24,7 @@ export const input = cva({
   `,
 })
 
-export const select = cva({
+const select = cva({
   base: `
     w-full
     px-4 py-2
@@ -45,7 +45,7 @@ export const select = cva({
   `,
 })
 
-export const textarea = cva({
+const textarea = cva({
   base: `
     w-full
     px-4 py-2
@@ -65,10 +65,10 @@ export const textarea = cva({
   `,
 })
 
-export const hint = cva({ base: "text-xs" })
-export const errorMsg = cva({ base: "text-red-10 text-xs" })
+const hint = cva({ base: "text-xs" })
+const errorMsg = cva({ base: "text-red-10 text-xs" })
 
-export const btn = cva({
+const btn = cva({
   base: `
     rounded
 

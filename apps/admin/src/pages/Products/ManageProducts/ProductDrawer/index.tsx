@@ -4,12 +4,12 @@ import {
   getApiStockPriceSourceGetStockPriceSourcesOptions,
   getApiTyStocksOptions,
 } from "@repo/api-client/tanstack"
+import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { DrawerSheet } from "@repo/shared/components"
+import { skins, useAppForm } from "@repo/shared/forms"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { useQuery } from "@tanstack/react-query"
 import { useCallback, useEffect, useMemo } from "react"
-import { getHeaderTokenOnly, useAppForm } from "#/shared/forms"
-import { skins } from "#/shared/forms/skins"
 import {
   refetchStocks,
   TransactionMethod,

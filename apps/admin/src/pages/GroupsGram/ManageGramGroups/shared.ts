@@ -1,8 +1,8 @@
 import type { CustomerGroupDto } from "@repo/api-client/client"
 import { getApiTyCustomerGroupsOptions } from "@repo/api-client/tanstack"
+import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { create } from "zustand"
 import { queryClient } from "#/shared"
-import { getHeaderTokenOnly } from "#/shared/forms"
 
 export const gramGroupsOptions = getApiTyCustomerGroupsOptions(getHeaderTokenOnly())
 

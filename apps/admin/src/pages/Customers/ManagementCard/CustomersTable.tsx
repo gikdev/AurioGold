@@ -1,11 +1,11 @@
 import { CoinsIcon, InfoIcon, PencilSimpleIcon, TrashIcon } from "@phosphor-icons/react"
 import type { CustomerDto } from "@repo/api-client/client"
 import { createTypedTableFa } from "@repo/shared/components"
+import { skins } from "@repo/shared/forms"
 import { cellRenderers } from "@repo/shared/lib"
 import type { ColDef } from "ag-grid-community"
 import { customerFormFields } from "#/pages/-Customers/customerFormShared"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
-import { skins } from "#/shared/forms/skins"
 import { useCustomersStore } from "../store"
 
 export function CustomersTable({ customers }: { customers: CustomerDto[] }) {

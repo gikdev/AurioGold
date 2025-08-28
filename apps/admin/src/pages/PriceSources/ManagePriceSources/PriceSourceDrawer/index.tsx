@@ -1,11 +1,10 @@
 import { PencilSimpleIcon, PlusIcon } from "@phosphor-icons/react"
 import type { StockPriceSourceResponse } from "@repo/api-client/client"
 import { DrawerSheet } from "@repo/shared/components"
+import { skins, useAppForm } from "@repo/shared/forms"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useCallback, useEffect } from "react"
-import { useAppForm } from "#/shared/forms"
-import { skins } from "#/shared/forms/skins"
 import { type PriceSourceId, priceSourcesOptions } from "../shared"
 import {
   emptyPriceSourceFieldValues,

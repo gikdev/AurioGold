@@ -1,10 +1,10 @@
 import { TrashIcon, XIcon } from "@phosphor-icons/react"
 import { postApiMasterRemoveCustomerMutation } from "@repo/api-client/tanstack"
+import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { Modal } from "@repo/shared/components"
+import { skins } from "@repo/shared/forms"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { getHeaderTokenOnly } from "#/shared/forms"
-import { skins } from "#/shared/forms/skins"
 import { apiGetCustomersOptions } from "./shared"
 import type { CustomerId } from "./store"
 

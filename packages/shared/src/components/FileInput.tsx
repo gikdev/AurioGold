@@ -1,6 +1,7 @@
 import { FilePlusIcon, TrashIcon } from "@phosphor-icons/react"
 import { type InputHTMLAttributes, type ReactNode, useEffect, useRef, useState } from "react"
 import { notifManager } from "#shared/adapters"
+import type { UploadResult } from "#shared/api"
 import { cn } from "#shared/helpers"
 import { Btn } from "./Btn"
 
@@ -196,8 +197,6 @@ function FileInputFileInput({
     </div>
   )
 }
-
-export type UploadResult = { success: true; fileStr: string } | { success: false; errorMsg: string }
 
 interface FileInputProps {
   label: string
