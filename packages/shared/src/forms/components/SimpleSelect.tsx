@@ -31,7 +31,7 @@ export function SimpleSelect({
         className={skins.select()}
         value={field.state.value}
         onBlur={field.handleBlur}
-        onChange={value => field.handleChange(value)}
+        onChange={v => field.handleChange(v)}
         options={options}
       />
 

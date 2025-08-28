@@ -1,12 +1,11 @@
 import { QueryClient } from "@tanstack/react-query"
-import genDatApiConfig from "./datapi-config"
 
 export const queryClient = new QueryClient()
 
-const getBearer = () => ({
-  Authorization: `Bearer ${genDatApiConfig().token}`,
-})
+declare global {
+  interface Window {
+    __TANSTACK_QUERY_CLIENT__: import("@tanstack/query-core").QueryClient
+  }
+}
 
-export const getHeaderTokenOnly = () => ({
-  headers: { ...getBearer() },
-})
+window.__TANSTACK_QUERY_CLIENT__ = queryClient

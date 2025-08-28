@@ -9,7 +9,7 @@ export function CustomerCards({ customers }: { customers: CustomerDto[] }) {
     <CustomerCardsContainer>
       {customers.map(c => (
         <CustomerCard
-          key={c.id}
+          key={`${c.id}-${c.displayName}`}
           displayName={c.displayName}
           id={c.id}
           isActive={c.isActive}

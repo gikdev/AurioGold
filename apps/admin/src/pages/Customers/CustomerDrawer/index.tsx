@@ -6,8 +6,9 @@ import {
 } from "@repo/api-client/tanstack"
 import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { DrawerSheet } from "@repo/shared/components"
-import { skins, useAppForm } from "@repo/shared/forms"
+import { notesHelpers, skins, useAppForm } from "@repo/shared/forms"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
+import { MAX_FILE_SIZE_FOR_UPLOAD } from "@repo/shared/lib"
 import { useQuery } from "@tanstack/react-query"
 import { useCallback, useEffect, useMemo } from "react"
 import { apiGetCustomersOptions } from "../shared"
@@ -23,6 +24,13 @@ import {
   useCreateCustomerMutation,
   useUpdateCustomerMutation,
 } from "./stuff"
+
+const imageNotes = [
+  notesHelpers.generateAllowedExtensionsNote(["png", "jpg", "jpeg"]),
+  notesHelpers.generateFileSizeNote(MAX_FILE_SIZE_FOR_UPLOAD),
+  notesHelpers.generateFileTypeNote("تصویر"),
+]
+const allowedTypes = ["image/jpg", "image/png", "image/jpeg"]
 
 const { labels } = customerFormFields
 
@@ -52,9 +60,10 @@ export function CustomerDrawer({ mode, onClose, customerId }: CustomerDrawerProp
   const defaultValues =
     isEditMode && customer ? partialDtoToFormValues(customer) : emptyCustomerFormValues
 
-  const { data: gramGroups = [], isPending: isGramGroupsPending } = useQuery(
-    getApiTyCustomerGroupsOptions(getHeaderTokenOnly()),
-  )
+  const { data: gramGroups = [], isPending: isGramGroupsPending } = useQuery({
+    ...getApiTyCustomerGroupsOptions(getHeaderTokenOnly()),
+    staleTime: 5 * 60 * 1000,
+  })
 
   const gramGroupsOptions = useMemo(
     () =>
@@ -66,9 +75,10 @@ export function CustomerDrawer({ mode, onClose, customerId }: CustomerDrawerProp
     [gramGroups],
   )
 
-  const { data: numericGroups = [], isPending: isNumericGroupsPending } = useQuery(
-    getApiTyCustomerGroupIntIntsOptions(getHeaderTokenOnly()),
-  )
+  const { data: numericGroups = [], isPending: isNumericGroupsPending } = useQuery({
+    ...getApiTyCustomerGroupIntIntsOptions(getHeaderTokenOnly()),
+    staleTime: 5 * 60 * 1000,
+  })
 
   const numericGroupsOptions = useMemo(
     () =>
@@ -194,6 +204,30 @@ export function CustomerDrawer({ mode, onClose, customerId }: CustomerDrawerProp
               label={labels.numericGroupId}
               options={numericGroupsOptions}
               isLoading={isNumericGroupsPending}
+            />
+          )}
+        </form.AppField>
+
+        <form.AppField name="businessLicense">
+          {field => (
+            <field.FileInput
+              label={labels.businessLicense}
+              allowedTypes={allowedTypes}
+              isPrivate
+              mode="file"
+              notes={imageNotes}
+            />
+          )}
+        </form.AppField>
+
+        <form.AppField name="nationalCard">
+          {field => (
+            <field.FileInput
+              label={labels.nationalCard}
+              allowedTypes={allowedTypes}
+              isPrivate
+              mode="file"
+              notes={imageNotes}
             />
           )}
         </form.AppField>

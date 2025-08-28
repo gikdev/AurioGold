@@ -89,11 +89,11 @@ const CustomerDetails = ({ customer }: { customer: CustomerDto }) => (
     <KeyValueDetail ltr title={getLabelProperty("isBlocked")} value={customer.isBlocked} />
     <KeyValueDetail
       title={getLabelProperty("businessLicense")}
-      cellRendered={<FileGuidLink guid={customer.melliID} />}
+      cellRendered={<FileGuidLink guid={customer.kasbsID} />}
     />
     <KeyValueDetail
       title={getLabelProperty("nationalCard")}
-      cellRendered={<FileGuidLink guid={customer.kasbsID} />}
+      cellRendered={<FileGuidLink guid={customer.melliID} />}
     />
     <KeyValueDetail ltr title={getLabelProperty("phone")} value={customer.mobile} />
     <KeyValueDetail ltr title="مستر آی‌دی" value={customer.masterID} />
