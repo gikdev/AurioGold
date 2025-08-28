@@ -1,4 +1,5 @@
 import { HeadingLine } from "@repo/shared/layouts"
+import { CustomerBalanceDrawer } from "./CustomerBalanceDrawer"
 import { CustomerDetailsDrawer } from "./CustomerDetailsDrawer"
 import { DeleteCustomerModal } from "./DeleteCustomerModal"
 import { ManagementCard } from "./ManagementCard"
@@ -12,9 +13,9 @@ export default function Customers() {
       <EditCustomerDrawerWrapper />
       <DeleteCustomerModalWrapper />
       <CustomerDetailsDrawerWrapper />
+      <CustomerBalanceDrawerWrapper />
       <CustomerDocDrawerWrapper />
       <CustomerTransferDrawerWrapper />
-      <CustomerBalanceDrawerWrapper />
     </HeadingLine>
   )
 }
@@ -47,14 +48,19 @@ function CustomerDetailsDrawerWrapper() {
   return isOpen && <CustomerDetailsDrawer customerId={customerId} onClose={handleClose} />
 }
 
+function CustomerBalanceDrawerWrapper() {
+  const mode = useCustomersStore(s => s.mode)
+  const customerId = useCustomersStore(s => s.customerId)
+
+  const isOpen = mode === "balance" && typeof customerId === "number"
+
+  return isOpen && <CustomerBalanceDrawer customerId={customerId} onClose={handleClose} />
+}
+
 function CustomerDocDrawerWrapper() {
   return null
 }
 
 function CustomerTransferDrawerWrapper() {
-  return null
-}
-
-function CustomerBalanceDrawerWrapper() {
   return null
 }
