@@ -2,12 +2,13 @@ import styled from "@master/styled.react"
 import { DotsThreeCircleVerticalIcon, type Icon } from "@phosphor-icons/react"
 import { HouseIcon } from "@phosphor-icons/react/House"
 import type { JSX } from "react"
-import { type ReactNode, useEffect, useMemo } from "react"
+import { type ReactNode, useEffect } from "react"
 import { Link, useLocation } from "react-router"
 import { storageManager } from "#shared/adapters"
 import { DrawerSheet, ErrorCardBoundary } from "#shared/components"
 import { cn } from "#shared/helpers"
-import { getIsMobile, useBooleanishQueryState } from "#shared/hooks"
+import { useBooleanishQueryState } from "#shared/hooks"
+import { ShowResponsively } from "./ShowResponsively"
 
 function getIsLoggedIn() {
   return !!storageManager.get("ttkk", "sessionStorage")
@@ -21,8 +22,6 @@ interface BaseProps {
 }
 
 export function Base({ children, nav, footer, sidebarItems }: BaseProps) {
-  const isMobile = useMemo(() => getIsMobile(), [])
-
   useEffect(() => {
     if (!getIsLoggedIn()) location.href = "/login"
   }, [])
@@ -35,13 +34,18 @@ export function Base({ children, nav, footer, sidebarItems }: BaseProps) {
   return (
     <>
       {nav}
+
       <main className="flex flex-1 gap-2 rounded-md overflow-hidden">
-        {isMobile ? <MobileSidebar items={sidebarItems} /> : <PCSidebar items={sidebarItems} />}
+        <ShowResponsively
+          pc={<PCSidebar items={sidebarItems} />}
+          mobile={<MobileSidebar items={sidebarItems} />}
+        />
 
         <section className="flex-1 flex bg-slate-1 min-h-0 flex-col rounded-md overflow-y-auto [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.2)_transparent]">
           <ErrorCardBoundary>{children}</ErrorCardBoundary>
         </section>
       </main>
+
       {footer}
     </>
   )
