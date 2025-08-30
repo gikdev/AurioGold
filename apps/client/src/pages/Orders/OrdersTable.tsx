@@ -40,7 +40,7 @@ const getRowStyle: TableOrdersProps["getRowStyle"] = ({ data }) => {
 const ordersColDef: TableOrdersProps["columnDefs"] = [
   {
     field: "price",
-    headerName: "قیمت",
+    headerName: "قیمت (ریال)",
     cellRenderer: cellRenderers.PersianComma,
   },
   {

@@ -3,13 +3,14 @@ import {
   getApiTyStocksForCustommerOptions,
   getApiTyStocksForCustommerQueryKey,
 } from "@repo/api-client/tanstack"
+import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { LoadingSpinner } from "@repo/shared/components"
 import { useQuery } from "@tanstack/react-query"
 import { produce } from "immer"
 import { useAtomValue } from "jotai"
 import { useEffect } from "react"
 import { connectionRefAtom } from "#/atoms"
-import { getHeaderTokenOnly, queryClient } from "#/shared"
+import { queryClient } from "#/shared"
 import { ProductCard } from "./ProductCard"
 import ShowIfStoreOnline from "./ShowIfStoreOnline"
 

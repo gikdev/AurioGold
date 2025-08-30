@@ -1,5 +1,5 @@
 import { atom, useSetAtom } from "jotai"
-import type { ChangeEvent } from "react"
+import CurrencyInput from "react-currency-input-field"
 import z from "zod/v4"
 import { useProfileAtom } from "#/atoms"
 import { useProductContext } from "../ProductFetcher"
@@ -18,12 +18,14 @@ export default function PriceInput() {
   const setErrorMsg = useSetAtom(priceInputErrorMsgAtom)
 
   const currentValue = mode === "rial" ? rial : weight
-  const maxDecimals = calcMaxDecimals(product, mode === "rial")
+  const transactionMethodName = transactionMethods[product.unit].name
+  const shouldHaveDecimals = mode !== "rial" && transactionMethodName !== "count"
+  const maxDecimals = calcMaxDecimals(product, shouldHaveDecimals)
   const step = calcStep(maxDecimals)
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (value?: string) => {
     // Make sure it's not negative...
-    const trimmed = Number(e.target.value).toFixed(maxDecimals < 0 ? 0 : maxDecimals)
+    const trimmed = Number(value).toFixed(maxDecimals < 0 ? 0 : maxDecimals)
     const converted = Number(trimmed)
     const isNan = Number.isNaN(converted)
 
@@ -63,15 +65,17 @@ export default function PriceInput() {
   }
 
   return (
-    <input
+    <CurrencyInput
       dir="ltr"
-      type="number"
       className="outline-none text-2xl text-slate-12 w-full font-bold"
       min={0}
-      step={step}
+      step={Number(step)}
       value={currentValue}
-      onChange={handleChange}
+      onValueChange={handleChange}
       data-testid="price-input"
+      allowDecimals={shouldHaveDecimals}
+      decimalsLimit={maxDecimals}
+      decimalScale={maxDecimals}
     />
   )
 }
@@ -84,9 +88,7 @@ function calcStep(maxDecimals: number) {
     : "1"
 }
 
-function calcMaxDecimals(product: SafeStock, isRialMode: boolean) {
-  const transactionMethodName = transactionMethods[product.unit].name
-  const shouldHaveDecimals = !isRialMode && transactionMethodName !== "count"
+function calcMaxDecimals(product: SafeStock, shouldHaveDecimals: boolean) {
   const rawDecimals = shouldHaveDecimals ? product.decimalNumber : 0
   const clampedDecimals = rawDecimals < 0 ? 0 : rawDecimals
 

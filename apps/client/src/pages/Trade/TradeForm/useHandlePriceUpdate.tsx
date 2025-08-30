@@ -1,10 +1,11 @@
 import type { StockDto } from "@repo/api-client/client"
 import { getApiTyStocksForCustommerByIdQueryKey } from "@repo/api-client/tanstack"
+import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { produce } from "immer"
 import { useAtomValue } from "jotai"
 import { useCallback, useEffect } from "react"
 import { connectionRefAtom } from "#/atoms"
-import { getHeaderTokenOnly, queryClient } from "#/shared"
+import { queryClient } from "#/shared"
 import type { ProductId } from "../navigation"
 import { useProductId } from "./shared"
 

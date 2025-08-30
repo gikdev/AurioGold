@@ -1,7 +1,6 @@
 import { CaretLeftIcon, ClockIcon, PackageIcon } from "@phosphor-icons/react"
 import type { StockDto } from "@repo/api-client/client"
 import { cellRenderers } from "@repo/shared/lib"
-import { formatPersianPrice } from "@repo/shared/utils"
 import { useNavigate } from "react-router"
 import { useProfileAtom } from "#/atoms"
 import { cx } from "#/shared/cva.config"
@@ -53,7 +52,7 @@ export function ProductCard({ product }: ProductCardProps) {
           title="قیمت خرید (ریال)"
           className={isBuyingEnabled ? "text-green-10" : "text-slate-10"}
         >
-          {isBuyingEnabled ? formatPersianPrice(totalBuyPrice) : "-"}
+          {isBuyingEnabled ? <cellRenderers.PersianCurrency value={totalBuyPrice} /> : "-"}
         </p>
 
         <p
@@ -61,7 +60,7 @@ export function ProductCard({ product }: ProductCardProps) {
           title="قیمت فروش (ریال)"
           className={isSellingEnabled ? "text-red-10" : "text-slate-10"}
         >
-          {isSellingEnabled ? formatPersianPrice(totalSellPrice) : "-"}
+          {isSellingEnabled ? <cellRenderers.PersianCurrency value={totalSellPrice} /> : "-"}
         </p>
       </div>
 

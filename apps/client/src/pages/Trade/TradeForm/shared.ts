@@ -6,12 +6,12 @@ import type {
   StockUnit,
 } from "@repo/api-client/client"
 import { getApiTyStocksForCustommerByIdOptions } from "@repo/api-client/tanstack"
+import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { useQuery } from "@tanstack/react-query"
 import { useAtomValue } from "jotai"
 import { useParams } from "react-router"
 import { create } from "zustand"
 import { profileAtom } from "#/atoms"
-import { getHeaderTokenOnly } from "#/shared"
 
 export type Side = "buy" | "sell"
 
