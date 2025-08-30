@@ -1,6 +1,7 @@
 import { HeadingLine } from "@repo/shared/layouts"
 import { CustomerBalanceDrawer } from "./CustomerBalanceDrawer"
 import { CustomerDetailsDrawer } from "./CustomerDetailsDrawer"
+import { CustomerDocDrawer } from "./CustomerDocDrawer"
 import { CustomerDrawer } from "./CustomerDrawer"
 import { DeleteCustomerModal } from "./DeleteCustomerModal"
 import { ManagementCard } from "./ManagementCard"
@@ -68,7 +69,12 @@ function CustomerBalanceDrawerWrapper() {
 }
 
 function CustomerDocDrawerWrapper() {
-  return null
+  const mode = useCustomersStore(s => s.mode)
+  const customerId = useCustomersStore(s => s.customerId)
+
+  const isOpen = mode === "doc" && typeof customerId === "number"
+
+  return isOpen && <CustomerDocDrawer customerId={customerId} onClose={handleClose} />
 }
 
 function CustomerTransferDrawerWrapper() {

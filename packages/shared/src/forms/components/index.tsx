@@ -4,6 +4,7 @@ import { FileInput } from "./FileInput"
 import { MultilineText } from "./MultilineText"
 import { SimpleNumber } from "./SimpleNumber"
 import { SimplePassword } from "./SimplePassword"
+import { SimpleRadios } from "./SimpleRadios"
 import { SimpleSelect } from "./SimpleSelect"
 import { SimpleSwitch } from "./SimpleSwitch"
 import { SimpleText } from "./SimpleText"
@@ -20,6 +21,7 @@ export const { useAppForm } = createFormHook({
     SimplePassword,
     SimpleSwitch,
     FileInput,
+    SimpleRadios,
   },
   formComponents: {
     Btn,

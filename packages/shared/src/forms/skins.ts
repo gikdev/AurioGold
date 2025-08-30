@@ -164,6 +164,28 @@ const btn = cva({
   },
 })
 
+const radioBtnCenter = cva({
+  base: `
+    h-3 w-3 rounded-full
+    bg-slate-3 inline-block 
+    peer-checked:bg-brand-9
+    transition-colors
+  `,
+})
+
+const radioBtnRing = cva({
+  base: `
+    w-5 h-5 rounded-full cursor-pointer
+    border transition-colors
+    border-slate-7 bg-slate-3
+    flex items-center justify-center
+    has-checked:border-brand-9
+    has-checked:bg-brand-3
+  `,
+})
+
+const radioBtnInput = cva({ base: "sr-only peer" })
+
 export const skins = {
   labelerContainer,
   labelerLabelsContainer,
@@ -173,4 +195,7 @@ export const skins = {
   errorMsg,
   btn,
   hint,
+  radioBtnCenter,
+  radioBtnInput,
+  radioBtnRing,
 }

@@ -48,6 +48,7 @@ export const formErrors = {
   invalidInputType: "مقدار واردشده معتبر نیست",
   nonNegative: "عدد غیر منفی (۰ و بیشتر) وارد کنید",
   positive: "عدد مثبت وارد کنید (بیشتر از ۰)",
+  mustUploadFile: "باید فایل آپلود کنید",
 }
 
 export const convertPersianToEnglish = (str: string) => {
