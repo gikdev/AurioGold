@@ -7,6 +7,7 @@ import {
   KeyValueDetailsContainer,
 } from "@repo/shared/components"
 import { skins } from "@repo/shared/forms"
+import { cellRenderers } from "@repo/shared/lib"
 import { useQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
@@ -67,7 +68,11 @@ const PriceSourceDetails = ({ priceSource }: { priceSource: StockPriceSourceResp
   <KeyValueDetailsContainer>
     <KeyValueDetail title={getLabelProperty("name")} value={priceSource.name} />
     <KeyValueDetail ltr title={getLabelProperty("code")} value={priceSource.code} />
-    <KeyValueDetail ltr title={getLabelProperty("price")} value={priceSource.price} />
+    <KeyValueDetail
+      ltr
+      title={getLabelProperty("price")}
+      cellRendered={<cellRenderers.PersianCurrency value={priceSource.price} />}
+    />
     <KeyValueDetail ltr title={getLabelProperty("sourceUrl")} value={priceSource.sourceUrl} />
     <KeyValueDetail ltr title="آی‌دی" value={priceSource.id} />
   </KeyValueDetailsContainer>

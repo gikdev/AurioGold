@@ -42,7 +42,7 @@ export function PriceControllersContainer({
         areAllBtnsEnabled={areAllBtnsEnabled}
         price={formatPersianPrice(diffSellPrice ?? 0)}
         priceNumberColor="text-red-11"
-        title="اختلاف فروش"
+        title="اختلاف فروش (ریال)"
       />
 
       <PriceHr hasVertical />
@@ -53,7 +53,7 @@ export function PriceControllersContainer({
         areAllBtnsEnabled={areAllBtnsEnabled}
         price={formatPersianPrice(diffBuyPrice ?? 0)}
         priceNumberColor="text-green-11"
-        title="اختلاف خرید"
+        title="اختلاف خرید (ریال)"
       />
     </div>
   )

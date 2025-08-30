@@ -56,7 +56,7 @@ function ProductCard({ product: p }: ProductCardProps) {
         </abbr>
 
         <span dir="ltr" className="font-bold text-lg text-slate-12">
-          {formatPersianPrice(p.price ?? 0)}
+          {formatPersianPrice(p.price ?? 0)} ریال
         </span>
       </p>
     </button>

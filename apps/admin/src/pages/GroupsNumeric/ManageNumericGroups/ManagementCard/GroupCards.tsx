@@ -60,7 +60,7 @@ function GroupCard({ diffBuyPrice, diffSellPrice, name, onClick }: GroupCardProp
         title="اختلاف قیمت خرید مشتری"
         className="text-green-10 decoration-slate-7 hover:decoration-slate-8 text-xs"
       >
-        {formatPersianPrice(diffBuyPrice?.toString() || "")}
+        {formatPersianPrice(diffBuyPrice?.toString() || "")} ریال
       </abbr>
 
       <abbr
@@ -68,7 +68,7 @@ function GroupCard({ diffBuyPrice, diffSellPrice, name, onClick }: GroupCardProp
         title="اختلاف قیمت فروش مشتری"
         className="text-red-10 decoration-slate-7 hover:decoration-slate-8 text-xs"
       >
-        {formatPersianPrice(diffSellPrice?.toString() || "")}
+        {formatPersianPrice(diffSellPrice?.toString() || "")} ریال
       </abbr>
     </button>
   )

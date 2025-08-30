@@ -55,8 +55,13 @@ export const cellRenderers = {
     </p>
   ),
   PersianComma: ({ value }: { value: string | number | null | undefined }) => (
-    <span dir="ltr" className="text-left">
+    <span dir="ltr" className="text-start w-full inline-block">
       {typeof value === "number" ? formatPersianPrice(value) : "-"}
+    </span>
+  ),
+  PersianCurrency: ({ value }: { value: string | number | null | undefined }) => (
+    <span dir="ltr" className="text-start w-full inline-block">
+      {typeof value === "number" ? formatPersianPrice(value) : "-"} ریال
     </span>
   ),
   TrueFalse: ({ value }: { value: boolean }) => (

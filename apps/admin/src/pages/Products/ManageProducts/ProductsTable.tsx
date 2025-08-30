@@ -32,7 +32,7 @@ const columnDefs: TableProps["columnDefs"] = [
   {
     field: "price",
     headerName: "قیمت",
-    cellRenderer: cellRenderers.PersianComma,
+    cellRenderer: cellRenderers.PersianCurrency,
     minWidth: 200,
   },
 ]

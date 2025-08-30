@@ -65,12 +65,12 @@ export function ProductDetails({ onClose, productId }: ProductDetailsProps) {
             <KeyValueDetail
               title={getLabelProperty("customerBuyingDiff")}
               value={product.diffBuyPrice}
-              cellRendered={<cellRenderers.PersianComma value={product.diffBuyPrice} />}
+              cellRendered={<cellRenderers.PersianCurrency value={product.diffBuyPrice} />}
             />
             <KeyValueDetail
               title={getLabelProperty("customerSellingDiff")}
               value={product.diffSellPrice}
-              cellRendered={<cellRenderers.PersianComma value={product.diffSellPrice} />}
+              cellRendered={<cellRenderers.PersianCurrency value={product.diffSellPrice} />}
             />
             <KeyValueDetail
               title={getLabelProperty("description")}
@@ -85,12 +85,12 @@ export function ProductDetails({ onClose, productId }: ProductDetailsProps) {
             <KeyValueDetail
               title={getLabelProperty("minProductValue")}
               value={product.minValue}
-              cellRendered={<cellRenderers.PersianComma value={product.minValue} />}
+              cellRendered={<cellRenderers.PersianCurrency value={product.minValue} />}
             />
             <KeyValueDetail
               title={getLabelProperty("maxProductValue")}
               value={product.maxValue}
-              cellRendered={<cellRenderers.PersianComma value={product.maxValue} />}
+              cellRendered={<cellRenderers.PersianCurrency value={product.maxValue} />}
             />
             <KeyValueDetail
               title={getLabelProperty("minTransactionVolume")}
@@ -110,17 +110,17 @@ export function ProductDetails({ onClose, productId }: ProductDetailsProps) {
             <KeyValueDetail
               title={getLabelProperty("price")}
               value={product.price}
-              cellRendered={<cellRenderers.PersianComma value={product.price} />}
+              cellRendered={<cellRenderers.PersianCurrency value={product.price} />}
             />
             <KeyValueDetail
               title={getLabelProperty("priceStep")}
               value={product.priceStep}
-              cellRendered={<cellRenderers.PersianComma value={product.priceStep} />}
+              cellRendered={<cellRenderers.PersianCurrency value={product.priceStep} />}
             />
             <KeyValueDetail
               title={getLabelProperty("priceDiffStep")}
               value={product.diffPriceStep}
-              cellRendered={<cellRenderers.PersianComma value={product.diffPriceStep} />}
+              cellRendered={<cellRenderers.PersianCurrency value={product.diffPriceStep} />}
             />
             {resSources.isSuccess ? (
               <KeyValueDetail

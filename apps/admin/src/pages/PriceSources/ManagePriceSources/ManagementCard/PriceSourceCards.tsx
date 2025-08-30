@@ -34,7 +34,7 @@ function PriceSourceCard({ id, name, price }: PriceSourceCardProps) {
       })}
     >
       <div className="flex justify-between flex-col w-full">
-        <p className="flex-1 text-slate-12 font-bold">{name}</p>
+        <p className="flex-1 text-slate-12 font-bold text-start">{name}</p>
 
         <p
           className="decoration-slate-7 hover:decoration-slate-8 flex gap-1 items-center"
@@ -42,7 +42,7 @@ function PriceSourceCard({ id, name, price }: PriceSourceCardProps) {
         >
           <TagIcon />
 
-          <span>{formatPersianPrice(price?.toString() || "")}</span>
+          <span>{formatPersianPrice(price?.toString() || "")} ریال</span>
         </p>
       </div>
     </button>

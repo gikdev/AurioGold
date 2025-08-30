@@ -198,11 +198,11 @@ export function ProductDrawer({ mode, onClose, productId }: ProductDrawerProps) 
         </form.AppField>
 
         <form.AppField name="minProductValue">
-          {field => <field.CommaField label={labels.minProductValue} />}
+          {field => <field.TomanField label={labels.minProductValue} />}
         </form.AppField>
 
         <form.AppField name="maxProductValue">
-          {field => <field.CommaField label={labels.maxProductValue} />}
+          {field => <field.TomanField label={labels.maxProductValue} />}
         </form.AppField>
 
         <form.AppField name="transactionType">

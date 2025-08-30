@@ -20,7 +20,7 @@ export function DetailsCardsSection({ productId }: DetailsCardsSectionProps) {
   return (
     <div className="flex flex-col gap-2">
       <PriceCard
-        label="اختلاف خرید"
+        label="اختلاف خرید (ریال)"
         value={product.diffBuyPrice}
         disabled={!areAllBtnsEnabled || isPending}
         onInc={() => change("diffBuyPrice", "inc")}
@@ -28,7 +28,7 @@ export function DetailsCardsSection({ productId }: DetailsCardsSectionProps) {
       />
 
       <PriceCard
-        label="قیمت پایه"
+        label="قیمت پایه (ریال)"
         value={product.price}
         disabled={!areAllBtnsEnabled || isPending}
         onInc={() => change("price", "inc")}
@@ -36,7 +36,7 @@ export function DetailsCardsSection({ productId }: DetailsCardsSectionProps) {
       />
 
       <PriceCard
-        label="اختلاف فروش"
+        label="اختلاف فروش (ریال)"
         value={product.diffSellPrice}
         disabled={!areAllBtnsEnabled || isPending}
         onInc={() => change("diffSellPrice", "inc")}

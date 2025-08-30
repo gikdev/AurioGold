@@ -29,7 +29,9 @@ export function TomanField({ label, readOnly = false, dir = "ltr", ...other }: T
         onValueChange={v => field.handleChange(toSafeNumber(v, 0))}
       />
 
-      <p className="text-xs">{formatPersianPrice(Math.floor(field.state.value / 10))} تومان</p>
+      <p className="text-xs">
+        معادل {formatPersianPrice(Math.floor(field.state.value / 10))} تومان
+      </p>
 
       <FieldInfo field={field} />
     </div>

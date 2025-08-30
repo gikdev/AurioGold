@@ -66,7 +66,7 @@ const columnDefs: ColDef<OrderFm>[] = [
   },
   {
     field: "price",
-    headerName: "قیمت",
+    headerName: "قیمت (ریال)",
     cellRenderer: cellRenderers.PersianComma,
   },
   {

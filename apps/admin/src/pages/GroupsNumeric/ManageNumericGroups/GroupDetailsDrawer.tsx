@@ -7,6 +7,7 @@ import {
   KeyValueDetailsContainer,
 } from "@repo/shared/components"
 import { skins } from "@repo/shared/forms"
+import { cellRenderers } from "@repo/shared/lib"
 import { useQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
@@ -63,8 +64,16 @@ const GroupDetails = ({ group }: { group: CustomerGroupIntDto }) => (
   <KeyValueDetailsContainer>
     <KeyValueDetail title={getLabelProperty("name")} value={group.name} />
     <KeyValueDetail title={getLabelProperty("description")} value={group.description} />
-    <KeyValueDetail ltr title={getLabelProperty("diffBuyPrice")} value={group.diffBuyPrice} />
-    <KeyValueDetail ltr title={getLabelProperty("diffSellPrice")} value={group.diffSellPrice} />
+    <KeyValueDetail
+      ltr
+      title={getLabelProperty("diffBuyPrice")}
+      cellRendered={<cellRenderers.PersianCurrency value={group.diffBuyPrice} />}
+    />
+    <KeyValueDetail
+      ltr
+      title={getLabelProperty("diffSellPrice")}
+      cellRendered={<cellRenderers.PersianCurrency value={group.diffSellPrice} />}
+    />
     <KeyValueDetail ltr title="آی‌دی" value={group.id} />
   </KeyValueDetailsContainer>
 )
