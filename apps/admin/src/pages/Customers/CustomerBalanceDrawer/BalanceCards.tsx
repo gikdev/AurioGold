@@ -36,7 +36,7 @@ function BalanceCard({ stockName, volume, stockId, customerId }: BalanceCardProp
     const { doc, transfer } = useCustomersStore.getState()
 
     if (stockId === 0) doc(customerId)
-    else transfer(customerId)
+    else transfer({ customerId, stockId })
   }
 
   return (

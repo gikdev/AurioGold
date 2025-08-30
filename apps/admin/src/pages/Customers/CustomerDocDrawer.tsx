@@ -46,7 +46,7 @@ const modeItems = [
 
 interface CustomerDocDrawerProps {
   onClose: () => void
-  customerId?: CustomerId
+  customerId: CustomerId
 }
 
 export function CustomerDocDrawer({ onClose, customerId }: CustomerDocDrawerProps) {
@@ -98,7 +98,7 @@ export function CustomerDocDrawer({ onClose, customerId }: CustomerDocDrawerProp
       btns={
         <form.AppForm>
           <form.Btn
-            testId="customer-drawer-submit-btn"
+            testId="customer-doc-drawer-submit-btn"
             Icon={PlusIcon}
             title="ثبت"
             className={skins.btn({

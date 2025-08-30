@@ -13,6 +13,7 @@ interface BtnProps {
   onClick?: () => void
   btnType?: ComponentProps<"button">["type"]
   testId?: string
+  disabled?: boolean
 }
 
 export function Btn({
@@ -25,6 +26,7 @@ export function Btn({
   btnType = "button",
   onClick,
   testId,
+  disabled = false,
 }: BtnProps) {
   const defaultClassName = skins.btn({
     intent: "success",
@@ -46,7 +48,7 @@ export function Btn({
             data-testid={testId}
             type={btnType}
             onClick={finalClickHandler}
-            disabled={!canSubmit || isSubmitting}
+            disabled={!canSubmit || isSubmitting || disabled}
             className={className || defaultClassName}
           >
             <FinalIcon />

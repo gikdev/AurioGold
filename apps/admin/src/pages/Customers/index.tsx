@@ -3,6 +3,7 @@ import { CustomerBalanceDrawer } from "./CustomerBalanceDrawer"
 import { CustomerDetailsDrawer } from "./CustomerDetailsDrawer"
 import { CustomerDocDrawer } from "./CustomerDocDrawer"
 import { CustomerDrawer } from "./CustomerDrawer"
+import { CustomerTransferDrawer } from "./CustomerTransferDrawer"
 import { DeleteCustomerModal } from "./DeleteCustomerModal"
 import { ManagementCard } from "./ManagementCard"
 import { useCustomersStore } from "./store"
@@ -78,5 +79,16 @@ function CustomerDocDrawerWrapper() {
 }
 
 function CustomerTransferDrawerWrapper() {
-  return null
+  const mode = useCustomersStore(s => s.mode)
+  const customerId = useCustomersStore(s => s.customerId)
+  const stockId = useCustomersStore(s => s.stockId)
+
+  const isOpen =
+    mode === "transfer" && typeof customerId === "number" && typeof stockId === "number"
+
+  return (
+    isOpen && (
+      <CustomerTransferDrawer customerId={customerId} onClose={handleClose} stockId={stockId} />
+    )
+  )
 }
