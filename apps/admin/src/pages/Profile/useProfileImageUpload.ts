@@ -74,13 +74,6 @@ export function useProfileImageUpload() {
 
       Promise.resolve()
         .then(() => uploadFile(file, false))
-        .then(result => {
-          if (!result.success) {
-            throw new Error(result.errorMsg)
-          }
-
-          return result.fileStr
-        })
         .then(fileStr => {
           const dataToSend = objToKeyVal({
             logoUrl: fileStr,

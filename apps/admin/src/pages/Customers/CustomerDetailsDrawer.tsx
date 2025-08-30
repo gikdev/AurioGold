@@ -5,13 +5,15 @@ import {
   EntityNotFoundCard,
   KeyValueDetail,
   KeyValueDetailsContainer,
+  SmallErrorWithRetryBtn,
 } from "@repo/shared/components"
 import { skins } from "@repo/shared/forms"
+import { parseError } from "@repo/shared/helpers"
 import { useQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 import { FileGuidLink } from "#/components"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
-import { customerFormFields } from "../-Customers/customerFormShared"
+import { customerFormFields } from "./CustomerDrawer/stuff"
 import { apiGetCustomersOptions } from "./shared"
 import { type CustomerId, useCustomersStore } from "./store"
 
@@ -23,7 +25,13 @@ interface CustomerDetailsDrawerProps {
 }
 
 export function CustomerDetailsDrawer({ customerId, onClose }: CustomerDetailsDrawerProps) {
-  const { data: customers = [] } = useQuery(apiGetCustomersOptions)
+  const {
+    data: customers = [],
+    isError,
+    error,
+    refetch,
+    isPending,
+  } = useQuery(apiGetCustomersOptions)
   const customer = useMemo(() => customers.find(c => c.id === customerId), [customerId, customers])
 
   return (
@@ -34,6 +42,8 @@ export function CustomerDetailsDrawer({ customerId, onClose }: CustomerDetailsDr
       title="مشخصات مشتری"
       btns={<Btns customerId={customerId} />}
     >
+      {isError && <SmallErrorWithRetryBtn details={parseError(error)} onClick={refetch} />}
+      {isPending && <div className="h-100 rounded-md animate-pulse bg-slate-4" />}
       {customer ? <CustomerDetails customer={customer} /> : <EntityNotFoundCard entity="مشتری" />}
     </DrawerSheet>
   )
@@ -83,7 +93,7 @@ const CustomerDetails = ({ customer }: { customer: CustomerDto }) => (
     <KeyValueDetail ltr title={getLabelProperty("nationalId")} value={customer.codeMelli} />
     <KeyValueDetail ltr title="تعداد دستگاه‌های متصل" value={customer.connectedDevices} />
     <KeyValueDetail title={getLabelProperty("displayName")} value={customer.displayName} />
-    <KeyValueDetail title={getLabelProperty("groupId")} value={customer.groupName} />
+    <KeyValueDetail title={getLabelProperty("gramGroupId")} value={customer.groupName} />
     <KeyValueDetail title={getLabelProperty("numericGroupId")} value={customer.groupIntName} />
     <KeyValueDetail ltr title={getLabelProperty("isActive")} value={customer.isActive} />
     <KeyValueDetail ltr title={getLabelProperty("isBlocked")} value={customer.isBlocked} />

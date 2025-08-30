@@ -4,8 +4,8 @@ import { createTypedTableFa } from "@repo/shared/components"
 import { skins } from "@repo/shared/forms"
 import { cellRenderers } from "@repo/shared/lib"
 import type { ColDef } from "ag-grid-community"
-import { customerFormFields } from "#/pages/-Customers/customerFormShared"
 import { generateLabelPropertyGetter } from "#/shared/customForm"
+import { customerFormFields } from "../CustomerDrawer/stuff"
 import { useCustomersStore } from "../store"
 
 export function CustomersTable({ customers }: { customers: CustomerDto[] }) {
@@ -22,7 +22,7 @@ const getLabelProperty = generateLabelPropertyGetter(customerFormFields.labels)
 
 const columnDefs: ColDef<CustomerDto>[] = [
   { headerName: "مدیریت", cellRenderer: ManagementBtns, minWidth: 200 },
-  { field: "groupName", headerName: getLabelProperty("groupId") },
+  { field: "groupName", headerName: getLabelProperty("gramGroupId") },
   { field: "groupIntName", headerName: getLabelProperty("numericGroupId") },
   { field: "displayName", headerName: getLabelProperty("displayName") },
   { field: "mobile", headerName: getLabelProperty("phone"), cellRenderer: cellRenderers.Ltr },

@@ -2,7 +2,8 @@ import { CoinsIcon } from "@phosphor-icons/react"
 import type { PortfolioDto } from "@repo/api-client/client"
 import { getApiMasterUserPortfolioByCustomerIdOptions } from "@repo/api-client/tanstack"
 import { getHeaderTokenOnly } from "@repo/shared/auth"
-import { DrawerSheet, EntityNotFoundCard } from "@repo/shared/components"
+import { DrawerSheet, SmallErrorWithRetryBtn } from "@repo/shared/components"
+import { parseError } from "@repo/shared/helpers"
 import { useQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
 import { v4 as uuid } from "uuid"
@@ -16,10 +17,13 @@ interface CustomerBalanceDrawerProps {
 }
 
 export function CustomerBalanceDrawer({ customerId, onClose }: CustomerBalanceDrawerProps) {
-  const { data: customers = [] } = useQuery(apiGetCustomersOptions)
-  const customer = useMemo(() => customers.find(c => c.id === customerId), [customerId, customers])
+  const resCustomers = useQuery(apiGetCustomersOptions)
+  const customer = useMemo(
+    () => (resCustomers.data ?? []).find(c => c.id === customerId),
+    [customerId, resCustomers.data],
+  )
 
-  const { data: balances = [] } = useQuery({
+  const resBalances = useQuery({
     ...getApiMasterUserPortfolioByCustomerIdOptions({
       ...getHeaderTokenOnly(),
       path: { CustomerID: customerId },
@@ -29,7 +33,25 @@ export function CustomerBalanceDrawer({ customerId, onClose }: CustomerBalanceDr
 
   return (
     <DrawerSheet open onClose={onClose} title="باقیمانده مشتری" icon={CoinsIcon}>
-      {customer ? <BalanceCards balanceItems={balances} /> : <EntityNotFoundCard entity="مشتری" />}
+      {resCustomers.isError && (
+        <SmallErrorWithRetryBtn
+          details={parseError(resCustomers.error)}
+          onClick={resCustomers.refetch}
+        />
+      )}
+
+      {resBalances.isError && (
+        <SmallErrorWithRetryBtn
+          details={parseError(resBalances.error)}
+          onClick={resBalances.refetch}
+        />
+      )}
+
+      {(resBalances.isPending || resCustomers.isPending) && (
+        <div className="h-100 rounded-md animate-pulse bg-slate-4" />
+      )}
+
+      {resBalances.isSuccess && customer && <BalanceCards balanceItems={resBalances.data} />}
     </DrawerSheet>
   )
 }
