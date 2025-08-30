@@ -129,7 +129,7 @@ export function CustomerTransferDrawer({
           </form.AppField>
 
           <form.AppField name="volume">
-            {field => <field.SimpleNumber label={labels.volume} />}
+            {field => <field.CommaField label={labels.volume} />}
           </form.AppField>
         </form>
       ) : (

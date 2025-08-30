@@ -137,31 +137,31 @@ export function ProductDrawer({ mode, onClose, productId }: ProductDrawerProps) 
         </form.AppField>
 
         <form.AppField name="price">
-          {field => <field.SimpleNumber label={labels.price} />}
+          {field => <field.TomanField label={labels.price} />}
         </form.AppField>
 
         <form.AppField name="priceStep">
-          {field => <field.SimpleNumber label={labels.priceStep} />}
+          {field => <field.TomanField label={labels.priceStep} />}
         </form.AppField>
 
         <form.AppField name="priceDiffStep">
-          {field => <field.SimpleNumber label={labels.priceDiffStep} />}
+          {field => <field.TomanField label={labels.priceDiffStep} />}
         </form.AppField>
 
         <form.AppField name="customerBuyingDiff">
-          {field => <field.SimpleNumber label={labels.customerBuyingDiff} />}
+          {field => <field.TomanField label={labels.customerBuyingDiff} />}
         </form.AppField>
 
         <form.AppField name="customerSellingDiff">
-          {field => <field.SimpleNumber label={labels.customerSellingDiff} />}
+          {field => <field.TomanField label={labels.customerSellingDiff} />}
         </form.AppField>
 
         <form.AppField name="minTransactionVolume">
-          {field => <field.SimpleNumber label={labels.minTransactionVolume} />}
+          {field => <field.CommaField label={labels.minTransactionVolume} />}
         </form.AppField>
 
         <form.AppField name="maxTransactionVolume">
-          {field => <field.SimpleNumber label={labels.maxTransactionVolume} />}
+          {field => <field.CommaField label={labels.maxTransactionVolume} />}
         </form.AppField>
 
         <form.AppField name="transactionStatus">
@@ -198,11 +198,11 @@ export function ProductDrawer({ mode, onClose, productId }: ProductDrawerProps) 
         </form.AppField>
 
         <form.AppField name="minProductValue">
-          {field => <field.SimpleNumber label={labels.minProductValue} />}
+          {field => <field.CommaField label={labels.minProductValue} />}
         </form.AppField>
 
         <form.AppField name="maxProductValue">
-          {field => <field.SimpleNumber label={labels.maxProductValue} />}
+          {field => <field.CommaField label={labels.maxProductValue} />}
         </form.AppField>
 
         <form.AppField name="transactionType">
@@ -212,15 +212,15 @@ export function ProductDrawer({ mode, onClose, productId }: ProductDrawerProps) 
         </form.AppField>
 
         <form.AppField name="priceToGramRatio">
-          {field => <field.SimpleNumber label={labels.priceToGramRatio} readOnly />}
+          {field => <field.CommaField label={labels.priceToGramRatio} readOnly />}
         </form.AppField>
 
         <form.AppField name="numOfDecimals">
-          {field => <field.SimpleNumber label={labels.numOfDecimals} />}
+          {field => <field.CommaField label={labels.numOfDecimals} />}
         </form.AppField>
 
         <form.AppField name="maxAutoTime">
-          {field => <field.SimpleNumber label={labels.maxAutoTime} />}
+          {field => <field.CommaField label={labels.maxAutoTime} />}
         </form.AppField>
 
         <form.AppField name="accountingCode">

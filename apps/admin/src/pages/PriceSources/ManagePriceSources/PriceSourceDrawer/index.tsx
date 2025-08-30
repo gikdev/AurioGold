@@ -117,7 +117,7 @@ export function PriceSourceDrawer({ mode, onClose, sourceId }: PriceSourceDrawer
         </form.AppField>
 
         <form.AppField name="price">
-          {field => <field.SimpleNumber label={labels.price} />}
+          {field => <field.TomanField label={labels.price} />}
         </form.AppField>
       </form>
     </DrawerSheet>

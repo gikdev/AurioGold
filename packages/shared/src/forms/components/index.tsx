@@ -1,5 +1,7 @@
 import { createFormHook } from "@tanstack/react-form"
 import { Btn } from "./Btn"
+import { CommaField } from "./CommaField"
+import { CurrencyField } from "./CurrencyField"
 import { FileInput } from "./FileInput"
 import { MultilineText } from "./MultilineText"
 import { SimpleNumber } from "./SimpleNumber"
@@ -9,6 +11,7 @@ import { SimpleSelect } from "./SimpleSelect"
 import { SimpleSwitch } from "./SimpleSwitch"
 import { SimpleText } from "./SimpleText"
 import { fieldContext, formContext } from "./shared"
+import { TomanField } from "./TomanField"
 
 export const { useAppForm } = createFormHook({
   fieldContext,
@@ -22,6 +25,9 @@ export const { useAppForm } = createFormHook({
     SimpleSwitch,
     FileInput,
     SimpleRadios,
+    CurrencyField,
+    CommaField,
+    TomanField,
   },
   formComponents: {
     Btn,

@@ -110,11 +110,11 @@ export function GroupDrawer({ mode, onClose, groupId }: GroupDrawerProps) {
         </form.AppField>
 
         <form.AppField name="diffBuyPrice">
-          {field => <field.SimpleNumber label={labels.diffBuyPrice} />}
+          {field => <field.TomanField label={labels.diffBuyPrice} />}
         </form.AppField>
 
         <form.AppField name="diffSellPrice">
-          {field => <field.SimpleNumber label={labels.diffSellPrice} />}
+          {field => <field.TomanField label={labels.diffSellPrice} />}
         </form.AppField>
       </form>
     </DrawerSheet>

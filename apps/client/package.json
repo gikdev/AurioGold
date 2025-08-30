@@ -36,6 +36,7 @@
     "nuqs": "^2.4.3",
     "radix-ui": "^1.4.2",
     "react": "^19.1.0",
+    "react-currency-input-field": "^3.10.0",
     "react-date-object": "^2.1.9",
     "react-dom": "^19.1.0",
     "react-error-boundary": "^6.0.0",

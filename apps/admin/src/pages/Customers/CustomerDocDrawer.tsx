@@ -120,7 +120,7 @@ export function CustomerDocDrawer({ onClose, customerId }: CustomerDocDrawerProp
         </form.AppField>
 
         <form.AppField name="amount">
-          {field => <field.SimpleNumber label={labels.amount} />}
+          {field => <field.TomanField label={labels.amount} />}
         </form.AppField>
 
         <form.AppField name="docStr">
