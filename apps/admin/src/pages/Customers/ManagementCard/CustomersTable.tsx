@@ -10,7 +10,7 @@ import { useCustomersStore } from "../store"
 
 export function CustomersTable({ customers }: { customers: CustomerDto[] }) {
   return (
-    <div className="h-160">
+    <div className="flex-1 min-h-80">
       <Table columnDefs={columnDefs} rowData={customers} />
     </div>
   )

@@ -6,8 +6,7 @@ import { parseError } from "@repo/shared/helpers"
 import { cellRenderers } from "@repo/shared/lib"
 import { useQuery } from "@tanstack/react-query"
 import type { ColDef } from "ag-grid-community"
-import { FilterDrawerTableWrapper } from "./FilterDrawerTableWrapper"
-import { usePageDto } from "./shared"
+import { usePageDto } from "../shared"
 
 const TypedTable = createTypedTableFa<OrdersByStuckDto>()
 
@@ -30,13 +29,14 @@ export function StocksTable() {
     select,
   })
 
-  return (
-    <FilterDrawerTableWrapper title="جدول خلاصه:" onReloadBtnClick={refetch}>
-      {isError && <SmallErrorWithRetryBtn details={parseError(error)} onClick={() => refetch()} />}
-      {isPending && <div className="h-100 rounded-md animate-pulse bg-slate-4" />}
-      {isSuccess && <TypedTable rowData={stocks} columnDefs={columnDefs} />}
-    </FilterDrawerTableWrapper>
-  )
+  if (isPending) return <div className="h-100 rounded-md animate-pulse bg-slate-4" />
+
+  if (isError)
+    return <SmallErrorWithRetryBtn details={parseError(error)} onClick={() => refetch()} />
+
+  if (isSuccess) return <TypedTable rowData={stocks} columnDefs={columnDefs} />
+
+  return null
 }
 
 const columnDefs: ColDef<OrdersByStuckDto>[] = [

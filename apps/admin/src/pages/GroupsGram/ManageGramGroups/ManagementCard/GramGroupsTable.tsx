@@ -70,7 +70,7 @@ const Table = createTypedTableFa<CustomerGroupDto>()
 
 export function GroupsGramTable({ groups }: { groups: CustomerGroupDto[] }) {
   return (
-    <div className="h-160">
+    <div className="min-h-80 flex-1">
       <Table columnDefs={columnDefs} rowData={groups} />
     </div>
   )

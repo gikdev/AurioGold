@@ -32,7 +32,7 @@ export function ManagementCard() {
       title="مدیریت مشتریان"
       icon={UsersThreeIcon}
       titleSlot={<TitledCardActions />}
-      className="md:max-w-240"
+      className="md:max-w-240 flex-1 flex flex-col"
     >
       {isError && <SmallErrorWithRetryBtn details={parseError(error)} onClick={refetch} />}
       {isPending && <div className="h-100 rounded-md animate-pulse bg-slate-4" />}

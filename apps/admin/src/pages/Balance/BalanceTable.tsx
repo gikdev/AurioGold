@@ -22,7 +22,7 @@ const columnDefs: TableProps["columnDefs"] = [
 
 export default function BalanceTable({ portfolios }: { portfolios: TableProps["rowData"] }) {
   return (
-    <div className="h-160">
+    <div className="min-h-80 flex-1">
       <Table columnDefs={columnDefs} rowData={portfolios} />
     </div>
   )

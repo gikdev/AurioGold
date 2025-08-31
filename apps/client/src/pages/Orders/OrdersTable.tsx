@@ -120,10 +120,10 @@ export default function OrdersTable() {
   }, [connection])
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-10 flex-1">
       <FilterDrawer dateFilterState={dateFilterState} />
 
-      <div className="h-160 flex flex-col">
+      <div className="flex flex-col flex-1">
         <div className="flex items-center gap-1">
           <h2 className="text-slate-12 font-bold bg-slate-2 pt-1 px-2 rounded-t-md pb-3 relative top-3 border border-slate-6 me-auto">
             جدول سفارشات:
@@ -157,11 +157,13 @@ export default function OrdersTable() {
           </Link>
         </div>
 
-        <TableOrders
-          rowData={resOrders.data ?? []}
-          columnDefs={ordersColDef}
-          getRowStyle={getRowStyle}
-        />
+        <div className="flex-1 min-h-80">
+          <TableOrders
+            rowData={resOrders.data ?? []}
+            columnDefs={ordersColDef}
+            getRowStyle={getRowStyle}
+          />
+        </div>
       </div>
     </div>
   )

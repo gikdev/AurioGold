@@ -15,14 +15,13 @@ import { useCallback } from "react"
 import { useNavigate } from "react-router"
 import { connectionRefAtom } from "#/atoms"
 import routes from "#/pages/routes"
-import { FilterDrawerTableWrapper } from "./FilterDrawerTableWrapper"
 import {
   getRowStyle,
   signalrDecideOrder,
   useAcceptOrder,
   useHandleOrdersUpdate,
   usePageDto,
-} from "./shared"
+} from "../shared"
 
 const TypedTable = createTypedTableFa<OrderFm>()
 
@@ -47,15 +46,15 @@ export function OrdersTable() {
 
   useHandleOrdersUpdate()
 
-  return (
-    <FilterDrawerTableWrapper title="جدول سفارشات:" onReloadBtnClick={refetch}>
-      {isError && <SmallErrorWithRetryBtn details={parseError(error)} onClick={() => refetch()} />}
-      {isPending && <div className="h-100 rounded-md animate-pulse bg-slate-4" />}
-      {isSuccess && (
-        <TypedTable rowData={orders} columnDefs={columnDefs} getRowStyle={getRowStyle} />
-      )}
-    </FilterDrawerTableWrapper>
-  )
+  if (isPending) return <div className="h-100 rounded-md animate-pulse bg-slate-4" />
+
+  if (isError)
+    return <SmallErrorWithRetryBtn details={parseError(error)} onClick={() => refetch()} />
+
+  if (isSuccess)
+    return <TypedTable rowData={orders} columnDefs={columnDefs} getRowStyle={getRowStyle} />
+
+  return null
 }
 
 const columnDefs: ColDef<OrderFm>[] = [

@@ -147,7 +147,7 @@ function ManageStuff() {
         title="مدیریت محصولات"
         icon={PackageIcon}
         titleSlot={titleSlot}
-        className="max-w-240"
+        className="max-w-240 flex flex-col flex-1"
       >
         {isError && (
           <SmallErrorWithRetryBtn details={parseError(error)} onClick={() => refetch()} />

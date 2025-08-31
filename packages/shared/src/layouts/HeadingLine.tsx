@@ -8,13 +8,20 @@ interface HeadingLineProps {
   className?: string
   children?: ReactNode
   actions?: ReactNode
+  containerClassName?: string
 }
 
-export function HeadingLine({ title, actions, className = "", children = null }: HeadingLineProps) {
+export function HeadingLine({
+  title,
+  actions,
+  className = "",
+  children = null,
+  containerClassName = "",
+}: HeadingLineProps) {
   const StyledSection = styled.section("p-4", className)
 
   return (
-    <AppPage>
+    <AppPage className={containerClassName}>
       {actions ? (
         <div className="flex items-center gap-2 border-b border-slate-6 p-2">
           <Heading as="h1" size={3} className="text-slate-12">

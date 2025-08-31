@@ -43,7 +43,7 @@ interface ProductsTableProps {
 
 export function ProductsTable({ stocks }: ProductsTableProps) {
   return (
-    <div className="h-160">
+    <div className="min-h-80 flex-1">
       <Table rowData={stocks} columnDefs={columnDefs} />
     </div>
   )

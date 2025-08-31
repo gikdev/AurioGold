@@ -1,24 +1,18 @@
 import { HeadingLine } from "@repo/shared/layouts"
 import { FilterDrawer } from "./FilterDrawer"
-import { OrdersTable } from "./OrdersTable"
-import { StocksTable } from "./StocksTable"
 import { useDateFilterStore } from "./shared"
+import { Tables } from "./Tables"
 
 export default function Orders() {
   return (
-    <HeadingLine title="مدیریت سفارشات">
+    <HeadingLine
+      title="مدیریت سفارشات"
+      containerClassName="flex flex-col flex-1"
+      className="flex flex-col flex-1"
+    >
+      <FilterDrawerWrapper />
       <Tables />
     </HeadingLine>
-  )
-}
-
-function Tables() {
-  return (
-    <div className="flex flex-col gap-10">
-      <FilterDrawerWrapper />
-      <OrdersTable />
-      <StocksTable />
-    </div>
   )
 }
 

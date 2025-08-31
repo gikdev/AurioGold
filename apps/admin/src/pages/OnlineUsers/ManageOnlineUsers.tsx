@@ -70,7 +70,12 @@ export default function ManageOnlineUsers() {
   )
 
   return (
-    <TitledCard title="کاربران آنلاین" icon={UsersFourIcon} titleSlot={cardTitleSlot}>
+    <TitledCard
+      title="کاربران آنلاین"
+      icon={UsersFourIcon}
+      titleSlot={cardTitleSlot}
+      className="flex flex-col flex-1"
+    >
       <div className="flex justify-center items-center gap-5 flex-wrap">
         <OnlineNumberCard
           isOnline={onlineUsers && onlineUsers?.length > 0}
@@ -99,7 +104,7 @@ export default function ManageOnlineUsers() {
         />
       </div>
 
-      <div className="h-120">
+      <div className="min-h-80 flex-1">
         <Table rowData={onlineUsers ?? []} loading={!onlineUsers} columnDefs={colDefs} />
       </div>
     </TitledCard>

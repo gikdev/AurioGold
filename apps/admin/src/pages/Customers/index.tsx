@@ -10,7 +10,11 @@ import { useCustomersStore } from "./store"
 
 export default function Customers() {
   return (
-    <HeadingLine title="مدیریت مشتریان">
+    <HeadingLine
+      title="مدیریت مشتریان"
+      containerClassName="flex flex-1 flex-col"
+      className="flex flex-col flex-1"
+    >
       <ManagementCard />
       <CreateCustomerDrawerWrapper />
       <EditCustomerDrawerWrapper />

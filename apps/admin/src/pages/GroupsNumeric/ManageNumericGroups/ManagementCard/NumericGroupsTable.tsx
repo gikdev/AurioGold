@@ -70,7 +70,7 @@ const Table = createTypedTableFa<CustomerGroupIntDto>()
 
 export function GroupsNumericTable({ groups }: { groups: CustomerGroupIntDto[] }) {
   return (
-    <div className="h-160">
+    <div className="min-h-80 flex-1">
       <Table columnDefs={columnDefs} rowData={groups} />
     </div>
   )

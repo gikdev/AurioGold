@@ -86,7 +86,7 @@ const Table = createTypedTableFa<StockPriceSourceResponse>()
 
 export function PriceSourcesTable({ priceSources }: { priceSources: StockPriceSourceResponse[] }) {
   return (
-    <div className="h-160">
+    <div className="min-h-80 flex-1">
       <Table columnDefs={columnDefs} rowData={priceSources} />
     </div>
   )

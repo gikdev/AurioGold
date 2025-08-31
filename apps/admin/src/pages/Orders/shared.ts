@@ -46,7 +46,7 @@ export function useAcceptOrder() {
   })
 }
 
-const refetchGetOrders = () =>
+export const refetchGetOrders = () =>
   queryClient.refetchQueries(
     postApiMasterGetOrdersOptions({
       ...getHeaderTokenOnly(),

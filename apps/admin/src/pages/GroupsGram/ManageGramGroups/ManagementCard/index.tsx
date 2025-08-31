@@ -28,7 +28,7 @@ export function ManagementCard() {
       title="مدیریت گروه گرمی"
       icon={UsersThreeIcon}
       titleSlot={<TitledCardActions />}
-      className="md:max-w-240"
+      className="md:max-w-240 flex flex-col flex-1"
     >
       {isError && <SmallErrorWithRetryBtn details={parseError(error)} onClick={() => refetch()} />}
       {isPending && <div className="h-100 rounded-md animate-pulse bg-slate-4" />}

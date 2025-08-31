@@ -79,7 +79,12 @@ export default function ManageBalance() {
   )
 
   return (
-    <TitledCard title="مدیریت مانده حساب" icon={CoinsIcon} titleSlot={titledCardActions}>
+    <TitledCard
+      title="مدیریت مانده حساب"
+      icon={CoinsIcon}
+      titleSlot={titledCardActions}
+      className="flex flex-col flex-1"
+    >
       {isPending && <div className="h-100 rounded-md animate-pulse bg-slate-4" />}
 
       {isSuccess && viewMode === "cards" && (
