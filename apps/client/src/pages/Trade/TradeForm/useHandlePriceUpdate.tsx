@@ -24,7 +24,7 @@ export function useHandlePriceUpdate() {
       if (id !== productId) return
 
       const byIdQueryKey = getApiTyStocksForCustommerByIdQueryKey({
-        ...getHeaderTokenOnly(),
+        ...getHeaderTokenOnly("client"),
         path: { id: productId },
       })
 

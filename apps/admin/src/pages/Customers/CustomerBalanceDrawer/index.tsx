@@ -25,7 +25,7 @@ export function CustomerBalanceDrawer({ customerId, onClose }: CustomerBalanceDr
 
   const resBalances = useQuery({
     ...getApiMasterUserPortfolioByCustomerIdOptions({
-      ...getHeaderTokenOnly(),
+      ...getHeaderTokenOnly("admin"),
       path: { CustomerID: customerId },
     }),
     select,

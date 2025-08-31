@@ -41,7 +41,7 @@ export function getRowStyle({ data }: RowClassParams<OrderFm>): RowStyle | undef
 export function useAcceptOrder() {
   return useMutation({
     ...postApiMasterAcceptOrdersMutation({
-      ...getHeaderTokenOnly(),
+      ...getHeaderTokenOnly("admin"),
     }),
   })
 }
@@ -49,7 +49,7 @@ export function useAcceptOrder() {
 export const refetchGetOrders = () =>
   queryClient.refetchQueries(
     postApiMasterGetOrdersOptions({
-      ...getHeaderTokenOnly(),
+      ...getHeaderTokenOnly("admin"),
       body: getPageDto(),
     }),
   )

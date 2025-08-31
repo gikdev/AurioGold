@@ -26,7 +26,7 @@ export default function EditMainPageContentCard() {
 
   const handleSave = (data: EditMainPageContentFormValues) => {
     saveKey("MainPage", data.content || "", () => {
-      storageManager.save("mainPage", data.content || "", "sessionStorage")
+      storageManager.save("admin_mainPage", data.content || "", "sessionStorage")
     })
   }
 

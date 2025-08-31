@@ -32,7 +32,7 @@ export function ProductDetails({ onClose, productId }: ProductDetailsProps) {
   const { data: stocks = [] } = useStocksQuery()
   const product = stocks.find(p => p.id === productId)
   const resSources = useQuery(
-    getApiStockPriceSourceGetStockPriceSourcesOptions(getHeaderTokenOnly()),
+    getApiStockPriceSourceGetStockPriceSourcesOptions(getHeaderTokenOnly("admin")),
   )
 
   return (

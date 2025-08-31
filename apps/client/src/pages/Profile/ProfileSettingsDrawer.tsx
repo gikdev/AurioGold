@@ -156,38 +156,6 @@ function _ProfileSettingsDrawer() {
             dir="ltr"
           />
         </Labeler>
-        uploadFile(
-        {/* <FileInput
-          errorMsg={errors.melliID?.message}
-          label={labels.melliID}
-          mode="file"
-          allowedTypes={allowedTypes}
-          notes={imageNotes}
-          maxSizeMB={MAX_FILE_SIZE_FOR_UPLOAD}
-          uploadFn={file => uploadFile(file, true)}
-          onRemove={() => {
-            setValue(fields.melliID, null)
-          }}
-          onUploaded={fileStr => {
-            setValue(fields.melliID, fileStr)
-          }}
-        />
-
-        <FileInput
-          errorMsg={errors.kasbsID?.message}
-          label={labels.kasbsID}
-          mode="file"
-          allowedTypes={allowedTypes}
-          notes={imageNotes}
-          maxSizeMB={MAX_FILE_SIZE_FOR_UPLOAD}
-          uploadFn={file => uploadFile(file, true)}
-          onRemove={() => {
-            setValue(fields.kasbsID, null)
-          }}
-          onUploaded={fileStr => {
-            setValue(fields.kasbsID, fileStr)
-          }}
-        /> */}
       </form>
     </DrawerSheet>
   )

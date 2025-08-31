@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "scan": "react-scan localhost:4444",
-    "dev": "vite",
+    "dev": "vite --host",
     "test": "vitest",
     "build": "tsc -b && vite build",
     "preview": "vite preview"

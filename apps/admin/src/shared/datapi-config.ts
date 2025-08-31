@@ -5,7 +5,7 @@ import { logout } from "#/atoms"
 
 const genDatApiConfig: () => GlobalConfigOptions = () => ({
   baseUrl: `${currentProfile.apiBaseUrl}/api`,
-  token: storageManager.get("ttkk", "sessionStorage") || undefined,
+  token: storageManager.get("admin_ttkk", "sessionStorage") || undefined,
   handle401: logout,
   handleFallbackErrorMsg: msg =>
     notifManager.notify(msg || "مشکل ناشناخته پیش آمده! (NotCaughtError)", "toast", {

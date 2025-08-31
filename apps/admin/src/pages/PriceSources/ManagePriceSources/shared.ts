@@ -5,7 +5,7 @@ import { create } from "zustand"
 
 export type PriceSourceId = NonNullable<StockPriceSourceResponse["id"]>
 export const priceSourcesOptions = getApiStockPriceSourceGetStockPriceSourcesOptions(
-  getHeaderTokenOnly(),
+  getHeaderTokenOnly("admin"),
 )
 
 interface PriceSourcesStore {

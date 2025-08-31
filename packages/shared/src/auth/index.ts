@@ -1,11 +1,12 @@
 import { storageManager } from "#shared/adapters"
 
-export const getToken = () => storageManager.get("ttkk", "sessionStorage") || undefined
+export const getToken = (app: "admin" | "client") =>
+  storageManager.get(`${app}_ttkk`, "sessionStorage") || undefined
 
-const getBearerAuth = () => ({
-  Authorization: `Bearer ${getToken()}`,
+const getBearerAuth = (app: "admin" | "client") => ({
+  Authorization: `Bearer ${getToken(app)}`,
 })
 
-export const getHeaderTokenOnly = () => ({
-  headers: { ...getBearerAuth() },
+export const getHeaderTokenOnly = (app: "admin" | "client") => ({
+  headers: { ...getBearerAuth(app) },
 })

@@ -14,11 +14,11 @@ function getBaseUrl() {
 }
 
 function isLoggedInOrHasToken() {
-  return !!storageManager.get("ttkk", "sessionStorage")
+  return !!storageManager.get("client_ttkk", "sessionStorage")
 }
 
 export function logout() {
-  storageManager.remove("ttkk", "sessionStorage")
+  storageManager.remove("client_ttkk", "sessionStorage")
   setTimeout(() => {
     location.href = routes.login
   }, 3000)
@@ -65,7 +65,7 @@ export function SignalRManager() {
       setConnectionState("loading")
       await connection.start()
       setConnectionState("connected")
-      const token = storageManager.get("ttkk", "sessionStorage")
+      const token = storageManager.get("client_ttkk", "sessionStorage")
       await connection.invoke("InitializeConnection", token)
     } catch (_err) {
       setConnectionState("disconnected")
@@ -85,7 +85,7 @@ export function SignalRManager() {
     if (!connectionRef) return
 
     const handleMasterStatusChange = (incomingMasterId: unknown, isOnline: boolean) => {
-      const masterId = storageManager.get("masterID", "sessionStorage")
+      const masterId = storageManager.get("client_masterID", "sessionStorage")
       if (Number(masterId) !== Number(incomingMasterId)) return
       setAdminOnline(isOnline)
     }

@@ -9,7 +9,6 @@ import {
 } from "@phosphor-icons/react"
 import { AppInfoBtn } from "@repo/shared/components"
 import { useAtomValue } from "jotai"
-import { useEffect } from "react"
 import { connectionStateAtom, isAdminOnlineAtom } from "#/atoms"
 import appConfig from "../../config"
 
@@ -39,8 +38,6 @@ function ShowShopStatus() {
     "px-2 h-full flex items-center justify-center",
     isAdminOnline && isConnected ? "bg-green-2 text-green-11" : "",
   )
-
-  useEffect(() => {}, [])
 
   return (
     <abbr title={title} className="contents">

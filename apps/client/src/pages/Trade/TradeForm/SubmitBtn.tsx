@@ -30,7 +30,7 @@ const OrderSides = {
 } as const satisfies Record<string, OrderSide>
 
 const useSubmitOrderMutation = () =>
-  useMutation(postApiCustomerReqOrderMutation(getHeaderTokenOnly()))
+  useMutation(postApiCustomerReqOrderMutation(getHeaderTokenOnly("client")))
 
 export default function SubmitBtn() {
   const side = useTradeFormStore(s => s.side)

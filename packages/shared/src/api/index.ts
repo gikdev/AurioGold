@@ -4,14 +4,18 @@ import { getToken } from "#shared/auth"
 
 export type UploadResult = { success: true; fileStr: string } | { success: false; errorMsg: string }
 
-export async function uploadFile(file: File, isPrivate: boolean): Promise<string> {
+export async function uploadFile(
+  app: "admin" | "client",
+  file: File,
+  isPrivate: boolean,
+): Promise<string> {
   const fileName = file.name
   const lastDotPosition = fileName.lastIndexOf(".")
   const fileExt = fileName.slice(lastDotPosition, fileName.length)
 
   const res = await postApiTyFilesUpload({
     throwOnError: true,
-    auth: getToken(),
+    auth: getToken(app),
     body: {
       File: file,
       Name: uuidv4() + fileExt,

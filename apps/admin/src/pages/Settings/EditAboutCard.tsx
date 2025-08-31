@@ -24,7 +24,7 @@ export default function EditAboutCard() {
 
   const handleSave = (data: EditAboutFormValues) => {
     saveKey("AboutUs", data.about || "", () => {
-      storageManager.save("aboutUs", data.about || "", "sessionStorage")
+      storageManager.save("admin_aboutUs", data.about || "", "sessionStorage")
     })
   }
 

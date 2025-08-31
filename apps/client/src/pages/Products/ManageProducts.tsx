@@ -14,7 +14,8 @@ import { queryClient } from "#/shared"
 import { ProductCard } from "./ProductCard"
 import ShowIfStoreOnline from "./ShowIfStoreOnline"
 
-const useStocksQuery = () => useQuery(getApiTyStocksForCustommerOptions(getHeaderTokenOnly()))
+const useStocksQuery = () =>
+  useQuery(getApiTyStocksForCustommerOptions(getHeaderTokenOnly("client")))
 
 export function ManageProducts() {
   useReceivePriceUpdate()
@@ -49,7 +50,7 @@ function applyStockUpdate(
   date: string,
 ) {
   queryClient.setQueryData<StockDto[] | undefined>(
-    getApiTyStocksForCustommerQueryKey(getHeaderTokenOnly()),
+    getApiTyStocksForCustommerQueryKey(getHeaderTokenOnly("client")),
     oldData =>
       produce(oldData, draft => {
         if (!draft) return

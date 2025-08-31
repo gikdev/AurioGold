@@ -61,7 +61,7 @@ export type SafeStock = ReturnType<typeof makeSafeStock>
 export const useStockByIdQuery = (id: number) =>
   useQuery({
     ...getApiTyStocksForCustommerByIdOptions({
-      ...getHeaderTokenOnly(),
+      ...getHeaderTokenOnly("client"),
       path: { id },
     }),
     select: makeSafeStock,

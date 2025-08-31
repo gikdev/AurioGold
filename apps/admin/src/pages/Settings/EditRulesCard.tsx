@@ -24,7 +24,7 @@ export default function EditRulesCard() {
 
   const handleSave = (data: EditRulesFormValues) => {
     saveKey("Rulls", data.rules || "", () => {
-      storageManager.save("rulls", data.rules || "", "sessionStorage")
+      storageManager.save("admin_rulls", data.rules || "", "sessionStorage")
     })
   }
 

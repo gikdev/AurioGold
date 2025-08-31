@@ -104,7 +104,7 @@ export function useCreateCustomerMutation() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    ...postApiMasterAddCustomerMutation(getHeaderTokenOnly()),
+    ...postApiMasterAddCustomerMutation(getHeaderTokenOnly("admin")),
     onSuccess: (_, { body }) => {
       if (!body) return
 
@@ -120,7 +120,7 @@ export function useUpdateCustomerMutation() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    ...postApiMasterUpdateCustomerMutation(getHeaderTokenOnly()),
+    ...postApiMasterUpdateCustomerMutation(getHeaderTokenOnly("admin")),
     onSuccess: (_, { body }) => {
       queryClient.setQueryData<CustomerDto[]>(apiGetCustomersOptions.queryKey, old =>
         old?.map(item => (item.id === body?.id ? { ...item, ...body } : item)),

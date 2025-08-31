@@ -23,7 +23,7 @@ export function StocksTable() {
     refetch,
   } = useQuery({
     ...postApiMasterGetOrdersOptions({
-      ...getHeaderTokenOnly(),
+      ...getHeaderTokenOnly("admin"),
       body: pageDto,
     }),
     select,

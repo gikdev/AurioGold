@@ -20,7 +20,7 @@ function addIds(items: MasterPortfolioDto[]): MasterPortfolioWithId[] {
 
 export const useMasterBalanceQuery = () =>
   useQuery({
-    ...getApiMasterGetMasterPortfolioOptions(getHeaderTokenOnly()),
+    ...getApiMasterGetMasterPortfolioOptions(getHeaderTokenOnly("admin")),
     select: addIds,
   })
 

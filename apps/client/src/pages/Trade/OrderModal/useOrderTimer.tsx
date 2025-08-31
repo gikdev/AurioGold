@@ -31,7 +31,11 @@ export function useOrderTimer() {
         options: { url: `/Customer/GetOrderByID/${currentOrderId}` },
       })
 
-      connection?.invoke("UpdateOrder", storageManager.get("ttkk", "sessionStorage"), res.data?.id)
+      connection?.invoke(
+        "UpdateOrder",
+        storageManager.get("client_ttkk", "sessionStorage"),
+        res.data?.id,
+      )
 
       if (res.data?.orderStatus === OrderStatus.Accepted) setModalState("agreed")
       else if (res.data?.orderStatus === OrderStatus.Rejected) setModalState("disagreed")

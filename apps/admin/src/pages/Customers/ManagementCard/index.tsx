@@ -57,7 +57,7 @@ const ReloadCustomersBtn = () => (
 )
 
 const refetchCustomers = () =>
-  queryClient.refetchQueries(getApiMasterGetCustomersOptions(getHeaderTokenOnly()))
+  queryClient.refetchQueries(getApiMasterGetCustomersOptions(getHeaderTokenOnly("admin")))
 
 const CreateCustomerBtn = () => {
   return (

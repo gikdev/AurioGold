@@ -56,7 +56,11 @@ export default function Login() {
           resolve()
 
           for (const key in data) {
-            storageManager.save(key, String(data[key as keyof MasterLoginModel]), "sessionStorage")
+            storageManager.save(
+              `admin_${key}`,
+              String(data[key as keyof MasterLoginModel]),
+              "sessionStorage",
+            )
           }
 
           location.assign(routes.home)

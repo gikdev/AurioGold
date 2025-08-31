@@ -16,7 +16,7 @@ interface DeleteCustomerModalProps {
 export function DeleteCustomerModal({ customerId, onClose }: DeleteCustomerModalProps) {
   const queryClient = useQueryClient()
   const { mutate: removeCustomer } = useMutation(
-    postApiMasterRemoveCustomerMutation(getHeaderTokenOnly()),
+    postApiMasterRemoveCustomerMutation(getHeaderTokenOnly("admin")),
   )
 
   const handleDelete = async () => {

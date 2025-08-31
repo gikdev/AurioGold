@@ -15,7 +15,7 @@ interface DeleteGroupModalProps {
 export function DeleteGroupModal({ groupId, onClose }: DeleteGroupModalProps) {
   const queryClient = useQueryClient()
   const { mutate: deleteGroup } = useMutation(
-    deleteApiTyCustomerGroupsByIdMutation(getHeaderTokenOnly()),
+    deleteApiTyCustomerGroupsByIdMutation(getHeaderTokenOnly("admin")),
   )
 
   const handleDelete = async () => {

@@ -44,7 +44,7 @@ export function useCreateSourceMutation() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    ...postApiStockPriceSourceAddStockPriceSourceMutation(getHeaderTokenOnly()),
+    ...postApiStockPriceSourceAddStockPriceSourceMutation(getHeaderTokenOnly("admin")),
     onSuccess: (_, { body }) => {
       if (!body) return
 
@@ -60,7 +60,7 @@ export function useUpdateSourceMutation() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    ...postApiStockPriceSourceEditStockPriceSourceMutation(getHeaderTokenOnly()),
+    ...postApiStockPriceSourceEditStockPriceSourceMutation(getHeaderTokenOnly("admin")),
     onSuccess: (_, { body }) => {
       queryClient.setQueryData<StockPriceSourceResponse[]>(priceSourcesOptions.queryKey, old =>
         old?.map(item =>

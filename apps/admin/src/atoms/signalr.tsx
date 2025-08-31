@@ -21,11 +21,11 @@ function getBaseUrl() {
 }
 
 function isLoggedInOrHasToken() {
-  return !!storageManager.get("ttkk", "sessionStorage")
+  return !!storageManager.get("admin_ttkk", "sessionStorage")
 }
 
 export function logout() {
-  storageManager.remove("ttkk", "sessionStorage")
+  storageManager.remove("admin_ttkk", "sessionStorage")
   setTimeout(() => {
     location.href = routes.login
   }, 3000)
@@ -72,7 +72,7 @@ export function SignalRManager() {
       setConnectionState("loading")
       await connection.start()
       setConnectionState("connected")
-      const token = storageManager.get("ttkk", "sessionStorage")
+      const token = storageManager.get("admin_ttkk", "sessionStorage")
       await connection.invoke("InitializeConnection", token)
     } catch (_err) {
       setConnectionState("disconnected")
@@ -89,14 +89,15 @@ export function SignalRManager() {
   // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     const isOnline =
-      storageManager.get("status", "sessionStorage")?.toString() === AdminStatus.Online.toString()
+      storageManager.get("admin_status", "sessionStorage")?.toString() ===
+      AdminStatus.Online.toString()
 
     setAdminOnline(isOnline)
   }, [])
 
   useEffectButNotOnMount(() => {
     const val = isAdminOnline ? AdminStatus.Online : AdminStatus.Offline
-    storageManager.save("status", val.toString(), "sessionStorage")
+    storageManager.save("admin_status", val.toString(), "sessionStorage")
   }, [isAdminOnline])
 
   // Handle UI update when admin connectivity status changed on another instance of the app
@@ -105,7 +106,7 @@ export function SignalRManager() {
     if (!connectionRef) return
 
     const handleMasterStatusChange = (incomingMasterId: unknown, isOnline: boolean) => {
-      const masterId = storageManager.get("masterID", "sessionStorage")
+      const masterId = storageManager.get("admin_masterID", "sessionStorage")
       if (Number(masterId) !== Number(incomingMasterId)) return
       setAdminOnline(isOnline)
     }

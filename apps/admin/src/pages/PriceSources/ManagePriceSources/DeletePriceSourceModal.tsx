@@ -15,7 +15,7 @@ interface DeletePriceSourceModalProps {
 export function DeletePriceSourceModal({ sourceId, onClose }: DeletePriceSourceModalProps) {
   const queryClient = useQueryClient()
   const { mutate: deleteSource } = useMutation(
-    postApiStockPriceSourceDeleteStockMutation(getHeaderTokenOnly()),
+    postApiStockPriceSourceDeleteStockMutation(getHeaderTokenOnly("admin")),
   )
 
   const handleDelete = async () => {

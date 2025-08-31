@@ -44,7 +44,7 @@ export function useCreateGroupMutation() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    ...postApiTyCustomerGroupsMutation(getHeaderTokenOnly()),
+    ...postApiTyCustomerGroupsMutation(getHeaderTokenOnly("admin")),
     onSuccess: (_, { body }) => {
       if (!body) return
 
@@ -60,7 +60,7 @@ export function useUpdateGroupMutation() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    ...putApiTyCustomerGroupsByIdMutation(getHeaderTokenOnly()),
+    ...putApiTyCustomerGroupsByIdMutation(getHeaderTokenOnly("admin")),
     onSuccess: (_, { body, path: { id } }) => {
       queryClient.setQueryData<CustomerGroupDto[]>(gramGroupsOptions.queryKey, old =>
         old?.map(item => (item.id === id ? { ...item, ...body } : item)),

@@ -11,6 +11,7 @@ import { ImagePreview } from "./ImagePreview"
 import { Notes } from "./Notes"
 
 interface FileInputProps {
+  app: "admin" | "client"
   label: string
   mode: "image" | "file"
   allowedTypes: ComponentProps<typeof Core>["allowedTypes"]
@@ -20,6 +21,7 @@ interface FileInputProps {
 }
 
 export function FileInput({
+  app,
   label,
   mode,
   allowedTypes,
@@ -34,7 +36,7 @@ export function FileInput({
     if (!file) return
     let cancelled = false
 
-    uploadFile(file, isPrivate)
+    uploadFile(app, file, isPrivate)
       .then(fileStr => {
         if (cancelled) return
 
@@ -50,7 +52,7 @@ export function FileInput({
     return () => {
       cancelled = true
     }
-  }, [file, field.handleChange, isPrivate])
+  }, [file, field.handleChange, isPrivate, app])
 
   return (
     <Container title={label}>

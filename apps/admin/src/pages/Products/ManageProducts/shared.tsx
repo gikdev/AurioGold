@@ -14,7 +14,7 @@ function toClock(n: number, unit: "h" | "m" | "s") {
 
 export const useStocksQuery = () =>
   useQuery({
-    ...getApiTyStocksOptions(getHeaderTokenOnly()),
+    ...getApiTyStocksOptions(getHeaderTokenOnly("admin")),
     staleTime: toClock(10, "s"),
     refetchInterval: toClock(1, "m"),
     refetchOnMount: true,
@@ -22,7 +22,7 @@ export const useStocksQuery = () =>
   })
 
 export function refetchStocks() {
-  queryClient.refetchQueries({ queryKey: getApiTyStocksQueryKey(getHeaderTokenOnly()) })
+  queryClient.refetchQueries({ queryKey: getApiTyStocksQueryKey(getHeaderTokenOnly("admin")) })
 }
 
 export function applyStockUpdate(
@@ -32,7 +32,7 @@ export function applyStockUpdate(
   date: string,
 ) {
   queryClient.setQueryData<StockDtoForMaster[] | undefined>(
-    getApiTyStocksQueryKey(getHeaderTokenOnly()),
+    getApiTyStocksQueryKey(getHeaderTokenOnly("admin")),
     oldData =>
       produce(oldData, draft => {
         if (!draft) return

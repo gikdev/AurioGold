@@ -10,8 +10,8 @@ import { cn } from "#shared/helpers"
 import { useBooleanishQueryState } from "#shared/hooks"
 import { ShowResponsively } from "./ShowResponsively"
 
-function getIsLoggedIn() {
-  return !!storageManager.get("ttkk", "sessionStorage")
+function getIsLoggedIn(app: "client" | "admin") {
+  return !!storageManager.get(`${app}_ttkk`, "sessionStorage")
 }
 
 interface BaseProps {
@@ -19,12 +19,13 @@ interface BaseProps {
   children: ReactNode
   sidebarItems: SidebarItem[]
   footer: ReactNode
+  app: "client" | "admin"
 }
 
-export function Base({ children, nav, footer, sidebarItems }: BaseProps) {
+export function Base({ children, nav, footer, sidebarItems, app }: BaseProps) {
   useEffect(() => {
-    if (!getIsLoggedIn()) location.href = "/login"
-  }, [])
+    if (!getIsLoggedIn(app)) location.href = "/login"
+  }, [app])
 
   useEffect(() => {
     if (!("Notification" in window)) return

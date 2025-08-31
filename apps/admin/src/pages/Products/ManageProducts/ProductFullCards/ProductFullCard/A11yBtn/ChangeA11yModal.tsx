@@ -10,8 +10,9 @@ import { calcA11yStuff } from "./calcA11yStuff"
 
 const productStatuses: StockStatus[] = [0, 1, 2, 3]
 
-const allStocksQueryKey = getApiTyStocksOptions(getHeaderTokenOnly()).queryKey
-const useUpdateStockMutation = () => useMutation(putApiTyStocksByIdMutation(getHeaderTokenOnly()))
+const allStocksQueryKey = getApiTyStocksOptions(getHeaderTokenOnly("admin")).queryKey
+const useUpdateStockMutation = () =>
+  useMutation(putApiTyStocksByIdMutation(getHeaderTokenOnly("admin")))
 
 interface ChangeA11yModalProps {
   onClose: () => void

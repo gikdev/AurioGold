@@ -61,9 +61,10 @@ export default function Login() {
 
           setProfile(data)
           if (data.masterID)
-            storageManager.save("masterID", data.masterID.toString(), "sessionStorage")
-          if (data.ttkk) storageManager.save("ttkk", data.ttkk.toString(), "sessionStorage")
-          if (data.userID) storageManager.save("userID", data.userID.toString(), "sessionStorage")
+            storageManager.save("client_masterID", data.masterID.toString(), "sessionStorage")
+          if (data.ttkk) storageManager.save("client_ttkk", data.ttkk.toString(), "sessionStorage")
+          if (data.userID)
+            storageManager.save("client_userID", data.userID.toString(), "sessionStorage")
 
           location.replace(routes.home)
         },

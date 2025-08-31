@@ -11,7 +11,7 @@ interface DeleteProductModalProps {
   productId: ProductId
 }
 
-const deleteStockMutationOptions = deleteApiTyStocksByIdMutation(getHeaderTokenOnly())
+const deleteStockMutationOptions = deleteApiTyStocksByIdMutation(getHeaderTokenOnly("admin"))
 const useDeleteStockMutation = () => useMutation(deleteStockMutationOptions)
 
 export function DeleteProductModal({ onClose, productId }: DeleteProductModalProps) {
@@ -26,7 +26,7 @@ export function DeleteProductModal({ onClose, productId }: DeleteProductModalPro
 
     const onSuccess = () => {
       queryClient.setQueryData<StockDtoForMaster[] | undefined>(
-        getApiTyStocksQueryKey(getHeaderTokenOnly()),
+        getApiTyStocksQueryKey(getHeaderTokenOnly("admin")),
         oldData => oldData?.filter(item => item.id !== productId),
       )
 

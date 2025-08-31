@@ -48,13 +48,13 @@ export function ProductDrawer({ mode, onClose, productId }: ProductDrawerProps) 
     [productId],
   )
   const { data: stock } = useQuery({
-    ...getApiTyStocksOptions(getHeaderTokenOnly()),
+    ...getApiTyStocksOptions(getHeaderTokenOnly("admin")),
     select,
     enabled: isEditMode && typeof productId === "number",
   })
 
   const { data: sources = [], isPending: areSourcesLoading } = useQuery(
-    getApiStockPriceSourceGetStockPriceSourcesOptions(getHeaderTokenOnly()),
+    getApiStockPriceSourceGetStockPriceSourcesOptions(getHeaderTokenOnly("admin")),
   )
 
   const sourcesOptions = useMemo(

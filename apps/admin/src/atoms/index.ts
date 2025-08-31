@@ -11,14 +11,14 @@ export const onlineUsersCountAtom = atom<number | null>(null)
 
 const profileImageUrlAtom = atomWithStorage(
   "profileImageUrl",
-  storageManager.get("logoUrl", "sessionStorage"),
+  storageManager.get("admin_logoUrl", "sessionStorage"),
 )
 export const useProfileImageUrlValue = () => useAtomValue(profileImageUrlAtom)
 export const useSetProfileImageUrl = () => {
   const set = useSetAtom(profileImageUrlAtom)
   const setter = useCallback(
     (newUrl: string) => {
-      storageManager.save("logoUrl", newUrl, "sessionStorage")
+      storageManager.save("admin_logoUrl", newUrl, "sessionStorage")
       set(newUrl)
     },
     [set],
@@ -33,7 +33,7 @@ export const useSetDisplayName = () => {
   const set = useSetAtom(displayNameAtom)
   const setter = useCallback(
     (newName: string) => {
-      storageManager.save("name", newName, "sessionStorage")
+      storageManager.save("admin_name", newName, "sessionStorage")
       set(newName)
     },
     [set],

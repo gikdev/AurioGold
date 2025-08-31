@@ -4,7 +4,7 @@ import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { create } from "zustand"
 import { queryClient } from "#/shared"
 
-export const gramGroupsOptions = getApiTyCustomerGroupsOptions(getHeaderTokenOnly())
+export const gramGroupsOptions = getApiTyCustomerGroupsOptions(getHeaderTokenOnly("admin"))
 
 export function refetchGramGroups() {
   queryClient.refetchQueries(gramGroupsOptions)

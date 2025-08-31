@@ -119,12 +119,12 @@ export function useCreateStockMutation() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    ...postApiTyStocksMutation(getHeaderTokenOnly()),
+    ...postApiTyStocksMutation(getHeaderTokenOnly("admin")),
     onSuccess: (_, { body }) => {
       if (!body) return
 
       queryClient.setQueryData<StockDtoForMaster[]>(
-        getApiTyStocksQueryKey(getHeaderTokenOnly()),
+        getApiTyStocksQueryKey(getHeaderTokenOnly("admin")),
         old => [...(old ?? []), body],
       )
     },
@@ -135,10 +135,10 @@ export function useUpdateStockMutation() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    ...putApiTyStocksByIdMutation(getHeaderTokenOnly()),
+    ...putApiTyStocksByIdMutation(getHeaderTokenOnly("admin")),
     onSuccess: (_, { body, path: { id } }) => {
       queryClient.setQueryData<StockDtoForMaster[]>(
-        getApiTyStocksQueryKey(getHeaderTokenOnly()),
+        getApiTyStocksQueryKey(getHeaderTokenOnly("admin")),
         old => old?.map(stock => (stock.id === id ? { ...stock, ...body } : stock)),
       )
     },

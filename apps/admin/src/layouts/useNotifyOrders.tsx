@@ -74,7 +74,7 @@ export function useNotifyOrders() {
           connection
             .invoke(
               "DecideOrder",
-              storageManager.get("ttkk", "sessionStorage"),
+              storageManager.get("admin_ttkk", "sessionStorage"),
               isAccepted,
               orderId,
               userId,

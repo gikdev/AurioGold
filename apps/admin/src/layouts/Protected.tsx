@@ -3,9 +3,9 @@ import { Navigate, Outlet } from "react-router"
 import routes from "#/pages/routes"
 
 function useAuth() {
-  const token = storageManager.get("ttkk", "sessionStorage")
-  const isTokenValid = (() => !!token)()
-  const isLoggedIn = (() => isTokenValid)()
+  const token = storageManager.get("admin_ttkk", "sessionStorage")
+  const isTokenValid = !!token
+  const isLoggedIn = isTokenValid
 
   return isLoggedIn
 }

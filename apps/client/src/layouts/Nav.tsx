@@ -29,7 +29,7 @@ function getProfileImageUrl(logoUrl: string | undefined | null) {
 export function Nav() {
   const setAdminInfo = useSetAtom(adminInfoAtom)
   const { data } = useQuery({
-    ...getApiCustomerGetMasterOptions(getHeaderTokenOnly()),
+    ...getApiCustomerGetMasterOptions(getHeaderTokenOnly("client")),
     staleTime: 5 * 60 * 1000,
   })
   const masterInfo = useMemo(

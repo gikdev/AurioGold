@@ -73,7 +73,7 @@ export function useProfileImageUpload() {
       setImageUrl(previewUrl)
 
       Promise.resolve()
-        .then(() => uploadFile(file, false))
+        .then(() => uploadFile("admin", file, false))
         .then(fileStr => {
           const dataToSend = objToKeyVal({
             logoUrl: fileStr,

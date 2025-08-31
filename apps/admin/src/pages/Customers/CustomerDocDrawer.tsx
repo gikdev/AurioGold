@@ -51,7 +51,7 @@ interface CustomerDocDrawerProps {
 
 export function CustomerDocDrawer({ onClose, customerId }: CustomerDocDrawerProps) {
   const { mutate: sendDoc } = useMutation(
-    postApiMasterAddAndAcceptDocsMutation(getHeaderTokenOnly()),
+    postApiMasterAddAndAcceptDocsMutation(getHeaderTokenOnly("admin")),
   )
 
   const form = useAppForm({
@@ -126,6 +126,7 @@ export function CustomerDocDrawer({ onClose, customerId }: CustomerDocDrawerProp
         <form.AppField name="docStr">
           {field => (
             <field.FileInput
+              app="admin"
               label={labels.docStr}
               allowedTypes={allowedTypes}
               isPrivate

@@ -51,7 +51,7 @@ export function CustomerTransferDrawer({
   const { data: customers = [] } = useQuery(apiGetCustomersOptions)
   const customer = useMemo(() => customers.find(c => c.id === customerId), [customerId, customers])
   const { mutate: sendTransfer } = useMutation(
-    postApiMasterAddAndAcceptTransferMutation(getHeaderTokenOnly()),
+    postApiMasterAddAndAcceptTransferMutation(getHeaderTokenOnly("admin")),
   )
 
   const form = useAppForm({

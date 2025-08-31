@@ -15,8 +15,8 @@ export function useToggleAdminConnectivity() {
     if (!connection) return
     if (connectionState !== "connected") return
 
-    const token = storageManager.get("ttkk", "sessionStorage")
-    const masterId = storageManager.get("masterID", "sessionStorage")
+    const token = storageManager.get("admin_ttkk", "sessionStorage")
+    const masterId = storageManager.get("admin_masterID", "sessionStorage")
 
     connection
       .invoke("ToggleOnline", token, masterId ? Number(masterId) : null, newIsAdminOnline)
@@ -32,7 +32,7 @@ export function useToggleAdminConnectivity() {
 
 export function useManageAdminConnectivity() {
   const setAdminOnline = useSetAtom(isAdminOnlineAtom)
-  const status = storageManager.get("status", "sessionStorage")
+  const status = storageManager.get("admin_status", "sessionStorage")
 
   if (!status) return
 

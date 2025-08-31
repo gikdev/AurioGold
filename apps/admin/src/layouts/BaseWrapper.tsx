@@ -50,7 +50,7 @@ export function BaseWrapper() {
       <DatapiConfigProvider config={config}>
         <ConnectionHandler />
         <SignalRManager />
-        <Base nav={<Nav />} footer={<StatusBar />} sidebarItems={SIDEBAR_ITEMS}>
+        <Base app="admin" nav={<Nav />} footer={<StatusBar />} sidebarItems={SIDEBAR_ITEMS}>
           <Outlet />
         </Base>
       </DatapiConfigProvider>

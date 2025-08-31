@@ -38,7 +38,7 @@ export function OrdersTable() {
     refetch,
   } = useQuery({
     ...postApiMasterGetOrdersOptions({
-      ...getHeaderTokenOnly(),
+      ...getHeaderTokenOnly("admin"),
       body: pageDto,
     }),
     select,
@@ -121,7 +121,7 @@ function ManagementBtns({ data }: CustomCellRendererProps<OrderFm>) {
 
   const handleAccept = useCallback(
     (isAccepted: boolean) => {
-      const token = storageManager.get("ttkk", "sessionStorage")
+      const token = storageManager.get("admin_ttkk", "sessionStorage")
 
       if (!token) {
         notifManager.notify("خودتان معتبر نیستید!!! دوباره وارد شوید!", "toast", {

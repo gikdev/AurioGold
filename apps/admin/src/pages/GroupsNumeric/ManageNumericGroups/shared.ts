@@ -4,7 +4,7 @@ import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { create } from "zustand"
 import { queryClient } from "#/shared"
 
-export const numericGroupsOptions = getApiTyCustomerGroupIntIntsOptions(getHeaderTokenOnly())
+export const numericGroupsOptions = getApiTyCustomerGroupIntIntsOptions(getHeaderTokenOnly("admin"))
 
 export function refetchNumericGroups() {
   queryClient.refetchQueries(numericGroupsOptions)

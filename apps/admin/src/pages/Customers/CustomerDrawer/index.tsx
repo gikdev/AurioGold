@@ -61,7 +61,7 @@ export function CustomerDrawer({ mode, onClose, customerId }: CustomerDrawerProp
     isEditMode && customer ? partialDtoToFormValues(customer) : emptyCustomerFormValues
 
   const { data: gramGroups = [], isPending: isGramGroupsPending } = useQuery({
-    ...getApiTyCustomerGroupsOptions(getHeaderTokenOnly()),
+    ...getApiTyCustomerGroupsOptions(getHeaderTokenOnly("admin")),
     staleTime: 5 * 60 * 1000,
   })
 
@@ -76,7 +76,7 @@ export function CustomerDrawer({ mode, onClose, customerId }: CustomerDrawerProp
   )
 
   const { data: numericGroups = [], isPending: isNumericGroupsPending } = useQuery({
-    ...getApiTyCustomerGroupIntIntsOptions(getHeaderTokenOnly()),
+    ...getApiTyCustomerGroupIntIntsOptions(getHeaderTokenOnly("admin")),
     staleTime: 5 * 60 * 1000,
   })
 
@@ -211,6 +211,7 @@ export function CustomerDrawer({ mode, onClose, customerId }: CustomerDrawerProp
         <form.AppField name="businessLicense">
           {field => (
             <field.FileInput
+              app="admin"
               label={labels.businessLicense}
               allowedTypes={allowedTypes}
               isPrivate
@@ -223,6 +224,7 @@ export function CustomerDrawer({ mode, onClose, customerId }: CustomerDrawerProp
         <form.AppField name="nationalCard">
           {field => (
             <field.FileInput
+              app="admin"
               label={labels.nationalCard}
               allowedTypes={allowedTypes}
               isPrivate
