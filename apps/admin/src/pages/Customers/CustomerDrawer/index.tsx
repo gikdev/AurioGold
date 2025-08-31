@@ -165,7 +165,7 @@ export function CustomerDrawer({ mode, onClose, customerId }: CustomerDrawerProp
         </form.AppField>
 
         <form.AppField name="accountingId">
-          {field => <field.SimpleText label={labels.nationalId} />}
+          {field => <field.SimpleText label={labels.accountingId} />}
         </form.AppField>
 
         <form.AppField name="password">

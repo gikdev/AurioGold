@@ -27,7 +27,10 @@ export const useSetProfileImageUrl = () => {
   return setter
 }
 
-const displayNameAtom = atomWithStorage("displayName", storageManager.get("name", "sessionStorage"))
+const displayNameAtom = atomWithStorage(
+  "displayName",
+  storageManager.get("admin_name", "sessionStorage"),
+)
 export const useDisplayNameValue = () => useAtomValue(displayNameAtom)
 export const useSetDisplayName = () => {
   const set = useSetAtom(displayNameAtom)
