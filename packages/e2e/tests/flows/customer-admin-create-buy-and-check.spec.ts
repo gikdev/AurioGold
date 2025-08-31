@@ -121,7 +121,8 @@ test.describe("Customer admin create and client login flow", () => {
     client.page = await client.context.newPage()
 
     // --- Admin login
-    await admin.page.goto("https://dmg.vahedigold.ir/login")
+    await client.page.goto("http://localhost:4444/")
+    await admin.page.goto("http://localhost:8888/login")
     await admin.page.getByLabel(/نام کاربری/).fill("AdminMs")
     await admin.page.getByLabel(/گذرواژه/).fill("786M@ster313")
     await admin.page.getByRole("button", { name: /ورود/ }).click()
@@ -143,7 +144,6 @@ test.describe("Customer admin create and client login flow", () => {
     await expect(admin.page.getByRole("button", { name: client.fullName })).toBeVisible()
 
     // --- Client login
-    await client.page.goto("http://dcg.vahedigold.ir/")
     await client.page.getByLabel(/شماره/).fill(client.phone)
     await client.page.getByLabel(/گذرواژه/).fill(client.password)
     await client.page.getByRole("button", { name: /ورود/ }).click()
@@ -164,7 +164,7 @@ test.describe("Customer admin create and client login flow", () => {
     await admin.page.getByTestId("product-drawer-submit-btn").click()
 
     // --- Client purchase the new product
-    await client.page.goto("http://dcg.vahedigold.ir/")
+    await client.page.goto("http://localhost:4444/")
     await client.page.getByText(new RegExp(product.name)).click()
     await client.page.getByTestId("price-input").fill(product.purchaseAmount.toString())
     await client.page.getByRole("button", { name: "خرید", exact: true }).click()
@@ -186,7 +186,7 @@ test.describe("Customer admin create and client login flow", () => {
     await expect(client.page.getByText(/تایید شد/)).toBeVisible({ timeout: 5000 })
 
     // --- Client checks to see if remaining is correct or not
-    await client.page.goto("http://dcg.vahedigold.ir/balance")
+    await client.page.goto("http://localhost:4444/balance")
     const card = client.page.locator('label[data-testid="portfolio-card"]', {
       has: client.page.locator(`span:text-is("${product.name}")`),
     })
