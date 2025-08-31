@@ -74,6 +74,7 @@ export function ProductDrawer({ mode, onClose, productId }: ProductDrawerProps) 
     defaultValues,
     validators: {
       onChange: ProductFormSchema,
+      onMount: ProductFormSchema,
     },
 
     onSubmit({ value, formApi }) {
