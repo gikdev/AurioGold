@@ -1,8 +1,8 @@
 import type { Icon } from "@phosphor-icons/react"
 import type { HTMLAttributes, ReactNode } from "react"
 import { cn } from "#shared/helpers"
-import { Heading } from "./Heading"
 import { cx } from "#shared/lib/cva.config"
+import { Heading } from "./Heading"
 
 const containerStyles = cx(`
   flex flex-col gap-8 bg-slate-2 border border-slate-6
