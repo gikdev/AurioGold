@@ -121,14 +121,14 @@ test.describe("Customer admin create and client login flow", () => {
     client.page = await client.context.newPage()
 
     // --- Admin login
-    await admin.page.goto("http://localhost:8888/login")
+    await admin.page.goto("https://dmg.vahedigold.ir/login")
     await admin.page.getByLabel(/نام کاربری/).fill("AdminMs")
     await admin.page.getByLabel(/گذرواژه/).fill("786M@ster313")
     await admin.page.getByRole("button", { name: /ورود/ }).click()
 
     // --- Admin creates new customer
     await admin.page.getByRole("link", { name: "مدیریت مشتریان" }).click()
-    await admin.page.getByRole("link", { name: "ایجاد مشتری جدید" }).click()
+    await admin.page.getByRole("button", { name: "ایجاد مشتری جدید" }).click()
 
     await admin.page.getByRole("textbox", { name: "نام کامل *" }).fill(client.fullName)
     await admin.page.getByRole("textbox", { name: "شماره تلفن *" }).fill(client.phone)
@@ -138,19 +138,19 @@ test.describe("Customer admin create and client login flow", () => {
     await admin.page.getByLabel(/گروه مشتری گرمی/).selectOption("1")
     await admin.page.getByLabel(/گروه مشتری عددی/).selectOption("2")
 
-    await admin.page.getByRole("button", { name: "ایجاد" }).click()
+    await admin.page.getByRole("button", { name: "ایجاد مشتری", exact: true }).click()
     await admin.page.waitForTimeout(2000)
-    await expect(admin.page.getByRole("link", { name: client.fullName })).toBeVisible()
+    await expect(admin.page.getByRole("button", { name: client.fullName })).toBeVisible()
 
     // --- Client login
-    await client.page.goto("http://localhost:4444")
+    await client.page.goto("http://dcg.vahedigold.ir/")
     await client.page.getByLabel(/شماره/).fill(client.phone)
     await client.page.getByLabel(/گذرواژه/).fill(client.password)
     await client.page.getByRole("button", { name: /ورود/ }).click()
 
     // --- Admin create new product
     await admin.page.getByRole("link", { name: "مدیریت محصولات" }).click()
-    await admin.page.getByRole("link", { name: "ایجاد محصول جدید" }).click()
+    await admin.page.getByRole("button", { name: "ایجاد محصول جدید" }).click()
 
     await admin.page.getByRole("textbox", { name: "نام *" }).fill(product.name)
     await admin.page.getByLabel(/قیمت/).nth(0).fill(product.price.toString())
@@ -159,25 +159,34 @@ test.describe("Customer admin create and client login flow", () => {
     await admin.page.getByLabel("نحوه معامله *").selectOption("تعدادی")
     await admin.page.getByLabel("منبع قیمت:").selectOption({ label: product.priceSource })
     await admin.page.getByLabel("نوع معامله *").selectOption("عادی")
+    await admin.page.getByLabel("حداکثر ارزش محصول *").fill("1000000000000")
 
     await admin.page.getByTestId("product-drawer-submit-btn").click()
 
     // --- Client purchase the new product
-    await client.page.goto("http://localhost:4444/")
+    await client.page.goto("http://dcg.vahedigold.ir/")
     await client.page.getByText(new RegExp(product.name)).click()
     await client.page.getByTestId("price-input").fill(product.purchaseAmount.toString())
     await client.page.getByRole("button", { name: "خرید", exact: true }).click()
 
     // --- Admin accepts the purchase
-    const allBtns = await admin.page.getByRole("button", { name: "تایید" }).all()
-    allBtns.forEach(async btn => await btn.click())
-    allBtns.forEach(async btn => await btn.click())
+    ;(await admin.page.getByRole("button", { name: "تایید" }).all()).map(
+      async btn => await btn.click(),
+    )
+
+    ;(await admin.page.getByRole("button", { name: "تایید" }).all()).map(
+      async btn => await btn.click().catch(() => {}),
+    )
+
+    ;(await admin.page.getByRole("button", { name: "تایید" }).all()).map(
+      async btn => await btn.click().catch(() => {}),
+    )
 
     // --- Client sees accepted
-    await expect(client.page.getByText(/تایید شد/)).toBeVisible()
+    await expect(client.page.getByText(/تایید شد/)).toBeVisible({ timeout: 5000 })
 
     // --- Client checks to see if remaining is correct or not
-    await client.page.goto("http://localhost:4444/balance")
+    await client.page.goto("http://dcg.vahedigold.ir/balance")
     const card = client.page.locator('label[data-testid="portfolio-card"]', {
       has: client.page.locator(`span:text-is("${product.name}")`),
     })
