@@ -49,8 +49,8 @@ function Tab({ children, onClick, isActive }: TabProps) {
       type="button"
       onClick={onClick}
       className={cx(
-        "flex items-center justify-center px-4 h-10 border-b-2",
-        isActive ? "font-bold text-slate-12 border-current" : "border-transparent",
+        "flex items-center justify-center px-4 h-10 border-b-2 hover:text-slate-12 cursor-pointer",
+        isActive ? "font-bold text-brand-10 border-current" : "border-transparent",
       )}
     >
       {children}
