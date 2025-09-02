@@ -7,7 +7,7 @@ import {
   ProhibitIcon,
   QuestionIcon,
 } from "@phosphor-icons/react"
-import type { StockDtoForMaster, StockStatus } from "@repo/api-client/client"
+import type { StockDtoForMaster, StockStatus } from "@repo/api-client"
 import { formatPersianPrice } from "@repo/shared/utils"
 import { useProductsStore } from "./store"
 

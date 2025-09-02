@@ -74,8 +74,8 @@ export function createControlledAsyncToast<T = void>(
       },
     },
     error: {
-      render({ data }) {
-        return parseError(data, initialMessages.error)
+      render({ data: err }) {
+        return parseError(err, initialMessages.error)
       },
     },
   })
@@ -87,6 +87,8 @@ export function createControlledAsyncToast<T = void>(
 }
 
 export function parseError(error: unknown, msg?: string) {
+  console.log(error, typeof error)
+
   if (typeof error === "string") {
     try {
       const parsed = JSON.parse(error)

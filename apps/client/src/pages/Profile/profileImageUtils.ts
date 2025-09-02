@@ -1,4 +1,4 @@
-import type { Ufm } from "@repo/api-client/client"
+import type { Ufm } from "@repo/api-client"
 
 export function objToKeyVal(obj: Record<string, string | null>) {
   return {

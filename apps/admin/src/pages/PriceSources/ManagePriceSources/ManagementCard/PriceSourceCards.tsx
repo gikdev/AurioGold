@@ -1,6 +1,6 @@
 import styled from "@master/styled.react"
 import { TagIcon } from "@phosphor-icons/react"
-import type { StockPriceSourceResponse } from "@repo/api-client/client"
+import type { StockPriceSourceResponse } from "@repo/api-client"
 import { skins } from "@repo/shared/forms"
 import { formatPersianPrice } from "@repo/shared/utils"
 import { usePriceSourcesStore } from "../shared"

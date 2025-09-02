@@ -1,9 +1,9 @@
 import { PencilSimpleIcon, PlusIcon } from "@phosphor-icons/react"
-import type { StockPriceSourceResponse } from "@repo/api-client/client"
+import type { StockPriceSourceResponse } from "@repo/api-client"
 import { DrawerSheet } from "@repo/shared/components"
 import { skins, useAppForm } from "@repo/shared/forms"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { useCallback, useEffect } from "react"
 import { type PriceSourceId, priceSourcesOptions } from "../shared"
 import {
@@ -25,8 +25,6 @@ interface PriceSourceDrawerProps {
 }
 
 export function PriceSourceDrawer({ mode, onClose, sourceId }: PriceSourceDrawerProps) {
-  const queryClient = useQueryClient()
-
   const isCreateMode = mode === "create"
   const isEditMode = mode === "edit"
 
@@ -63,7 +61,6 @@ export function PriceSourceDrawer({ mode, onClose, sourceId }: PriceSourceDrawer
       const onError = reject
       const onSuccess = () => {
         resolve()
-        queryClient.refetchQueries(priceSourcesOptions)
         formApi.reset(emptyPriceSourceFieldValues)
         onClose()
       }

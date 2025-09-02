@@ -1,9 +1,8 @@
-import type { StockDto } from "@repo/api-client/client"
+import type { StockDto } from "@repo/api-client"
 import {
   getApiTyStocksForCustommerOptions,
   getApiTyStocksForCustommerQueryKey,
-} from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+} from "@repo/api-client"
 import { LoadingSpinner } from "@repo/shared/components"
 import { useQuery } from "@tanstack/react-query"
 import { produce } from "immer"
@@ -14,8 +13,7 @@ import { queryClient } from "#/shared"
 import { ProductCard } from "./ProductCard"
 import ShowIfStoreOnline from "./ShowIfStoreOnline"
 
-const useStocksQuery = () =>
-  useQuery(getApiTyStocksForCustommerOptions(getHeaderTokenOnly("client")))
+const useStocksQuery = () => useQuery(getApiTyStocksForCustommerOptions())
 
 export function ManageProducts() {
   useReceivePriceUpdate()
@@ -49,17 +47,15 @@ function applyStockUpdate(
   priceType: "price" | "diffSellPrice" | "diffBuyPrice",
   date: string,
 ) {
-  queryClient.setQueryData<StockDto[] | undefined>(
-    getApiTyStocksForCustommerQueryKey(getHeaderTokenOnly("client")),
-    oldData =>
-      produce(oldData, draft => {
-        if (!draft) return
-        const stock = draft.find(p => p.id === productId)
+  queryClient.setQueryData<StockDto[] | undefined>(getApiTyStocksForCustommerQueryKey(), oldData =>
+    produce(oldData, draft => {
+      if (!draft) return
+      const stock = draft.find(p => p.id === productId)
 
-        if (stock) {
-          stock[priceType] = newPrice
-          stock.dateUpdate = new Date(date).toISOString()
-        }
-      }),
+      if (stock) {
+        stock[priceType] = newPrice
+        stock.dateUpdate = new Date(date).toISOString()
+      }
+    }),
   )
 }

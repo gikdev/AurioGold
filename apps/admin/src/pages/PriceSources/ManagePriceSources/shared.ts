@@ -1,12 +1,12 @@
-import type { StockPriceSourceResponse } from "@repo/api-client/client"
-import { getApiStockPriceSourceGetStockPriceSourcesOptions } from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+import type { StockPriceSourceResponse } from "@repo/api-client"
+import { getApiStockPriceSourceGetStockPriceSourcesOptions } from "@repo/api-client"
 import { create } from "zustand"
 
 export type PriceSourceId = NonNullable<StockPriceSourceResponse["id"]>
-export const priceSourcesOptions = getApiStockPriceSourceGetStockPriceSourcesOptions(
-  getHeaderTokenOnly("admin"),
-)
+export const priceSourcesOptions =
+  getApiStockPriceSourceGetStockPriceSourcesOptions(
+    // getHeaderTokenOnly("admin"),
+  )
 
 interface PriceSourcesStore {
   mode: "initial" | "create" | "edit" | "remove" | "details"

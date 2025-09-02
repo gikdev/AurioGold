@@ -1,5 +1,5 @@
 import { InfoIcon, PencilSimpleIcon, TrashIcon } from "@phosphor-icons/react"
-import type { CustomerGroupIntDto } from "@repo/api-client/client"
+import type { CustomerGroupIntDto } from "@repo/api-client"
 import {
   DrawerSheet,
   EntityNotFoundCard,

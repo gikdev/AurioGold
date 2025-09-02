@@ -1,4 +1,4 @@
-import type { StockDto } from "@repo/api-client/client"
+import type { StockDto } from "@repo/api-client"
 import { create } from "zustand"
 
 export type ProductId = NonNullable<StockDto["id"]>

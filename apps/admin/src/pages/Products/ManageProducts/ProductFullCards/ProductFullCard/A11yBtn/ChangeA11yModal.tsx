@@ -1,6 +1,5 @@
-import type { StockStatus } from "@repo/api-client/client"
-import { getApiTyStocksOptions, putApiTyStocksByIdMutation } from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+import type { StockStatus } from "@repo/api-client"
+import { getApiTyStocksOptions, putApiTyStocksByIdMutation } from "@repo/api-client"
 import { BtnTemplates, Modal, Radio } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { useMutation } from "@tanstack/react-query"
@@ -10,9 +9,8 @@ import { calcA11yStuff } from "./calcA11yStuff"
 
 const productStatuses: StockStatus[] = [0, 1, 2, 3]
 
-const allStocksQueryKey = getApiTyStocksOptions(getHeaderTokenOnly("admin")).queryKey
-const useUpdateStockMutation = () =>
-  useMutation(putApiTyStocksByIdMutation(getHeaderTokenOnly("admin")))
+const allStocksQueryKey = getApiTyStocksOptions().queryKey
+const useUpdateStockMutation = () => useMutation(putApiTyStocksByIdMutation())
 
 interface ChangeA11yModalProps {
   onClose: () => void

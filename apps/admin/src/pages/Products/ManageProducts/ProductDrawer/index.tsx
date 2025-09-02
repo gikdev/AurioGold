@@ -1,10 +1,9 @@
 import { PackageIcon, PencilSimpleIcon, PlusIcon } from "@phosphor-icons/react"
-import type { StockDtoForMaster } from "@repo/api-client/client"
+import type { StockDtoForMaster } from "@repo/api-client"
 import {
   getApiStockPriceSourceGetStockPriceSourcesOptions,
   getApiTyStocksOptions,
-} from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+} from "@repo/api-client"
 import { DrawerSheet } from "@repo/shared/components"
 import { skins, useAppForm } from "@repo/shared/forms"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
@@ -48,13 +47,13 @@ export function ProductDrawer({ mode, onClose, productId }: ProductDrawerProps) 
     [productId],
   )
   const { data: stock } = useQuery({
-    ...getApiTyStocksOptions(getHeaderTokenOnly("admin")),
+    ...getApiTyStocksOptions(),
     select,
     enabled: isEditMode && typeof productId === "number",
   })
 
   const { data: sources = [], isPending: areSourcesLoading } = useQuery(
-    getApiStockPriceSourceGetStockPriceSourcesOptions(getHeaderTokenOnly("admin")),
+    getApiStockPriceSourceGetStockPriceSourcesOptions(),
   )
 
   const sourcesOptions = useMemo(

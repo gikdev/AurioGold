@@ -1,6 +1,6 @@
 import styled from "@master/styled.react"
 import { PowerIcon, ProhibitIcon, UserCircleIcon } from "@phosphor-icons/react"
-import type { CustomerDto } from "@repo/api-client/client"
+import type { CustomerDto } from "@repo/api-client"
 import { skins } from "@repo/shared/forms"
 import { useCustomersStore } from "../store"
 

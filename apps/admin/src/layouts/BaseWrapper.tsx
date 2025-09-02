@@ -11,6 +11,10 @@ import {
   UserCircleIcon,
   UsersFourIcon,
 } from "@phosphor-icons/react"
+import {
+  useAddAuthInterceptorToFetchClient,
+  useAddLogOutOn401InterceptorToFetchClient,
+} from "@repo/shared/auth"
 import { ErrorCardBoundary } from "@repo/shared/components"
 import { Base, type SidebarItem } from "@repo/shared/layouts"
 import { useAtomValue, useSetAtom } from "jotai"
@@ -44,6 +48,8 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
 export function BaseWrapper() {
   const config = useMemo(() => genDatApiConfig(), [])
   useNotifyOrders()
+  useAddLogOutOn401InterceptorToFetchClient()
+  useAddAuthInterceptorToFetchClient()
 
   return (
     <ErrorCardBoundary>

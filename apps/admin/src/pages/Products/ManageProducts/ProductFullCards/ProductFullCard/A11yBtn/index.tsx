@@ -1,4 +1,4 @@
-import type { StockDtoForMaster } from "@repo/api-client/client"
+import type { StockDtoForMaster } from "@repo/api-client"
 import { type ProductId, useProductsStore } from "../../../store"
 import { ChangeA11yModal } from "./ChangeA11yModal"
 import { calcA11yStuff } from "./calcA11yStuff"

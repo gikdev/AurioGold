@@ -1,10 +1,9 @@
 import { PencilSimpleIcon, PlusIcon } from "@phosphor-icons/react"
-import type { CustomerGroupDto } from "@repo/api-client/client"
+import type { CustomerGroupDto } from "@repo/api-client"
 import {
   getApiTyCustomerGroupIntIntsOptions,
   getApiTyCustomerGroupsOptions,
-} from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+} from "@repo/api-client"
 import { DrawerSheet } from "@repo/shared/components"
 import { notesHelpers, skins, useAppForm } from "@repo/shared/forms"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
@@ -61,7 +60,7 @@ export function CustomerDrawer({ mode, onClose, customerId }: CustomerDrawerProp
     isEditMode && customer ? partialDtoToFormValues(customer) : emptyCustomerFormValues
 
   const { data: gramGroups = [], isPending: isGramGroupsPending } = useQuery({
-    ...getApiTyCustomerGroupsOptions(getHeaderTokenOnly("admin")),
+    ...getApiTyCustomerGroupsOptions(),
     staleTime: 5 * 60 * 1000,
   })
 
@@ -76,7 +75,7 @@ export function CustomerDrawer({ mode, onClose, customerId }: CustomerDrawerProp
   )
 
   const { data: numericGroups = [], isPending: isNumericGroupsPending } = useQuery({
-    ...getApiTyCustomerGroupIntIntsOptions(getHeaderTokenOnly("admin")),
+    ...getApiTyCustomerGroupIntIntsOptions(),
     staleTime: 5 * 60 * 1000,
   })
 

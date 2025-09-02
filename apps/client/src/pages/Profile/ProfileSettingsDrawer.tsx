@@ -1,7 +1,7 @@
 import { apiRequest } from "@gikdev/react-datapi/src"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { PasswordIcon, WarningIcon } from "@phosphor-icons/react"
-import type { KeyData, Ufm } from "@repo/api-client/client"
+import type { KeyData, Ufm } from "@repo/api-client"
 import {
   BtnTemplates,
   DrawerSheet,

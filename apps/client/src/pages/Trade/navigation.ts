@@ -1,4 +1,4 @@
-import type { StockDto } from "@repo/api-client/client"
+import type { StockDto } from "@repo/api-client"
 
 export const QUERY_KEYS = {
   productId: "product-id",

@@ -5,7 +5,7 @@ import {
   ProhibitIcon,
   QuestionIcon,
 } from "@phosphor-icons/react"
-import type { StockStatus } from "@repo/api-client/client"
+import type { StockStatus } from "@repo/api-client"
 
 export function calcA11yStuff(status: StockStatus | undefined) {
   switch (status) {

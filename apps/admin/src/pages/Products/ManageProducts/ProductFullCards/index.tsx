@@ -1,4 +1,4 @@
-import type { StockDtoForMaster } from "@repo/api-client/client"
+import type { StockDtoForMaster } from "@repo/api-client"
 import { ProductFullCard } from "./ProductFullCard"
 
 interface ProductFullCardsProps {

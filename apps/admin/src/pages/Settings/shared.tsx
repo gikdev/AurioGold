@@ -1,5 +1,5 @@
 import { apiRequest } from "@gikdev/react-datapi/src"
-import type { Ufm } from "@repo/api-client/client"
+import type { Ufm } from "@repo/api-client"
 import { notifManager } from "@repo/shared/adapters"
 import { BtnTemplates } from "@repo/shared/components"
 import { memo } from "react"

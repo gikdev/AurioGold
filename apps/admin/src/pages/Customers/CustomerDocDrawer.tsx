@@ -1,6 +1,5 @@
 import { ArrowsLeftRightIcon, PlusIcon } from "@phosphor-icons/react"
-import { postApiMasterAddAndAcceptDocsMutation } from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+import { postApiMasterAddAndAcceptDocsMutation } from "@repo/api-client"
 import { DrawerSheet } from "@repo/shared/components"
 import { notesHelpers, skins, useAppForm } from "@repo/shared/forms"
 import { createControlledAsyncToast, createFieldsWithLabels } from "@repo/shared/helpers"
@@ -50,9 +49,7 @@ interface CustomerDocDrawerProps {
 }
 
 export function CustomerDocDrawer({ onClose, customerId }: CustomerDocDrawerProps) {
-  const { mutate: sendDoc } = useMutation(
-    postApiMasterAddAndAcceptDocsMutation(getHeaderTokenOnly("admin")),
-  )
+  const { mutate: sendDoc } = useMutation(postApiMasterAddAndAcceptDocsMutation())
 
   const form = useAppForm({
     defaultValues: emptyCustomerDocFormValues,

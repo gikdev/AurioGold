@@ -1,10 +1,9 @@
-import type { CustomerGroupDto } from "@repo/api-client/client"
-import { getApiTyCustomerGroupIntIntsOptions } from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+import type { CustomerGroupDto } from "@repo/api-client"
+import { getApiTyCustomerGroupIntIntsOptions } from "@repo/api-client"
 import { create } from "zustand"
 import { queryClient } from "#/shared"
 
-export const numericGroupsOptions = getApiTyCustomerGroupIntIntsOptions(getHeaderTokenOnly("admin"))
+export const numericGroupsOptions = getApiTyCustomerGroupIntIntsOptions()
 
 export function refetchNumericGroups() {
   queryClient.refetchQueries(numericGroupsOptions)

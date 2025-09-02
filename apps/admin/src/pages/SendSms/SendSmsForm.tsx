@@ -1,7 +1,7 @@
 import { apiRequest, useApiRequest } from "@gikdev/react-datapi/src"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ChatTextIcon } from "@phosphor-icons/react"
-import type { CustomerDto, SmsMsgDto } from "@repo/api-client/client"
+import type { CustomerDto, SmsMsgDto } from "@repo/api-client"
 import { notifManager } from "@repo/shared/adapters"
 import {
   Btn,

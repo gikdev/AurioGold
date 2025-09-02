@@ -1,6 +1,5 @@
 import { InfoIcon, PencilSimpleIcon, TrashIcon } from "@phosphor-icons/react"
-import { getApiStockPriceSourceGetStockPriceSourcesOptions } from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+import { getApiStockPriceSourceGetStockPriceSourcesOptions } from "@repo/api-client"
 import {
   DrawerSheet,
   EntityNotFoundCard,
@@ -31,9 +30,7 @@ interface ProductDetailsProps {
 export function ProductDetails({ onClose, productId }: ProductDetailsProps) {
   const { data: stocks = [] } = useStocksQuery()
   const product = stocks.find(p => p.id === productId)
-  const resSources = useQuery(
-    getApiStockPriceSourceGetStockPriceSourcesOptions(getHeaderTokenOnly("admin")),
-  )
+  const resSources = useQuery(getApiStockPriceSourceGetStockPriceSourcesOptions())
 
   return (
     <DrawerSheet

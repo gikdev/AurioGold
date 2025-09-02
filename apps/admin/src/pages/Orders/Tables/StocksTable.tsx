@@ -1,6 +1,5 @@
-import type { OrdersByStuckDto, OrdersReturnFm } from "@repo/api-client/client"
-import { postApiMasterGetOrdersOptions } from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+import type { OrdersByStuckDto, OrdersReturnFm } from "@repo/api-client"
+import { postApiMasterGetOrdersOptions } from "@repo/api-client"
 import { createTypedTableFa, SmallErrorWithRetryBtn } from "@repo/shared/components"
 import { parseError } from "@repo/shared/helpers"
 import { cellRenderers } from "@repo/shared/lib"
@@ -23,7 +22,6 @@ export function StocksTable() {
     refetch,
   } = useQuery({
     ...postApiMasterGetOrdersOptions({
-      ...getHeaderTokenOnly("admin"),
       body: pageDto,
     }),
     select,

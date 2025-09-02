@@ -1,5 +1,5 @@
 import { CheckIcon, XIcon } from "@phosphor-icons/react"
-import type { OrderFm } from "@repo/api-client/client"
+import type { OrderFm } from "@repo/api-client"
 import { notifManager, storageManager } from "@repo/shared/adapters"
 import { Btn } from "@repo/shared/components"
 import { parseError } from "@repo/shared/helpers"

@@ -1,4 +1,3 @@
-import { getApiMasterGetCustomersOptions } from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+import { getApiMasterGetCustomersOptions } from "@repo/api-client"
 
-export const apiGetCustomersOptions = getApiMasterGetCustomersOptions(getHeaderTokenOnly("admin"))
+export const apiGetCustomersOptions = getApiMasterGetCustomersOptions()

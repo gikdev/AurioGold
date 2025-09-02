@@ -1,6 +1,5 @@
-import type { StockDto } from "@repo/api-client/client"
-import { getApiTyStocksForCustommerByIdQueryKey } from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+import type { StockDto } from "@repo/api-client"
+import { getApiTyStocksForCustommerByIdQueryKey } from "@repo/api-client"
 import { produce } from "immer"
 import { useAtomValue } from "jotai"
 import { useCallback, useEffect } from "react"
@@ -24,7 +23,6 @@ export function useHandlePriceUpdate() {
       if (id !== productId) return
 
       const byIdQueryKey = getApiTyStocksForCustommerByIdQueryKey({
-        ...getHeaderTokenOnly("client"),
         path: { id: productId },
       })
 

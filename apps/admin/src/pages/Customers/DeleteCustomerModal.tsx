@@ -1,6 +1,5 @@
 import { TrashIcon, XIcon } from "@phosphor-icons/react"
-import { postApiMasterRemoveCustomerMutation } from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+import { postApiMasterRemoveCustomerMutation } from "@repo/api-client"
 import { Modal } from "@repo/shared/components"
 import { skins } from "@repo/shared/forms"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
@@ -15,9 +14,7 @@ interface DeleteCustomerModalProps {
 
 export function DeleteCustomerModal({ customerId, onClose }: DeleteCustomerModalProps) {
   const queryClient = useQueryClient()
-  const { mutate: removeCustomer } = useMutation(
-    postApiMasterRemoveCustomerMutation(getHeaderTokenOnly("admin")),
-  )
+  const { mutate: removeCustomer } = useMutation(postApiMasterRemoveCustomerMutation())
 
   const handleDelete = async () => {
     const { reject, resolve } = createControlledAsyncToast({

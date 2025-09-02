@@ -1,7 +1,6 @@
 import { ArrowsLeftRightIcon, PlusIcon } from "@phosphor-icons/react"
-import { postApiMasterAddAndAcceptTransferMutation } from "@repo/api-client/tanstack"
+import { postApiMasterAddAndAcceptTransferMutation } from "@repo/api-client"
 import { notifManager } from "@repo/shared/adapters"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { DrawerSheet, LoadingSpinner } from "@repo/shared/components"
 import { skins, useAppForm } from "@repo/shared/forms"
 import { createControlledAsyncToast, createFieldsWithLabels } from "@repo/shared/helpers"
@@ -50,9 +49,7 @@ export function CustomerTransferDrawer({
 }: CustomerTransferDrawerProps) {
   const { data: customers = [] } = useQuery(apiGetCustomersOptions)
   const customer = useMemo(() => customers.find(c => c.id === customerId), [customerId, customers])
-  const { mutate: sendTransfer } = useMutation(
-    postApiMasterAddAndAcceptTransferMutation(getHeaderTokenOnly("admin")),
-  )
+  const { mutate: sendTransfer } = useMutation(postApiMasterAddAndAcceptTransferMutation())
 
   const form = useAppForm({
     defaultValues: emptyCustomerTransferFormValues,

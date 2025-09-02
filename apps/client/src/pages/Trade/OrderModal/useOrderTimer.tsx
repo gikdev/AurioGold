@@ -1,5 +1,5 @@
 import { apiRequest } from "@gikdev/react-datapi/src"
-import type { OrderFm } from "@repo/api-client/client"
+import type { OrderFm } from "@repo/api-client"
 import { notifManager, storageManager } from "@repo/shared/adapters"
 import { useDrawerSheetNumber } from "@repo/shared/components"
 import { useIntegerQueryState } from "@repo/shared/hooks"

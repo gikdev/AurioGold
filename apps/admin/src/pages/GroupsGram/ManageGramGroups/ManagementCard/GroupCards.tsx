@@ -1,5 +1,5 @@
 import styled from "@master/styled.react"
-import type { CustomerGroupDto } from "@repo/api-client/client"
+import type { CustomerGroupDto } from "@repo/api-client"
 import { ErrorCardBoundary } from "@repo/shared/components"
 import { skins } from "@repo/shared/forms"
 import { formatPersianPrice } from "@repo/shared/utils"

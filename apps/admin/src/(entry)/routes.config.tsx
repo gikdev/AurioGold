@@ -32,11 +32,11 @@ export const protectedRoutes = [
   <Route key="products" path={routes.products} element={<Products />} />,
   <Route key="settings" path={routes.settings} element={<Settings />} />,
   <Route key="test" path={routes.test} element={<Test />} />,
+  <Route key="logout" path={routes.logout} element={<Logout />} />,
 ]
 
 // Public routes
 export const publicRoutes = [
   <Route key="login" path={routes.login} element={<Login />} />,
-  <Route key="logout" path={routes.logout} element={<Logout />} />,
   <Route key="notFound" path="*" element={<NotFound />} />,
 ]

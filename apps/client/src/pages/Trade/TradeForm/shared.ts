@@ -4,9 +4,8 @@ import type {
   StockDto,
   StockStatus,
   StockUnit,
-} from "@repo/api-client/client"
-import { getApiTyStocksForCustommerByIdOptions } from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+} from "@repo/api-client"
+import { getApiTyStocksForCustommerByIdOptions } from "@repo/api-client"
 import { useQuery } from "@tanstack/react-query"
 import { useAtomValue } from "jotai"
 import { useParams } from "react-router"
@@ -61,7 +60,6 @@ export type SafeStock = ReturnType<typeof makeSafeStock>
 export const useStockByIdQuery = (id: number) =>
   useQuery({
     ...getApiTyStocksForCustommerByIdOptions({
-      ...getHeaderTokenOnly("client"),
       path: { id },
     }),
     select: makeSafeStock,

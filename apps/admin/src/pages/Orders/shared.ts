@@ -1,11 +1,7 @@
 import type { HubConnection } from "@microsoft/signalr"
-import type { OrderFm, PageDto } from "@repo/api-client/client"
-import {
-  postApiMasterAcceptOrdersMutation,
-  postApiMasterGetOrdersOptions,
-} from "@repo/api-client/tanstack"
+import type { OrderFm, PageDto } from "@repo/api-client"
+import { postApiMasterAcceptOrdersMutation, postApiMasterGetOrdersOptions } from "@repo/api-client"
 import { notifManager } from "@repo/shared/adapters"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { parseError } from "@repo/shared/helpers"
 import { useMutation } from "@tanstack/react-query"
 import type { RowClassParams, RowStyle } from "ag-grid-community"
@@ -40,16 +36,13 @@ export function getRowStyle({ data }: RowClassParams<OrderFm>): RowStyle | undef
 
 export function useAcceptOrder() {
   return useMutation({
-    ...postApiMasterAcceptOrdersMutation({
-      ...getHeaderTokenOnly("admin"),
-    }),
+    ...postApiMasterAcceptOrdersMutation(),
   })
 }
 
 export const refetchGetOrders = () =>
   queryClient.refetchQueries(
     postApiMasterGetOrdersOptions({
-      ...getHeaderTokenOnly("admin"),
       body: getPageDto(),
     }),
   )

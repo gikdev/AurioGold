@@ -1,9 +1,8 @@
-import type { CustomerGroupDto } from "@repo/api-client/client"
+import type { CustomerGroupDto } from "@repo/api-client"
 import {
   postApiTyCustomerGroupsMutation,
   putApiTyCustomerGroupsByIdMutation,
-} from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+} from "@repo/api-client"
 import { createFieldsWithLabels, isUndefinedOrNull } from "@repo/shared/helpers"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import z from "zod/v4"
@@ -44,7 +43,7 @@ export function useCreateGroupMutation() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    ...postApiTyCustomerGroupsMutation(getHeaderTokenOnly("admin")),
+    ...postApiTyCustomerGroupsMutation(),
     onSuccess: (_, { body }) => {
       if (!body) return
 
@@ -60,7 +59,7 @@ export function useUpdateGroupMutation() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    ...putApiTyCustomerGroupsByIdMutation(getHeaderTokenOnly("admin")),
+    ...putApiTyCustomerGroupsByIdMutation(),
     onSuccess: (_, { body, path: { id } }) => {
       queryClient.setQueryData<CustomerGroupDto[]>(gramGroupsOptions.queryKey, old =>
         old?.map(item => (item.id === id ? { ...item, ...body } : item)),

@@ -1,9 +1,8 @@
-import type { StockPriceSourceResponse } from "@repo/api-client/client"
+import type { StockPriceSourceResponse } from "@repo/api-client"
 import {
   postApiStockPriceSourceAddStockPriceSourceMutation,
   postApiStockPriceSourceEditStockPriceSourceMutation,
-} from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+} from "@repo/api-client"
 import { createFieldsWithLabels, isUndefinedOrNull } from "@repo/shared/helpers"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import z from "zod/v4"
@@ -44,7 +43,7 @@ export function useCreateSourceMutation() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    ...postApiStockPriceSourceAddStockPriceSourceMutation(getHeaderTokenOnly("admin")),
+    ...postApiStockPriceSourceAddStockPriceSourceMutation(),
     onSuccess: (_, { body }) => {
       if (!body) return
 
@@ -60,7 +59,7 @@ export function useUpdateSourceMutation() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    ...postApiStockPriceSourceEditStockPriceSourceMutation(getHeaderTokenOnly("admin")),
+    ...postApiStockPriceSourceEditStockPriceSourceMutation(),
     onSuccess: (_, { body }) => {
       queryClient.setQueryData<StockPriceSourceResponse[]>(priceSourcesOptions.queryKey, old =>
         old?.map(item =>

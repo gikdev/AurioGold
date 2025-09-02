@@ -1,6 +1,6 @@
 import type { HubConnection } from "@microsoft/signalr"
-import type { StockDtoForMaster } from "@repo/api-client/client"
-import { getApiTyStocksQueryKey } from "@repo/api-client/tanstack"
+import type { StockDtoForMaster } from "@repo/api-client"
+import { getApiTyStocksQueryKey } from "@repo/api-client"
 import { notifManager } from "@repo/shared/adapters"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { produce } from "immer"

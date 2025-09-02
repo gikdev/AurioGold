@@ -1,8 +1,7 @@
 import { CoinsIcon } from "@phosphor-icons/react"
-import type { OrderSide, RequestOrderMode } from "@repo/api-client/client"
-import { postApiCustomerReqOrderMutation } from "@repo/api-client/tanstack"
+import type { OrderSide, RequestOrderMode } from "@repo/api-client"
+import { postApiCustomerReqOrderMutation } from "@repo/api-client"
 import { notifManager } from "@repo/shared/adapters"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { Btn } from "@repo/shared/components"
 import { parseError } from "@repo/shared/helpers"
 import { useMutation } from "@tanstack/react-query"
@@ -29,8 +28,7 @@ const OrderSides = {
   Sell: 2,
 } as const satisfies Record<string, OrderSide>
 
-const useSubmitOrderMutation = () =>
-  useMutation(postApiCustomerReqOrderMutation(getHeaderTokenOnly("client")))
+const useSubmitOrderMutation = () => useMutation(postApiCustomerReqOrderMutation())
 
 export default function SubmitBtn() {
   const side = useTradeFormStore(s => s.side)

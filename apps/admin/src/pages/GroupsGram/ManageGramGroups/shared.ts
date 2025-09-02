@@ -1,10 +1,9 @@
-import type { CustomerGroupDto } from "@repo/api-client/client"
-import { getApiTyCustomerGroupsOptions } from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+import type { CustomerGroupDto } from "@repo/api-client"
+import { getApiTyCustomerGroupsOptions } from "@repo/api-client"
 import { create } from "zustand"
 import { queryClient } from "#/shared"
 
-export const gramGroupsOptions = getApiTyCustomerGroupsOptions(getHeaderTokenOnly("admin"))
+export const gramGroupsOptions = getApiTyCustomerGroupsOptions()
 
 export function refetchGramGroups() {
   queryClient.refetchQueries(gramGroupsOptions)

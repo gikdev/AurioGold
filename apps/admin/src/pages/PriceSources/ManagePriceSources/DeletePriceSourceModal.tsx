@@ -1,6 +1,5 @@
 import { TrashIcon, XIcon } from "@phosphor-icons/react"
-import { postApiStockPriceSourceDeleteStockMutation } from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+import { postApiStockPriceSourceDeleteStockMutation } from "@repo/api-client"
 import { Modal } from "@repo/shared/components"
 import { skins } from "@repo/shared/forms"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
@@ -14,9 +13,7 @@ interface DeletePriceSourceModalProps {
 
 export function DeletePriceSourceModal({ sourceId, onClose }: DeletePriceSourceModalProps) {
   const queryClient = useQueryClient()
-  const { mutate: deleteSource } = useMutation(
-    postApiStockPriceSourceDeleteStockMutation(getHeaderTokenOnly("admin")),
-  )
+  const { mutate: deleteSource } = useMutation(postApiStockPriceSourceDeleteStockMutation())
 
   const handleDelete = async () => {
     const { reject, resolve } = createControlledAsyncToast({

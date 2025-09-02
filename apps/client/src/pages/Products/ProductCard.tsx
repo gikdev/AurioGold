@@ -1,5 +1,5 @@
 import { CaretLeftIcon, ClockIcon, PackageIcon } from "@phosphor-icons/react"
-import type { StockDto } from "@repo/api-client/client"
+import type { StockDto } from "@repo/api-client"
 import { cellRenderers } from "@repo/shared/lib"
 import { useNavigate } from "react-router"
 import { useProfileAtom } from "#/atoms"

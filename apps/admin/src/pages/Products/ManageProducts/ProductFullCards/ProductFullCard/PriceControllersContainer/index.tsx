@@ -1,4 +1,4 @@
-import type { StockDtoForMaster } from "@repo/api-client/client"
+import type { StockDtoForMaster } from "@repo/api-client"
 import { formatPersianPrice } from "@repo/shared/utils"
 import { useStocksQuery } from "../../../shared"
 import { usePriceUpdater } from "../../../usePriceUpdater"

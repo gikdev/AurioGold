@@ -5,9 +5,7 @@
   "main": "index.js",
   "type": "module",
   "exports": {
-    ".": "./client/index.ts",
-    "./client": "./generated-client/index.ts",
-    "./tanstack": "./generated-client/@tanstack/react-query.gen.ts"
+    ".": "./generated-client/index.ts"
   },
   "scripts": {
     "openapi-ts": "openapi-ts"

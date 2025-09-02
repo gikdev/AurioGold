@@ -1,8 +1,7 @@
 import styled from "@master/styled.react"
 import { ListIcon } from "@phosphor-icons/react"
-import { getApiCustomerGetMasterOptions } from "@repo/api-client/tanstack"
+import { getApiCustomerGetMasterOptions } from "@repo/api-client"
 import { currentProfile } from "@repo/profile-manager"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { Btn } from "@repo/shared/components"
 import { useBooleanishQueryState } from "@repo/shared/hooks"
 import { useQuery } from "@tanstack/react-query"
@@ -29,7 +28,7 @@ function getProfileImageUrl(logoUrl: string | undefined | null) {
 export function Nav() {
   const setAdminInfo = useSetAtom(adminInfoAtom)
   const { data } = useQuery({
-    ...getApiCustomerGetMasterOptions(getHeaderTokenOnly("client")),
+    ...getApiCustomerGetMasterOptions(),
     staleTime: 5 * 60 * 1000,
   })
   const masterInfo = useMemo(

@@ -1,6 +1,5 @@
-import type { StockDtoForMaster } from "@repo/api-client/client"
-import { getApiTyStocksOptions, getApiTyStocksQueryKey } from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+import type { StockDtoForMaster } from "@repo/api-client"
+import { getApiTyStocksOptions, getApiTyStocksQueryKey } from "@repo/api-client"
 import { useQuery } from "@tanstack/react-query"
 import { produce } from "immer"
 import { queryClient } from "#/shared"
@@ -14,7 +13,7 @@ function toClock(n: number, unit: "h" | "m" | "s") {
 
 export const useStocksQuery = () =>
   useQuery({
-    ...getApiTyStocksOptions(getHeaderTokenOnly("admin")),
+    ...getApiTyStocksOptions(),
     staleTime: toClock(10, "s"),
     refetchInterval: toClock(1, "m"),
     refetchOnMount: true,
@@ -22,7 +21,7 @@ export const useStocksQuery = () =>
   })
 
 export function refetchStocks() {
-  queryClient.refetchQueries({ queryKey: getApiTyStocksQueryKey(getHeaderTokenOnly("admin")) })
+  queryClient.refetchQueries({ queryKey: getApiTyStocksQueryKey() })
 }
 
 export function applyStockUpdate(
@@ -31,17 +30,15 @@ export function applyStockUpdate(
   priceType: "price" | "diffSellPrice" | "diffBuyPrice",
   date: string,
 ) {
-  queryClient.setQueryData<StockDtoForMaster[] | undefined>(
-    getApiTyStocksQueryKey(getHeaderTokenOnly("admin")),
-    oldData =>
-      produce(oldData, draft => {
-        if (!draft) return
-        const stock = draft.find(p => p.id === productId)
-        if (stock) {
-          stock[priceType] = newPrice
-          stock.dateUpdate = new Date(date).toISOString()
-        }
-      }),
+  queryClient.setQueryData<StockDtoForMaster[] | undefined>(getApiTyStocksQueryKey(), oldData =>
+    produce(oldData, draft => {
+      if (!draft) return
+      const stock = draft.find(p => p.id === productId)
+      if (stock) {
+        stock[priceType] = newPrice
+        stock.dateUpdate = new Date(date).toISOString()
+      }
+    }),
   )
 }
 

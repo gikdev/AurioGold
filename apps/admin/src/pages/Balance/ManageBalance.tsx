@@ -1,7 +1,6 @@
 import { ArrowClockwiseIcon, CoinsIcon } from "@phosphor-icons/react"
-import type { MasterPortfolioDto } from "@repo/api-client/client"
-import { getApiMasterGetMasterPortfolioOptions } from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+import type { MasterPortfolioDto } from "@repo/api-client"
+import { getApiMasterGetMasterPortfolioOptions } from "@repo/api-client"
 import {
   SmallErrorWithRetryBtn,
   TitledCard,
@@ -25,7 +24,7 @@ function addIds(items: MasterPortfolioDto[]): MasterPortfolioWithId[] {
 
 export const useMasterBalanceQuery = () =>
   useQuery({
-    ...getApiMasterGetMasterPortfolioOptions(getHeaderTokenOnly("admin")),
+    ...getApiMasterGetMasterPortfolioOptions(),
     select: addIds,
   })
 

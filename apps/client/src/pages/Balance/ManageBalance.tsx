@@ -1,7 +1,6 @@
 import { ArrowClockwiseIcon, CoinsIcon } from "@phosphor-icons/react"
-import type { PortfolioDto } from "@repo/api-client/client"
-import { getApiCustomerGetPortfoliOptions } from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+import type { PortfolioDto } from "@repo/api-client"
+import { getApiCustomerGetPortfoliOptions } from "@repo/api-client"
 import {
   SmallErrorWithRetryBtn,
   TitledCard,
@@ -25,7 +24,7 @@ function addIds(items: PortfolioDto[]): PortfolioWithId[] {
 
 export const useCustomerBalanceQuery = () =>
   useQuery({
-    ...getApiCustomerGetPortfoliOptions(getHeaderTokenOnly("client")),
+    ...getApiCustomerGetPortfoliOptions(),
     select: addIds,
   })
 

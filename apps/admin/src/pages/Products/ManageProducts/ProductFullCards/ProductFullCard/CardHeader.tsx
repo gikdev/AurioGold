@@ -1,5 +1,5 @@
 import { CaretLeftIcon, PackageIcon } from "@phosphor-icons/react"
-import type { StockDtoForMaster } from "@repo/api-client/client"
+import type { StockDtoForMaster } from "@repo/api-client"
 import { type ProductId, useProductsStore } from "../../store"
 
 interface CardHeaderProps {

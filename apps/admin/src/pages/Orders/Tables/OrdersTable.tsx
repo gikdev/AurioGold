@@ -1,8 +1,7 @@
 import { CheckIcon, XIcon } from "@phosphor-icons/react"
-import type { OrderFm, OrdersReturnFm } from "@repo/api-client/client"
-import { postApiMasterGetOrdersOptions } from "@repo/api-client/tanstack"
+import type { OrderFm, OrdersReturnFm } from "@repo/api-client"
+import { postApiMasterGetOrdersOptions } from "@repo/api-client"
 import { notifManager, storageManager } from "@repo/shared/adapters"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
 import { createTypedTableFa, SmallErrorWithRetryBtn } from "@repo/shared/components"
 import { skins } from "@repo/shared/forms"
 import { parseError } from "@repo/shared/helpers"
@@ -38,7 +37,6 @@ export function OrdersTable() {
     refetch,
   } = useQuery({
     ...postApiMasterGetOrdersOptions({
-      ...getHeaderTokenOnly("admin"),
       body: pageDto,
     }),
     select,

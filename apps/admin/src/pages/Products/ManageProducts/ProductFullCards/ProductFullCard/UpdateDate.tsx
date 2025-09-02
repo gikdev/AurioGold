@@ -1,4 +1,4 @@
-import type { StockDtoForMaster } from "@repo/api-client/client"
+import type { StockDtoForMaster } from "@repo/api-client"
 import { cellRenderers } from "@repo/shared/lib"
 
 interface UpdateDateProps {

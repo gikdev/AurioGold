@@ -1,5 +1,5 @@
 import { InfoIcon, PencilSimpleIcon, TrashIcon } from "@phosphor-icons/react"
-import type { CustomerDto, CustomerGroupDto } from "@repo/api-client/client"
+import type { CustomerDto, CustomerGroupDto } from "@repo/api-client"
 import { createTypedTableFa } from "@repo/shared/components"
 import { skins } from "@repo/shared/forms"
 import { cellRenderers } from "@repo/shared/lib"

@@ -1,4 +1,4 @@
-import type { StockDtoForMaster } from "@repo/api-client/client"
+import type { StockDtoForMaster } from "@repo/api-client"
 import { A11yBtn } from "./A11yBtn"
 import { CardHeader } from "./CardHeader"
 import { PriceControllersContainer } from "./PriceControllersContainer"

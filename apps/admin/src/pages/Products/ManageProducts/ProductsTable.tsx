@@ -1,4 +1,4 @@
-import type { StockDtoForMaster } from "@repo/api-client/client"
+import type { StockDtoForMaster } from "@repo/api-client"
 import { BtnTemplates, createTypedTableFa } from "@repo/shared/components"
 import { cellRenderers } from "@repo/shared/lib"
 import type { CustomCellRendererProps } from "ag-grid-react"

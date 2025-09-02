@@ -1,4 +1,4 @@
-import { postApiTyFilesUpload } from "@repo/api-client/client"
+import { postApiTyFilesUpload } from "@repo/api-client"
 import { v4 as uuidv4 } from "uuid"
 import { getToken } from "#shared/auth"
 

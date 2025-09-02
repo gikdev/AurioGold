@@ -1,7 +1,6 @@
 import { CoinsIcon } from "@phosphor-icons/react"
-import type { PortfolioDto } from "@repo/api-client/client"
-import { getApiMasterUserPortfolioByCustomerIdOptions } from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+import type { PortfolioDto } from "@repo/api-client"
+import { getApiMasterUserPortfolioByCustomerIdOptions } from "@repo/api-client"
 import { DrawerSheet, SmallErrorWithRetryBtn } from "@repo/shared/components"
 import { parseError } from "@repo/shared/helpers"
 import { useQuery } from "@tanstack/react-query"
@@ -25,7 +24,6 @@ export function CustomerBalanceDrawer({ customerId, onClose }: CustomerBalanceDr
 
   const resBalances = useQuery({
     ...getApiMasterUserPortfolioByCustomerIdOptions({
-      ...getHeaderTokenOnly("admin"),
       path: { CustomerID: customerId },
     }),
     select,

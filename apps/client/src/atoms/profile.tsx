@@ -1,5 +1,5 @@
 import { useApiRequest } from "@gikdev/react-datapi/src"
-import type { CustomerLoginModel } from "@repo/api-client/client"
+import type { CustomerLoginModel } from "@repo/api-client"
 import { useAtom, useSetAtom } from "jotai"
 import { atomWithStorage } from "jotai/utils"
 import { useCallback, useRef } from "react"

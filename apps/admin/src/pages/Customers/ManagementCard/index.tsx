@@ -1,6 +1,5 @@
 import { ArrowClockwiseIcon, UserCirclePlusIcon, UsersThreeIcon } from "@phosphor-icons/react"
-import { getApiMasterGetCustomersOptions } from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+import { getApiMasterGetCustomersOptions } from "@repo/api-client"
 import {
   SmallErrorWithRetryBtn,
   TitledCard,
@@ -56,8 +55,7 @@ const ReloadCustomersBtn = () => (
   </button>
 )
 
-const refetchCustomers = () =>
-  queryClient.refetchQueries(getApiMasterGetCustomersOptions(getHeaderTokenOnly("admin")))
+const refetchCustomers = () => queryClient.refetchQueries(getApiMasterGetCustomersOptions())
 
 const CreateCustomerBtn = () => {
   return (

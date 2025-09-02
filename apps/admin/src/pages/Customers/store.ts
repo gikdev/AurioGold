@@ -1,4 +1,4 @@
-import type { CustomerDto } from "@repo/api-client/client"
+import type { CustomerDto } from "@repo/api-client"
 import { create } from "zustand"
 import type { ProductId } from "../Products/ManageProducts/store"
 

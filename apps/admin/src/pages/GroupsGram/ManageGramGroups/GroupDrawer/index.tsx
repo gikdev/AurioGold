@@ -1,5 +1,5 @@
 import { PencilSimpleIcon, PlusIcon } from "@phosphor-icons/react"
-import type { CustomerGroupDto } from "@repo/api-client/client"
+import type { CustomerGroupDto } from "@repo/api-client"
 import { DrawerSheet } from "@repo/shared/components"
 import { skins, useAppForm } from "@repo/shared/forms"
 import { createControlledAsyncToast } from "@repo/shared/helpers"

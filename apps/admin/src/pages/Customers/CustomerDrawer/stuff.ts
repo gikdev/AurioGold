@@ -1,13 +1,8 @@
-import type {
-  AddCustomerDto,
-  CustomerDto,
-  UpdateCustomerForMasterDto,
-} from "@repo/api-client/client"
+import type { AddCustomerDto, CustomerDto, UpdateCustomerForMasterDto } from "@repo/api-client"
 import {
   postApiMasterAddCustomerMutation,
   postApiMasterUpdateCustomerMutation,
-} from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+} from "@repo/api-client"
 import { createFieldsWithLabels, isUndefinedOrNull } from "@repo/shared/helpers"
 import { toSafeNumber } from "@repo/shared/utils"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -104,7 +99,7 @@ export function useCreateCustomerMutation() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    ...postApiMasterAddCustomerMutation(getHeaderTokenOnly("admin")),
+    ...postApiMasterAddCustomerMutation(),
     onSuccess: (_, { body }) => {
       if (!body) return
 
@@ -120,7 +115,7 @@ export function useUpdateCustomerMutation() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    ...postApiMasterUpdateCustomerMutation(getHeaderTokenOnly("admin")),
+    ...postApiMasterUpdateCustomerMutation(),
     onSuccess: (_, { body }) => {
       queryClient.setQueryData<CustomerDto[]>(apiGetCustomersOptions.queryKey, old =>
         old?.map(item => (item.id === body?.id ? { ...item, ...body } : item)),

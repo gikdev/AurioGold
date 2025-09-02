@@ -1,4 +1,4 @@
-import type { Ufm } from "@repo/api-client/client"
+import type { Ufm } from "@repo/api-client"
 import { currentProfile } from "@repo/profile-manager"
 import type { SyntheticEvent } from "react"
 import { useProfileImageUrlValue } from "#/atoms"

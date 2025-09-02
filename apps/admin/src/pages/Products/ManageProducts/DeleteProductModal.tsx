@@ -1,6 +1,5 @@
-import type { StockDtoForMaster } from "@repo/api-client/client"
-import { deleteApiTyStocksByIdMutation, getApiTyStocksQueryKey } from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+import type { StockDtoForMaster } from "@repo/api-client"
+import { deleteApiTyStocksByIdMutation, getApiTyStocksQueryKey } from "@repo/api-client"
 import { BtnTemplates, Modal } from "@repo/shared/components"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -11,7 +10,7 @@ interface DeleteProductModalProps {
   productId: ProductId
 }
 
-const deleteStockMutationOptions = deleteApiTyStocksByIdMutation(getHeaderTokenOnly("admin"))
+const deleteStockMutationOptions = deleteApiTyStocksByIdMutation()
 const useDeleteStockMutation = () => useMutation(deleteStockMutationOptions)
 
 export function DeleteProductModal({ onClose, productId }: DeleteProductModalProps) {
@@ -25,9 +24,8 @@ export function DeleteProductModal({ onClose, productId }: DeleteProductModalPro
     })
 
     const onSuccess = () => {
-      queryClient.setQueryData<StockDtoForMaster[] | undefined>(
-        getApiTyStocksQueryKey(getHeaderTokenOnly("admin")),
-        oldData => oldData?.filter(item => item.id !== productId),
+      queryClient.setQueryData<StockDtoForMaster[] | undefined>(getApiTyStocksQueryKey(), oldData =>
+        oldData?.filter(item => item.id !== productId),
       )
 
       resolve()

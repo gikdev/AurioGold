@@ -1,6 +1,6 @@
 import JalaliUtils from "@date-io/jalaali"
 import { CopyIcon } from "@phosphor-icons/react"
-import type { OrderSide, OrderStatus } from "@repo/api-client/client"
+import type { OrderSide, OrderStatus } from "@repo/api-client"
 import type { RowSelectionOptions } from "ag-grid-community"
 import type { ReactNode } from "react"
 import { notifManager } from "#shared/adapters"

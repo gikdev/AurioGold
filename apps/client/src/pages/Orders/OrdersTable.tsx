@@ -1,6 +1,6 @@
 import { useApiRequest } from "@gikdev/react-datapi/src"
 import { ArrowClockwiseIcon, FunnelIcon } from "@phosphor-icons/react"
-import type { OrderFc } from "@repo/api-client/client"
+import type { OrderFc } from "@repo/api-client"
 import { createTypedTableFa } from "@repo/shared/components"
 import { cellRenderers } from "@repo/shared/lib"
 import { useAtomValue } from "jotai"

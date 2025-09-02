@@ -9,6 +9,10 @@ import {
   UserCircleIcon,
 } from "@phosphor-icons/react"
 import { notifManager } from "@repo/shared/adapters"
+import {
+  useAddAuthInterceptorToFetchClient,
+  useAddLogOutOn401InterceptorToFetchClient,
+} from "@repo/shared/auth"
 import { ErrorCardBoundary } from "@repo/shared/components"
 import { parseError } from "@repo/shared/helpers"
 import { Base, type SidebarItem } from "@repo/shared/layouts"
@@ -34,6 +38,9 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
 const config = genDatApiConfig()
 
 export function BaseWrapper() {
+  useAddLogOutOn401InterceptorToFetchClient()
+  useAddAuthInterceptorToFetchClient()
+
   return (
     <ErrorCardBoundary>
       <DatapiConfigProvider config={config}>

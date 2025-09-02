@@ -1,7 +1,7 @@
 import { apiRequest } from "@gikdev/react-datapi/src"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { PasswordIcon } from "@phosphor-icons/react"
-import type { ChangePasswordDto } from "@repo/api-client/client"
+import type { ChangePasswordDto } from "@repo/api-client"
 import { BtnTemplates, DrawerSheet, Input, Labeler, useDrawerSheet } from "@repo/shared/components"
 import { createControlledAsyncToast, createFieldsWithLabels } from "@repo/shared/helpers"
 import { usePasswordEyeBtn } from "@repo/shared/hooks"

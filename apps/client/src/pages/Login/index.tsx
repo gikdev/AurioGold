@@ -1,7 +1,7 @@
 import { apiRequest } from "@gikdev/react-datapi/src"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ArrowClockwiseIcon, SignInIcon } from "@phosphor-icons/react"
-import type { CustomerLoginModel, LoginModel } from "@repo/api-client/client"
+import type { CustomerLoginModel, LoginModel } from "@repo/api-client"
 import { currentProfile } from "@repo/profile-manager"
 import { storageManager } from "@repo/shared/adapters"
 import { Btn, Heading, Hr, Input, Labeler } from "@repo/shared/components"

@@ -1,5 +1,5 @@
 import { InfoIcon, PencilSimpleIcon, TrashIcon } from "@phosphor-icons/react"
-import type { StockPriceSourceResponse } from "@repo/api-client/client"
+import type { StockPriceSourceResponse } from "@repo/api-client"
 import {
   DrawerSheet,
   EntityNotFoundCard,

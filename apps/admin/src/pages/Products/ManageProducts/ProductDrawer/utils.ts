@@ -4,13 +4,12 @@ import type {
   StockDtoForMaster,
   StockStatus,
   StockUnit,
-} from "@repo/api-client/client"
+} from "@repo/api-client"
 import {
   getApiTyStocksQueryKey,
   postApiTyStocksMutation,
   putApiTyStocksByIdMutation,
-} from "@repo/api-client/tanstack"
-import { getHeaderTokenOnly } from "@repo/shared/auth"
+} from "@repo/api-client"
 import { createFieldsWithLabels, isUndefinedOrNull } from "@repo/shared/helpers"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import z from "zod"
@@ -119,14 +118,14 @@ export function useCreateStockMutation() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    ...postApiTyStocksMutation(getHeaderTokenOnly("admin")),
+    ...postApiTyStocksMutation(),
     onSuccess: (_, { body }) => {
       if (!body) return
 
-      queryClient.setQueryData<StockDtoForMaster[]>(
-        getApiTyStocksQueryKey(getHeaderTokenOnly("admin")),
-        old => [...(old ?? []), body],
-      )
+      queryClient.setQueryData<StockDtoForMaster[]>(getApiTyStocksQueryKey(), old => [
+        ...(old ?? []),
+        body,
+      ])
     },
   })
 }
@@ -135,11 +134,10 @@ export function useUpdateStockMutation() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    ...putApiTyStocksByIdMutation(getHeaderTokenOnly("admin")),
+    ...putApiTyStocksByIdMutation(),
     onSuccess: (_, { body, path: { id } }) => {
-      queryClient.setQueryData<StockDtoForMaster[]>(
-        getApiTyStocksQueryKey(getHeaderTokenOnly("admin")),
-        old => old?.map(stock => (stock.id === id ? { ...stock, ...body } : stock)),
+      queryClient.setQueryData<StockDtoForMaster[]>(getApiTyStocksQueryKey(), old =>
+        old?.map(stock => (stock.id === id ? { ...stock, ...body } : stock)),
       )
     },
   })

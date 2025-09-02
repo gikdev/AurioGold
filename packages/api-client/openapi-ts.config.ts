@@ -5,8 +5,12 @@ export default defineConfig({
   input: `${currentProfile.apiBaseUrl}/swagger/v1/swagger.json`,
   output: "generated-client",
   plugins: [
-    "@hey-api/client-fetch",
-    "@tanstack/react-query",
+    {
+      name: "@hey-api/client-fetch",
+      exportFromIndex: true,
+      runtimeConfigPath: "./src/fetch-client-config.ts",
+    },
+    { name: "@tanstack/react-query", exportFromIndex: true },
     { name: "@hey-api/typescript", enums: "javascript" },
     { name: "@hey-api/sdk" },
   ],
