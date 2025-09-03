@@ -19,16 +19,24 @@ export function BuyAndSellToggleBtn() {
   return (
     <div className={containerStyles}>
       <SideButton
+        label="خرید"
         isSelected={side === "buy"}
         isEnabled={isBuyingEnabled}
-        onSelect={() => useTradeFormStore.getState().setSide("buy")}
-        label="خرید"
+        onSelect={() => {
+          useTradeFormStore.getState().setSide("buy")
+          useTradeFormStore.getState().setWeight(0)
+          useTradeFormStore.getState().setRial(0)
+        }}
       />
       <SideButton
+        label="فروش"
         isSelected={side === "sell"}
         isEnabled={isSellingEnabled}
-        onSelect={() => useTradeFormStore.getState().setSide("sell")}
-        label="فروش"
+        onSelect={() => {
+          useTradeFormStore.getState().setSide("sell")
+          useTradeFormStore.getState().setWeight(0)
+          useTradeFormStore.getState().setRial(0)
+        }}
       />
     </div>
   )

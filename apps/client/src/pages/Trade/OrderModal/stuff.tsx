@@ -16,7 +16,7 @@ export const OrderModalStates = [
   "loading",
 ] as const
 export type OrderModalState = (typeof OrderModalStates)[number]
-export const orderModalStateAtom = atom<OrderModalState>("agreed")
+export const orderModalStateAtom = atom<OrderModalState>("loading")
 
 export function calcTitle(state: OrderModalState) {
   if (state === "agreed") return "سفارش شما تایید شد"

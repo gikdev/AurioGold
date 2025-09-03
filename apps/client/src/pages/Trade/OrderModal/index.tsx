@@ -1,41 +1,24 @@
 import { CheckSquareIcon, CloudXIcon, HandPalmIcon, QuestionIcon } from "@phosphor-icons/react"
-import { LoadingSpinner, Modal, useDrawerSheetNumber } from "@repo/shared/components"
-import { useIntegerQueryState } from "@repo/shared/hooks"
+import { LoadingSpinner, Modal } from "@repo/shared/components"
 import { useAtom } from "jotai"
-import { useCallback } from "react"
 import { cx } from "#/shared/cva.config"
-import { QUERY_KEYS } from "../navigation"
 import { Btns } from "./Btns"
 import { Countdown } from "./Countdown"
+import { useOrderModalStore } from "./store"
 import { calcTitle, orderModalStateAtom } from "./stuff"
 import { useHandleServerDecision } from "./useHandleServerDecision"
 import { useOrderTimer } from "./useOrderTimer"
 
-function useShouldBeOpen() {
-  const [currentOrderId] = useDrawerSheetNumber(QUERY_KEYS.currentOrderId)
-  return typeof currentOrderId === "number"
-}
-
-export function useOpenOrderModal() {
-  const [, setCurrentOrderId] = useDrawerSheetNumber(QUERY_KEYS.currentOrderId)
-  const [, setAutoMin] = useIntegerQueryState(QUERY_KEYS.autoMinutes, 0)
-
-  return { setCurrentOrderId, setAutoMin }
-}
-
 export function OrderModal() {
   const [modalState] = useAtom(orderModalStateAtom)
-  const [, setCurrentOrderId] = useDrawerSheetNumber(QUERY_KEYS.currentOrderId)
-  const [autoMin] = useIntegerQueryState(QUERY_KEYS.autoMinutes, 0)
+  const autoMinutes = useOrderModalStore(s => s.autoMinutes)
+
   const title = calcTitle(modalState)
 
-  useHandleServerDecision()
   useOrderTimer()
+  useHandleServerDecision()
 
-  const handleClose = useCallback(() => {
-    if (modalState === "waiting" || modalState === "loading") return
-    setCurrentOrderId(null)
-  }, [modalState, setCurrentOrderId])
+  const handleClose = () => useOrderModalStore.getState().close()
 
   const contentContainerStyles = cx("flex justify-between items-center", {
     "text-red-10": modalState === "disagreed" || modalState === "error",
@@ -52,7 +35,7 @@ export function OrderModal() {
       <div className={contentContainerStyles}>
         <p>{title}</p>
 
-        {modalState === "waiting" && <Countdown minutes={autoMin <= 0 ? null : autoMin} />}
+        {modalState === "waiting" && <Countdown minutes={autoMinutes <= 0 ? null : autoMinutes} />}
         {modalState === "loading" && <LoadingSpinner size={48} />}
         {modalState === "agreed" && <CheckSquareIcon size={48} />}
         {modalState === "disagreed" && <HandPalmIcon size={48} />}
@@ -62,4 +45,3 @@ export function OrderModal() {
     </Modal>
   )
 }
-OrderModal.useShouldBeOpen = useShouldBeOpen

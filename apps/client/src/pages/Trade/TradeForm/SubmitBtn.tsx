@@ -7,7 +7,7 @@ import { parseError } from "@repo/shared/helpers"
 import { useMutation } from "@tanstack/react-query"
 import { useAtomValue } from "jotai"
 import { useProfileAtom } from "#/atoms"
-import { useOpenOrderModal } from "../OrderModal"
+import { openOrderModal } from "../OrderModal/store"
 import { priceInputErrorMsgAtom } from "./MainInput/PriceInput"
 import { useProductContext } from "./ProductFetcher"
 import { calcFinalProductPrices, useGetProductSideEnabled, useTradeFormStore } from "./shared"
@@ -32,15 +32,17 @@ const useSubmitOrderMutation = () => useMutation(postApiCustomerReqOrderMutation
 
 export default function SubmitBtn() {
   const side = useTradeFormStore(s => s.side)
+  const rial = useTradeFormStore(s => s.rial)
+  const weight = useTradeFormStore(s => s.weight)
   const [profile] = useProfileAtom()
   const product = useProductContext()
   const priceInputerrorMsg = useAtomValue(priceInputErrorMsgAtom)
 
   const { isDisabled } = useGetProductSideEnabled(product.status)
   const { isPending, mutate: reqOrder } = useSubmitOrderMutation()
-  const { setAutoMin, setCurrentOrderId } = useOpenOrderModal()
 
-  const isBtnDisabled = isPending || isDisabled || priceInputerrorMsg !== ""
+  const isBtnDisabled =
+    isPending || isDisabled || priceInputerrorMsg !== "" || rial === 0 || weight === 0
 
   const handleSubmit = () => {
     if (!product) {
@@ -85,8 +87,7 @@ export default function SubmitBtn() {
           useTradeFormStore.getState().setRial(0)
           const id = Number(data.id)
           if (Number.isNaN(id)) return
-          setCurrentOrderId(id)
-          setAutoMin(isAutoMode ? product.maxAutoMin : 0)
+          openOrderModal(id, isAutoMode ? product.maxAutoMin : 0)
         },
       },
     )

@@ -1,25 +1,23 @@
 import { apiRequest } from "@gikdev/react-datapi/src"
 import type { OrderFm } from "@repo/api-client"
 import { notifManager, storageManager } from "@repo/shared/adapters"
-import { useDrawerSheetNumber } from "@repo/shared/components"
-import { useIntegerQueryState } from "@repo/shared/hooks"
 import { useAtom, useAtomValue } from "jotai"
 import { useCallback, useEffect } from "react"
 import { connectionRefAtom } from "#/atoms"
 import genDatApiConfig from "#/shared/datapi-config"
-import { QUERY_KEYS } from "../navigation"
+import { useOrderModalStore } from "./store"
 import { OrderStatus, orderModalStateAtom } from "./stuff"
 
 export function useOrderTimer() {
   const [, setModalState] = useAtom(orderModalStateAtom)
-  const [currentOrderId] = useDrawerSheetNumber(QUERY_KEYS.currentOrderId)
-  const [autoMin] = useIntegerQueryState(QUERY_KEYS.autoMinutes, 0)
+  const currentOrderId = useOrderModalStore(s => s.orderId)
+  const autoMinutes = useOrderModalStore(s => s.autoMinutes)
   const connection = useAtomValue(connectionRefAtom)
 
   // Make sure user isn't waiting if he's not supposed to
   useEffect(() => {
-    setModalState(autoMin <= 0 ? "no-answer" : "waiting")
-  }, [autoMin, setModalState])
+    setModalState(autoMinutes <= 0 ? "no-answer" : "waiting")
+  }, [autoMinutes, setModalState])
 
   // Check to see what's up with the status after the timer ended
   const fetchOrderStatus = useCallback(async () => {
@@ -48,8 +46,8 @@ export function useOrderTimer() {
 
   // Timer logic
   useEffect(() => {
-    if (autoMin <= 0) return
-    const timeout = setTimeout(fetchOrderStatus, autoMin * 60 * 1000)
+    if (autoMinutes <= 0) return
+    const timeout = setTimeout(fetchOrderStatus, autoMinutes * 60 * 1000)
     return () => clearTimeout(timeout)
-  }, [autoMin, fetchOrderStatus])
+  }, [autoMinutes, fetchOrderStatus])
 }

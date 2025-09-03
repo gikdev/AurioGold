@@ -1,13 +1,12 @@
-import { useDrawerSheetNumber } from "@repo/shared/components"
 import { useAtom, useAtomValue } from "jotai"
 import { useCallback, useEffect } from "react"
 import { connectionRefAtom } from "#/atoms"
-import { QUERY_KEYS } from "../navigation"
+import { useOrderModalStore } from "./store"
 import { orderModalStateAtom } from "./stuff"
 
 export function useHandleServerDecision() {
   const [, setModalState] = useAtom(orderModalStateAtom)
-  const [currentOrderId] = useDrawerSheetNumber(QUERY_KEYS.currentOrderId)
+  const currentOrderId = useOrderModalStore(s => s.orderId)
   const connection = useAtomValue(connectionRefAtom)
 
   const onDecided = useCallback(

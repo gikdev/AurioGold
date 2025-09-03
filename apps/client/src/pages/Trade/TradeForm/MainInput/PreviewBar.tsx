@@ -4,10 +4,10 @@ import { useTradeFormStore } from "../shared"
 import { transactionMethods } from "./shared"
 
 export default function PreviewBar() {
+  const product = useProductContext()
   const mode = useTradeFormStore(s => s.mode)
   const weight = useTradeFormStore(s => s.weight)
   const rial = useTradeFormStore(s => s.rial)
-  const product = useProductContext()
 
   const transactionMethod = transactionMethods[product.unit]
 
