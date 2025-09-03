@@ -36,22 +36,20 @@ export type ConnectionState = "unknown" | "disconnected" | "connected" | "loadin
 export const connectionStateAtom = atom<ConnectionState>("unknown")
 export const connectionRefAtom = atom<signalR.HubConnection | null>(null)
 
-export function SignalRManager() {
+export function useManageSignalR() {
   const [connectionState, setConnectionState] = useAtom(connectionStateAtom)
   const [connectionRef, setConnectionRef] = useAtom(connectionRefAtom)
   const [isAdminOnline, setAdminOnline] = useAtom(isAdminOnlineAtom)
   const navigate = useNavigate()
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   const stopConnection = useCallback(async () => {
     try {
       await connectionRef?.stop()
     } catch (_err) {
       notifManager.notify("Failed to stop the connection...", "console")
     }
-  }, [])
+  }, [connectionRef])
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   const startConnection = useCallback(async () => {
     const isDev = import.meta.env.DEV
 
@@ -79,21 +77,20 @@ export function SignalRManager() {
     }
 
     setConnectionRef(connection)
-  }, [])
+  }, [setConnectionRef, setConnectionState, navigate])
 
   useEffect(() => {
     startConnection()
     return () => void stopConnection()
   }, [startConnection, stopConnection])
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     const isOnline =
       storageManager.get("admin_status", "sessionStorage")?.toString() ===
       AdminStatus.Online.toString()
 
     setAdminOnline(isOnline)
-  }, [])
+  }, [setAdminOnline])
 
   useEffectButNotOnMount(() => {
     const val = isAdminOnline ? AdminStatus.Online : AdminStatus.Offline
@@ -101,9 +98,8 @@ export function SignalRManager() {
   }, [isAdminOnline])
 
   // Handle UI update when admin connectivity status changed on another instance of the app
-  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
-    if (!connectionRef) return
+    if (!connectionRef || connectionState !== "connected") return
 
     const handleMasterStatusChange = (incomingMasterId: unknown, isOnline: boolean) => {
       const masterId = storageManager.get("admin_masterID", "sessionStorage")
@@ -114,7 +110,7 @@ export function SignalRManager() {
     connectionRef.on("MasterStatusChange", handleMasterStatusChange)
 
     return () => connectionRef.off("MasterStatusChange", handleMasterStatusChange)
-  }, [connectionRef, connectionState])
+  }, [connectionRef, connectionState, setAdminOnline])
 
   // Connect again if disconnected
   useEffect(() => {

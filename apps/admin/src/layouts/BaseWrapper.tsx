@@ -1,4 +1,4 @@
-import { apiRequest, DatapiConfigProvider } from "@gikdev/react-datapi/src"
+import { DatapiConfigProvider } from "@gikdev/react-datapi/src"
 import {
   ChatTextIcon,
   CoinsIcon,
@@ -11,17 +11,19 @@ import {
   UserCircleIcon,
   UsersFourIcon,
 } from "@phosphor-icons/react"
+import { getApiTyStocksGetTimeOptions } from "@repo/api-client"
 import {
   useAddAuthInterceptorToFetchClient,
   useAddLogOutOn401InterceptorToFetchClient,
 } from "@repo/shared/auth"
 import { ErrorCardBoundary } from "@repo/shared/components"
 import { Base, type SidebarItem } from "@repo/shared/layouts"
+import { useQuery } from "@tanstack/react-query"
 import { useAtomValue, useSetAtom } from "jotai"
 import { useEffect, useMemo } from "react"
 import { Outlet } from "react-router"
 import { onlineUsersCountAtom } from "#/atoms"
-import { connectionRefAtom, connectionStateAtom, SignalRManager } from "#/atoms/signalr"
+import { connectionRefAtom, connectionStateAtom, useManageSignalR } from "#/atoms/signalr"
 import StatusBar from "#/layouts/StatusBar"
 import routes from "#/pages/routes"
 import genDatApiConfig from "#/shared/datapi-config"
@@ -47,15 +49,16 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
 
 export function BaseWrapper() {
   const config = useMemo(() => genDatApiConfig(), [])
+
   useNotifyOrders()
+  useHandleConnection()
+  useManageSignalR()
   useAddLogOutOn401InterceptorToFetchClient()
   useAddAuthInterceptorToFetchClient()
 
   return (
     <ErrorCardBoundary>
       <DatapiConfigProvider config={config}>
-        <ConnectionHandler />
-        <SignalRManager />
         <Base app="admin" nav={<Nav />} footer={<StatusBar />} sidebarItems={SIDEBAR_ITEMS}>
           <Outlet />
         </Base>
@@ -64,24 +67,14 @@ export function BaseWrapper() {
   )
 }
 
-function ConnectionHandler() {
+function useHandleConnection() {
   const setCount = useSetAtom(onlineUsersCountAtom)
   const connectionState = useAtomValue(connectionStateAtom)
   const connection = useAtomValue(connectionRefAtom)
 
-  // Time fetch with proper cleanup
-  useEffect(() => {
-    apiRequest({
-      config: genDatApiConfig(),
-      options: {
-        url: "/TyStocks/GetTime",
-        onError: console.error,
-      },
-    })
-  }, [])
+  // fetch so if 401, it'd kick user out...
+  useQuery(getApiTyStocksGetTimeOptions())
 
-  // Connection handler with proper dependencies
-  // biome-ignore lint/correctness/useExhaustiveDependencies: false positive
   useEffect(() => {
     if (connectionState !== "connected" || !connection) return
 
@@ -90,7 +83,7 @@ function ConnectionHandler() {
     connection.on("OnlineCount", handleOnlineCount)
 
     return () => connection.off("OnlineCount", handleOnlineCount)
-  }, [connectionState, connection])
+  }, [connectionState, connection, setCount])
 
   return null
 }
