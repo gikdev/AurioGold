@@ -42,14 +42,16 @@ export function useManageSignalR() {
   const [isAdminOnline, setAdminOnline] = useAtom(isAdminOnlineAtom)
   const navigate = useNavigate()
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: ...
   const stopConnection = useCallback(async () => {
     try {
       await connectionRef?.stop()
     } catch (_err) {
       notifManager.notify("Failed to stop the connection...", "console")
     }
-  }, [connectionRef])
+  }, [])
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: ...
   const startConnection = useCallback(async () => {
     const isDev = import.meta.env.DEV
 
@@ -77,20 +79,21 @@ export function useManageSignalR() {
     }
 
     setConnectionRef(connection)
-  }, [setConnectionRef, setConnectionState, navigate])
+  }, [])
 
   useEffect(() => {
     startConnection()
     return () => void stopConnection()
   }, [startConnection, stopConnection])
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: ...
   useEffect(() => {
     const isOnline =
       storageManager.get("admin_status", "sessionStorage")?.toString() ===
       AdminStatus.Online.toString()
 
     setAdminOnline(isOnline)
-  }, [setAdminOnline])
+  }, [])
 
   useEffectButNotOnMount(() => {
     const val = isAdminOnline ? AdminStatus.Online : AdminStatus.Offline
@@ -98,6 +101,7 @@ export function useManageSignalR() {
   }, [isAdminOnline])
 
   // Handle UI update when admin connectivity status changed on another instance of the app
+  // biome-ignore lint/correctness/useExhaustiveDependencies: ...
   useEffect(() => {
     if (!connectionRef || connectionState !== "connected") return
 
@@ -110,7 +114,7 @@ export function useManageSignalR() {
     connectionRef.on("MasterStatusChange", handleMasterStatusChange)
 
     return () => connectionRef.off("MasterStatusChange", handleMasterStatusChange)
-  }, [connectionRef, connectionState, setAdminOnline])
+  }, [connectionRef, connectionState])
 
   // Connect again if disconnected
   useEffect(() => {
