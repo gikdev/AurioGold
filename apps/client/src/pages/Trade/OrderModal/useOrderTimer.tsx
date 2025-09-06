@@ -5,6 +5,7 @@ import { useAtom, useAtomValue } from "jotai"
 import { useCallback, useEffect } from "react"
 import { connectionRefAtom } from "#/atoms"
 import genDatApiConfig from "#/shared/datapi-config"
+import { ProductAutoMode } from "../shared"
 import { useOrderModalStore } from "./store"
 import { OrderStatus, orderModalStateAtom } from "./stuff"
 
@@ -12,12 +13,32 @@ export function useOrderTimer() {
   const [, setModalState] = useAtom(orderModalStateAtom)
   const currentOrderId = useOrderModalStore(s => s.orderId)
   const autoMinutes = useOrderModalStore(s => s.autoMinutes)
+  const mode = useOrderModalStore(s => s.mode)
   const connection = useAtomValue(connectionRefAtom)
 
   // Make sure user isn't waiting if he's not supposed to
   useEffect(() => {
-    setModalState(autoMinutes <= 0 ? "no-answer" : "waiting")
-  }, [autoMinutes, setModalState])
+    if (autoMinutes > 0) {
+      setModalState("waiting")
+      return
+    }
+
+    if (mode === ProductAutoMode.Normal) {
+      return
+    }
+
+    if (mode === ProductAutoMode.AutoAccept) {
+      setModalState("agreed")
+      return
+    }
+
+    if (mode === ProductAutoMode.AutoReject) {
+      setModalState("disagreed")
+      return
+    }
+
+    setModalState("no-answer")
+  }, [autoMinutes, setModalState, mode])
 
   // Check to see what's up with the status after the timer ended
   const fetchOrderStatus = useCallback(async () => {

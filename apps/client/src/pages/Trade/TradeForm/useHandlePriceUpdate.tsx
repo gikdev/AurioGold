@@ -5,7 +5,7 @@ import { useAtomValue } from "jotai"
 import { useCallback, useEffect } from "react"
 import { connectionRefAtom } from "#/atoms"
 import { queryClient } from "#/shared"
-import type { ProductId } from "../navigation"
+import type { ProductId } from "../shared"
 import { useProductId } from "./shared"
 
 export function useHandlePriceUpdate() {

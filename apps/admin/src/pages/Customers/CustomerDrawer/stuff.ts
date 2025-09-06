@@ -72,6 +72,9 @@ export const CreateCustomerFormSchema = BaseCustomerFormSchema.extend({
 export const EditCustomerFormSchema = BaseCustomerFormSchema.extend({
   [fields.password]: z.string(),
   [fields.passwordRepeat]: z.string(),
+}).refine(data => data.password === data.passwordRepeat, {
+  message: "گذرواژه و تکرار آن تطابق ندارند!",
+  path: [fields.passwordRepeat],
 })
 
 export type CreateCustomerFormValues = z.input<typeof CreateCustomerFormSchema>

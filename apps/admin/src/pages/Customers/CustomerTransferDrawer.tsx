@@ -126,7 +126,14 @@ export function CustomerTransferDrawer({
           </form.AppField>
 
           <form.AppField name="volume">
-            {field => <field.CommaField label={labels.volume} />}
+            {field => (
+              <field.CommaField
+                allowDecimals
+                decimalsLimit={3}
+                step={0.001}
+                label={labels.volume}
+              />
+            )}
           </form.AppField>
         </form>
       ) : (

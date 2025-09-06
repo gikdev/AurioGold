@@ -8,3 +8,9 @@ export const QUERY_KEYS = {
 } as const
 
 export type ProductId = NonNullable<StockDto["id"]>
+
+export const ProductAutoMode = {
+  Normal: 0,
+  AutoAccept: 1,
+  AutoReject: 2,
+} as const

@@ -1,8 +1,10 @@
+import type { AutoMode } from "@repo/api-client"
 import { create } from "zustand"
-import type { ProductId } from "../navigation"
+import type { ProductId } from "../shared"
 
 interface OrderModalStore {
   orderId: ProductId | null
+  mode: AutoMode | null
   setOrderId: (orderId: ProductId | null) => void
 
   autoMinutes: number
@@ -13,12 +15,13 @@ interface OrderModalStore {
 
 export const useOrderModalStore = create<OrderModalStore>()(set => ({
   orderId: null,
+  mode: null,
   setOrderId: orderId => set({ orderId }),
 
   autoMinutes: 0,
   setAutoMinutes: autoMinutes => set({ autoMinutes }),
 
-  close: () => set({ autoMinutes: 0, orderId: null }),
+  close: () => set({ autoMinutes: 0, orderId: null, mode: null }),
 }))
 
 export function useIsOrderModalOpen() {
@@ -26,6 +29,6 @@ export function useIsOrderModalOpen() {
   return typeof orderId === "number"
 }
 
-export function openOrderModal(orderId: ProductId, autoMinutes: number) {
-  useOrderModalStore.setState({ autoMinutes, orderId })
+export function openOrderModal(orderId: ProductId, autoMinutes: number, mode: AutoMode) {
+  useOrderModalStore.setState({ autoMinutes, orderId, mode })
 }

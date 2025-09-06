@@ -8,15 +8,10 @@ import { useMutation } from "@tanstack/react-query"
 import { useAtomValue } from "jotai"
 import { useProfileAtom } from "#/atoms"
 import { openOrderModal } from "../OrderModal/store"
+import { ProductAutoMode } from "../shared"
 import { priceInputErrorMsgAtom } from "./MainInput/PriceInput"
 import { useProductContext } from "./ProductFetcher"
 import { calcFinalProductPrices, useGetProductSideEnabled, useTradeFormStore } from "./shared"
-
-const ProductAutoMode = {
-  Normal: 0,
-  AutoAccept: 1,
-  AutoReject: 2,
-} as const
 
 const ProductPurchaseModes = {
   Value: 1,
@@ -87,7 +82,7 @@ export default function SubmitBtn() {
           useTradeFormStore.getState().setRial(0)
           const id = Number(data.id)
           if (Number.isNaN(id)) return
-          openOrderModal(id, isAutoMode ? product.maxAutoMin : 0)
+          openOrderModal(id, isAutoMode ? product.maxAutoMin : 0, product.mode)
         },
       },
     )
