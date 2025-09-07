@@ -1,4 +1,6 @@
+import { notifManager } from "@repo/shared/adapters"
 import { atom, useSetAtom } from "jotai"
+import { useEffect, useState } from "react"
 import CurrencyInput from "react-currency-input-field"
 import z from "zod/v4"
 import { useProfileAtom } from "#/atoms"
@@ -16,6 +18,7 @@ export default function PriceInput() {
   const weight = useTradeFormStore(s => s.weight)
   const product = useProductContext()
   const setErrorMsg = useSetAtom(priceInputErrorMsgAtom)
+  const [innerValue, setInnerValue] = useState("")
 
   const currentValue = mode === "rial" ? rial : weight
   const transactionMethodName = transactionMethods[product.unit].name
@@ -24,6 +27,11 @@ export default function PriceInput() {
   const step = calcStep(maxDecimals)
 
   const handleChange = (value?: string) => {
+    if (Number.isNaN(Number(value))) {
+      notifManager.notify("not valid input value!", ["toast", "console"], { status: "dev-only" })
+      return
+    }
+
     // Make sure it's not negative...
     const trimmed = Number(value).toFixed(maxDecimals < 0 ? 0 : maxDecimals)
     const converted = Number(trimmed)
@@ -64,14 +72,23 @@ export default function PriceInput() {
     }
   }
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: we only need handleChange
+  useEffect(() => {
+    handleChange(innerValue)
+  }, [innerValue])
+
+  useEffect(() => {
+    setInnerValue(currentValue.toString())
+  }, [currentValue])
+
   return (
     <CurrencyInput
       dir="ltr"
       className="outline-none text-2xl text-slate-12 w-full font-bold"
       min={0}
       step={Number(step)}
-      value={currentValue}
-      onValueChange={handleChange}
+      value={innerValue}
+      onValueChange={v => setInnerValue(v ?? "")}
       data-testid="price-input"
       allowDecimals={shouldHaveDecimals}
       decimalsLimit={maxDecimals}
