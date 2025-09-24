@@ -41,7 +41,7 @@ export function ManagementCard() {
 const TitledCardActions = () => (
   <div className="ms-auto flex items-center gap-2">
     <ReloadGramGroupsBtn />
-    <CreateGroupFAB />
+    <CreateGroupBtn />
     <ViewModesToggle />
   </div>
 )
@@ -60,7 +60,7 @@ function ReloadGramGroupsBtn() {
   )
 }
 
-const CreateGroupFAB = () => (
+const CreateGroupBtn = () => (
   <button
     type="button"
     title="ایجاد گروه جدید"

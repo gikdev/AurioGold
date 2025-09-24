@@ -1,5 +1,5 @@
 import { TrashIcon, XIcon } from "@phosphor-icons/react"
-import { deleteApiTyCustomerGroupsByIdMutation } from "@repo/api-client"
+import { deleteApiTyCustomerGroupIntIntsByIdMutation } from "@repo/api-client"
 import { Modal } from "@repo/shared/components"
 import { skins } from "@repo/shared/forms"
 import { createControlledAsyncToast } from "@repo/shared/helpers"
@@ -13,7 +13,7 @@ interface DeleteGroupModalProps {
 
 export function DeleteGroupModal({ groupId, onClose }: DeleteGroupModalProps) {
   const queryClient = useQueryClient()
-  const { mutate: deleteGroup } = useMutation(deleteApiTyCustomerGroupsByIdMutation())
+  const { mutate: deleteGroup } = useMutation(deleteApiTyCustomerGroupIntIntsByIdMutation())
 
   const handleDelete = async () => {
     const { reject, resolve } = createControlledAsyncToast({
