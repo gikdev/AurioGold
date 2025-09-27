@@ -22,7 +22,10 @@ test("Customer creation flow", async ({ page }) => {
     await page.getByLabel(/منبع قیمت/i).selectOption("نیم سکه")
     await page.getByLabel(/نحوه معامله/i).selectOption("تعدادی")
     await page.getByLabel(/نوع معامله/i).selectOption("عادی")
-    await page.getByRole("button", { name: /ایجاد محصول/i }).nth(0).click()
+    await page
+      .getByRole("button", { name: /ایجاد محصول/i })
+      .nth(0)
+      .click()
   })
 
   await test.step("Check if product is created or not!", async () => {

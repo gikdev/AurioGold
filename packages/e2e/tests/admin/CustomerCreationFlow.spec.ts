@@ -29,7 +29,10 @@ test("Customer creation flow", async ({ page }) => {
     await page.getByLabel(/تکرار گذرواژه/i).fill(pw)
     await page.getByLabel(/گروه مشتری گرمی/i).selectOption(gramGroup)
     await page.getByLabel(/گروه مشتری عددی/i).selectOption(numericGroup)
-    await page.getByRole("button", { name: /ایجاد مشتری/i }).nth(1).click()
+    await page
+      .getByRole("button", { name: /ایجاد مشتری/i })
+      .nth(1)
+      .click()
   })
 
   await test.step("Check if user is created or not!", async () => {
