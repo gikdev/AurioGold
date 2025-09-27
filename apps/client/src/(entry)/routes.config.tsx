@@ -1,4 +1,5 @@
 import { Route } from "react-router"
+// import Transactions from "#/pages/Transactions"
 import About from "../pages/About"
 import Balance from "../pages/Balance"
 import Login from "../pages/Login"
@@ -20,6 +21,7 @@ export const protectedRoutes = [
   <Route key="profile" path={routes.profile} element={<Profile />} />,
   <Route key="balance" path={routes.balance} element={<Balance />} />,
   <Route key="orders" path={routes.orders} element={<Orders />} />,
+  // <Route key="transactions" path={routes.transactions} element={<Transactions />} />,
   <Route key="about" path={routes.about} element={<About />} />,
   <Route key="rules" path={routes.rules} element={<Rules />} />,
   <Route key="settings" path={routes.settings} element={<Settings />} />,

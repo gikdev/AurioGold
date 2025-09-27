@@ -111,6 +111,8 @@ export const cellRenderers = {
     )
   },
   DateOnly: ({ value }: { value: Date | string }) => {
+    if (!value) return "-"
+
     const d = isoToPersianObject(typeof value === "string" ? value : value.toISOString())
 
     const formatDigit = (digit: number) => formatPersianString(digit.toString().padStart(2, "0"))

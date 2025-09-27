@@ -4,6 +4,7 @@ const routes = {
   products: "/",
   tradeById: (id: number | ":id" = ":id") => `/trade/${id}`,
   login: "/login",
+  transactions: "/transactions",
   logout: "/logout",
   profile: "/profile",
   balance: "/balance",
