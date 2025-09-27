@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker"
 import { type BrowserContext, expect, type Page, test } from "@playwright/test"
+import { loginAdmin } from "../helpers/login"
 
 /** Converts a Persian number string to an English number */
 function persianToNumber(persianNumberString: string): number {
@@ -91,8 +92,6 @@ const client = {
 const admin = {
   context: undefined as BrowserContext | undefined,
   page: undefined as Page | undefined,
-  username: "AdminMs",
-  password: "786M@ster313",
 }
 
 const product = {
@@ -122,10 +121,7 @@ test.describe("Customer admin create and client login flow", () => {
 
     // --- Admin login
     await client.page.goto("http://localhost:4444/")
-    await admin.page.goto("http://localhost:8888/login")
-    await admin.page.getByLabel(/نام کاربری/).fill("AdminMs")
-    await admin.page.getByLabel(/گذرواژه/).fill("786M@ster313")
-    await admin.page.getByRole("button", { name: /ورود/ }).click()
+    await loginAdmin(admin.page)
 
     // --- Admin creates new customer
     await admin.page.getByRole("link", { name: "مدیریت مشتریان" }).click()

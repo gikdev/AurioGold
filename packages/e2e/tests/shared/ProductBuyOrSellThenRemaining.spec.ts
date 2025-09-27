@@ -1,4 +1,5 @@
 import { type BrowserContext, expect, type Page, test } from "@playwright/test"
+import { loginAdmin } from "../helpers/login"
 
 let side: "buy" | "sell" | (string & {})
 
@@ -52,10 +53,7 @@ test.describe("Buying or selling effect on remaining", () => {
     await clientPage.getByTestId("password").fill("asdf")
     await clientPage.getByTestId("submit").click()
 
-    await adminPage.goto("http://localhost:8888/login")
-    await adminPage.getByTestId("username").fill("AdminMs")
-    await adminPage.getByTestId("password").fill("786M@ster313")
-    await adminPage.getByTestId("submit").click()
+    await loginAdmin(adminPage)
 
     const productCardTitle = clientPage.getByTestId("product-card-title").nth(0)
     const productCardTitleText = await productCardTitle.textContent()

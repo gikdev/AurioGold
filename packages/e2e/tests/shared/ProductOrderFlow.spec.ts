@@ -1,4 +1,5 @@
 import { type BrowserContext, expect, type Page, test } from "@playwright/test"
+import { loginAdmin } from "../helpers/login"
 
 interface Params {
   id: string
@@ -57,6 +58,7 @@ test.describe("Product Order Flow", () => {
         await adminPage.getByTestId("username").fill("AdminMs")
         await adminPage.getByTestId("password").fill("786M@ster313")
         await adminPage.getByTestId("submit").click()
+        await loginAdmin(adminPage)
       })
 
       await test.step("Client place an order", async () => {
