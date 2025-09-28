@@ -2,57 +2,28 @@ import { ArrowClockwiseIcon, FunnelIcon } from "@phosphor-icons/react"
 import {
   type PageDto,
   postApiCustomerGetTransActionOptions,
-  type TransferDto,
+  type TransactionDto,
 } from "@repo/api-client"
 import { createTypedTableFa } from "@repo/shared/components"
-// import { cellRenderers } from "@repo/shared/lib"
+import { cellRenderers } from "@repo/shared/lib"
 import { useQuery } from "@tanstack/react-query"
 import { type ComponentProps, useMemo } from "react"
 import { useDateFilterStore } from "./shared"
 
-const TableTransactions = createTypedTableFa<TransferDto>()
+const TableTransactions = createTypedTableFa<TransactionDto>()
 type TableTransactionsProps = ComponentProps<typeof TableTransactions>
 
 const ordersColDef: TableTransactionsProps["columnDefs"] = [
-  // {
-  //   field: "price",
-  //   headerName: "قیمت (ریال)",
-  //   cellRenderer: cellRenderers.PersianComma,
-  // },
-  // {
-  //   field: "volume",
-  //   headerName: "مقدار",
-  //   cellRenderer: cellRenderers.PersianNum,
-  // },
-  // {
-  //   field: "value",
-  //   headerName: "ارزش معامله (ریال)",
-  //   cellRenderer: cellRenderers.PersianComma,
-  // },
-  // {
-  //   field: "side",
-  //   headerName: "نوع سفارش",
-  //   cellRenderer: cellRenderers.OrderSide,
-  // },
-  // {
-  //   field: "orderStatus",
-  //   headerName: "وضعیت سفارش",
-  //   cellRenderer: cellRenderers.OrderStatus,
-  // },
-  // {
-  //   field: "createDate",
-  //   headerName: "تاریخ ثبت",
-  //   cellRenderer: cellRenderers.DateOnly,
-  // },
-  // {
-  //   field: "time",
-  //   headerName: "زمان",
-  //   cellRenderer: cellRenderers.TimeOnly,
-  // },
-  // {
-  //   field: "tyStock",
-  //   headerName: "نام محصول",
-  // },
+  { field: "confirmer", headerName: "تایید کننده" },
+  { field: "price", headerName: "قیمت (ریال)", cellRenderer: cellRenderers.PersianCurrency },
+  { field: "taType", headerName: "نوع تا؟" },
+  { field: "time", headerName: "تاریخ", cellRenderer: cellRenderers.DateOnly },
+  { field: "time", headerName: "زمان", cellRenderer: cellRenderers.TimeOnly },
+  { field: "title", headerName: "عنوان" },
+  { field: "tyCustomer", headerName: "مشتری" },
+  { field: "tyStock", headerName: "محصول" },
+  { field: "value", headerName: "ارزش", cellRenderer: cellRenderers.PersianCurrency },
+  { field: "volume", headerName: "مقدار", cellRenderer: cellRenderers.PersianComma },
 ]
 
 export default function TransactionsTable() {

@@ -29,7 +29,7 @@ const SIDEBAR_ITEMS: SidebarItem[] = [
   { id: 1, text: "محصولات", icon: StorefrontIcon, url: routes.base },
   { id: 2, text: "پروفایل", icon: UserCircleIcon, url: routes.profile },
   { id: 3, text: "مشاهده سفارشات", icon: ReceiptIcon, url: routes.orders },
-  // { id: 4, text: "تراکنش‌ها", icon: ReceiptIcon, url: routes.transactions },
+  { id: 4, text: "تراکنش‌ها", icon: ReceiptIcon, url: routes.transactions },
   { id: 5, text: "شرایط و قوانین", icon: ScalesIcon, url: routes.rules },
   { id: 6, text: "درباره ما", icon: InfoIcon, url: routes.about },
   { id: 7, text: "مانده حساب", icon: CoinsIcon, url: routes.balance },
