@@ -10,20 +10,46 @@ import { useQuery } from "@tanstack/react-query"
 import { type ComponentProps, useMemo } from "react"
 import { useDateFilterStore } from "./shared"
 
+type Transaction = {
+  id: 1 | 2 | 3 | 4
+  name: "buy" | "sell" | "importMoney" | "exportMoney"
+  title: "خرید" | "فروش" | "ورود پول" | "خروج پول"
+}
+
+const buyTx: Transaction = { id: 1, name: "buy", title: "خرید" } as const
+const sellTx: Transaction = { id: 2, name: "sell", title: "فروش" } as const
+const importMoneyTx: Transaction = { id: 3, name: "importMoney", title: "ورود پول" } as const
+const exportMoneyTx: Transaction = { id: 4, name: "exportMoney", title: "خروج پول" } as const
+
+const getTransaction = (key: Transaction["id"] | Transaction["name"] | Transaction["title"]) => {
+  if (key === 1 || key === "buy" || key === "خرید") return buyTx
+  if (key === 2 || key === "sell" || key === "فروش") return sellTx
+  if (key === 3 || key === "importMoney" || key === "ورود پول") return importMoneyTx
+  if (key === 4 || key === "exportMoney" || key === "خروج پول") return exportMoneyTx
+
+  return null
+}
+
 const TableTransactions = createTypedTableFa<TransactionDto>()
 type TableTransactionsProps = ComponentProps<typeof TableTransactions>
 
 const ordersColDef: TableTransactionsProps["columnDefs"] = [
   { field: "confirmer", headerName: "تایید کننده" },
   { field: "price", headerName: "قیمت (ریال)", cellRenderer: cellRenderers.PersianCurrency },
-  { field: "taType", headerName: "نوع تا؟" },
+  {
+    field: "taType",
+    headerName: "نوع تراکنش",
+    cellRenderer: ({ value }: { value: 1 | 2 | 3 | 4 }) => (
+      <p>{getTransaction(value)?.title || "-"}</p>
+    ),
+  },
   { field: "time", headerName: "تاریخ", cellRenderer: cellRenderers.DateOnly },
   { field: "time", headerName: "زمان", cellRenderer: cellRenderers.TimeOnly },
-  { field: "title", headerName: "عنوان" },
+  { field: "title", headerName: "عنوان", minWidth: 320 },
   { field: "tyCustomer", headerName: "مشتری" },
   { field: "tyStock", headerName: "محصول" },
-  { field: "value", headerName: "ارزش", cellRenderer: cellRenderers.PersianCurrency },
-  { field: "volume", headerName: "مقدار", cellRenderer: cellRenderers.PersianComma },
+  { field: "value", headerName: "ارزش معامله", cellRenderer: cellRenderers.PersianCurrency },
+  { field: "volume", headerName: "مقدار معامله", cellRenderer: cellRenderers.PersianComma },
 ]
 
 export default function TransactionsTable() {

@@ -1,5 +1,5 @@
 import { InfoIcon } from "@phosphor-icons/react"
-import { useBooleanishQueryState } from "#shared/hooks"
+import { type PropsWithChildren, useState } from "react"
 import { Modal } from "./Modal"
 
 interface AppInfoBtnProps {
@@ -7,7 +7,7 @@ interface AppInfoBtnProps {
 }
 
 export function AppInfoBtn({ version }: AppInfoBtnProps) {
-  const [isOpen, setOpen] = useBooleanishQueryState("about")
+  const [isOpen, setOpen] = useState(false)
 
   const handleClose = () => setOpen(false)
 
@@ -24,14 +24,30 @@ export function AppInfoBtn({ version }: AppInfoBtnProps) {
         <code className="relative">{version}</code>
       </button>
 
-      <Modal title="درباره برنامه:" isOpen={isOpen} onClose={handleClose}>
-        <div className="flex flex-col gap-2">
-          <p>
-            <strong>نسخه: </strong>
-            <code className="bg-blue-2 text-blue-11 rounded-md px-2 py-1">{version}</code>
-          </p>
-        </div>
-      </Modal>
+      {isOpen && (
+        <Modal title="درباره برنامه:" isOpen onClose={handleClose}>
+          <div className="flex flex-col gap-2">
+            <p>
+              <strong>نسخه: </strong>
+              <Code>{version}</Code>
+            </p>
+
+            <p>
+              <strong>
+                تغییرات <Code>v24</Code>:
+              </strong>
+            </p>
+
+            <ul>
+              <li>- اضافه کردن صفحه تراکنش‌ها در کلاینت</li>
+            </ul>
+          </div>
+        </Modal>
+      )}
     </>
   )
 }
+
+const Code = ({ children }: PropsWithChildren) => (
+  <code className="bg-blue-2 text-blue-11 rounded-md px-2 py-1">{children}</code>
+)
